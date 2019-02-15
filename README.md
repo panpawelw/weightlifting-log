@@ -1,3 +1,3 @@
-# Weightlifting_Log
+# Weightlifting Log
 
 Manage and track your weightlifitng workouts.
