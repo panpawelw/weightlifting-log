@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class HomeController {
 
     @RequestMapping("/")
-    @ResponseBody
     public String Home() {
-        return "Weightlifting Log Homepage!!!";
+        return "home";
+    }
+
+    @RequestMapping("/admin")
+    public String Admin() {
+        return "admin";
     }
 }
