@@ -5,9 +5,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class SecuredUserDetails extends User implements UserDetails {
+public class MyUserDetails extends User implements UserDetails {
 
-    public SecuredUserDetails(final User user) {
+    public MyUserDetails(final User user) {
     }
 
     @Override
