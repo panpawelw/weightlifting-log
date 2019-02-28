@@ -4,10 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import pl.pjm77.weightliftinglog.models.MyUserDetails;
 import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.repositories.UserRepository;
 
+import java.util.Optional;
+
+@Service
 public class MyUserDetailsService implements UserDetailsService {
 
     private UserRepository userRepository;
@@ -19,7 +23,9 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        User user = userRepository.findUserByName(name);
-    return new MyUserDetails(user);
+        Optional<User> optionalUser = userRepository.findUserByName(name);
+        optionalUser.orElseThrow(() -> new UsernameNotFoundException("User name not found!"));
+        return optionalUser
+                .map(MyUserDetails::new).get();
     }
 }
