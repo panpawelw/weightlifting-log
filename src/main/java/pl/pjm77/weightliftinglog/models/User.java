@@ -2,6 +2,7 @@ package pl.pjm77.weightliftinglog.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @Entity
 @Table(name="users")
@@ -16,6 +17,9 @@ public class User {
 
     @NotBlank
     private String password;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Role> roles;
 
     public Long getId() {
         return id;
@@ -39,5 +43,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
