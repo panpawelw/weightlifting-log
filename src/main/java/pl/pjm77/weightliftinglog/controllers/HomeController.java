@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController {
 
-    //    @PreAuthorize("hasAnyRole('USER')")
     @RequestMapping("/")
     public String home() {
         return "home";
@@ -19,8 +18,14 @@ public class HomeController {
         return "home";
     }
 
+    @PreAuthorize("hasAnyRole('USER')")
+    @RequestMapping("/loggedin/user")
+    public String user() {
+        return"user";
+    }
+
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @RequestMapping("/admin")
+    @RequestMapping("/loggedin/admin")
     public String admin() {
         return "admin";
     }
