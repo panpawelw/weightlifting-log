@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers(("/loggedin/**")).authenticated()
-                .anyRequest().permitAll().and().formLogin().loginPage("/").permitAll().failureUrl("/error");
+                .anyRequest().permitAll().and().formLogin().loginPage("/").permitAll(); // .failureUrl("/error");
     }
 
     private PasswordEncoder getPasswordEncoder() {
