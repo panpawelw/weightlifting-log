@@ -11,8 +11,13 @@
 </head>
 <body>
 <div class="container">
+
+    <!--Title and logo section-->
     <h2>Weightlifting Log</h2>
 
+    <!--Navbar section-->
+
+    <!--Tab header section-->
     <ul class="nav nav-tabs nav-justified">
         <li class="active"><a data-toggle="tab" href="#home">Main calculator</a></li>
         <li><a data-toggle="tab" href="#menu1">Calculator #1</a></li>
@@ -20,19 +25,28 @@
         <li><a data-toggle="tab" href="#menu3">Training Log</a></li>
     </ul>
 
+    <!--Tab content-->
     <div class="tab-content">
+
+        <!--Tab#1 content-->
         <div id="home" class="tab-pane fade centered in active">
             <h3>Main calculator</h3>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         </div>
+
+        <!--Tab#2 content-->
         <div id="menu1" class="tab-pane fade centered">
             <h3>Calculator #1</h3>
             <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
         </div>
+
+        <!--Tab#3 content-->
         <div id="menu2" class="tab-pane fade centered">
             <h3>Calculator #2</h3>
             <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
         </div>
+
+        <!--Tab#4 content-->
         <div id="menu3" class="tab-pane fade centered">
             <h3>Login page</h3>
             <p th:if="${loginError}" class="error">Wrong user or password</p>
@@ -44,6 +58,8 @@
                 <input type="submit" value="Log in" />
             </form>
         </div>
+
+        <!--Page footer content-->
     </div>
 </div>
 
