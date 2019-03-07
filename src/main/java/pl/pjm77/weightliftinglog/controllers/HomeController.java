@@ -12,14 +12,13 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("isActive", false);
+        model.addAttribute("showCalc", true);
         System.out.println("get");
         return "home";
     }
 
     @PostMapping("/")
     public String loggedIn(Model model) {
-        model.addAttribute("isActive", true);
         System.out.println("post");
         return "home";
     }

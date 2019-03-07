@@ -13,23 +13,23 @@
 <div class="container">
 
     <!--Title and logo section-->
-    <h2 th:text = "'Weightlifting Log ' + ${isActive}"></h2>
+    <h2>Weightlifting Log</h2>
 
     <!--Navbar section-->
 
     <!--Tab header section-->
     <ul class="nav nav-tabs nav-justified">
-        <li class="active"><a data-toggle="tab" href="#home">Main calculator</a></li>
+        <li class="" th:classappend="${showCalc != null}? active"><a data-toggle="tab" href="#home">Main calculator</a></li>
         <li><a data-toggle="tab" href="#menu1">Calculator #1</a></li>
         <li><a data-toggle="tab" href="#menu2">Calculator #2</a></li>
-        <li><a data-toggle="tab" href="#menu3">Training Log</a></li>
+        <li class="" th:classappend="${showCalc == null}? active"><a data-toggle="tab" href="#menu3">Training Log</a></li>
     </ul>
 
     <!--Tab content-->
     <div class="tab-content">
 
         <!--Tab#1 content-->
-        <div id="home" class="tab-pane centered fade in active">
+        <div id="home" class="tab-pane centered fade" th:classappend="${showCalc != null}? 'in active'">
             <br/>
             <h3>Main calculator</h3>
             <br/>
@@ -53,7 +53,7 @@
         </div>
 
         <!--Tab#4 content-->
-        <div id="menu3" class="tab-pane centered fade">
+        <div id="menu3" class="tab-pane centered fade" th:classappend="${showCalc == null}? 'in active'">
             <br/>
             <h3>Login page</h3>
             <br/>
