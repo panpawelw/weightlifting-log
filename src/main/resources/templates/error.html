@@ -9,11 +9,16 @@
             display: grid;
         }
     </style>
+    <script>
+        function goBack() {
+            window.history.back()
+        }
+    </script>
 </head>
 <body>
     <div style="margin: auto; text-align: center">
-        <h2>You need admin rights to access this feature.</h2>
-        <button onclick="location.href='/wl/'" type="button">Take me back</button>
+        <h2>Error!!!</h2>
+        <button onclick="goBack()" type="button">Take me back</button>
     </div>
 </body>
 </html>
