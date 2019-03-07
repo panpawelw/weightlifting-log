@@ -13,19 +13,31 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("showCalc", true);
-        System.out.println("get");
+        System.out.println("get anybody");
         return "home";
     }
 
-    @PostMapping("/")
-    public String loggedIn(Model model) {
-        System.out.println("post");
+    @GetMapping("/login")
+    public String loginGet(Model model) {
+        System.out.println("get login");
         return "home";
     }
 
-    @RequestMapping("/testerror")
-    public String testError() {
-        return "error";
+    @PostMapping("/login")
+    public String loginPost(Model model) {
+        System.out.println("post login");
+        return "test";
+    }
+
+    @RequestMapping("/user")
+    public String user(Model model) {
+        System.out.println("user");
+        return "home";
+    }
+
+    @RequestMapping("/admin")
+    public String admin() {
+        return "admin";
     }
 
 //    @PreAuthorize("hasAnyRole('USER','ADMIN')")
