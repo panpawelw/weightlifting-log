@@ -3,6 +3,7 @@ package pl.pjm77.weightliftinglog.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,9 +33,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/user").hasRole("USER")
-                .antMatchers("/admin").hasRole("ADMIN")
-                .and().formLogin().loginPage("/login").permitAll();
+
+        http.authorizeRequests()
+                .antMatchers("/**").permitAll()
+                .antMatchers("/user/**").hasRole("USER").anyRequest().authenticated()
+                .and()
+                .formLogin().loginPage("/login.html").loginProcessingUrl("/login").successForwardUrl("/user");
+//        http.authorizeRequests()
+//                .antMatchers("/user/**").hasRole("USER")
+//                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .and().formLogin().loginPage("/login").permitAll();
 
 //        http.csrf().disable();
 //        http.authorizeRequests()

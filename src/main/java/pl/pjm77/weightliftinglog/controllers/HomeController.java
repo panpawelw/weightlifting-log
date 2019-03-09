@@ -26,12 +26,14 @@ public class HomeController {
     @PostMapping("/login")
     public String loginPost(Model model) {
         System.out.println("post login");
-        return "test";
+        return "redirect:/user";
     }
 
+    @PreAuthorize("hasAnyRole('USER')")
     @RequestMapping("/user")
     public String user(Model model) {
         System.out.println("user");
+        model.addAttribute("userIndicator", "This is user logged in!");
         return "home";
     }
 
