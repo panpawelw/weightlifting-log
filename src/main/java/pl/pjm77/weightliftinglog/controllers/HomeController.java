@@ -29,6 +29,13 @@ public class HomeController {
         return "redirect:/user";
     }
 
+    @RequestMapping("/failure")
+    public String failure(Model model) {
+        System.out.println("get failure");
+        model.addAttribute("loginError", true);
+        return "home";
+    }
+
     @PreAuthorize("hasAnyRole('USER')")
     @RequestMapping("/user")
     public String user(Model model) {

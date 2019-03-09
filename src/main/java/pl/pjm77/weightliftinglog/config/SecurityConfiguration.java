@@ -38,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()
                 .antMatchers("/user/**").hasRole("USER").anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/login.html").loginProcessingUrl("/login").successForwardUrl("/user");
+                .formLogin().loginPage("/login.html").loginProcessingUrl("/login").successForwardUrl("/user").failureForwardUrl("/failure");
 //        http.authorizeRequests()
 //                .antMatchers("/user/**").hasRole("USER")
 //                .antMatchers("/admin/**").hasRole("ADMIN")
