@@ -56,12 +56,13 @@
 
         <!--Tab#4 content-->
         <div id="menu3" class="tab-pane centered fade" th:classappend="${showCalc == null}? 'in active'">
-            <div th:replace="fragments/fragments.html :: login"></div>
+            <div th:if="${!page.isEmpty()}" th:replace="__${page}__">
+                <p>If you see this message, something went wrong...</p>
+            </div>
         </div>
 
         <!--Page footer content-->
     </div>
 </div>
-
 </body>
 </html>

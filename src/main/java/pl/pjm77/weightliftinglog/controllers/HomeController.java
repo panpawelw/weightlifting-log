@@ -18,15 +18,17 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("showCalc", true);
+        model.addAttribute("page", "fragments/fragments.html :: login");
         return "home";
     }
 
     @GetMapping("/login")
-    public String loginGet() {
+    public String loginGet(Model model) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
             return "redirect:/user";
         }else {
+            model.addAttribute("page", "fragments/fragments.html :: login");
             return "home";
         }
     }
@@ -39,12 +41,12 @@ public class HomeController {
     @RequestMapping("/failure")
     public String failure(Model model) {
         model.addAttribute("loginError", true);
+        model.addAttribute("page", "fragments/fragments.html :: login");
         return "home";
     }
 
     @GetMapping("/register")
     public String registerGet() {
-        System.out.println("get register");
         return "register";
     }
 
@@ -61,13 +63,14 @@ public class HomeController {
             username = principal.toString();
         }
         model.addAttribute("userIndicator", "This is " + username + " logged in!");
-        System.out.println(authorities);
+        model.addAttribute("page", "fragments/fragments.html :: login");
         return "home";
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping("/admin")
-    public String admin() {
-        return "admin";
+    public String admin(Model model) {
+        model.addAttribute("page", "fragments/fragments.html :: admin");
+        return "home";
     }
 }
