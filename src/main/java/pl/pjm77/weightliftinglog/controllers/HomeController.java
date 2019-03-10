@@ -36,6 +36,12 @@ public class HomeController {
         return "home";
     }
 
+    @GetMapping("/register")
+    public String registerGet(Model model) {
+        System.out.println("get register");
+        return "register";
+    }
+
     @PreAuthorize("hasAnyRole('USER')")
     @RequestMapping("/user")
     public String user(Model model) {
