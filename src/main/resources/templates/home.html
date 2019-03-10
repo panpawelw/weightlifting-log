@@ -56,22 +56,7 @@
 
         <!--Tab#4 content-->
         <div id="menu3" class="tab-pane centered fade" th:classappend="${showCalc == null}? 'in active'">
-            <br/>
-            <h3>Login page</h3>
-            <br/>
-            <p th:if="${loginError}" class="error">Wrong user or password</p>
-            <p th:text="${userIndicator}"></p>
-            <form th:action="@{/login}" method="post">
-                <label for="username">Username</label>:
-                <input type="text" id="username" name="username" autofocus="autofocus" /> <br />
-                <label for="password">Password</label>:
-                <input type="password" id="password" name="password" /> <br />
-                <br/>
-                <input type="submit" value="Log in" />
-            </form>
-            <br/>
-            <button onclick = "location.href = '/wl/register'" type = "button">Register</button>
-
+            <div th:replace="fragments/fragments.html :: login"></div>
         </div>
 
         <!--Page footer content-->
