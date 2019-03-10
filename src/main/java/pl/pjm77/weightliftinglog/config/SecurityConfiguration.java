@@ -37,17 +37,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/**").permitAll()
                 .antMatchers("/user/**").hasRole("USER").anyRequest().authenticated()
+                .antMatchers("/admin/**").hasRole("ADMIN").anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login.html").loginProcessingUrl("/login").successForwardUrl("/user").failureForwardUrl("/failure");
-//        http.authorizeRequests()
-//                .antMatchers("/user/**").hasRole("USER")
-//                .antMatchers("/admin/**").hasRole("ADMIN")
-//                .and().formLogin().loginPage("/login").permitAll();
-
-//        http.csrf().disable();
-//        http.authorizeRequests()
-//                .antMatchers("/loggedin/**").authenticated()
-//                .anyRequest().permitAll().and().formLogin().loginPage("/").permitAll(); // .failureUrl("/error");
     }
 
     private PasswordEncoder getPasswordEncoder() {

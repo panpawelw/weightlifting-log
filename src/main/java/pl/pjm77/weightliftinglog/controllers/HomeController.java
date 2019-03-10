@@ -44,20 +44,9 @@ public class HomeController {
         return "home";
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping("/admin")
     public String admin() {
         return "admin";
     }
-
-//    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-//    @RequestMapping("/loggedin/user")
-//    public String user() {
-//        return"user";
-//    }
-//
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @RequestMapping("/loggedin/admin")
-//    public String admin() {
-//        return "admin";
-//    }
 }
