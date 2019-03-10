@@ -15,36 +15,37 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("showCalc", true);
-        System.out.println("get anybody");
         return "home";
     }
 
     @GetMapping("/login")
-    public String loginGet(Model model) {
-        System.out.println("get login");
-        return "home";
+    public String loginGet() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            return "redirect:/user";
+        }else {
+            return "home";
+        }
     }
 
     @PostMapping("/login")
-    public String loginPost(Model model) {
-        System.out.println("post login");
+    public String loginPost() {
         return "redirect:/user";
     }
 
     @RequestMapping("/failure")
     public String failure(Model model) {
-        System.out.println("get failure");
         model.addAttribute("loginError", true);
         return "home";
     }
 
     @GetMapping("/register")
-    public String registerGet(Model model) {
+    public String registerGet() {
         System.out.println("get register");
         return "register";
     }
 
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @RequestMapping("/user")
     public String user(Model model) {
         System.out.println("user");
@@ -56,6 +57,7 @@ public class HomeController {
             username = principal.toString();
         }
         model.addAttribute("userIndicator", "This is " + username + " logged in!");
+        System.out.println(((UserDetails) principal).getAuthorities());
         return "home";
     }
 
