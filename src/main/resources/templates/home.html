@@ -60,7 +60,7 @@
             <h3>Login page</h3>
             <br/>
             <p th:if="${loginError}" class="error">Wrong user or password</p>
-            <h3 th:text="${userIndicator}"></h3>
+            <p th:text="${userIndicator}"></p>
             <form th:action="@{/login}" method="post">
                 <label for="username">Username</label>:
                 <input type="text" id="username" name="username" autofocus="autofocus" /> <br />

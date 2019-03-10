@@ -1,6 +1,8 @@
 package pl.pjm77.weightliftinglog.controllers;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +48,14 @@ public class HomeController {
     @RequestMapping("/user")
     public String user(Model model) {
         System.out.println("user");
-        model.addAttribute("userIndicator", "This is user logged in!");
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        model.addAttribute("userIndicator", "This is " + username + " logged in!");
         return "home";
     }
 
