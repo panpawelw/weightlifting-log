@@ -69,8 +69,8 @@ public class HomeController {
         } else {
             username = principal.toString();
         }
-        model.addAttribute("userIndicator", "This is " + username + " logged in!");
-        model.addAttribute("page", "fragments.html :: login");
+        model.addAttribute("userIndicator", "Hello " + username + "!");
+        model.addAttribute("page", "fragments.html :: userpanel");
         return "home";
     }
 
