@@ -2,7 +2,6 @@ package pl.pjm77.weightliftinglog.controllers;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -10,17 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.pjm77.weightliftinglog.models.User;
-import pl.pjm77.weightliftinglog.services.MyUserDetailsService;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
 
 @Controller
 public class HomeController {
-
-    private MyUserDetailsService myUserDetailsService;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -45,12 +39,27 @@ public class HomeController {
         return "redirect:/user";
     }
 
-    @RequestMapping("/failure")
-    public String failure(Model model) {
+    @RequestMapping("/loginfailure")
+    public String loginFailure(Model model) {
         model.addAttribute("loginError", true);
         model.addAttribute("page", "fragments.html :: login");
         return "home";
     }
+
+    @RequestMapping("/logout")
+    public String logout(Model model){
+        System.out.println("Here goes logout!");
+        model.addAttribute("page", "fragments.html :: login");
+        return "home";
+    }
+
+    @RequestMapping("/logoutsuccess")
+    public String logoutSuccess(Model model){
+        model.addAttribute("page", "fragments.html :: login");
+        model.addAttribute("logoutSuccess", true);
+        return "home";
+    }
+
 
     @GetMapping("/register")
     public String registerGet(Model model) {
