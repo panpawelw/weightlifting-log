@@ -76,7 +76,7 @@ public class HomeController {
 
     @PostMapping("register")
     public String registerPost(Model model) {
-        model.addAttribute("page", "fragments.html :: registersuccess");
+        model.addAttribute("page", "fragments.html :: register-success");
         return "home";
     }
 
@@ -84,28 +84,36 @@ public class HomeController {
     @RequestMapping("/user")
     public String user(Model model) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
+        String userName;
         Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
         if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
+            userName = ((UserDetails) principal).getUsername();
             authorities = ((UserDetails) principal).getAuthorities();
         } else {
-            username = principal.toString();
+            userName = principal.toString();
         }
         for (GrantedAuthority grantedAuthority : authorities) {
             if (("ROLE_ADMIN").equals(grantedAuthority.getAuthority())) {
                 model.addAttribute("adminRights", true);
             }
         }
-        model.addAttribute("userIndicator", "Hello " + username + "!");
-        model.addAttribute("page", "fragments.html :: userpanel");
+        model.addAttribute("userGreeting", "Hello " + userName + "!");
+        model.addAttribute("page", "fragments.html :: user-panel");
         return "home";
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping("/admin")
     public String admin(Model model) {
-        model.addAttribute("page", "fragments.html :: adminpanel");
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String adminName;
+        if (principal instanceof UserDetails) {
+            adminName = ((UserDetails) principal).getUsername();
+        } else {
+            adminName = principal.toString();
+        }
+        model.addAttribute("adminGreeting", "Hello " + adminName + "!");
+        model.addAttribute("page", "fragments.html :: admin-panel");
         return "home";
     }
 }
