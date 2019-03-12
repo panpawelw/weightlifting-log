@@ -5,3 +5,13 @@
 .error {
     color: red;
 }
+
+.usercontrols {
+    margin-top: 1em;
+    margin-right: 1em;
+    text-align: right;
+}
+
+.same-row {
+    display: inline-block;
+}
