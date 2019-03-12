@@ -1,15 +1,19 @@
 package pl.pjm77.weightliftinglog.controllers;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -47,19 +51,22 @@ public class HomeController {
     }
 
     @RequestMapping("/logout")
-    public String logout(Model model){
-        System.out.println("Here goes logout!");
+    public String logout(Model model, HttpServletRequest request, HttpServletResponse response){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            System.out.println("null");
+            model.addAttribute("logoutMessage", "You have logged out successfully!");
+        }else{
+            System.out.println("not null");
+            model.addAttribute("logoutMessage", "Logout error!");
+        }
         model.addAttribute("page", "fragments.html :: login");
         return "home";
     }
-
-    @RequestMapping("/logoutsuccess")
-    public String logoutSuccess(Model model){
-        model.addAttribute("page", "fragments.html :: login");
-        model.addAttribute("logoutSuccess", true);
-        return "home";
-    }
-
 
     @GetMapping("/register")
     public String registerGet(Model model) {

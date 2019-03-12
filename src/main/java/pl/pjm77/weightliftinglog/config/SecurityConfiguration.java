@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").hasAnyRole("USER","ADMIN").anyRequest().authenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN").anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/login").loginProcessingUrl("/login").successForwardUrl("/user").failureForwardUrl("/failure")
+                .formLogin().loginPage("/login").loginProcessingUrl("/login").successForwardUrl("/user").failureForwardUrl("/loginfailure")
                 .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/logoutsuccess");
 
