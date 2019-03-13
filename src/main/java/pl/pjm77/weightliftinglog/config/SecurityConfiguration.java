@@ -3,7 +3,6 @@ package pl.pjm77.weightliftinglog.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.pjm77.weightliftinglog.repositories.UserRepository;
-import pl.pjm77.weightliftinglog.services.MyUserDetailsService;
+import pl.pjm77.weightliftinglog.services.SecureUserDetailsService;
 
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
@@ -19,16 +18,16 @@ import pl.pjm77.weightliftinglog.services.MyUserDetailsService;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final MyUserDetailsService myUserDetailsService;
+    private final SecureUserDetailsService secureUserDetailsService;
 
     @Autowired
-    public SecurityConfiguration(MyUserDetailsService myUserDetailsService) {
-        this.myUserDetailsService = myUserDetailsService;
+    public SecurityConfiguration(SecureUserDetailsService secureUserDetailsService) {
+        this.secureUserDetailsService = secureUserDetailsService;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(myUserDetailsService).passwordEncoder(getPasswordEncoder());
+        auth.userDetailsService(secureUserDetailsService).passwordEncoder(getPasswordEncoder());
     }
 
     @Override

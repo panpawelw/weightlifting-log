@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class MyUserDetails extends User implements UserDetails {
+public class SecureUserDetails extends User implements UserDetails {
 
-    public MyUserDetails(final User user) {
+    public SecureUserDetails(final User user) {
         super(user);
     }
 
