@@ -1,5 +1,6 @@
 package pl.pjm77.weightliftinglog.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.pjm77.weightliftinglog.models.User;
+import pl.pjm77.weightliftinglog.repositories.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +22,9 @@ import java.util.Collection;
 
 @Controller
 public class HomeController {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -95,6 +101,8 @@ public class HomeController {
                 model.addAttribute("adminRights", true);
             }
         }
+        User user = userRepository.findUserByName(userName);
+        System.out.println(user.toString());
         model.addAttribute("userGreeting", "Hello " + userName + "!");
         model.addAttribute("page", "fragments.html :: user-panel");
         return "home";

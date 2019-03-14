@@ -9,21 +9,19 @@ import pl.pjm77.weightliftinglog.models.SecureUserDetails;
 import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.repositories.UserRepository;
 
-import java.util.Optional;
-
 @Service
 public class SecureUserDetailsService implements UserDetailsService {
 
-    private UserRepository userRepository;
+    private UserRepository secureUserRepository;
 
     @Autowired
-    public SecureUserDetailsService(UserRepository userRepository){
-        this.userRepository = userRepository;
+    public SecureUserDetailsService(UserRepository secureUserRepository){
+        this.secureUserRepository = secureUserRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        User user = userRepository.findUserByName(name);
+        User user = secureUserRepository.findUserByName(name);
         if(user == null) {
             throw new UsernameNotFoundException("User name not found!");
         }
