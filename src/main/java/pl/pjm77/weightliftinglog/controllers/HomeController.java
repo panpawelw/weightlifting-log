@@ -58,10 +58,8 @@ public class HomeController {
         }
         authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
-            System.out.println("null");
             model.addAttribute("logoutMessage", "You have logged out successfully!");
         }else{
-            System.out.println("not null");
             model.addAttribute("logoutMessage", "Logout error!");
         }
         model.addAttribute("page", "fragments.html :: login");

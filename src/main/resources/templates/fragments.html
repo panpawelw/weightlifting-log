@@ -13,7 +13,7 @@
     <h3>Login page</h3>
     <br/>
     <!--/*@thymesVar id="loginError" type="java"*/-->
-    <p th:if="${loginError}" class="alert">Wrong user or password</p>
+    <p th:if="${loginError}" class="alert">Wrong username or password</p>
     <!--/*@thymesVar id="logoutMessage" type="java"*/-->
     <p th:if="${logoutMessage}" th:text="${logoutMessage}" class="alert"></p>
     <form th:action="@{/login}" method="post">

@@ -23,9 +23,18 @@ public class SecureUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        Optional<User> optionalUser = userRepository.findUserByName(name);
-        optionalUser.orElseThrow(() -> new UsernameNotFoundException("User name not found!"));
-        return optionalUser
-                .map(SecureUserDetails::new).get();
+        User user = userRepository.findUserByName(name);
+        if(user == null) {
+            throw new UsernameNotFoundException("User name not found!");
+        }
+        return new SecureUserDetails(user);
     }
+
+    //    @Override
+//    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+//        Optional<User> optionalUser = userRepository.findUserByName(name);
+//        optionalUser.orElseThrow(() -> new UsernameNotFoundException("User name not found!"));
+//        return optionalUser
+//                .map(SecureUserDetails::new).get();
+//    }
 }
