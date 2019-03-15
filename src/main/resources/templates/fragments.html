@@ -34,17 +34,21 @@
     <h2>Please enter your details to register...</h2>
     <!--/*@thymesVar id="user" type="java"*/-->
     <form th:action="@{/register}" th:object="${user}" method="post">
+        <input type="hidden" th:field="*{id}"/>
         <p>Username: <input type="text" th:field="*{name}"/>
-            <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}">Please enter your username!</span></p>
+            <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span></p>
         <p>Password: <input type="text" th:field="*{password}"/>
-            <span th:if="${#fields.hasErrors('password')}" class="alert" th:errors="*{password}">Please enter your password!</span></p>
-        <p>Email: <input type="text" th:field="*{email}"/></p>
-        <p><input type="checkbox" th:field="*{realEmail}"/><span>This is a real email, please send me an activation message</span></p>
+            <span th:if="${#fields.hasErrors('password')}" class="alert" th:errors="*{password}"></span></p>
+        <p>Email: <input type="text" th:field="*{email}"/>
+            <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span></p>
+        <p><input type="checkbox" th:field="*{realEmail}" th:value ="false"/>
+            <span>This is a real email, please send me an activation message</span></p>
         <p>First name: <input type="text" th:field="*{firstName}"/></p>
         <p>Surname: <input type="text" th:field="*{lastName}"/></p>
         <p>Age: <input type="number" th:field="*{age}"/></p>
-        <p>Female: <input type="radio" th:field="*{gender}" th:value="false"/>
-            Male: <input type="radio" th:field="*{gender}" th:value="true"/></p>
+        <p>Female: <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
+            Male: <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/></p>
+        <input type="hidden" th:field="*{role}"/>
         <input type="submit" value="Register">
     </form>
 </div>

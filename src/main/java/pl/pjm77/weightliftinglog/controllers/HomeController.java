@@ -80,7 +80,9 @@ public class HomeController {
 
     @GetMapping("/register")
     public String registerGet(Model model) {
-        model.addAttribute("user", new User());
+        User user = new User();
+        user.setRole("USER");
+        model.addAttribute("user", user);
         model.addAttribute("page", "fragments.html :: register");
         return "home";
     }
@@ -89,7 +91,7 @@ public class HomeController {
     public String registerPost(@Valid User user, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()) {
             model.addAttribute("page", "fragments.html :: register");
-            System.out.println("again!");
+            System.out.println(user.toString());
             return "home";
         }else {
             model.addAttribute("page", "fragments.html :: register-success");

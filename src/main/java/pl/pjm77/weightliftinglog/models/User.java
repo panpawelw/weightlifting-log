@@ -1,6 +1,7 @@
 package pl.pjm77.weightliftinglog.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -17,6 +18,7 @@ public class User {
     @NotBlank(message = "Please enter your password!")
     private String password;
 
+    @Email(message = "Please enter a valid email!")
     private String email;
 
     private boolean realEmail;
@@ -27,7 +29,7 @@ public class User {
 
     private int age;
 
-    private boolean gender;
+    private Boolean gender;
 
     @NotBlank
     private String role;
@@ -112,11 +114,11 @@ public class User {
         this.age = age;
     }
 
-    public boolean getGender() {
+    public Boolean getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(Boolean gender) {
         this.gender = gender;
     }
 
@@ -135,10 +137,11 @@ public class User {
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", realEmail=" + realEmail +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", gender=" + gender +
                 ", age=" + age +
+                ", gender=" + gender +
                 ", role='" + role + '\'' +
                 '}';
     }
