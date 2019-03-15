@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Thymeleaf fragments</title>
@@ -31,8 +31,17 @@
 <!--Registration-->
 
 <div th:fragment="register">
-    <h2>Registration mock-up.</h2>
-    <form th:action="@{/register}" method="post">
+    <h2>Please enter your details to register...</h2>
+    <!--/*@thymesVar id="user" type="java"*/-->
+    <form th:action="@{/register}" th:object="${user}" method="post">
+        <p>Username: <input type="text" th:field="*{name}"/></p>
+        <p>Password: <input type="text" th:field="*{password}"/></p>
+        <p>Email: <input type="text" th:field="*{email}"/></p>
+        <p>First name: <input type="text" th:field="*{firstName}"/></p>
+        <p>Surname: <input type="text" th:field="*{lastName}"/></p>
+        <p>Age: <input type="number" th:field="*{age}"/></p>
+        <p>Female: <input type="radio" th:field="*{gender}"/>
+            Male: <input type="radio" th:field="*{gender}"/></p>
         <input type="submit" value="Register">
     </form>
 </div>
@@ -60,12 +69,12 @@
 <!--Admin panel-->
 
 <div th:fragment="admin-panel">
-        <div class="controls">
-            <!--/*@thymesVar id="adminGreeting" type="java"*/-->
-            <p class="same-row" th:text="${adminGreeting}"></p>
-            <button class="same-row" onclick="location.href='/wl/logout'" type="button">Log out</button>
-            <button class="same-row" onclick="location.href='/wl/login'" type="button">Back</button>
-        </div>
+    <div class="controls">
+        <!--/*@thymesVar id="adminGreeting" type="java"*/-->
+        <p class="same-row" th:text="${adminGreeting}"></p>
+        <button class="same-row" onclick="location.href='/wl/logout'" type="button">Log out</button>
+        <button class="same-row" onclick="location.href='/wl/login'" type="button">Back</button>
+    </div>
     <h2>Welcome, Admin!</h2>
 </div>
 </body>

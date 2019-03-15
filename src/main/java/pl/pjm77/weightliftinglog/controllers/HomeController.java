@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,14 +18,19 @@ import pl.pjm77.weightliftinglog.repositories.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Controller
 public class HomeController {
 
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public HomeController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @GetMapping("/")
     public String home(Model model) {
@@ -74,14 +80,22 @@ public class HomeController {
 
     @GetMapping("/register")
     public String registerGet(Model model) {
+        model.addAttribute("user", new User());
         model.addAttribute("page", "fragments.html :: register");
         return "home";
     }
 
     @PostMapping("register")
-    public String registerPost(Model model) {
-        model.addAttribute("page", "fragments.html :: register-success");
-        return "home";
+    public String registerPost(@Valid User user, BindingResult bindingResult, Model model) {
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("page", "fragments.html :: register");
+            System.out.println("again!");
+            return "home";
+        }else {
+            model.addAttribute("page", "fragments.html :: register-success");
+            System.out.println("success!");
+            return "home";
+        }
     }
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
