@@ -93,7 +93,7 @@ public class HomeController {
             return "home";
         }else {
             model.addAttribute("page", "fragments.html :: register-success");
-            System.out.println("success!");
+            System.out.println(user.toString());
             return "home";
         }
     }
@@ -115,8 +115,6 @@ public class HomeController {
                 model.addAttribute("adminRights", true);
             }
         }
-        User user = userRepository.findUserByName(userName);
-        System.out.println(user.toString());
         model.addAttribute("userGreeting", "Hello " + userName + "!");
         model.addAttribute("page", "fragments.html :: user-panel");
         return "home";

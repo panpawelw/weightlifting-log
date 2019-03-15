@@ -11,21 +11,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Please enter your user name!")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "Please enter your password!")
     private String password;
 
     private String email;
+
+    private boolean realEmail;
 
     private String firstName;
 
     private String lastName;
 
-    private boolean gender;
-
     private int age;
+
+    private boolean gender;
 
     @NotBlank
     private String role;
@@ -38,10 +40,11 @@ public class User {
         this.name = user.getName();
         this.password = user.getPassword();
         this.email = user.getEmail();
+        this.realEmail = user.getRealEmail();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
-        this.gender = user.getGender();
         this.age = user.getAge();
+        this.gender = user.getGender();
         this.role = user.getRole();
     }
 
@@ -81,6 +84,14 @@ public class User {
         return firstName;
     }
 
+    public boolean getRealEmail() {
+        return realEmail;
+    }
+
+    public void setRealEmail(boolean realEmail) {
+        this.realEmail = realEmail;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -93,20 +104,20 @@ public class User {
         this.lastName = lastName;
     }
 
-    public boolean getGender() {
-        return gender;
-    }
-
-    public void setGender(boolean gender) {
-        this.gender = gender;
-    }
-
     public int getAge() {
         return age;
     }
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public boolean getGender() {
+        return gender;
+    }
+
+    public void setGender(boolean gender) {
+        this.gender = gender;
     }
 
     public String getRole() {
