@@ -83,18 +83,42 @@ public class HomeController {
         User user = new User();
         user.setRole("USER");
         model.addAttribute("user", user);
+        model.addAttribute("topMessage", "Please enter your details to register...");
+        model.addAttribute("buttonText", "Register");
+        model.addAttribute("page", "fragments.html :: edit-user-details");
+        return "home";
+    }
+
+    @GetMapping("/edituserdetails")
+    public String editUserDetails(Model model) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userName;
+        if (principal instanceof UserDetails) {
+            userName = ((UserDetails) principal).getUsername();
+        } else {
+            userName = principal.toString();
+        }
+        User user = userRepository.findUserByName(userName);
+        model.addAttribute("user", user);
         model.addAttribute("page", "fragments.html :: register");
         return "home";
     }
 
-    @PostMapping("register")
+    @PostMapping("/saveuser")
     public String registerPost(@Valid User user, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()) {
-            model.addAttribute("page", "fragments.html :: register");
+            if(user.getId()==null) {
+                model.addAttribute("topMessage", "Please enter your details to register...");
+                model.addAttribute("buttonText", "Register");
+            }else {
+                model.addAttribute("topMessage", "Please edit your details...");
+                model.addAttribute("buttonText", "Save details");
+            }
+            model.addAttribute("page", "fragments.html :: edit-user-details");
             System.out.println(user.toString());
             return "home";
         }else {
-            model.addAttribute("page", "fragments.html :: register-success");
+            model.addAttribute("page", "fragments.html :: user-edit-success");
             System.out.println(user.toString());
             return "home";
         }

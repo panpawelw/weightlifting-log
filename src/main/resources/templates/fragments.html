@@ -28,12 +28,14 @@
     <button onclick="location.href = '/wl/register'" type="button">Register</button>
 </div>
 
-<!--Registration-->
+<!--User details edition-->
+<!--This form is used for new user registration and existing user details edition-->
 
-<div th:fragment="register">
-    <h2>Please enter your details to register...</h2>
+<div th:fragment="edit-user-details">
+    <!--/*@thymesVar id="topMessage" type="java"*/-->
+    <h2 th:text="${topMessage}"></h2><br/>
     <!--/*@thymesVar id="user" type="java"*/-->
-    <form th:action="@{/register}" th:object="${user}" method="post">
+    <form th:action="@{/saveuser}" th:object="${user}" method="post">
         <input type="hidden" th:field="*{id}"/>
         <p>Username: <input type="text" th:field="*{name}"/>
             <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span></p>
@@ -51,14 +53,15 @@
         <p>Female: <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
             Male: <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/></p>
         <input type="hidden" th:field="*{role}"/>
-        <input type="submit" value="Register">
+        <!--/*@thymesVar id="buttonText" type="java"*/-->
+        <input type="submit" th:value="${buttonText}">
     </form>
 </div>
 
-<!--Registration successful-->
+<!--User details edition successful-->
 
-<div th:fragment="register-success">
-    <h2>Registration successfull!</h2>
+<div th:fragment="edit-user-success">
+    <h2>User details saved to database!</h2>
     <button onclick="location.href='/wl/login'" type="button">OK</button>
 </div>
 
