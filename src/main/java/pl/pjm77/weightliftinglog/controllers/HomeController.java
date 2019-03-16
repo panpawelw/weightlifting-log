@@ -100,7 +100,9 @@ public class HomeController {
         }
         User user = userRepository.findUserByName(userName);
         model.addAttribute("user", user);
-        model.addAttribute("page", "fragments.html :: register");
+        model.addAttribute("topMessage", "Please edit your details...");
+        model.addAttribute("buttonText", "Save details");
+        model.addAttribute("page", "fragments.html :: edit-user-details");
         return "home";
     }
 
@@ -118,7 +120,7 @@ public class HomeController {
             System.out.println(user.toString());
             return "home";
         }else {
-            model.addAttribute("page", "fragments.html :: user-edit-success");
+            model.addAttribute("page", "fragments.html :: edit-user-success");
             System.out.println(user.toString());
             return "home";
         }

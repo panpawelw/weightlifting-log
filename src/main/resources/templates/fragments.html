@@ -61,7 +61,7 @@
 <!--User details edition successful-->
 
 <div th:fragment="edit-user-success">
-    <h2>User details saved to database!</h2>
+    <br/><h2>User details saved to database!</h2><br/>
     <button onclick="location.href='/wl/login'" type="button">OK</button>
 </div>
 
@@ -72,6 +72,7 @@
         <!--/*@thymesVar id="userGreeting" type="java"*/-->
         <p class="same-row" th:text="${userGreeting}"></p>
         <button class="same-row" onclick="location.href='/wl/logout'" type="button">Log out</button>
+        <button class="same-row" onclick="location.href='/wl/edituserdetails'" type="button">My profile</button>
         <!--/*@thymesVar id="adminRights" type="java"*/-->
         <button th:if="${adminRights}" class="same-row" onclick="location.href='/wl/admin'">Admin panel</button>
     </div>
@@ -85,6 +86,7 @@
         <!--/*@thymesVar id="adminGreeting" type="java"*/-->
         <p class="same-row" th:text="${adminGreeting}"></p>
         <button class="same-row" onclick="location.href='/wl/logout'" type="button">Log out</button>
+        <button class="same-row" onclick="location.href='/wl/edituserdetails'" type="button">My profile</button>
         <button class="same-row" onclick="location.href='/wl/login'" type="button">Back</button>
     </div>
     <h2>Welcome, Admin!</h2>
