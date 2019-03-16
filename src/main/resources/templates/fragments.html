@@ -39,6 +39,8 @@
             <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span></p>
         <p>Password: <input type="text" th:field="*{password}"/>
             <span th:if="${#fields.hasErrors('password')}" class="alert" th:errors="*{password}"></span></p>
+        <p>Confirm password: <input type="text" th:field="*{confirmPassword}"/>
+            <span th:if="${#fields.hasErrors('confirmPassword')}" class="alert" th:errors="*{confirmPassword}"></span></p>
         <p>Email: <input type="text" th:field="*{email}"/>
             <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span></p>
         <p><input type="checkbox" th:field="*{realEmail}" th:value ="false"/>

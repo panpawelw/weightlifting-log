@@ -18,6 +18,10 @@ public class User {
     @NotBlank(message = "Please enter your password!")
     private String password;
 
+    @Transient
+    @NotBlank(message = "Please confirm your password!")
+    private String confirmPassword;
+
     @Email(message = "Please enter a valid email!")
     private String email;
 
@@ -27,7 +31,7 @@ public class User {
 
     private String lastName;
 
-    private int age;
+    private Integer age;
 
     private Boolean gender;
 
@@ -74,6 +78,14 @@ public class User {
         this.password = password;
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -106,11 +118,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -136,6 +148,7 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
                 ", email='" + email + '\'' +
                 ", realEmail=" + realEmail +
                 ", firstName='" + firstName + '\'' +
