@@ -1,9 +1,7 @@
 package pl.pjm77.weightliftinglog.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -19,8 +17,6 @@ import pl.pjm77.weightliftinglog.repositories.UserRepository;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Controller
 public class HomeController {
@@ -91,13 +87,7 @@ public class HomeController {
 
     @GetMapping("/edituserdetails")
     public String editUserDetails(Model model) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userName;
-        if (principal instanceof UserDetails) {
-            userName = ((UserDetails) principal).getUsername();
-        } else {
-            userName = principal.toString();
-        }
+        String userName = getLoggedInUserName();
         User user = userRepository.findUserByName(userName);
         model.addAttribute("user", user);
         model.addAttribute("topMessage", "Please edit your details...");
@@ -126,40 +116,14 @@ public class HomeController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    @RequestMapping("/user")
-    public String user(Model model) {
+    static String getLoggedInUserName() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userName;
-        Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
         if (principal instanceof UserDetails) {
             userName = ((UserDetails) principal).getUsername();
-            authorities = ((UserDetails) principal).getAuthorities();
         } else {
             userName = principal.toString();
         }
-        for (GrantedAuthority grantedAuthority : authorities) {
-            if (("ROLE_ADMIN").equals(grantedAuthority.getAuthority())) {
-                model.addAttribute("adminRights", true);
-            }
-        }
-        model.addAttribute("userGreeting", "Hello " + userName + "!");
-        model.addAttribute("page", "fragments.html :: user-panel");
-        return "home";
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @RequestMapping("/admin")
-    public String admin(Model model) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String adminName;
-        if (principal instanceof UserDetails) {
-            adminName = ((UserDetails) principal).getUsername();
-        } else {
-            adminName = principal.toString();
-        }
-        model.addAttribute("adminGreeting", "Hello " + adminName + "!");
-        model.addAttribute("page", "fragments.html :: admin-panel");
-        return "home";
+        return userName;
     }
 }
