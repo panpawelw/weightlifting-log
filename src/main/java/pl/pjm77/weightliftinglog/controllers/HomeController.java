@@ -59,7 +59,7 @@ public class HomeController {
     }
 
     @RequestMapping("/logout")
-    public String logout(Model model, HttpServletRequest request, HttpServletResponse response){
+    public String logout(Model model, HttpServletRequest request, HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
@@ -67,7 +67,7 @@ public class HomeController {
         authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             model.addAttribute("logoutMessage", "You have logged out successfully!");
-        }else{
+        } else {
             model.addAttribute("logoutMessage", "Logout error!");
         }
         model.addAttribute("page", "fragments.html :: login");
@@ -98,24 +98,29 @@ public class HomeController {
 
     @PostMapping("/saveuser")
     public String registerPost(@Valid User user, BindingResult bindingResult, Model model) {
-        if(bindingResult.hasErrors()) {
-            if(user.getId()==null) {
+        if (bindingResult.hasErrors()) {
+            if (user.getId() == null) {
                 model.addAttribute("topMessage", "Please enter your details to register...");
                 model.addAttribute("buttonText", "Register");
-            }else {
+            } else {
                 model.addAttribute("topMessage", "Please edit your details...");
                 model.addAttribute("buttonText", "Save details");
             }
             model.addAttribute("page", "fragments.html :: edit-user-details");
             System.out.println(user.toString());
             return "home";
-        }else {
+        } else {
             model.addAttribute("page", "fragments.html :: edit-user-success");
             System.out.println(user.toString());
             return "home";
         }
     }
 
+    /**
+     * Provides the name of the user who is currently logged in, or a string representation of principal object if it's
+     * anything else than instance of UserDetail
+     * @return string value with name of the user or string representation of principal object
+     */
     static String getLoggedInUserName() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userName;

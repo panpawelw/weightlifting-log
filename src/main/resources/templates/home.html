@@ -21,7 +21,7 @@
     <!--Either main calculator tab or login tab are active depending on boolean sent from controller-->
     <ul class="nav nav-tabs nav-justified">
         <li class="" th:classappend="${showCalc != null}? active"><a data-toggle="tab" href="#home">Main calculator</a></li>
-        <li><a data-toggle="tab" href="#menu1">Calculator #1</a></li>
+        <li><a data-toggle="tab" href="#menu1">1 Rep Max</a></li>
         <li><a data-toggle="tab" href="#menu2">Calculator #2</a></li>
         <li class="" th:classappend="${showCalc == null}? active"><a data-toggle="tab" href="#menu3">Training Log</a></li>
     </ul>
@@ -35,15 +35,24 @@
             <br/>
             <h3>Main calculator</h3>
             <br/>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
         </div>
 
         <!--Tab#2 content-->
         <div id="menu1" class="tab-pane centered fade">
             <br/>
-            <h3>Calculator #1</h3>
+            <h3>1 Rep Max Calculator</h3>
             <br/>
-            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <h5>Weight lifted:</h5>
+            <div>
+                <input type="range" min="1" max="100" value="50" class="slider">
+            </div>
+            <h5>Number of reps:</h5>
+            <div>
+                <input type="range" min="1" max="100" value="50" class="slider">
+            </div>
+            <br>
+            <button type="button">Calculate!</button>
         </div>
 
         <!--Tab#3 content-->
