@@ -1,62 +1,12 @@
+/* general properties */
 html body {
     background-color: #454343;
-    color: #ff9200;
+    color: #FF9200;
 }
 
-input {
-    color: #454343;
-}
-
-.nav-tabs > li > a {
-    color: #454343;
-}
-
-.nav-tabs > li > a:hover {
-    background-color: #ff9200 !important;
-    color: #454343;
-}
-
-.nav-tabs > li.active > a {
-    background-color: #ff9200 !important;
-    color: #454343 !important;
-}
-
-.nav-tabs > li > a {
-    color: #ff9200;
-}
-
-.centered {
-    text-align: center;
-}
-
-.alert {
-    color: red;
-}
-
-.controls {
-    margin-top: 1em;
-    margin-right: 1em;
-    text-align: right;
-}
-
-.same-row {
-    display: inline-block;
-}
-
-#percentages {
-    border: 1px solid darkgrey;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#percentages td {
-    padding: 1em;
-    text-align: center;
-}
-
-.percentage-input {
-    width: 4em;
-    text-align: center;
+/* no outline for selected input fields */
+input:focus {
+    outline: none;
 }
 
 /* slider styling */
@@ -66,9 +16,7 @@ input[type=range] {
     margin: 10px 0;
     background-color: #454343;
 }
-input[type=range]:focus {
-    outline: none;
-}
+
 input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
     height: 12px;
@@ -148,4 +96,88 @@ input[type=range]:focus::-ms-fill-lower {
 }
 input[type=range]:focus::-ms-fill-upper {
     background: #FF9200;
+}
+
+/* text input fields style */
+input[type=text] {
+    background-color: #FFFFFF;
+    color: black;
+    border: 2px solid #FF9200;
+    box-shadow: 3px 3px 3px #472900;
+    border-radius: 23px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/*number input fields style */
+input[type=number] {
+    /*background-color: #FF9200;*/
+    /*color: #454343;*/
+    border: 2px solid #FF9200;
+    box-shadow: 3px 3px 3px #472900;
+    border-radius: 23px;
+    text-align: center;
+    font-weight: bold;
+}
+/* password input field style */
+input[type=password] {
+    /*background-color: #FF9200;*/
+    /*color: #454343;*/
+    border: 2px solid #FF9200;
+    box-shadow: 3px 3px 3px #472900;
+    border-radius: 23px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.nav-tabs > li > a {
+    color: #454343;
+}
+
+.nav-tabs > li > a:hover {
+    background-color: #ff9200 !important;
+    color: #454343;
+}
+
+.nav-tabs > li.active > a {
+    background-color: #FF9200 !important;
+    color: #454343 !important;
+}
+
+.nav-tabs > li > a {
+    color: #FF9200;
+}
+
+.centered {
+    text-align: center;
+}
+
+.alert {
+    color: red;
+}
+
+.controls {
+    margin-top: 1em;
+    margin-right: 1em;
+    text-align: right;
+}
+
+.same-row {
+    display: inline-block;
+}
+
+#percentages {
+    border: 1px solid darkgrey;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#percentages td {
+    padding: 1em;
+    text-align: center;
+}
+
+.percentage-input {
+    width: 4em;
+    text-align: center;
 }
