@@ -1,11 +1,11 @@
 /* general properties */
 html body {
     background-color: #454343;
-    color: #FF9200;
+    color: #ff9200;
 }
 
-/* no outline for selected input fields */
-input:focus {
+/* no outline for selected input fields and buttons*/
+input:focus, button:focus {
     outline: none;
 }
 
@@ -27,6 +27,7 @@ input[type=range]::-webkit-slider-runnable-track {
     border-radius: 1px;
     border: 1px solid #FFFFFF;
 }
+
 input[type=range]::-webkit-slider-thumb {
     box-shadow: 3px 3px 3px #472900;
     border: 2px solid #FFFFFF;
@@ -38,9 +39,11 @@ input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     margin-top: -7px;
 }
+
 input[type=range]:focus::-webkit-slider-runnable-track {
     background: #FF9200;
 }
+
 input[type=range]::-moz-range-track {
     width: 100%;
     height: 12px;
@@ -51,6 +54,7 @@ input[type=range]::-moz-range-track {
     border-radius: 1px;
     border: 1px solid #FFFFFF;
 }
+
 input[type=range]::-moz-range-thumb {
     box-shadow: 3px 3px 3px #472900;
     border: 2px solid #FFFFFF;
@@ -60,6 +64,7 @@ input[type=range]::-moz-range-thumb {
     background: #FF9200;
     cursor: pointer;
 }
+
 input[type=range]::-ms-track {
     width: 100%;
     height: 12px;
@@ -69,18 +74,21 @@ input[type=range]::-ms-track {
     border-color: transparent;
     color: transparent;
 }
+
 input[type=range]::-ms-fill-lower {
     background: #FF9200;
     border: 1px solid #FFFFFF;
     border-radius: 2px;
     box-shadow: 1px 1px 1px #472900;
 }
+
 input[type=range]::-ms-fill-upper {
     background: #FF9200;
     border: 1px solid #FFFFFF;
     border-radius: 2px;
     box-shadow: 1px 1px 1px #472900;
 }
+
 input[type=range]::-ms-thumb {
     margin-top: 1px;
     box-shadow: 3px 3px 3px #472900;
@@ -91,9 +99,11 @@ input[type=range]::-ms-thumb {
     background: #FF9200;
     cursor: pointer;
 }
+
 input[type=range]:focus::-ms-fill-lower {
     background: #FF9200;
 }
+
 input[type=range]:focus::-ms-fill-upper {
     background: #FF9200;
 }
@@ -111,23 +121,37 @@ input[type=text] {
 
 /*number input fields style */
 input[type=number] {
+    color: black;
+    border: 2px solid #FF9200;
+    box-shadow: 3px 3px 3px #472900;
+    border-radius: 23px;
+    font-weight: bold;
+}
+
+/* password input field style */
+input[type=password] {
     /*background-color: #FF9200;*/
-    /*color: #454343;*/
+    color: black;
     border: 2px solid #FF9200;
     box-shadow: 3px 3px 3px #472900;
     border-radius: 23px;
     text-align: center;
     font-weight: bold;
 }
-/* password input field style */
-input[type=password] {
-    /*background-color: #FF9200;*/
-    /*color: #454343;*/
-    border: 2px solid #FF9200;
+
+button, input[type=submit], .my-button {
+    background-color: #FF9200;
+    color: black;
+    border: 2px solid #FFFFFF;
     box-shadow: 3px 3px 3px #472900;
     border-radius: 23px;
     text-align: center;
     font-weight: bold;
+}
+
+button:active, input[type=submit]:active, .my-button:active {
+    box-shadow: 1px 1px 1px #472900;
+    animation-duration: 0.2s;
 }
 
 .nav-tabs > li > a {
@@ -174,10 +198,9 @@ input[type=password] {
 
 #percentages td {
     padding: 1em;
-    text-align: center;
 }
 
 .percentage-input {
-    width: 4em;
-    text-align: center;
+    width: 3vw;
+    text-align: right;
 }

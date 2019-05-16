@@ -25,7 +25,7 @@
         <input type="submit" value="Log in"/>
     </form>
     <br/>
-    <button onclick="location.href = '/wl/register'" type="button">Register</button>
+    <button class="my-button" onclick="location.href = '/wl/register'" type="button">Register</button>
 </div>
 
 <!--User details edition-->
@@ -49,13 +49,13 @@
             <span>This is a real email, please send me an activation message</span></p>
         <p>First name: <input type="text" th:field="*{firstName}"/></p>
         <p>Surname: <input type="text" th:field="*{lastName}"/></p>
-        <p>Age: <input type="number" th:field="*{age}"/></p>
+        <p>Age: <input class="centered" type="number" th:field="*{age}"/></p>
         <p>Female: <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
             Male: <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/></p>
         <input type="hidden" th:field="*{role}"/>
         <!--/*@thymesVar id="buttonText" type="java"*/-->
         <input type="submit" th:value="${buttonText}">
-        <button onclick="location.href='/wl/login'" type="button">Cancel</button>
+        <button class="my-button" onclick="location.href='/wl/login'" type="button">Cancel</button>
     </form>
 </div>
 
@@ -63,7 +63,7 @@
 
 <div th:fragment="edit-user-success">
     <br/><h2>User details saved to database!</h2><br/>
-    <button onclick="location.href='/wl/login'" type="button">OK</button>
+    <button class="my-button" onclick="location.href='/wl/login'" type="button">OK</button>
 </div>
 
 <!--User panel-->
