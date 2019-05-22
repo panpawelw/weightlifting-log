@@ -9,7 +9,17 @@ input:focus, button:focus {
     outline: none;
 }
 
-/* slider styling */
+/* text centered in element */
+.centered {
+    text-align: center;
+}
+
+/* error messages */
+.alert {
+    color: red;
+}
+
+/* sliders */
 input[type=range] {
     height: 34px;
     -webkit-appearance: none;
@@ -108,7 +118,7 @@ input[type=range]:focus::-ms-fill-upper {
     background: #FF9200;
 }
 
-/* text input fields style */
+/* text input fields */
 input[type=text] {
     background-color: #FFFFFF;
     color: black;
@@ -119,7 +129,7 @@ input[type=text] {
     font-weight: bold;
 }
 
-/*number input fields style */
+/*number input fields */
 input[type=number] {
     color: black;
     border: 2px solid #FF9200;
@@ -128,9 +138,8 @@ input[type=number] {
     font-weight: bold;
 }
 
-/* password input field style */
+/* password input field */
 input[type=password] {
-    /*background-color: #FF9200;*/
     color: black;
     border: 2px solid #FF9200;
     box-shadow: 3px 3px 3px #472900;
@@ -139,6 +148,7 @@ input[type=password] {
     font-weight: bold;
 }
 
+/* buttons */
 button, input[type=submit], .my-button {
     background-color: #FF9200;
     color: black;
@@ -154,6 +164,7 @@ button:active, input[type=submit]:active, .my-button:active {
     animation-duration: 0.2s;
 }
 
+/* navigation tabs */
 .nav-tabs > li > a {
     color: #454343;
 }
@@ -172,14 +183,7 @@ button:active, input[type=submit]:active, .my-button:active {
     color: #FF9200;
 }
 
-.centered {
-    text-align: center;
-}
-
-.alert {
-    color: red;
-}
-
+/* Other */
 .controls {
     margin-top: 1em;
     margin-right: 1em;
