@@ -1,7 +1,7 @@
 /* general properties */
 html body {
     background-color: #454343;
-    color: #ff9200;
+    color: #FF9200;
 }
 
 /* no outline for selected input fields and buttons*/
@@ -165,22 +165,31 @@ button:active, input[type=submit]:active, .my-button:active {
 }
 
 /* navigation tabs */
-.nav-tabs > li > a {
+#big-tabs li a {
+    border: 2px solid white;
+    border-bottom: 0;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -3px 6px -3px #472900;
     color: #454343;
+    /*background-color: #FF9200;*/
+    background: linear-gradient(#FF9200, #454343);
+    font-weight: bold;
+    margin-bottom: 0;
 }
 
-.nav-tabs > li > a:hover {
-    background-color: #ff9200 !important;
-    color: #454343;
+#big-tabs li.active a {
+    color: black;
+    /*background-color: #FFFFFF;*/
+    background: linear-gradient(#FFFFFF, #454343);
+    border: 2px solid #FF9200;
+    border-bottom: 0;
 }
 
-.nav-tabs > li.active > a {
-    background-color: #FF9200 !important;
-    color: #454343 !important;
-}
-
-.nav-tabs > li > a {
-    color: #FF9200;
+#big-tabs li a:hover {
+    color: black;
+    background-color: #FFFFFF;
+    border: 2px solid #FF9200;
+    border-bottom: 0;
 }
 
 /* Other */
