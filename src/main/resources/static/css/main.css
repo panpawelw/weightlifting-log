@@ -166,11 +166,11 @@ button:active, input[type=submit]:active, .my-button:active {
 
 /* navigation tabs */
 #big-tabs li a {
-    border: 2px solid white;
+    border: 1px solid white;
     border-bottom: 0;
     border-radius: 12px 12px 0 0;
     box-shadow: 0 -3px 6px -3px #472900;
-    color: #454343;
+    color: black;
     /*background-color: #FF9200;*/
     background: linear-gradient(#FF9200, #454343);
     font-weight: bold;
@@ -181,18 +181,41 @@ button:active, input[type=submit]:active, .my-button:active {
     color: black;
     /*background-color: #FFFFFF;*/
     background: linear-gradient(#FFFFFF, #454343);
-    border: 2px solid #FF9200;
+    border: 1px solid #FF9200;
     border-bottom: 0;
 }
 
 #big-tabs li a:hover {
     color: black;
-    background-color: #FFFFFF;
-    border: 2px solid #FF9200;
+    background: linear-gradient(#FFFFFF, #454343);
+    /*background-color: #FFFFFF;*/
+    border: 1px solid #FF9200;
     border-bottom: 0;
 }
 
 /* Other */
+
+.overall-strength {
+    width: 95vw;
+    margin: auto auto 5vw;
+}
+
+.overall-strength-weight {
+    width: 100%;
+}
+
+#squat-weight-slider {
+    width: 100%;
+}
+
+#squat-reps-slider {
+    width:50%;
+}
+
+.overall-strength-reps {
+    width: 50%;
+}
+
 .controls {
     margin-top: 1em;
     margin-right: 1em;

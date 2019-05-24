@@ -41,11 +41,14 @@
         <br/>
         <h3>Overall Strength</h3>
         <br/>
-        <div class="overall-strenght">
-            <label for="squat">Back squat - weight:</label>
-            <input name="squat" id="squat" type="range" min="1" max="300" value="150" class="slider"
-                   onchange=""><br/>
-            <label for="squat-text"></label><input type="text" id="squat-text" value="150">
+        <div class="overall-strength">
+            <label for="squat-weight-slider">Back squat - weight</label>
+            <input name="squat-weight-slider" id="squat-weight-slider" type="range" min="1" max="300" value="150"
+                   class="slider overall-strength-weight" onchange=""><br/>
+            <label for="squat-reps-slider">Reps</label>
+            <input name="squat-reps-slider" id="squat-reps-slider" type="range" min="1" max="12" value="1"
+                   class="slider overall-strength-reps" onchange=""><br/>
+            <label for="squat-weight-text"></label><input type="text" id="squat-weight-text" value="150">
         </div>
         <div>
             <label for="bench">Bench press - weight:</label>
