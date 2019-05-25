@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.pjm77.weightliftinglog.repositories.UserRepository;
 import pl.pjm77.weightliftinglog.services.SecureUserDetailsService;
@@ -42,7 +43,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin().loginPage("/login").loginProcessingUrl("/login").successForwardUrl("/user").failureForwardUrl("/loginfailure")
                 .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/logoutsuccess");
-
+        http.sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
     }
 
     private PasswordEncoder getPasswordEncoder() {

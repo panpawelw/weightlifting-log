@@ -42,13 +42,32 @@
         <h3>Overall Strength</h3>
         <br/>
         <div class="overall-strength">
-            <label for="squat-weight-slider">Back squat - weight</label>
-            <input name="squat-weight-slider" id="squat-weight-slider" type="range" min="1" max="300" value="150"
-                   class="slider overall-strength-weight" onchange=""><br/>
-            <label for="squat-reps-slider">Reps</label>
-            <input name="squat-reps-slider" id="squat-reps-slider" type="range" min="1" max="12" value="1"
-                   class="slider overall-strength-reps" onchange=""><br/>
-            <label for="squat-weight-text"></label><input type="text" id="squat-weight-text" value="150">
+            <div class="overall-strength-weight">
+                <label for="squat-weight-slider">Back squat - weight</label>
+                <input name="squat-weight-slider" id="squat-weight-slider" type="range" min="1" max="300" value="150"
+                       step="0.5" class="slider overall-strength-weight" onchange=""><br/>
+            </div>
+            <div class="overall-strength-reps">
+                <label for="squat-reps-slider">Reps</label>
+                <input name="squat-reps-slider" id="squat-reps-slider" type="range" min="1" max="12" value="1" step="1"
+                       class="slider overall-strength-reps" onchange=""><br/>
+            </div>
+            <div class="overall-strength-text-inputs">
+                <table class="overall-strength-table">
+                    <tr>
+                        <td><label for="squat-weight-number">Weight</label></td>
+                        <td><input type="number" id="squat-weight-number" value="150" step="0.5"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="squat-reps-number">Reps</label></td>
+                        <td><input type="number" id="squat-reps-number" value="1"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="squat-max-number">Max</label></td>
+                        <td><input type="number" id="squat-max-number" value="0" readonly></td>
+                    </tr>
+                </table>
+            </div>
         </div>
         <div>
             <label for="bench">Bench press - weight:</label>

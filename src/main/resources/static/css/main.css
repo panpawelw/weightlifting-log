@@ -23,7 +23,7 @@ input:focus, button:focus {
 input[type=range] {
     height: 34px;
     -webkit-appearance: none;
-    margin: 10px 0;
+    margin: 5px 0;
     background-color: #454343;
 }
 
@@ -136,6 +136,7 @@ input[type=number] {
     box-shadow: 3px 3px 3px #472900;
     border-radius: 23px;
     font-weight: bold;
+    text-align: center;
 }
 
 /* password input field */
@@ -193,10 +194,10 @@ button:active, input[type=submit]:active, .my-button:active {
     border-bottom: 0;
 }
 
-/* Other */
-
+/* Overall strength tab */
 .overall-strength {
     width: 95vw;
+    overflow: auto;
     margin: auto auto 5vw;
 }
 
@@ -204,22 +205,22 @@ button:active, input[type=submit]:active, .my-button:active {
     width: 100%;
 }
 
-#squat-weight-slider {
+.overall-strength-reps {
+    width: 50%;
+    float: left;
+}
+
+.overall-strength-text-inputs {
+    width: 50%;
+    float: right;
+}
+
+.overall-strength-table {
     width: 100%;
 }
 
-#squat-reps-slider {
-    width:50%;
-}
-
-.overall-strength-reps {
-    width: 50%;
-}
-
-.controls {
-    margin-top: 1em;
-    margin-right: 1em;
-    text-align: right;
+.overall-strength-table td {
+    padding: 3px;
 }
 
 .same-row {
@@ -238,5 +239,12 @@ button:active, input[type=submit]:active, .my-button:active {
 
 .percentage-input {
     width: 3vw;
+    text-align: right;
+}
+
+/* Other */
+.controls {
+    margin-top: 1em;
+    margin-right: 1em;
     text-align: right;
 }
