@@ -31,10 +31,6 @@ function calculate1RM() {
         (document.getElementById('percentage-input-13').value  * 0.01 * result).toFixed(1);
 }
 
-function updateWeight(val) {
-    document.getElementById('weight-text').value = val;
-}
-
-function updateReps(val) {
-    document.getElementById('reps-text').value = val;
+function update(field, val) {
+    document.getElementById(field).value = val;
 }

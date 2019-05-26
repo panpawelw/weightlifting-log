@@ -45,22 +45,25 @@
             <div class="overall-strength-weight">
                 <label for="squat-weight-slider">Back squat - weight</label>
                 <input name="squat-weight-slider" id="squat-weight-slider" type="range" min="1" max="300" value="150"
-                       step="0.5" class="slider overall-strength-weight" onchange=""><br/>
+                       step="0.5" class="slider overall-strength-weight"
+                       oninput="update('squat-weight-number',this.value)"><br/>
             </div>
             <div class="overall-strength-reps">
                 <label for="squat-reps-slider">Reps</label>
-                <input name="squat-reps-slider" id="squat-reps-slider" type="range" min="1" max="12" value="1" step="1"
-                       class="slider overall-strength-reps" onchange=""><br/>
+                <input name="squat-reps-slider" id="squat-reps-slider" type="range" min="1" max="19" value="1" step="1"
+                       class="slider overall-strength-reps" oninput="update('squat-reps-number',this.value)"><br/>
             </div>
             <div class="overall-strength-text-inputs">
                 <table class="overall-strength-table">
                     <tr>
                         <td><label for="squat-weight-number">Weight</label></td>
-                        <td><input type="number" id="squat-weight-number" value="150" step="0.5"></td>
+                        <td><input type="number" name="squat-weight-number" id="squat-weight-number" value="150" min="1"
+                                   max="300" step="0.5" oninput="update('squat-weight-slider',this.value)"></td>
                     </tr>
                     <tr>
                         <td><label for="squat-reps-number">Reps</label></td>
-                        <td><input type="number" id="squat-reps-number" value="1"></td>
+                        <td><input type="number" id="squat-reps-number" value="1" min="1" max="19"
+                                   oninput="update('squat-reps-slider',this.value)"></td>
                     </tr>
                     <tr>
                         <td><label for="squat-max-number">Max</label></td>
@@ -111,7 +114,7 @@
         <div>
             <label for="weight">Weight lifted</label>
             <input name="weight" id="weight" type="range" min="1" max="200" value="100" class="slider"
-                   onchange="updateWeight(this.value)"><br/>
+                   onchange="update('reps-text',this.value)"><br/>
             <label for="weight-text"></label><input type="text" id="weight-text" value="100">
         </div>
         <br/>
@@ -120,7 +123,7 @@
         <div>
             <label for="reps">Number of reps:</label>
             <input name="reps" id="reps" type="range" min="1" max="19" value="10" class="slider"
-                   onchange="updateReps(this.value)"><br/>
+                   onchange="update('weight',this.value)"><br/>
             <label for="reps-text"></label><input type="text" id="reps-text" value="10">
         </div>
         <br/>
@@ -132,26 +135,40 @@
 
                     <!--1 rep max result and "calculate" button-->
                     <td class="centered" colspan="13">
-                        <label for="result">1 Rep Max - 100%</label><input id="result" type="text" value="" readonly>
+                        <label for="result">1 Rep Max - 100%:</label><input id="result" type="text" value="" readonly>
                         <button class="my-button" type="button" onclick="calculate1RM()">Calculate</button>
                     </td>
                 </tr>
-
+                <tr>
+                    <td><label for="percentage-input-1">%</label></td>
+                    <td><label for="percentage-input-2">%</label></td>
+                    <td><label for="percentage-input-3">%</label></td>
+                    <td><label for="percentage-input-4">%</label></td>
+                    <td><label for="percentage-input-5">%</label></td>
+                    <td><label for="percentage-input-6">%</label></td>
+                    <td><label for="percentage-input-7">%</label></td>
+                    <td><label for="percentage-input-8">%</label></td>
+                    <td><label for="percentage-input-9">%</label></td>
+                    <td><label for="percentage-input-10">%</label></td>
+                    <td><label for="percentage-input-11">%</label></td>
+                    <td><label for="percentage-input-12">%</label></td>
+                    <td><label for="percentage-input-13">%</label></td>
+                </tr>
                 <!--Predefined percentages, adjustable-->
                 <tr>
-                    <td>%<input class="percentage-input" id="percentage-input-1" type="number" value="95"/></td>
-                    <td>%<input class="percentage-input" id="percentage-input-2" type="number" value="90"/></td>
-                    <td>%<input class="percentage-input" id="percentage-input-3" type="number" value="85"/></td>
-                    <td>%<input class="percentage-input" id="percentage-input-4" type="number" value="80"/></td>
-                    <td>%<input class="percentage-input" id="percentage-input-5" type="number" value="75"/></td>
-                    <td>%<input class="percentage-input" id="percentage-input-6" type="number" value="70"/></td>
-                    <td>%<input class="percentage-input" id="percentage-input-7" type="number" value="65"/></td>
-                    <td>%<input class="percentage-input" id="percentage-input-8" type="number" value="60"/></td>
-                    <td>%<input class="percentage-input" id="percentage-input-9" type="number" value="50"/></td>
-                    <td>%<input class="percentage-input" id="percentage-input-10" type="number" value="40"/></td>
-                    <td>%<input class="percentage-input" id="percentage-input-11" type="number" value="30"/></td>
-                    <td>%<input class="percentage-input" id="percentage-input-12" type="number" value="20"/></td>
-                    <td>%<input class="percentage-input" id="percentage-input-13" type="number" value="10"/></td>
+                    <td><input class="percentage-input" id="percentage-input-1" type="number" value="95"/></td>
+                    <td><input class="percentage-input" id="percentage-input-2" type="number" value="90"/></td>
+                    <td><input class="percentage-input" id="percentage-input-3" type="number" value="85"/></td>
+                    <td><input class="percentage-input" id="percentage-input-4" type="number" value="80"/></td>
+                    <td><input class="percentage-input" id="percentage-input-5" type="number" value="75"/></td>
+                    <td><input class="percentage-input" id="percentage-input-6" type="number" value="70"/></td>
+                    <td><input class="percentage-input" id="percentage-input-7" type="number" value="65"/></td>
+                    <td><input class="percentage-input" id="percentage-input-8" type="number" value="60"/></td>
+                    <td><input class="percentage-input" id="percentage-input-9" type="number" value="50"/></td>
+                    <td><input class="percentage-input" id="percentage-input-10" type="number" value="40"/></td>
+                    <td><input class="percentage-input" id="percentage-input-11" type="number" value="30"/></td>
+                    <td><input class="percentage-input" id="percentage-input-12" type="number" value="20"/></td>
+                    <td><input class="percentage-input" id="percentage-input-13" type="number" value="10"/></td>
                 </tr>
 
                 <!--Percentages calculation results-->

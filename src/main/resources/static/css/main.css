@@ -234,11 +234,12 @@ button:active, input[type=submit]:active, .my-button:active {
 }
 
 #percentages td {
-    padding: 1em;
+    padding: 0;
+    margin: 0;
 }
 
 .percentage-input {
-    width: 3vw;
+    width: 5vw;
     text-align: right;
 }
 
