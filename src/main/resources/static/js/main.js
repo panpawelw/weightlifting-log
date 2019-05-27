@@ -1,7 +1,7 @@
 function calculate1RM() {
-    var weight = document.getElementById('weight-text').value;
-    var reps = document.getElementById('reps-text').value;
-    var result = weight * (1 + (reps / 30));
+    let weight = document.getElementById('weight-text').value;
+    let reps = document.getElementById('reps-text').value;
+    let result = weight * (1 + (reps / 30));
     document.getElementById('result').value = result;
     document.getElementById('percentage-1').innerText =
         (document.getElementById('percentage-input-1').value  * 0.01 * result).toFixed(1);
@@ -33,4 +33,14 @@ function calculate1RM() {
 
 function update(field, val) {
     document.getElementById(field).value = val;
+}
+
+// function that updates a section in General Strength tab
+// whenever the user moves the slider it updates the corresponding number field and calculates 1 rep max
+// when number field is updated it moves the slider and 1 rep max is calculated
+function updateGS(fieldToUpdate,value,weightField,repsField,maxField) {
+    document.getElementById(fieldToUpdate).value = value;
+    let weight = document.getElementById(weightField).value;
+    let reps = document.getElementById(repsField).value;
+    document.getElementById(maxField).value = Math.round(weight * (1 + (reps / 30)) * 100) / 100;
 }

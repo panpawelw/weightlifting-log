@@ -46,28 +46,32 @@
                 <label for="squat-weight-slider">Back squat - weight</label>
                 <input name="squat-weight-slider" id="squat-weight-slider" type="range" min="1" max="300" value="150"
                        step="0.5" class="slider overall-strength-weight"
-                       oninput="update('squat-weight-number',this.value)"><br/>
+                       oninput="updateGS('squat-weight',this.value,'squat-weight','squat-reps','squat-max')"><br/>
             </div>
             <div class="overall-strength-reps">
                 <label for="squat-reps-slider">Reps</label>
                 <input name="squat-reps-slider" id="squat-reps-slider" type="range" min="1" max="19" value="1" step="1"
-                       class="slider overall-strength-reps" oninput="update('squat-reps-number',this.value)"><br/>
+                       class="slider overall-strength-reps"
+                       oninput="updateGS('squat-reps',this.value,'squat-weight','squat-reps','squat-max')"><br/>
             </div>
             <div class="overall-strength-text-inputs">
                 <table class="overall-strength-table">
                     <tr>
-                        <td><label for="squat-weight-number">Weight</label></td>
-                        <td><input type="number" name="squat-weight-number" id="squat-weight-number" value="150" min="1"
-                                   max="300" step="0.5" oninput="update('squat-weight-slider',this.value)"></td>
+                        <td><label for="squat-weight">Weight</label></td>
+                        <td><input type="number" name="squat-weight" id="squat-weight" value="150" min="1"
+                                   max="300" step="0.5"
+                                   oninput="updateGS('squat-weight-slider',this.value,'squat-weight','squat-reps','squat-max')">
+                        </td>
                     </tr>
                     <tr>
-                        <td><label for="squat-reps-number">Reps</label></td>
-                        <td><input type="number" id="squat-reps-number" value="1" min="1" max="19"
-                                   oninput="update('squat-reps-slider',this.value)"></td>
+                        <td><label for="squat-reps">Reps</label></td>
+                        <td><input type="number" name="squat-reps" id="squat-reps" value="1" min="1" max="19"
+                                   oninput="updateGS('squat-reps-slider',this.value,'squat-weight','squat-reps','squat-max')">
+                        </td>
                     </tr>
                     <tr>
-                        <td><label for="squat-max-number">Max</label></td>
-                        <td><input type="number" id="squat-max-number" value="0" readonly></td>
+                        <td><label for="squat-max">Max</label></td>
+                        <td><input type="text" id="squat-max" value="" readonly></td>
                     </tr>
                 </table>
             </div>
