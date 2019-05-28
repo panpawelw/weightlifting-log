@@ -35,7 +35,7 @@ function update(field, val) {
     document.getElementById(field).value = val;
 }
 
-// function that updates a section in General Strength tab
+// function updates a single lift section in General Strength tab
 // whenever the user moves the slider it updates the corresponding number field and calculates 1 rep max
 // when number field is updated it moves the slider and 1 rep max is calculated
 function updateGS(fieldToUpdate,value,weightField,repsField,maxField) {
