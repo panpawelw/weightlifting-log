@@ -111,11 +111,40 @@
                 </table>
             </div>
         </div>
-        <div>
-            <label for="deadlift">Deadlift - weight:</label>
-            <input name="deadlift" id="deadlift" type="range" min="1" max="400" value="200" class="slider"
-                   onchange=""><br/>
-            <label for="deadlift-text"></label><input type="text" id="deadlift-text" value="200">
+        <div class="overall-strength">
+            <div class="overall-strength-weight">
+                <label for="deadlift-weight-slider">Deadlift - weight</label>
+                <input name="deadlift-weight-slider" id="deadlift-weight-slider" type="range" min="1" max="350" value="175"
+                       step="0.5" class="slider overall-strength-weight"
+                       oninput="updateGS('deadlift-weight',this.value,'deadlift-weight','deadlift-reps','deadlift-max')"><br/>
+            </div>
+            <div class="overall-strength-reps">
+                <label for="deadlift-reps-slider">Reps</label>
+                <input name="deadlift-reps-slider" id="deadlift-reps-slider" type="range" min="1" max="19" value="1" step="1"
+                       class="slider overall-strength-reps"
+                       oninput="updateGS('deadlift-reps',this.value,'deadlift-weight','deadlift-reps','deadlift-max')"><br/>
+            </div>
+            <div class="overall-strength-text-inputs">
+                <table class="overall-strength-table">
+                    <tr>
+                        <td><label for="deadlift-weight">Weight</label></td>
+                        <td><input type="number" name="squat-weight" id="deadlift-weight" value="175" min="1"
+                                   max="350" step="0.5"
+                                   oninput="updateGS('deadlift-weight-slider',this.value,'deadlift-weight','deadlift-reps','deadlift-max')">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="deadlift-reps">Reps</label></td>
+                        <td><input type="number" name="deadlift-reps" id="deadlift-reps" value="1" min="1" max="19"
+                                   oninput="updateGS('deadlift-reps-slider',this.value,'deadlift-weight','deadlift-reps','deadlift-max')">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="deadlift-max">Max</label></td>
+                        <td><input type="text" id="deadlift-max" value="" readonly></td>
+                    </tr>
+                </table>
+            </div>
         </div>
         <br/>
         <div>
