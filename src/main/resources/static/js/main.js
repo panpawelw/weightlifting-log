@@ -1,3 +1,21 @@
+
+/* function updates a single lift section in General Strength tab
+   whenever the user moves the slider it updates the corresponding number field and calculates 1 rep max
+   when number field is updated it moves the slider and 1 rep max is calculated
+   parameters are:
+    fieldToUpdate - id of the corresponding field to update
+    value - value that fieldToUpdate will be updated with
+    weightField - id of the field holding weight for the current lift
+    repsField - id of the field holding repetitions for the current lift
+    maxField - id of the field holding the 1 rep max for the current lift that will be calculated */
+function updateGS(fieldToUpdate,value,weightField,repsField,maxField) {
+    document.getElementById(fieldToUpdate).value = value;
+    let weight = document.getElementById(weightField).value;
+    let reps = document.getElementById(repsField).value;
+    document.getElementById(maxField).value = Math.round(weight * (1 + (reps / 30)) * 100) / 100;
+}
+
+/* function calculates the 1 rep max and percentages in 1 Rep Max tab */
 function calculate1RM() {
     let weight = document.getElementById('weight-text').value;
     let reps = document.getElementById('reps-text').value;
@@ -31,16 +49,7 @@ function calculate1RM() {
         (document.getElementById('percentage-input-13').value  * 0.01 * result).toFixed(1);
 }
 
+/* This function updates an element of certain id with given value */
 function update(field, val) {
     document.getElementById(field).value = val;
-}
-
-// function updates a single lift section in General Strength tab
-// whenever the user moves the slider it updates the corresponding number field and calculates 1 rep max
-// when number field is updated it moves the slider and 1 rep max is calculated
-function updateGS(fieldToUpdate,value,weightField,repsField,maxField) {
-    document.getElementById(fieldToUpdate).value = value;
-    let weight = document.getElementById(weightField).value;
-    let reps = document.getElementById(repsField).value;
-    document.getElementById(maxField).value = Math.round(weight * (1 + (reps / 30)) * 100) / 100;
 }

@@ -114,13 +114,15 @@
         <div class="overall-strength">
             <div class="overall-strength-weight">
                 <label for="deadlift-weight-slider">Deadlift - weight</label>
-                <input name="deadlift-weight-slider" id="deadlift-weight-slider" type="range" min="1" max="350" value="175"
+                <input name="deadlift-weight-slider" id="deadlift-weight-slider" type="range" min="1" max="350"
+                       value="175"
                        step="0.5" class="slider overall-strength-weight"
                        oninput="updateGS('deadlift-weight',this.value,'deadlift-weight','deadlift-reps','deadlift-max')"><br/>
             </div>
             <div class="overall-strength-reps">
                 <label for="deadlift-reps-slider">Reps</label>
-                <input name="deadlift-reps-slider" id="deadlift-reps-slider" type="range" min="1" max="19" value="1" step="1"
+                <input name="deadlift-reps-slider" id="deadlift-reps-slider" type="range" min="1" max="19" value="1"
+                       step="1"
                        class="slider overall-strength-reps"
                        oninput="updateGS('deadlift-reps',this.value,'deadlift-weight','deadlift-reps','deadlift-max')"><br/>
             </div>
@@ -149,13 +151,15 @@
         <div class="overall-strength">
             <div class="overall-strength-weight">
                 <label for="military-weight-slider">Military press - weight</label>
-                <input name="military-weight-slider" id="military-weight-slider" type="range" min="1" max="150" value="75"
+                <input name="military-weight-slider" id="military-weight-slider" type="range" min="1" max="150"
+                       value="75"
                        step="0.5" class="slider overall-strength-weight"
                        oninput="updateGS('military-weight',this.value,'military-weight','military-reps','military-max')"><br/>
             </div>
             <div class="overall-strength-reps">
                 <label for="military-reps-slider">Reps</label>
-                <input name="military-reps-slider" id="military-reps-slider" type="range" min="1" max="19" value="1" step="1"
+                <input name="military-reps-slider" id="military-reps-slider" type="range" min="1" max="19" value="1"
+                       step="1"
                        class="slider overall-strength-reps"
                        oninput="updateGS('military-reps',this.value,'military-weight','military-reps','military-max')"><br/>
             </div>
@@ -225,7 +229,8 @@
             </div>
             <div class="overall-strength-reps">
                 <label for="pullup-reps-slider">Reps</label>
-                <input name="pullup-reps-slider" id="pullup-reps-slider" type="range" min="1" max="19" value="1" step="1"
+                <input name="pullup-reps-slider" id="pullup-reps-slider" type="range" min="1" max="19" value="1"
+                       step="1"
                        class="slider overall-strength-reps"
                        oninput="updateGS('pullup-reps',this.value,'pullup-weight','pullup-reps','pullup-max')"><br/>
             </div>
@@ -262,18 +267,20 @@
         <!--Weight slider-->
         <div>
             <label for="weight">Weight lifted</label>
-            <input name="weight" id="weight" type="range" min="1" max="200" value="100" class="slider"
-                   onchange="update('reps-text',this.value)"><br/>
-            <label for="weight-text"></label><input type="text" id="weight-text" value="100">
+            <input name="weight" id="weight" type="range" min="1" max="200" value="100" class="slider" step="0.5"
+                   oninput="update('weight-text',this.value)"><br/>
+            <label for="weight-text"></label><input type="text" id="weight-text" value="100"
+                                                    oninput="update('weight',this.value)">
         </div>
         <br/>
 
         <!--Number of reps performed slider-->
         <div>
             <label for="reps">Number of reps:</label>
-            <input name="reps" id="reps" type="range" min="1" max="19" value="10" class="slider"
-                   onchange="update('weight',this.value)"><br/>
-            <label for="reps-text"></label><input type="text" id="reps-text" value="10">
+            <input name="reps" id="reps" type="range" min="1" max="19" value="10" class="slider" step="1"
+                   oninput="update('reps-text',this.value)"><br/>
+            <label for="reps-text"></label><input type="text" id="reps-text" value="10"
+                                                  oninput="update('reps',this.value)">
         </div>
         <br/>
         <div>
