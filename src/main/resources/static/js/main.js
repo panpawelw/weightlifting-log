@@ -52,3 +52,23 @@ function calculate1RM() {
 function update(field, val) {
     document.getElementById(field).value = val;
 }
+
+
+/* This function updates descriptions for percentages of 1 Rep Max */
+function updatePercentageDescription(description,percentage) {
+    let x=0;
+    let descriptions = [
+        "0% - 20%",
+        "21% - 40%",
+        "41% - 60%",
+        "61% - 80%",
+        "81% - 90%",
+        "91% - 100%" ];
+    if(percentage<21) {x=0;}
+    else if(percentage<41) {x=1;}
+    else if (percentage<61) {x=2;}
+    else if (percentage<81) {x=3;}
+    else if (percentage<91) {x=4;}
+    else {x=5;}
+    document.getElementById(description).innerHTML = descriptions[x];
+}
