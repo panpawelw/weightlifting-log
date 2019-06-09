@@ -223,12 +223,17 @@ button:active, input[type=submit]:active, .my-button:active {
     padding: 3px;
 }
 
+/* 1 Rep Max tab */
+.one-rep-max-inputs {
+    width: 95vw;
+    margin: auto;
+}
+
 .same-row {
     display: inline-block;
 }
 
 #percentages {
-    border: 1px solid darkgrey;
     margin-left: auto;
     margin-right: auto;
 }
@@ -239,7 +244,7 @@ button:active, input[type=submit]:active, .my-button:active {
 }
 
 .percentage-input {
-    width: 5vw;
+    /*width: 5vw;*/
     text-align: right;
 }
 

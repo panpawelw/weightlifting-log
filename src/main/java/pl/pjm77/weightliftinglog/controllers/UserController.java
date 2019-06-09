@@ -35,7 +35,7 @@ public class UserController {
             }
         }
 
-        // pass user user name to view
+        // pass the user name to view
 
         model.addAttribute("userGreeting", "Hello " + userName + "!");
         model.addAttribute("page", "fragments.html :: user-panel");
