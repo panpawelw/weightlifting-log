@@ -1,20 +1,27 @@
 $(document).ready(function () {
+
+    /* boolean representing if page is already scrolled all the way up */
     let topOfThePage = true;
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 0) {
-            topOfThePage = false;
-        } else {
-            topOfThePage = true;
+
+    /* event listener to update the topOfThePage boolean */
+    window.addEventListener('scroll', function() {
+        topOfThePage = $(this).scrollTop() <= 0;
+        if (topOfThePage === true) {
+            console.log(topOfThePage);
         }
     });
-    $('html').bind('mousewheel DOMMouseScroll', function (e) {
-        let delta = (e.originalEvent.wheelDelta || -e.originalEvent.detail);
 
-        if (delta < 0) {
-            console.log('Hide logo!');
+    /* function to hide/show logo to maximize screen estate when scrolling */
+    $('html').bind('keydown wheel mousewheel DOMMouseScroll', function (e) {
+        let delta = (e.originalEvent.wheelDelta || -e.originalEvent.detail);
+        let key = e.originalEvent.keyCode;
+
+        if (delta < 0 || key===40) {
+            /* if page scrolled all the way up and scrolling down - hide logo */
             document.getElementById('logo-container').style.display="none";
-        } else if (delta > 0 && topOfThePage === true) {
-            console.log('Show logo!');
+
+        }else if ((delta > 0 && topOfThePage === true) || (key === 38 && topOfThePage ===true)) {
+            /*if page scrolled all the way up and scrolling up - show logo */
             document.getElementById('logo-container').style.display="block";
         }
     });
