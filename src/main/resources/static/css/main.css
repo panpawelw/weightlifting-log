@@ -19,6 +19,11 @@ input:focus, button:focus {
     color: red;
 }
 
+/* Header section */
+.logo-container {
+    /*display: none;*/
+}
+
 /* sliders */
 input[type=range] {
     height: 34px;
