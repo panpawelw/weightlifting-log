@@ -4,7 +4,7 @@ $(document).ready(function () {
     let topOfThePage = true;
 
     /* event listener to update the topOfThePage boolean */
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         topOfThePage = $(this).scrollTop() <= 0;
         if (topOfThePage === true) {
             console.log(topOfThePage);
@@ -16,13 +16,13 @@ $(document).ready(function () {
         let delta = (e.originalEvent.wheelDelta || -e.originalEvent.detail);
         let key = e.originalEvent.keyCode;
 
-        if (delta < 0 || key===40) {
+        if (delta < 0 || key === 40) {
             /* if page scrolled all the way up and scrolling down - hide logo */
-            document.getElementById('logo-container').style.display="none";
+            document.getElementById('logo-container').style.display = "none";
 
-        }else if ((delta > 0 && topOfThePage === true) || (key === 38 && topOfThePage ===true)) {
+        } else if ((delta > 0 && topOfThePage === true) || (key === 38 && topOfThePage === true)) {
             /*if page scrolled all the way up and scrolling up - show logo */
-            document.getElementById('logo-container').style.display="block";
+            document.getElementById('logo-container').style.display = "block";
         }
     });
 });
@@ -87,12 +87,12 @@ function update(field, val) {
 function updatePercentageDescription(description, percentage) {
     let x = 0;
     let descriptions = [
-        "0% - 20%",
-        "21% - 40%",
-        "41% - 60%",
-        "61% - 80%",
-        "81% - 90%",
-        "91% - 100%"];
+        "Upper body ballistic work, lower body plyometrics. Improves muscle hardness and contraction speed.",
+        "Lower body ballistic work. Improves muscle hardness develops power and contraction speed.",
+        "Explosiveness, speed and power. Great for muscle hardness. 60% can be used for hypertrophy when done to failure.",
+        "Best range for muscle mass building, also good for explosiveness (~70%) and strength (~80%) in Olympic lifting.",
+        "Best for building muscle strength, use ~80% for easy recovery, ~90% for quick strength peaking.",
+        "Increases maximal strength via neural factors. Good for displaying strength. Difficult to recover from."];
     if (percentage < 21) {
         x = 0;
     } else if (percentage < 41) {
