@@ -3,6 +3,8 @@ $(document).ready(function () {
     /* boolean representing if page is already scrolled all the way up */
     let topOfThePage = true;
 
+    let preventScrolling = false;
+
     /* event listener to update the topOfThePage boolean */
     window.addEventListener('scroll', function () {
         topOfThePage = $(this).scrollTop() <= 0;
@@ -16,11 +18,21 @@ $(document).ready(function () {
         let delta = (e.originalEvent.wheelDelta || -e.originalEvent.detail);
         let key = e.originalEvent.keyCode;
 
-        if (delta < 0 || key === 40) {
+        if ((delta < 0 && topOfThePage === true) || (key === 40 && topOfThePage === true)) {
+
             /* if page scrolled all the way up and scrolling down - hide logo */
             document.getElementById('logo-container').style.display = "none";
+            if (preventScrolling === true) {
+                e.preventDefault();
+                preventScrolling = false;
+                console.log('not scrolling down...');
+            } else {
+                preventScrolling = true;
+            }
+        }
 
-        } else if ((delta > 0 && topOfThePage === true) || (key === 38 && topOfThePage === true)) {
+        if ((delta > 0 && topOfThePage === true) || (key === 38 && topOfThePage === true)) {
+
             /*if page scrolled all the way up and scrolling up - show logo */
             document.getElementById('logo-container').style.display = "block";
         }
@@ -88,7 +100,7 @@ function updatePercentageDescription(description, percentage) {
     let x = 0;
     let descriptions = [
         "Upper body ballistic work, lower body plyometrics. Improves muscle hardness and contraction speed.",
-        "Lower body ballistic work. Improves muscle hardness develops power and contraction speed.",
+        "Lower body ballistic work. Improves muscle hardness, develops power and contraction speed.",
         "Explosiveness, speed and power. Great for muscle hardness. 60% can be used for hypertrophy when done to failure.",
         "Best range for muscle mass building, also good for explosiveness (~70%) and strength (~80%) in Olympic lifting.",
         "Best for building muscle strength, use ~80% for easy recovery, ~90% for quick strength peaking.",
