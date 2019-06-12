@@ -169,6 +169,13 @@ button:active, input[type=submit]:active, .my-button:active {
     box-shadow: 1px 1px 1px #472900;
     animation-duration: 0.2s;
 }
+/* sticky navigation bar */
+
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
 
 /* navigation tabs */
 #big-tabs li a {

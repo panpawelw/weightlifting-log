@@ -3,6 +3,7 @@ $(document).ready(function () {
     /* boolean representing if page is already scrolled all the way up */
     let topOfThePage = true;
 
+    /* boolean to detect abrupt scrolling when hiding logo and making the navbar stick to the top of the screen */
     let preventScrolling = false;
 
     /* event listener to update the topOfThePage boolean */
@@ -13,19 +14,24 @@ $(document).ready(function () {
         }
     });
 
-    /* function to hide/show logo to maximize screen estate when scrolling */
+    /* function to hide/show logo to maximize screen estate when scrolling and make the navbar sticky */
     $('html').bind('keydown wheel mousewheel DOMMouseScroll', function (e) {
         let delta = (e.originalEvent.wheelDelta || -e.originalEvent.detail);
         let key = e.originalEvent.keyCode;
 
-        if ((delta < 0 && topOfThePage === true) || (key === 40 && topOfThePage === true)) {
+        if ((delta < 0 && topOfThePage === true) || (key === 40 && topOfThePage === true
+        )) {
 
             /* if page scrolled all the way up and scrolling down - hide logo */
             document.getElementById('logo-container').style.display = "none";
+
+            /* and make the navbar stick to the top of the page */
+            document.getElementById('big-tabs').classList.add('sticky');
+
+            /* prevent abrupt scrolling */
             if (preventScrolling === true) {
                 e.preventDefault();
                 preventScrolling = false;
-                console.log('not scrolling down...');
             } else {
                 preventScrolling = true;
             }
@@ -33,7 +39,10 @@ $(document).ready(function () {
 
         if ((delta > 0 && topOfThePage === true) || (key === 38 && topOfThePage === true)) {
 
-            /*if page scrolled all the way up and scrolling up - show logo */
+            /* if page scrolled all the way up and scrolling up - unstick the navbar */
+            document.getElementById('big-tabs').classList.remove('sticky');
+
+            /* and show the logo container */
             document.getElementById('logo-container').style.display = "block";
         }
     });
