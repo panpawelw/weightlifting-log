@@ -9,44 +9,61 @@ $(document).ready(function () {
     /* event listener to update the topOfThePage boolean */
     window.addEventListener('scroll', function () {
         topOfThePage = $(this).scrollTop() <= 0;
-        if (topOfThePage === true) {
-            console.log(topOfThePage);
-        }
     });
 
     /* function to hide/show logo to maximize screen estate when scrolling and make the navbar sticky */
-    $('html').bind('keydown wheel mousewheel DOMMouseScroll', function (e) {
-        let delta = (e.originalEvent.wheelDelta || -e.originalEvent.detail);
-        let key = e.originalEvent.keyCode;
+    $('html').bind('keydown wheel mousewheel DOMMouseScroll touchstart', function (e) {
+        if (topOfThePage === true) {
+            let mouseDelta = (e.originalEvent.wheelDelta || -e.originalEvent.detail);
+            // let touchdelta = e.originalEvent.touches[0].clientY;
+            let key = e.originalEvent.keyCode;
 
-        if ((delta < 0 && topOfThePage === true) || (key === 40 && topOfThePage === true
-        )) {
+            let swipe = e.originalEvent.touches,
+                start = swipe[0].clientY;
 
-            /* if page scrolled all the way up and scrolling down - hide logo */
-            document.getElementById('logo-container').style.display = "none";
+            $(this).on('touchmove', function(e) {
 
-            /* and make the navbar stick to the top of the page */
-            document.getElementById('big-tabs').classList.add('sticky');
+                let contact = e.originalEvent.touches,
+                    end = contact[0].pageY,
+                    distance = end-start;
 
-            /* prevent abrupt scrolling */
-            if (preventScrolling === true) {
-                e.preventDefault();
-                preventScrolling = false;
-            } else {
-                preventScrolling = true;
+                if (distance < -30) {key = 38;}// up
+                    if (distance > 30) {key = 40;}// down
+            }).one('touchend', function() {
+                $(this).off('touchmove touchend');
+            });
+
+            if (mouseDelta < 0 || key === 40) {
+
+                /* if page scrolled all the way up and scrolling down - hide logo */
+                document.getElementById('logo-container').style.display = "none";
+
+                /* and make the navbar stick to the top of the page */
+                document.getElementById('big-tabs').classList.add('sticky');
+
+                /* prevent abrupt scrolling */
+                if (preventScrolling === true) {
+                    e.preventDefault();
+                    preventScrolling = false;
+                    console.log("Prevented...")
+                } else {
+                    preventScrolling = true;
+                }
             }
-        }
 
-        if ((delta > 0 && topOfThePage === true) || (key === 38 && topOfThePage === true)) {
+            if (mouseDelta > 0 || key === 38) {
 
-            /* if page scrolled all the way up and scrolling up - unstick the navbar */
-            document.getElementById('big-tabs').classList.remove('sticky');
+                /* if page scrolled all the way up and scrolling up - unstick the navbar */
+                document.getElementById('big-tabs').classList.remove('sticky');
 
-            /* and show the logo container */
-            document.getElementById('logo-container').style.display = "block";
+                /* and show the logo container */
+                document.getElementById('logo-container').style.display = "block";
+            }
         }
     });
 });
+
+
 
 /* function updates a single lift section in General Strength tab
    whenever the user moves the slider it updates the corresponding number field and calculates 1 rep max
