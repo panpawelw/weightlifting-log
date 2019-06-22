@@ -15,23 +15,9 @@ $(document).ready(function () {
     $('html').bind('keydown wheel mousewheel DOMMouseScroll touchstart', function (e) {
         if (topOfThePage === true) {
             let mouseDelta = (e.originalEvent.wheelDelta || -e.originalEvent.detail);
-            // let touchdelta = e.originalEvent.touches[0].clientY;
             let key = e.originalEvent.keyCode;
 
-            let swipe = e.originalEvent.touches,
-                start = swipe[0].clientY;
-
-            $(this).on('touchmove', function(e) {
-
-                let contact = e.originalEvent.touches,
-                    end = contact[0].pageY,
-                    distance = end-start;
-
-                if (distance < -30) {key = 38;}// up
-                    if (distance > 30) {key = 40;}// down
-            }).one('touchend', function() {
-                $(this).off('touchmove touchend');
-            });
+            console.log("Wheel or key scrollin...");
 
             if (mouseDelta < 0 || key === 40) {
 
@@ -61,9 +47,30 @@ $(document).ready(function () {
             }
         }
     });
+
+    $('html').bind('keydown wheel mousewheel DOMMouseScroll touchstart', function (e) {
+        if (topOfThePage === true) {
+            let swipe = e.originalEvent.touches,
+                start = swipe[0].clientY;
+
+            $(this).on('touchmove', function (e) {
+
+                let contact = e.originalEvent.touches,
+                    end = contact[0].pageY,
+                    distance = end - start;
+
+                if (distance < -30) {
+                    console.log("Touch scroll up");
+                }// up
+                if (distance > 30) {
+                    console.log("Touch scroll down");
+                }// down
+            }).one('touchend', function () {
+                $(this).off('touchmove touchend');
+            });
+        }
+    });
 });
-
-
 
 /* function updates a single lift section in General Strength tab
    whenever the user moves the slider it updates the corresponding number field and calculates 1 rep max
