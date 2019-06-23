@@ -1,15 +1,21 @@
 $(document).ready(function () {
 
+    /* This event listener is responsible for hiding the logo container and making the tab navigation bar stick to the
+       top of the screen when user is scrolling down the page and showing the logo container and unsticking the
+       navigation bar when the page is scrolled back to the very top. */
+
+    let logo = document.getElementById('logo-container');
+    let navbar = document.getElementById('big-tabs');
+
     window.addEventListener('scroll', function () {
         if ($(this).scrollTop() === 0) {
-            if (document.getElementById('logo-container').style.display !== 'block') {
-                document.getElementById('big-tabs').classList.remove('sticky');
-                document.getElementById('logo-container').style.display = 'block';
+            if (logo.style.display === 'none') {
+                navbar.classList.remove('sticky');
+                $(logo).show('fast');
             }
-        } else if (document.getElementById('logo-container').style.display === 'block') {
-            document.getElementById('logo-container').style.display = 'none';
-            document.getElementById('big-tabs').classList.add('sticky');
-            console.log('worky');
+        } else if (logo.style.display !== 'none') {
+            $(logo).slideUp('fast');
+            navbar.classList.add('sticky');
         }
     });
 });
