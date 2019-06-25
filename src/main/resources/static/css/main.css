@@ -285,6 +285,16 @@ button:active, input[type=submit]:active, .my-button:active {
     text-align: right;
 }
 
+/* General text styling */
+.bigger-label {
+    font-weight: bold;
+    font-size: large;
+}
+
+.tab-title {
+    font-weight: bold;
+}
+
 /* Other */
 .controls {
     margin-top: 1em;

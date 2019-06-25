@@ -39,11 +39,11 @@
     <!--Tab#1 content - overall strength calculator-->
     <div id="tab1" class="tab-pane centered fade" th:classappend="${showCalc != null}? 'in active'">
         <br/>
-        <h3>Overall Strength</h3>
+        <h3 class="tab-title">Overall Strength</h3>
         <br/>
         <div class="overall-strength">
             <div class="overall-strength-weight">
-                <label for="squat-weight-slider">Back squat - weight</label>
+                <label class="bigger-label" for="squat-weight-slider">Back squat - weight</label>
                 <input name="squat-weight-slider" id="squat-weight-slider" type="range" min="1" max="300" value="150"
                        step="0.5" class="slider overall-strength-weight"
                        oninput="updateGS('squat-weight',this.value,'squat-weight','squat-reps','squat-max')"><br/>
@@ -78,7 +78,7 @@
         </div>
         <div class="overall-strength">
             <div class="overall-strength-weight">
-                <label for="bench-weight-slider">Bench press - weight</label>
+                <label class="bigger-label" for="bench-weight-slider">Bench press - weight</label>
                 <input name="bench-weight-slider" id="bench-weight-slider" type="range" min="1" max="250" value="125"
                        step="0.5" class="slider overall-strength-weight"
                        oninput="updateGS('bench-weight',this.value,'bench-weight','bench-reps','bench-max')"><br/>
@@ -113,7 +113,7 @@
         </div>
         <div class="overall-strength">
             <div class="overall-strength-weight">
-                <label for="deadlift-weight-slider">Deadlift - weight</label>
+                <label class="bigger-label" for="deadlift-weight-slider">Deadlift - weight</label>
                 <input name="deadlift-weight-slider" id="deadlift-weight-slider" type="range" min="1" max="350"
                        value="175"
                        step="0.5" class="slider overall-strength-weight"
@@ -150,7 +150,7 @@
         </div>
         <div class="overall-strength">
             <div class="overall-strength-weight">
-                <label for="military-weight-slider">Military press - weight</label>
+                <label class="bigger-label" for="military-weight-slider">Military press - weight</label>
                 <input name="military-weight-slider" id="military-weight-slider" type="range" min="1" max="150"
                        value="75"
                        step="0.5" class="slider overall-strength-weight"
@@ -187,7 +187,7 @@
         </div>
         <div class="overall-strength">
             <div class="overall-strength-weight">
-                <label for="row-weight-slider">Barbell row - weight</label>
+                <label class="bigger-label" for="row-weight-slider">Barbell row - weight</label>
                 <input name="row-weight-slider" id="row-weight-slider" type="range" min="1" max="200" value="100"
                        step="0.5" class="slider overall-strength-weight"
                        oninput="updateGS('row-weight',this.value,'row-weight','row-reps','row-max')"><br/>
@@ -222,7 +222,7 @@
         </div>
         <div class="overall-strength">
             <div class="overall-strength-weight">
-                <label for="pullup-weight-slider">Weighted pull-up - weight</label>
+                <label class="bigger-label" for="pullup-weight-slider">Weighted pull-up - weight</label>
                 <input name="pullup-weight-slider" id="pullup-weight-slider" type="range" min="1" max="150" value="75"
                        step="0.5" class="slider overall-strength-weight"
                        oninput="updateGS('pullup-weight',this.value,'pullup-weight','pullup-reps','pullup-max')"><br/>
@@ -261,7 +261,7 @@
     <!--Tab#2 content - percentages calculator-->
     <div id="tab2" class="tab-pane centered fade">
         <br/>
-        <h3>1 Rep Max and Percentages Calculator</h3>
+        <h3 class="tab-title">1 Rep Max and Percentages Calculator</h3>
         <br>
 
         <!--Weight slider-->
@@ -392,7 +392,7 @@
     <!--Tab#3 content-->
     <div id="tab3" class="tab-pane centered fade">
         <br/>
-        <h3>Calculator #2</h3>
+        <h3 class="tab-title">Calculator #2</h3>
         <br/>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed imperdiet ante elit, ac congue eros viverra
             id. Phasellus quis sagittis urna. Sed in justo est. Maecenas nulla nibh, vehicula ac quam ac, mattis
