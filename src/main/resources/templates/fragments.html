@@ -72,10 +72,10 @@
     <div class="controls">
         <!--/*@thymesVar id="userGreeting" type="java"*/-->
         <p class="same-row" th:text="${userGreeting}"></p>
-        <button class="same-row" onclick="location.href='/wl/logout'" type="button">Log out</button>
-        <button class="same-row" onclick="location.href='/wl/edituserdetails'" type="button">My profile</button>
+        <button class="same-row my-button" onclick="location.href='/wl/logout'" type="button">Log out</button>
+        <button class="same-row my-button" onclick="location.href='/wl/edituserdetails'" type="button">My profile</button>
         <!--/*@thymesVar id="adminRights" type="java"*/-->
-        <button th:if="${adminRights}" class="same-row" onclick="location.href='/wl/admin'">Admin panel</button>
+        <button th:if="${adminRights}" class="same-row my-button" onclick="location.href='/wl/admin'">Admin panel</button>
     </div>
     <h2>Your workouts:</h2>
 </div>
@@ -86,9 +86,9 @@
     <div class="controls">
         <!--/*@thymesVar id="adminGreeting" type="java"*/-->
         <p class="same-row" th:text="${adminGreeting}"></p>
-        <button class="same-row" onclick="location.href='/wl/logout'" type="button">Log out</button>
-        <button class="same-row" onclick="location.href='/wl/edituserdetails'" type="button">My profile</button>
-        <button class="same-row" onclick="location.href='/wl/login'" type="button">Back</button>
+        <button class="same-row my-button" onclick="location.href='/wl/logout'" type="button">Log out</button>
+        <button class="same-row my-button" onclick="location.href='/wl/edituserdetails'" type="button">My profile</button>
+        <button class="same-row my-button" onclick="location.href='/wl/login'" type="button">Back</button>
     </div>
     <h2>Welcome, Admin!</h2>
 </div>

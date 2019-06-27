@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.pjm77.weightliftinglog.models.User;
-import pl.pjm77.weightliftinglog.repositories.UserRepository;
 import pl.pjm77.weightliftinglog.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
