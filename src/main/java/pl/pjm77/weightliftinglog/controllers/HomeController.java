@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.repositories.UserRepository;
+import pl.pjm77.weightliftinglog.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,11 +22,11 @@ import javax.validation.Valid;
 @Controller
 public class HomeController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public HomeController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public HomeController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/")
@@ -88,7 +89,7 @@ public class HomeController {
     @GetMapping("/edituserdetails")
     public String editUserDetails(Model model) {
         String userName = getLoggedInUserName();
-        User user = userRepository.findUserByName(userName);
+        User user = userService.findUserByName(userName);
         model.addAttribute("user", user);
         model.addAttribute("topMessage", "Please edit your details...");
         model.addAttribute("buttonText", "Save details");
@@ -111,7 +112,7 @@ public class HomeController {
             return "home";
         } else {
             model.addAttribute("page", "fragments.html :: edit-user-success");
-            System.out.println(user.toString());
+            userService.saveUser(user);
             return "home";
         }
     }
