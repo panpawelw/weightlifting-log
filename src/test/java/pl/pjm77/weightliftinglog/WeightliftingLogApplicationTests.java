@@ -12,5 +12,4 @@ public class WeightliftingLogApplicationTests {
 	@Test
 	public void contextLoads() {
 	}
-
 }
