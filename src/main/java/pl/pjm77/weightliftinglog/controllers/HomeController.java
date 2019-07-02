@@ -66,11 +66,10 @@ public class HomeController {
         }
         authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
-            model.addAttribute("logoutMessage", "You have logged out successfully!");
+            model.addAttribute("page", "fragments.html :: logout-success");
         } else {
             model.addAttribute("logoutMessage", "Logout error!");
         }
-        model.addAttribute("page", "fragments.html :: login");
         return "home";
     }
 

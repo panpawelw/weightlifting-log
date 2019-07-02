@@ -25,7 +25,7 @@ public class SmokeTests {
     private AdminController adminController;
 
     @Test
-    public void contextLoads() throws Exception {
+    public void contextLoads() {
         assertThat(homeController).isNotNull();
         assertThat(userController).isNotNull();
         assertThat(adminController).isNotNull();

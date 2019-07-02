@@ -28,6 +28,18 @@
     <button class="my-button" onclick="location.href = '/wl/register'" type="button">Register</button>
 </div>
 
+<!--Display on successful logout-->
+
+<div th:fragment="logout-success">
+    <br/>
+    <h3 class="tab-title">Logout page</h3>
+    <br/>
+    <p class="alert">Logout successful!</p>
+    <form th:action="@{/login}" method="get">
+        <input type="submit" value="OK"/>
+    </form>
+</div>
+
 <!--User details edition-->
 <!--This form is used for new user registration and existing user details edition-->
 
