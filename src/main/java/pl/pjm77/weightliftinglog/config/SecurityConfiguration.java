@@ -34,8 +34,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
         http.authorizeRequests()
                 .antMatchers("/**").permitAll()
                 .antMatchers("/register/**").permitAll()
@@ -43,8 +41,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN").anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").loginProcessingUrl("/login").successForwardUrl("/user").failureForwardUrl("/loginfailure")
+                .usernameParameter("username").passwordParameter("password")
                 .and()
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/logoutsuccess");
+                .logout().logoutUrl("/logout");
+        http.sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
     }
 
     private PasswordEncoder getPasswordEncoder() {
@@ -56,7 +57,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
             @Override
             public boolean matches(CharSequence charSequence, String s) {
-                return true;
+                return charSequence.toString().equals(s);
             }
         };
     }

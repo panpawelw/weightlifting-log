@@ -106,13 +106,11 @@ public class HomeController {
                 model.addAttribute("buttonText", "Save details");
             }
             model.addAttribute("page", "fragments.html :: edit-user-details");
-            System.out.println(user.toString());
-            return "home";
         } else {
             model.addAttribute("page", "fragments.html :: edit-user-success");
             userService.saveUser(user);
-            return "home";
         }
+        return "home";
     }
 
     /**

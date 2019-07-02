@@ -14,8 +14,6 @@
     <br/>
     <!--/*@thymesVar id="loginError" type="java"*/-->
     <p th:if="${loginError}" class="alert">Wrong username or password</p>
-    <!--/*@thymesVar id="logoutMessage" type="java"*/-->
-    <p th:if="${logoutMessage}" th:text="${logoutMessage}" class="alert"></p>
     <form th:action="@{/login}" method="post">
         <label for="username">Username</label>:
         <input type="text" id="username" name="username" autofocus="autofocus"/> <br/>
