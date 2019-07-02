@@ -40,6 +40,18 @@
     </form>
 </div>
 
+<!--Display on unsuccessful logout-->
+
+<div th:fragment="logout-failure">
+    <br/>
+    <h3 class="tab-title">Logout page</h3>
+    <br/>
+    <p class="alert">Logout error, please try again!</p>
+    <form th:action="@{/user}" method="get">
+        <input type="submit" value="OK"/>
+    </form>
+</div>
+
 <!--User details edition-->
 <!--This form is used for new user registration and existing user details edition-->
 

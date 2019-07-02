@@ -68,7 +68,7 @@ public class HomeController {
         if (authentication == null) {
             model.addAttribute("page", "fragments.html :: logout-success");
         } else {
-            model.addAttribute("logoutMessage", "Logout error!");
+            model.addAttribute("page", "fragments.html :: logout-failure");
         }
         return "home";
     }
