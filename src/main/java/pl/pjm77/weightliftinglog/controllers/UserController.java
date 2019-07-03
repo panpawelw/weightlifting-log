@@ -1,5 +1,6 @@
 package pl.pjm77.weightliftinglog.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -7,12 +8,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.pjm77.weightliftinglog.services.UserService;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Controller
 public class UserController {
+
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @RequestMapping("/user")
@@ -39,6 +48,7 @@ public class UserController {
 
         model.addAttribute("userGreeting", "Hello " + userName + "!");
         model.addAttribute("page", "fragments.html :: user-panel");
+        System.out.println(userService.findUserByName(userName).getPassword());
         return "home";
     }
 }
