@@ -88,6 +88,7 @@ public class HomeController {
     public String editUserDetails(Model model) {
         String userName = getLoggedInUserName();
         User user = userService.findUserByName(userName);
+        user.setPassword("");
         model.addAttribute("user", user);
         model.addAttribute("topMessage", "Please edit your details...");
         model.addAttribute("buttonText", "Save details");

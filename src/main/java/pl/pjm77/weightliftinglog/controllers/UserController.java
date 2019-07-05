@@ -48,7 +48,6 @@ public class UserController {
 
         model.addAttribute("userGreeting", "Hello " + userName + "!");
         model.addAttribute("page", "fragments.html :: user-panel");
-        System.out.println(userService.findUserByName(userName).getPassword());
         return "home";
     }
 }
