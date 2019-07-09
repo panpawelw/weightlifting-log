@@ -3,6 +3,8 @@ package pl.pjm77.weightliftinglog.models;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -38,6 +40,9 @@ public class User {
     @NotBlank
     private String role;
 
+    @OneToMany(mappedBy = "user")
+    private List<Workout> workouts = new ArrayList<>();
+
     public User() {
     }
 
@@ -46,12 +51,13 @@ public class User {
         this.name = user.getName();
         this.password = user.getPassword();
         this.email = user.getEmail();
-        this.realEmail = user.getRealEmail();
+        this.realEmail = user.isRealEmail();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.age = user.getAge();
         this.gender = user.getGender();
         this.role = user.getRole();
+        this.workouts = user.getWorkouts();
     }
 
     public Long getId() {
@@ -98,7 +104,7 @@ public class User {
         return firstName;
     }
 
-    public boolean getRealEmail() {
+    public boolean isRealEmail() {
         return realEmail;
     }
 
@@ -142,6 +148,14 @@ public class User {
         this.role = role;
     }
 
+    public List<Workout> getWorkouts() {
+        return workouts;
+    }
+
+    public void setWorkouts(List<Workout> workouts) {
+        this.workouts = workouts;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -156,6 +170,7 @@ public class User {
                 ", age=" + age +
                 ", gender=" + gender +
                 ", role='" + role + '\'' +
+                ", workouts=" + workouts +
                 '}';
     }
 }
