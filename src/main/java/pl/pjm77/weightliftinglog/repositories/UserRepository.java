@@ -7,7 +7,6 @@ import pl.pjm77.weightliftinglog.models.User;
 import javax.transaction.Transactional;
 
 @Transactional
-@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
     User findUserByName(String name);
