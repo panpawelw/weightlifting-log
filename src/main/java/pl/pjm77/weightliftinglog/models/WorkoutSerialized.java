@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 @Entity
 @Table(name = "workouts")
-public class Workout {
+public class WorkoutSerialized {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

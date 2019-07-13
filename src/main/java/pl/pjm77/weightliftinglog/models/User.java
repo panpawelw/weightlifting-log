@@ -41,7 +41,7 @@ public class User {
     private String role;
 
     @OneToMany(mappedBy = "user")
-    private List<Workout> workouts = new ArrayList<>();
+    private List<WorkoutSerialized> workouts = new ArrayList<>();
 
     public User() {
     }
@@ -148,11 +148,11 @@ public class User {
         this.role = role;
     }
 
-    public List<Workout> getWorkouts() {
+    public List<WorkoutSerialized> getWorkouts() {
         return workouts;
     }
 
-    public void setWorkouts(List<Workout> workouts) {
+    public void setWorkouts(List<WorkoutSerialized> workouts) {
         this.workouts = workouts;
     }
 
