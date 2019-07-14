@@ -10,4 +10,35 @@ public class Note {
 
     private byte type;
     private String content;
+
+    public Note() {}
+
+    public Note(byte type, String content) {
+        this.type = type;
+        this.content = content;
+    }
+
+    public byte getType() {
+        return type;
+    }
+
+    public void setType(byte type) {
+        this.type = type;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "type=" + type +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

@@ -15,6 +15,19 @@ public class WorkoutDeserialized implements Serializable {
     private List<Exercise> exercises = new ArrayList<>();
     private List<Note> workoutNotes = new ArrayList<>();
 
+    public WorkoutDeserialized() {}
+
+    public WorkoutDeserialized(Long id, String title, Timestamp created, Timestamp updated,
+                               User user, List<Exercise> exercises, List<Note> workoutNotes) {
+        this.id = id;
+        this.title = title;
+        this.created = created;
+        this.updated = updated;
+        this.user = user;
+        this.exercises = exercises;
+        this.workoutNotes = workoutNotes;
+    }
+
     public Long getId() {
         return id;
     }

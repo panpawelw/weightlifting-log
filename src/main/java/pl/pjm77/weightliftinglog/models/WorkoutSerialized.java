@@ -24,6 +24,17 @@ public class WorkoutSerialized {
     @ManyToOne
     private User user;
 
+    public WorkoutSerialized() {}
+
+    public WorkoutSerialized(String title, Timestamp created, Timestamp updated, byte[] data,
+                             User user) {
+        this.title = title;
+        this.created = created;
+        this.updated = updated;
+        this.data = data;
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }
