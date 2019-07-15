@@ -104,13 +104,6 @@ public class WorkoutDeserialized implements Serializable {
         if (this == o) return true;
         if (!(o instanceof WorkoutDeserialized)) return false;
         WorkoutDeserialized that = (WorkoutDeserialized) o;
-        System.out.println(Objects.equals(getId(), that.getId()));
-        System.out.println(Objects.equals(getTitle(), that.getTitle()));
-        System.out.println(Objects.equals(getCreated(), that.getCreated()));
-        System.out.println(Objects.equals(getUpdated(), that.getUpdated()));
-        System.out.println(Objects.equals(getUser(), that.getUser()));
-        System.out.println(Objects.equals(getExercises(), that.getExercises()));
-        System.out.println(Objects.equals(getWorkoutNotes(), that.getWorkoutNotes()));
         return Objects.equals(getId(), that.getId()) &&
                 Objects.equals(getTitle(), that.getTitle()) &&
                 Objects.equals(getCreated(), that.getCreated()) &&
