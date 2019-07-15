@@ -1,9 +1,11 @@
 package pl.pjm77.weightliftinglog.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class Set {
+public class Set implements Serializable {
 
     private String setData;
     private List<Note> setNotes = new ArrayList<>();
@@ -37,5 +39,19 @@ public class Set {
                 "setData='" + setData + '\'' +
                 ", setNotes=" + setNotes +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Set)) return false;
+        Set set = (Set) o;
+        return Objects.equals(getSetData(), set.getSetData()) &&
+                Objects.equals(getSetNotes(), set.getSetNotes());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSetData(), getSetNotes());
     }
 }

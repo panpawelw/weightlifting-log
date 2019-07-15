@@ -3,12 +3,14 @@ package pl.pjm77.weightliftinglog.models;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -172,5 +174,31 @@ public class User {
                 ", role='" + role + '\'' +
                 ", workouts=" + workouts +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return isRealEmail() == user.isRealEmail() &&
+                Objects.equals(getId(), user.getId()) &&
+                Objects.equals(getName(), user.getName()) &&
+                Objects.equals(getPassword(), user.getPassword()) &&
+                Objects.equals(getConfirmPassword(), user.getConfirmPassword()) &&
+                Objects.equals(getEmail(), user.getEmail()) &&
+                Objects.equals(getFirstName(), user.getFirstName()) &&
+                Objects.equals(getLastName(), user.getLastName()) &&
+                Objects.equals(getAge(), user.getAge()) &&
+                Objects.equals(getGender(), user.getGender()) &&
+                Objects.equals(getRole(), user.getRole()) &&
+                Objects.equals(getWorkouts(), user.getWorkouts());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects
+                .hash(getId(), getName(), getPassword(), getConfirmPassword(), getEmail(),
+                        isRealEmail(), getFirstName(), getLastName(), getAge(), getGender(), getRole(), getWorkouts());
     }
 }

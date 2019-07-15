@@ -1,26 +1,28 @@
 package pl.pjm77.weightliftinglog.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class Exercise {
+public class Exercise implements Serializable {
 
-    private List<Exercise> exercises = new ArrayList<>();
+    private List<Set> sets = new ArrayList<>();
     private List<Note> exerciseNotes = new ArrayList<>();
 
     public Exercise() {}
 
-    public Exercise(List<Exercise> exercises, List<Note> exerciseNotes) {
-        this.exercises = exercises;
+    public Exercise(List<Set> sets, List<Note> exerciseNotes) {
+        this.sets = sets;
         this.exerciseNotes = exerciseNotes;
     }
 
-    public List<Exercise> getExercises() {
-        return exercises;
+    public List<Set> getSets() {
+        return sets;
     }
 
-    public void setExercises(List<Exercise> exercises) {
-        this.exercises = exercises;
+    public void setSets(List<Set> sets) {
+        this.sets = sets;
     }
 
     public List<Note> getExerciseNotes() {
@@ -34,8 +36,22 @@ public class Exercise {
     @Override
     public String toString() {
         return "Exercise{" +
-                "exercises=" + exercises +
+                "sets=" + sets +
                 ", exerciseNotes=" + exerciseNotes +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Exercise)) return false;
+        Exercise exercise = (Exercise) o;
+        return Objects.equals(getSets(), exercise.getSets()) &&
+                Objects.equals(getExerciseNotes(), exercise.getExerciseNotes());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSets(), getExerciseNotes());
     }
 }

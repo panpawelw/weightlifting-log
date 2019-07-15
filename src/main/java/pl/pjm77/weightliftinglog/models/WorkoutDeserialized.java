@@ -1,9 +1,11 @@
 package pl.pjm77.weightliftinglog.models;
 
 import java.io.Serializable;
+import java.sql.SQLOutput;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class WorkoutDeserialized implements Serializable {
 
@@ -95,5 +97,32 @@ public class WorkoutDeserialized implements Serializable {
                 ", exercises=" + exercises +
                 ", workoutNotes=" + workoutNotes +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof WorkoutDeserialized)) return false;
+        WorkoutDeserialized that = (WorkoutDeserialized) o;
+        System.out.println(Objects.equals(getId(), that.getId()));
+        System.out.println(Objects.equals(getTitle(), that.getTitle()));
+        System.out.println(Objects.equals(getCreated(), that.getCreated()));
+        System.out.println(Objects.equals(getUpdated(), that.getUpdated()));
+        System.out.println(Objects.equals(getUser(), that.getUser()));
+        System.out.println(Objects.equals(getExercises(), that.getExercises()));
+        System.out.println(Objects.equals(getWorkoutNotes(), that.getWorkoutNotes()));
+        return Objects.equals(getId(), that.getId()) &&
+                Objects.equals(getTitle(), that.getTitle()) &&
+                Objects.equals(getCreated(), that.getCreated()) &&
+                Objects.equals(getUpdated(), that.getUpdated()) &&
+                Objects.equals(getUser(), that.getUser()) &&
+                Objects.equals(getExercises(), that.getExercises()) &&
+                Objects.equals(getWorkoutNotes(), that.getWorkoutNotes());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects
+                .hash(getId(), getTitle(), getCreated(), getUpdated(), getUser(), getExercises(), getWorkoutNotes());
     }
 }

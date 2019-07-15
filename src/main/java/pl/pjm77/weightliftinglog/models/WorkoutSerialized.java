@@ -85,7 +85,7 @@ public class WorkoutSerialized {
 
     @Override
     public String toString() {
-        return "Workout{" +
+        return "WorkoutSerialized{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", created=" + created +
