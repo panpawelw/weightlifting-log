@@ -2,11 +2,14 @@ package pl.pjm77.weightliftinglog.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.models.WorkoutDeserialized;
 import pl.pjm77.weightliftinglog.models.WorkoutSerialized;
 import pl.pjm77.weightliftinglog.repositories.WorkoutRepository;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class WorkoutService {
@@ -16,6 +19,18 @@ public class WorkoutService {
     @Autowired
     public WorkoutService(WorkoutRepository workoutRepository) {
         this.workoutRepository = workoutRepository;
+    }
+
+    public List<WorkoutDeserialized> findWorkoutsByUser(User user) {
+        List<WorkoutSerialized> usersWorkoutsSerialized;
+        usersWorkoutsSerialized = workoutRepository.findAllByUserOrderByCreatedDesc(user);
+        List<WorkoutDeserialized> usersWorkoutsDeserialized = new ArrayList<>();
+        usersWorkoutsSerialized.forEach((n) -> usersWorkoutsDeserialized.add(deserializeWorkout(n)));
+        return usersWorkoutsDeserialized;
+    }
+
+    public void saveWorkout(WorkoutDeserialized workoutDeserialized) {
+        workoutRepository.save(serializeWorkout(workoutDeserialized));
     }
 
     public WorkoutSerialized serializeWorkout

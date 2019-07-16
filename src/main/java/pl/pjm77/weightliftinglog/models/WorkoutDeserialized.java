@@ -1,7 +1,6 @@
 package pl.pjm77.weightliftinglog.models;
 
 import java.io.Serializable;
-import java.sql.SQLOutput;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
