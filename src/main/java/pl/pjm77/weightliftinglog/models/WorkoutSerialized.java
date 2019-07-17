@@ -4,6 +4,12 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Arrays;
 
+
+/**
+ * Workout serialized is ready to be stored in database. Id, title, user, created and updated
+ * timestamps are duplicated for search purposes. Data byte array is used to store serialized
+ * WorkoutDeserialized object.
+ */
 @Entity
 @Table(name = "workouts")
 public class WorkoutSerialized {

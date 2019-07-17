@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Workout is a basic training unit. It has an Id, title, created and updated timestamps and user
+ * it belongs to.
+ * Serialization / deserialization is used to allow maximum data structure flexibility - number
+ * of sets and notes workout consists of are limited only by ArrayList size limit.
+ */
 public class WorkoutDeserialized implements Serializable {
 
     private Long id;

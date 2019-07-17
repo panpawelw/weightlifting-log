@@ -45,7 +45,7 @@ public class SerializationDeserializationTests {
         Note exercise1Note = new Note(0, "First exercise note.");
         List<Note> exercise1Notes = new ArrayList<>();
         exercise1Notes.add(exercise1Note);
-        Exercise exercise1 = new Exercise(exercise1Sets, exercise1Notes);
+        Exercise exercise1 = new Exercise("First exercise", exercise1Sets, exercise1Notes);
 
         /* set 1 exercise 2 */
         Note set1exercise2Note1 = new Note(0,"First set of second exercise - first note.");
@@ -70,7 +70,7 @@ public class SerializationDeserializationTests {
         Note exercise2Note = new Note(0, "Second exercise note.");
         List<Note> exercise2Notes = new ArrayList<>();
         exercise2Notes.add(exercise2Note);
-        Exercise exercise2 = new Exercise(exercise2Sets, exercise2Notes);
+        Exercise exercise2 = new Exercise("Second exercise", exercise2Sets, exercise2Notes);
 
         /* workout deserialized */
         List<Exercise> workout1Exercises = new ArrayList<>();

@@ -5,16 +5,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Single exercise consists of name and any number of sets, also any number of notes can be
+ * attached to it.
+ */
 public class Exercise implements Serializable {
 
+    private String name;
     private List<Set> sets = new ArrayList<>();
     private List<Note> exerciseNotes = new ArrayList<>();
 
     public Exercise() {}
 
-    public Exercise(List<Set> sets, List<Note> exerciseNotes) {
+    public Exercise(String name, List<Set> sets, List<Note> exerciseNotes) {
+        this.name = name;
         this.sets = sets;
         this.exerciseNotes = exerciseNotes;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Set> getSets() {
@@ -36,7 +50,8 @@ public class Exercise implements Serializable {
     @Override
     public String toString() {
         return "Exercise{" +
-                "sets=" + sets +
+                "name='" + name + '\'' +
+                ", sets=" + sets +
                 ", exerciseNotes=" + exerciseNotes +
                 '}';
     }
@@ -46,12 +61,13 @@ public class Exercise implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Exercise)) return false;
         Exercise exercise = (Exercise) o;
-        return Objects.equals(getSets(), exercise.getSets()) &&
+        return Objects.equals(getName(), exercise.getName()) &&
+                Objects.equals(getSets(), exercise.getSets()) &&
                 Objects.equals(getExerciseNotes(), exercise.getExerciseNotes());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getSets(), getExerciseNotes());
+        return Objects.hash(getName(), getSets(), getExerciseNotes());
     }
 }
