@@ -59,7 +59,7 @@
     <!--/*@thymesVar id="user" type="java"*/-->
     <form th:action="@{/saveuser}" th:object="${user}" method="post">
         <input type="hidden" th:field="*{id}"/>
-        <p>Username: <input type="text" th:field="*{name}"/>
+        <p>Username: <input type="text" th:field="*{name}" autofocus="autofocus"/>
             <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span></p>
         <p>Password: <input type="password" th:field="*{password}"/>
             <span th:if="${#fields.hasErrors('password')}" class="alert" th:errors="*{password}"></span></p>
@@ -91,6 +91,11 @@
 <!--User panel-->
 
 <div th:fragment="user-panel">
+    <div class="workout">
+        <h2>Select existing workout from the panel to the right or...</h2>
+        <button class="my-button" onclick="location.href='/wl/newworkout'" type="button">Add new
+            workout</button>
+    </div>
     <div class="controls">
         <!--/*@thymesVar id="userGreeting" type="java"*/-->
         <p class="same-row" th:text="${userGreeting}"></p>
@@ -99,7 +104,7 @@
         <!--/*@thymesVar id="adminRights" type="java"*/-->
         <button th:if="${adminRights}" class="same-row my-button" onclick="location.href='/wl/admin'">Admin panel</button>
     </div>
-    <h2>Your workouts:</h2>
+
 </div>
 
 <!--Admin panel-->

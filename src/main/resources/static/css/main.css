@@ -285,6 +285,12 @@ button:active, input[type=submit]:active, .my-button:active {
     text-align: right;
 }
 
+/* User tab */
+
+.workout {
+    width: 75%;
+}
+
 /* General text styling */
 .bigger-label {
     font-weight: bold;
