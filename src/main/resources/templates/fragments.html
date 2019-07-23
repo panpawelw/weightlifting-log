@@ -91,20 +91,21 @@
 <!--User panel-->
 
 <div th:fragment="user-panel">
-    <div class="workout">
+    <div class="workout-content">
         <h2>Select existing workout from the panel to the right or...</h2>
         <button class="my-button" onclick="location.href='/wl/newworkout'" type="button">Add new
             workout</button>
     </div>
-    <div class="controls">
-        <!--/*@thymesVar id="userGreeting" type="java"*/-->
-        <p class="same-row" th:text="${userGreeting}"></p>
-        <button class="same-row my-button" onclick="location.href='/wl/logout'" type="button">Log out</button>
-        <button class="same-row my-button" onclick="location.href='/wl/edituserdetails'" type="button">My profile</button>
-        <!--/*@thymesVar id="adminRights" type="java"*/-->
-        <button th:if="${adminRights}" class="same-row my-button" onclick="location.href='/wl/admin'">Admin panel</button>
+    <div class="workout-selection">
+        <div class="controls">
+            <!--/*@thymesVar id="userGreeting" type="java"*/-->
+            <p class="same-row" th:text="${userGreeting}"></p>
+            <button class="same-row my-button" onclick="location.href='/wl/logout'" type="button">Log out</button>
+            <button class="same-row my-button" onclick="location.href='/wl/edituserdetails'" type="button">My profile</button>
+            <!--/*@thymesVar id="adminRights" type="java"*/-->
+            <button th:if="${adminRights}" class="same-row my-button" onclick="location.href='/wl/admin'">Admin panel</button>
+        </div>
     </div>
-
 </div>
 
 <!--Admin panel-->
