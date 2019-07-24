@@ -11,7 +11,9 @@
     <title>Weightlifting Log Home</title>
 </head>
 <body>
-<div id="logo-container" style="display: block;">
+<div class="main-container">
+<div class="top-container">
+    <div id="logo-container" style="display: block;">
 
     <!--Title and logo section-->
     <p>
@@ -31,9 +33,11 @@
     <li class="" th:classappend="${showCalc == null}? active"><a data-toggle="tab" href="#tab4">Training Log</a>
     </li>
 </ul>
+</div>
 
 <!--Tab content-->
 <!--Either main calculator tab or login tab content are visible depending on boolean sent from controller-->
+<div class="center-container">
 <div class="tab-content">
 
     <!--Tab#1 content - overall strength calculator-->
@@ -480,7 +484,8 @@
             <p>If you see this message, something went wrong...</p>
         </div>
     </div>
-
+</div>
+</div>
     <!--Page footer content-->
 </div>
 </body>

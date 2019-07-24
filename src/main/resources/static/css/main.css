@@ -1,4 +1,8 @@
 /* general properties */
+html, body, .main-container {
+    height: 100%;
+    margin: 0;
+}
 html body {
     background-color: #454343;
     color: #FF9200;
@@ -286,6 +290,19 @@ button:active, input[type=submit]:active, .my-button:active {
 }
 
 /* User tab */
+
+.main-container {
+    display: flex;
+    flex-flow: column;
+}
+
+.top-container {
+}
+
+.center-container {
+    flex: 2 ;
+    overflow: auto;
+}
 
 .workout-content {
     width: 75%;
