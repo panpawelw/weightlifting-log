@@ -6,20 +6,33 @@ $(document).ready(function () {
 
     let logo = document.getElementById('logo-container');
     let navbar = document.getElementById('big-tabs');
+    let tab4 = document.getElementById('testdonthide')
+    let donthide = false;
 
     window.addEventListener('scroll', function () {
         if ($(this).scrollTop() === 0) {
-            if (logo.style.display === 'none') {
-                navbar.classList.remove('sticky');
-                $(logo).show('fast');
+            if (donthide === false) {
+                if (logo.style.display === 'none') {
+                    navbar.classList.remove('sticky');
+                    $(logo).show('fast');
+                }
+            } else {
+                donthide = false;
             }
+
         } else if (logo.style.display !== 'none') {
             $(logo).slideUp('fast');
             navbar.classList.add('sticky');
         }
     });
-});
 
+    tab4.addEventListener('click', function() {
+        console.log(donthide);
+        console.log("don't hide!");
+        donthide = true;
+        console.log(donthide);
+    });
+});
 
 /* function updates a single lift section in General Strength tab
    whenever the user moves the slider it updates the corresponding number field and calculates 1 rep max

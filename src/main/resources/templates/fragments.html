@@ -91,10 +91,12 @@
 <!--User panel-->
 
 <div th:fragment="user-panel">
-    <div class="workout-content">
+    <div class="workout-content-container">
+        <div class="workout-content">
                 <h2>Select existing workout from the panel to the right or...</h2>
                 <button class="my-button" onclick="location.href='/wl/newworkout'" type="button">
                     Add new workout</button>
+        </div>
     </div>
     <div class="workout-selection">
         <div class="controls">

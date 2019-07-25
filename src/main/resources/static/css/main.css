@@ -301,7 +301,6 @@ button:active, input[type=submit]:active, .my-button:active {
 
 .center-container {
     flex: 2 ;
-    overflow: auto;
 }
 
 .workout-content {

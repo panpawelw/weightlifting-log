@@ -30,14 +30,15 @@
     </li>
     <li><a data-toggle="tab" href="#tab2">1 Rep Max</a></li>
     <li><a data-toggle="tab" href="#tab3">Calculator #2</a></li>
-    <li class="" th:classappend="${showCalc == null}? active"><a data-toggle="tab" href="#tab4">Training Log</a>
+    <li class="" th:classappend="${showCalc == null}? active"><a data-toggle="tab" href="#tab4"
+                                                                 id="testdonthide" >Training Log</a>
     </li>
 </ul>
 </div>
 
 <!--Tab content-->
 <!--Either main calculator tab or login tab content are visible depending on boolean sent from controller-->
-<div class="center-container">
+<div class="center-container" id="cc">
 <div class="tab-content">
 
     <!--Tab#1 content - overall strength calculator-->
@@ -479,7 +480,8 @@
     </div>
 
     <!--Tab#4 content-->
-    <div id="tab4" class="tab-pane centered fade" th:classappend="${showCalc == null}? 'in active'">
+    <div id="tab4" class="tab-pane centered fade"
+         th:classappend="${showCalc == null}? 'in active'">
         <div th:if="${!page.isEmpty()}" th:replace="__${page}__">
             <p>If you see this message, something went wrong...</p>
         </div>
