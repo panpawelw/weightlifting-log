@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
@@ -12,482 +13,638 @@
 </head>
 <body>
 <div class="main-container">
-<div class="top-container">
-    <div id="logo-container" style="display: block;">
+    <div class="top-container">
+        <div id="logo-container" style="display: block;">
 
-    <!--Title and logo section-->
-    <p>
-    <h2>Weightlifting Log</h2>
-    <p>here's a placeholder for logo and stuff...</p>
-</div>
+            <!--Title and logo section-->
+            <p>
+            <h2>Weightlifting Log</h2>
+            <p>here's a placeholder for logo and stuff...</p>
+        </div>
 
-<!--Navbar section-->
+        <!--Navbar section-->
 
-<!--Tab header section-->
-<!--Either main calculator tab or login tab are active depending on boolean sent from controller-->
-<ul class="nav nav-tabs nav-justified" id="big-tabs">
-    <li class="" th:classappend="${showCalc != null}? active"><a data-toggle="tab" href="#tab1">Overall Strength</a>
-    </li>
-    <li><a data-toggle="tab" href="#tab2">1 Rep Max</a></li>
-    <li><a data-toggle="tab" href="#tab3">Calculator #2</a></li>
-    <li class="" th:classappend="${showCalc == null}? active"><a data-toggle="tab" href="#tab4"
-                                                                 id="testdonthide" >Training Log</a>
-    </li>
-</ul>
-</div>
+        <!--Tab header section-->
+        <!--Either main calculator tab or login tab are active depending on boolean sent from controller-->
+        <ul class="nav nav-tabs nav-justified" id="big-tabs">
+            <li class="" th:classappend="${showCalc != null}? active"><a data-toggle="tab"
+                                                                         href="#tab1">Overall
+                Strength</a>
+            </li>
+            <li><a data-toggle="tab" href="#tab2">1 Rep Max</a></li>
+            <li><a data-toggle="tab" href="#tab3">Calculator #2</a></li>
+            <li class="" th:classappend="${showCalc == null}? active"><a data-toggle="tab"
+                                                                         href="#tab4"
+                                                                         id="testdonthide">Training
+                Log</a>
+            </li>
+        </ul>
+    </div>
 
-<!--Tab content-->
-<!--Either main calculator tab or login tab content are visible depending on boolean sent from controller-->
-<div class="center-container" id="cc">
-<div class="tab-content">
+    <!--Tab content-->
+    <!--Either main calculator tab or login tab content are visible depending on boolean sent from controller-->
+    <div class="center-container" id="cc">
+        <div class="tab-content">
 
-    <!--Tab#1 content - overall strength calculator-->
-    <div id="tab1" class="tab-pane centered fade" th:classappend="${showCalc != null}? 'in active'">
-        <br/>
-        <h3 class="tab-title">Overall Strength</h3>
-        <br/>
-        <div class="overall-strength">
-            <div class="overall-strength-weight">
-                <label class="bigger-label" for="squat-weight-slider">Back squat - weight</label>
-                <input name="squat-weight-slider" id="squat-weight-slider" type="range" min="1" max="300" value="150"
-                       step="0.5" class="slider overall-strength-weight"
-                       oninput="updateGS('squat-weight',this.value,'squat-weight','squat-reps','squat-max')"><br/>
+            <!--Tab#1 content - overall strength calculator-->
+            <div id="tab1" class="tab-pane centered fade"
+                 th:classappend="${showCalc != null}? 'in active'">
+                <br/>
+                <h3 class="tab-title">Overall Strength</h3>
+                <br/>
+                <div class="overall-strength">
+                    <div class="overall-strength-weight">
+                        <label class="bigger-label" for="squat-weight-slider">Back squat -
+                            weight</label>
+                        <input name="squat-weight-slider" id="squat-weight-slider" type="range"
+                               min="1" max="300" value="150"
+                               step="0.5" class="slider overall-strength-weight"
+                               oninput="updateGS('squat-weight',this.value,'squat-weight','squat-reps','squat-max')"><br/>
+                    </div>
+                    <div class="overall-strength-reps">
+                        <label for="squat-reps-slider">Reps</label>
+                        <input name="squat-reps-slider" id="squat-reps-slider" type="range" min="1"
+                               max="19" value="1" step="1"
+                               class="slider overall-strength-reps"
+                               oninput="updateGS('squat-reps',this.value,'squat-weight','squat-reps','squat-max')"><br/>
+                    </div>
+                    <div class="overall-strength-text-inputs">
+                        <table class="overall-strength-table">
+                            <tr>
+                                <td><label for="squat-weight">Weight</label></td>
+                                <td><input type="number" name="squat-weight" id="squat-weight"
+                                           value="150" min="1"
+                                           max="300" step="0.5"
+                                           oninput="updateGS('squat-weight-slider',this.value,'squat-weight','squat-reps','squat-max')">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="squat-reps">Reps</label></td>
+                                <td><input type="number" name="squat-reps" id="squat-reps" value="1"
+                                           min="1" max="19"
+                                           oninput="updateGS('squat-reps-slider',this.value,'squat-weight','squat-reps','squat-max')">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="squat-max">Max</label></td>
+                                <td><input type="text" id="squat-max" value="" readonly></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="overall-strength">
+                    <div class="overall-strength-weight">
+                        <label class="bigger-label" for="bench-weight-slider">Bench press -
+                            weight</label>
+                        <input name="bench-weight-slider" id="bench-weight-slider" type="range"
+                               min="1" max="250" value="125"
+                               step="0.5" class="slider overall-strength-weight"
+                               oninput="updateGS('bench-weight',this.value,'bench-weight','bench-reps','bench-max')"><br/>
+                    </div>
+                    <div class="overall-strength-reps">
+                        <label for="bench-reps-slider">Reps</label>
+                        <input name="bench-reps-slider" id="bench-reps-slider" type="range" min="1"
+                               max="19" value="1" step="1"
+                               class="slider overall-strength-reps"
+                               oninput="updateGS('bench-reps',this.value,'bench-weight','bench-reps','bench-max')"><br/>
+                    </div>
+                    <div class="overall-strength-text-inputs">
+                        <table class="overall-strength-table">
+                            <tr>
+                                <td><label for="bench-weight">Weight</label></td>
+                                <td><input type="number" name="squat-weight" id="bench-weight"
+                                           value="125" min="1"
+                                           max="250" step="0.5"
+                                           oninput="updateGS('bench-weight-slider',this.value,'bench-weight','bench-reps','bench-max')">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="bench-reps">Reps</label></td>
+                                <td><input type="number" name="bench-reps" id="bench-reps" value="1"
+                                           min="1" max="19"
+                                           oninput="updateGS('bench-reps-slider',this.value,'bench-weight','bench-reps','bench-max')">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="bench-max">Max</label></td>
+                                <td><input type="text" id="bench-max" value="" readonly></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="overall-strength">
+                    <div class="overall-strength-weight">
+                        <label class="bigger-label" for="deadlift-weight-slider">Deadlift -
+                            weight</label>
+                        <input name="deadlift-weight-slider" id="deadlift-weight-slider"
+                               type="range" min="1" max="350"
+                               value="175"
+                               step="0.5" class="slider overall-strength-weight"
+                               oninput="updateGS('deadlift-weight',this.value,'deadlift-weight','deadlift-reps','deadlift-max')"><br/>
+                    </div>
+                    <div class="overall-strength-reps">
+                        <label for="deadlift-reps-slider">Reps</label>
+                        <input name="deadlift-reps-slider" id="deadlift-reps-slider" type="range"
+                               min="1" max="19" value="1"
+                               step="1"
+                               class="slider overall-strength-reps"
+                               oninput="updateGS('deadlift-reps',this.value,'deadlift-weight','deadlift-reps','deadlift-max')"><br/>
+                    </div>
+                    <div class="overall-strength-text-inputs">
+                        <table class="overall-strength-table">
+                            <tr>
+                                <td><label for="deadlift-weight">Weight</label></td>
+                                <td><input type="number" name="squat-weight" id="deadlift-weight"
+                                           value="175" min="1"
+                                           max="350" step="0.5"
+                                           oninput="updateGS('deadlift-weight-slider',this.value,'deadlift-weight','deadlift-reps','deadlift-max')">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="deadlift-reps">Reps</label></td>
+                                <td><input type="number" name="deadlift-reps" id="deadlift-reps"
+                                           value="1" min="1" max="19"
+                                           oninput="updateGS('deadlift-reps-slider',this.value,'deadlift-weight','deadlift-reps','deadlift-max')">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="deadlift-max">Max</label></td>
+                                <td><input type="text" id="deadlift-max" value="" readonly></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="overall-strength">
+                    <div class="overall-strength-weight">
+                        <label class="bigger-label" for="military-weight-slider">Military press -
+                            weight</label>
+                        <input name="military-weight-slider" id="military-weight-slider"
+                               type="range" min="1" max="150"
+                               value="75"
+                               step="0.5" class="slider overall-strength-weight"
+                               oninput="updateGS('military-weight',this.value,'military-weight','military-reps','military-max')"><br/>
+                    </div>
+                    <div class="overall-strength-reps">
+                        <label for="military-reps-slider">Reps</label>
+                        <input name="military-reps-slider" id="military-reps-slider" type="range"
+                               min="1" max="19" value="1"
+                               step="1"
+                               class="slider overall-strength-reps"
+                               oninput="updateGS('military-reps',this.value,'military-weight','military-reps','military-max')"><br/>
+                    </div>
+                    <div class="overall-strength-text-inputs">
+                        <table class="overall-strength-table">
+                            <tr>
+                                <td><label for="military-weight">Weight</label></td>
+                                <td><input type="number" name="military-weight" id="military-weight"
+                                           value="75" min="1"
+                                           max="150" step="0.5"
+                                           oninput="updateGS('military-weight-slider',this.value,'military-weight','military-reps','military-max')">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="military-reps">Reps</label></td>
+                                <td><input type="number" name="military-reps" id="military-reps"
+                                           value="1" min="1" max="19"
+                                           oninput="updateGS('military-reps-slider',this.value,'military-weight','military-reps','military-max')">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="military-max">Max</label></td>
+                                <td><input type="text" id="military-max" value="" readonly></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="overall-strength">
+                    <div class="overall-strength-weight">
+                        <label class="bigger-label" for="row-weight-slider">Barbell row -
+                            weight</label>
+                        <input name="row-weight-slider" id="row-weight-slider" type="range" min="1"
+                               max="200" value="100"
+                               step="0.5" class="slider overall-strength-weight"
+                               oninput="updateGS('row-weight',this.value,'row-weight','row-reps','row-max')"><br/>
+                    </div>
+                    <div class="overall-strength-reps">
+                        <label for="row-reps-slider">Reps</label>
+                        <input name="row-reps-slider" id="row-reps-slider" type="range" min="1"
+                               max="19" value="1" step="1"
+                               class="slider overall-strength-reps"
+                               oninput="updateGS('row-reps',this.value,'row-weight','row-reps','row-max')"><br/>
+                    </div>
+                    <div class="overall-strength-text-inputs">
+                        <table class="overall-strength-table">
+                            <tr>
+                                <td><label for="row-weight">Weight</label></td>
+                                <td><input type="number" name="row-weight" id="row-weight"
+                                           value="100" min="1"
+                                           max="200" step="0.5"
+                                           oninput="updateGS('row-weight-slider',this.value,'row-weight','row-reps','row-max')">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="row-reps">Reps</label></td>
+                                <td><input type="number" name="row-reps" id="row-reps" value="1"
+                                           min="1" max="19"
+                                           oninput="updateGS('row-reps-slider',this.value,'row-weight','row-reps','row-max')">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="row-max">Max</label></td>
+                                <td><input type="text" id="row-max" value="" readonly></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="overall-strength">
+                    <div class="overall-strength-weight">
+                        <label class="bigger-label" for="pullup-weight-slider">Weighted pull-up -
+                            weight</label>
+                        <input name="pullup-weight-slider" id="pullup-weight-slider" type="range"
+                               min="1" max="150" value="75"
+                               step="0.5" class="slider overall-strength-weight"
+                               oninput="updateGS('pullup-weight',this.value,'pullup-weight','pullup-reps','pullup-max')"><br/>
+                    </div>
+                    <div class="overall-strength-reps">
+                        <label for="pullup-reps-slider">Reps</label>
+                        <input name="pullup-reps-slider" id="pullup-reps-slider" type="range"
+                               min="1" max="19" value="1"
+                               step="1"
+                               class="slider overall-strength-reps"
+                               oninput="updateGS('pullup-reps',this.value,'pullup-weight','pullup-reps','pullup-max')"><br/>
+                    </div>
+                    <div class="overall-strength-text-inputs">
+                        <table class="overall-strength-table">
+                            <tr>
+                                <td><label for="pullup-weight">Weight</label></td>
+                                <td><input type="number" name="pullup-weight" id="pullup-weight"
+                                           value="75" min="1"
+                                           max="150" step="0.5"
+                                           oninput="updateGS('pullup-weight-slider',this.value,'pullup-weight','pullup-reps','pullup-max')">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="pullup-reps">Reps</label></td>
+                                <td><input type="number" name="pullup-reps" id="pullup-reps"
+                                           value="1" min="1" max="19"
+                                           oninput="updateGS('pullup-reps-slider',this.value,'pullup-weight','pullup-reps','pullup-max')">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="pullup-max">Max</label></td>
+                                <td><input type="text" id="pullup-max" value="" readonly></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <div class="overall-strength-reps">
-                <label for="squat-reps-slider">Reps</label>
-                <input name="squat-reps-slider" id="squat-reps-slider" type="range" min="1" max="19" value="1" step="1"
-                       class="slider overall-strength-reps"
-                       oninput="updateGS('squat-reps',this.value,'squat-weight','squat-reps','squat-max')"><br/>
+
+            <!--Tab#2 content - percentages calculator-->
+            <div id="tab2" class="tab-pane centered fade">
+                <br/>
+                <h3 class="tab-title">1 Rep Max and Percentages Calculator</h3>
+                <br>
+
+                <!--Weight slider-->
+                <div class="one-rep-max-inputs">
+                    <label for="weight">Weight lifted</label>
+                    <input name="weight" id="weight" type="range" min="1" max="200" value="100"
+                           class="slider" step="0.5"
+                           oninput="update('weight-text',this.value)"><br/>
+                    <label for="weight-text"></label><input type="text" id="weight-text" value="100"
+                                                            oninput="update('weight',this.value)">
+                </div>
+                <br/>
+
+                <!--Number of reps performed slider-->
+                <div class="one-rep-max-inputs">
+                    <label for="reps">Number of reps:</label>
+                    <input name="reps" id="reps" type="range" min="1" max="19" value="10"
+                           class="slider" step="1"
+                           oninput="update('reps-text',this.value)"><br/>
+                    <label for="reps-text"></label><input type="text" id="reps-text" value="10"
+                                                          oninput="update('reps',this.value)">
+                </div>
+                <br/>
+                <div>
+
+                    <!--Percentages calculator-->
+                    <table id="percentages">
+                        <tr>
+                            <!--1 rep max result and "calculate" button-->
+                            <td class="centered" colspan="4">
+                                <label for="result">1 Rep Max - 100%:</label><input id="result"
+                                                                                    type="text"
+                                                                                    value=""
+                                                                                    readonly>
+                                <button class="my-button" type="button" onclick="calculate1RM()">
+                                    Calculate
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><p id="percentage-description-1">Increases maximal strength via
+                                neural factors. Good for displaying strength. Difficult to recover
+                                from.</p></td>
+                            <td><label for="percentage-input-1">%</label></td>
+                            <td><input class="percentage-input" id="percentage-input-1"
+                                       type="number" value="95" max="100"
+                                       onchange="updatePercentageDescription('percentage-description-1', this.value)"/>
+                            </td>
+                            <td id="percentage-1"></td>
+                        </tr>
+                        <tr>
+                            <td><p id="percentage-description-2">Best for building muscle strength,
+                                use ~80% for easy recovery, ~90% for quick strength peaking.</p>
+                            </td>
+                            <td><label for="percentage-input-2">%</label></td>
+                            <td><input class="percentage-input" id="percentage-input-2"
+                                       type="number" value="90" max="100"
+                                       onchange="updatePercentageDescription('percentage-description-2', this.value)"/>
+                            </td>
+                            <td id="percentage-2"></td>
+                        </tr>
+                        <tr>
+                            <td><p id="percentage-description-3">Best for building muscle strength,
+                                use ~80% for easy recovery, ~90% for quick strength peaking.</p>
+                            </td>
+                            <td><label for="percentage-input-3">%</label></td>
+                            <td><input class="percentage-input" id="percentage-input-3"
+                                       type="number" value="85" max="100"
+                                       onchange="updatePercentageDescription('percentage-description-3', this.value)"/>
+                            </td>
+                            <td id="percentage-3"></td>
+                        </tr>
+                        <tr>
+                            <td><p id="percentage-description-4">Best range for muscle mass
+                                building, also good for explosiveness (~70%) and strength (~80%) in
+                                Olympic lifting.</p></td>
+                            <td><label for="percentage-input-4">%</label></td>
+                            <td><input class="percentage-input" id="percentage-input-4"
+                                       type="number" value="80" max="100"
+                                       onchange="updatePercentageDescription('percentage-description-4', this.value)"/>
+                            </td>
+                            <td id="percentage-4"></td>
+                        </tr>
+                        <tr>
+                            <td><p id="percentage-description-5">Best range for muscle mass
+                                building,
+                                also good for explosiveness (~70%) and strength (~80%) in Olympic
+                                lifting.</p></td>
+                            <td><label for="percentage-input-5">%</label></td>
+                            <td><input class="percentage-input" id="percentage-input-5"
+                                       type="number" value="75" max="100"
+                                       onchange="updatePercentageDescription('percentage-description-5', this.value)"/>
+                            </td>
+                            <td id="percentage-5"></td>
+                        </tr>
+                        <tr>
+                            <td><p id="percentage-description-6">Best range for muscle mass
+                                building, also good for explosiveness (~70%) and strength (~80%) in
+                                Olympic lifting.</p></td>
+                            <td><label for="percentage-input-6">%</label></td>
+                            <td><input class="percentage-input" id="percentage-input-6"
+                                       type="number" value="70" max="100"
+                                       onchange="updatePercentageDescription('percentage-description-6', this.value)"/>
+                            </td>
+                            <td id="percentage-6"></td>
+                        </tr>
+                        <tr>
+                            <td><p id="percentage-description-7">Best range for muscle mass
+                                building, also good for explosiveness (~70%) and strength (~80%) in
+                                Olympic lifting.</p></td>
+                            <td><label for="percentage-input-7">%</label></td>
+                            <td><input class="percentage-input" id="percentage-input-7"
+                                       type="number" value="65" max="100"
+                                       onchange="updatePercentageDescription('percentage-description-7', this.value)"/>
+                            </td>
+                            <td id="percentage-7"></td>
+                        </tr>
+                        <tr>
+                            <td><p id="percentage-description-8">Explosiveness, speed and power.
+                                Great for muscle hardness. 60% can be used for hypertrophy when done
+                                to failure.</p></td>
+                            <td><label for="percentage-input-8">%</label></td>
+                            <td><input class="percentage-input" id="percentage-input-8"
+                                       type="number" value="60" max="100"
+                                       onchange="updatePercentageDescription('percentage-description-8', this.value)"/>
+                            </td>
+                            <td id="percentage-8"></td>
+                        </tr>
+                        <tr>
+                            <td><p id="percentage-description-9">Explosiveness, speed and power.
+                                Great for muscle hardness. 60% can be used for hypertrophy when done
+                                to failure.</p></td>
+                            <td><label for="percentage-input-9">%</label></td>
+                            <td><input class="percentage-input" id="percentage-input-9"
+                                       type="number" value="50" max="100"
+                                       onchange="updatePercentageDescription('percentage-description-9', this.value)"/>
+                            </td>
+                            <td id="percentage-9"></td>
+                        </tr>
+                        <tr>
+                            <td><p id="percentage-description-10">Lower body ballistic work.
+                                Improves muscle hardness, develops power and contraction speed.</p>
+                            </td>
+                            <td><label for="percentage-input-10">%</label></td>
+                            <td><input class="percentage-input" id="percentage-input-10"
+                                       type="number" value="40" max="100"
+                                       onchange="updatePercentageDescription('percentage-description-10', this.value)"/>
+                            </td>
+                            <td id="percentage-10"></td>
+                        </tr>
+                        <tr>
+                            <td><p id="percentage-description-11">Lower body ballistic work.
+                                Improves muscle hardness, develops power and contraction speed.</p>
+                            </td>
+                            <td><label for="percentage-input-11">%</label></td>
+                            <td><input class="percentage-input" id="percentage-input-11"
+                                       type="number" value="30" max="100"
+                                       onchange="updatePercentageDescription('percentage-description-11', this.value)"/>
+                            </td>
+                            <td id="percentage-11"></td>
+                        </tr>
+                        <tr>
+                            <td><p id="percentage-description-12">Upper body ballistic work, lower
+                                body plyometrics. Improves muscle hardness and contraction
+                                speed.</p></td>
+                            <td><label for="percentage-input-12">%</label></td>
+                            <td><input class="percentage-input" id="percentage-input-12"
+                                       type="number" value="20" max="100"
+                                       onchange="updatePercentageDescription('percentage-description-12', this.value)"/>
+                            </td>
+                            <td id="percentage-12"></td>
+                        </tr>
+                        <tr>
+                            <td><p id="percentage-description-13">Upper body ballistic work, lower
+                                body plyometrics. Improves muscle hardness and contraction
+                                speed.</p></td>
+                            <td><label for="percentage-input-13">%</label></td>
+                            <td><input class="percentage-input" id="percentage-input-13"
+                                       type="number" value="10" max="100"
+                                       onchange="updatePercentageDescription('percentage-description-13', this.value)"/>
+                            </td>
+                            <td id="percentage-13"></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-            <div class="overall-strength-text-inputs">
-                <table class="overall-strength-table">
-                    <tr>
-                        <td><label for="squat-weight">Weight</label></td>
-                        <td><input type="number" name="squat-weight" id="squat-weight" value="150" min="1"
-                                   max="300" step="0.5"
-                                   oninput="updateGS('squat-weight-slider',this.value,'squat-weight','squat-reps','squat-max')">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="squat-reps">Reps</label></td>
-                        <td><input type="number" name="squat-reps" id="squat-reps" value="1" min="1" max="19"
-                                   oninput="updateGS('squat-reps-slider',this.value,'squat-weight','squat-reps','squat-max')">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="squat-max">Max</label></td>
-                        <td><input type="text" id="squat-max" value="" readonly></td>
-                    </tr>
-                </table>
+
+            <!--Tab#3 content-->
+            <div id="tab3" class="tab-pane centered fade">
+                <br/>
+                <h3 class="tab-title">Calculator #2</h3>
+                <br/>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed imperdiet ante elit,
+                    ac congue eros viverra
+                    id. Phasellus quis sagittis urna. Sed in justo est. Maecenas nulla nibh,
+                    vehicula ac quam ac, mattis
+                    placerat risus. Donec ac tortor at ex ultrices faucibus in id mauris. Quisque
+                    sed egestas neque.
+                    Curabitur varius placerat gravida. Aliquam nunc diam, rhoncus eu odio id,
+                    vestibulum convallis libero.
+                    Vestibulum a sem ipsum. Integer maximus metus dapibus bibendum ornare. Morbi id
+                    leo vel arcu lacinia
+                    sagittis in sit amet leo. Suspendisse id cursus justo, at aliquet neque.
+                    Maecenas a lobortis mi. Ut
+                    ultrices ex non dictum consequat. Suspendisse tempor viverra est et lacinia.
+
+                    Fusce cursus sit amet massa quis interdum. Suspendisse pretium ornare lacus,
+                    quis ornare nisi euismod
+                    et. Proin in gravida odio. Aliquam metus mi, egestas vel orci mollis, hendrerit
+                    malesuada odio. Duis
+                    pulvinar mollis nulla, eget semper velit laoreet non. In venenatis venenatis
+                    magna. Nulla aliquet
+                    finibus tortor, quis pellentesque urna euismod dapibus. Vestibulum ut arcu sed
+                    ipsum iaculis condimentum
+                    sit amet in urna. Pellentesque aliquam vestibulum tortor, et tincidunt est.
+                    Maecenas ac leo non turpis
+                    lobortis fermentum sit amet vitae arcu. Pellentesque at mattis odio. Aenean a
+                    tempus massa. Curabitur a
+                    lectus non neque fermentum suscipit. Interdum et malesuada fames ac ante ipsum
+                    primis in faucibus. In id
+                    turpis scelerisque, gravida turpis a, ornare nulla.
+
+                    Aenean convallis, lectus ut pretium aliquam, urna neque porttitor leo, vel
+                    ultrices massa justo et ante.
+                    Cras egestas, nulla scelerisque rhoncus tincidunt, quam neque accumsan ligula,
+                    et semper leo diam ac
+                    magna. Quisque at porttitor diam. Integer viverra diam eros, non egestas nisi
+                    lacinia nec. Donec dui
+                    tortor, suscipit in lorem eget, porttitor ullamcorper elit. Nulla sit amet leo
+                    sit amet turpis lacinia
+                    vulputate. Suspendisse non efficitur orci, at porta sem. Ut a sapien eu libero
+                    faucibus volutpat nec et
+                    dolor. Aliquam varius eu nulla sed malesuada. Nam id eros vel magna tincidunt
+                    iaculis. Vivamus tincidunt
+                    metus odio, sit amet feugiat enim pulvinar in. Integer bibendum est a velit
+                    pharetra tincidunt.
+                    Phasellus quis malesuada sapien. Praesent erat dolor, lacinia sit amet magna
+                    vitae, convallis vestibulum
+                    ligula. Cras maximus, nisl lacinia euismod imperdiet, magna urna posuere lectus,
+                    in finibus risus ante
+                    et sem.
+
+                    Cras sapien mi, luctus in malesuada sit amet, tincidunt sed mi. Nunc auctor
+                    consequat mi, id maximus
+                    nisi efficitur venenatis. Aenean porta nisl vitae sagittis accumsan. Duis sem
+                    velit, venenatis sed justo
+                    quis, imperdiet malesuada magna. Praesent non sodales eros. Integer nec
+                    malesuada dolor, a vestibulum
+                    urna. Aliquam erat volutpat. Nunc nulla turpis, efficitur ut leo eu, faucibus
+                    bibendum lacus. Etiam
+                    luctus dui sit amet est tristique, ut laoreet erat consequat. Nunc condimentum
+                    vestibulum dolor ut
+                    tempus. In vel dui et orci euismod feugiat sed ut ex.
+
+                    Pellentesque ac turpis mattis, accumsan magna eget, lobortis lacus. Mauris mi
+                    est, pulvinar a pulvinar
+                    quis, commodo in felis. In volutpat urna dui. Sed placerat tortor eu faucibus
+                    dapibus. Sed iaculis ut
+                    enim ut malesuada. Maecenas vitae velit ex. Nullam lobortis lorem non ante
+                    bibendum, ac rhoncus ante
+                    eleifend. Aenean finibus tempus mauris, sodales congue diam sodales in. Maecenas
+                    tempus lacinia
+                    accumsan. Etiam commodo felis vel semper eleifend. Quisque non faucibus diam.
+                    Donec lobortis lacus
+                    risus, at lobortis quam porttitor sed. Nullam scelerisque imperdiet lorem eu
+                    feugiat. Proin finibus
+                    elementum ipsum et scelerisque. In eros ante, efficitur rhoncus lacus quis,
+                    mollis gravida lacus.
+
+                    Suspendisse tempor venenatis sem, in auctor erat pretium a. Vivamus eget gravida
+                    purus, a dapibus
+                    tortor. Donec tristique sapien et dui sollicitudin bibendum. Nulla facilisi.
+                    Pellentesque habitant morbi
+                    tristique senectus et netus et malesuada fames ac turpis egestas. Praesent id
+                    volutpat diam. Proin
+                    ullamcorper erat posuere, aliquam elit non, bibendum quam. Maecenas at suscipit
+                    mi, consequat ornare ex.
+                    Sed imperdiet dui sit amet suscipit bibendum. Quisque vel lobortis nunc. Proin
+                    consectetur, arcu eget
+                    tincidunt tempus, nunc diam volutpat magna, sed facilisis risus eros quis
+                    tellus. Integer pretium
+                    vestibulum mauris, non facilisis leo imperdiet in.
+
+                    Sed vulputate felis eu orci maximus, a condimentum libero hendrerit. Vestibulum
+                    id dignissim erat.
+                    Praesent placerat, nisl ac condimentum condimentum, quam dolor molestie ante,
+                    rhoncus sollicitudin
+                    mauris felis ut augue. Fusce id augue eros. Sed tincidunt ex quis aliquet
+                    ultricies. Aliquam pretium
+                    volutpat metus at maximus. Donec condimentum sodales diam, vel fermentum felis
+                    tempor ut.
+
+                    Vivamus tincidunt, velit a rhoncus egestas, urna est venenatis sapien, vitae
+                    euismod mi sem non nisi.
+                    Vivamus eu tincidunt turpis. Suspendisse a feugiat dolor, quis hendrerit risus.
+                    Sed rutrum ante sed
+                    tincidunt hendrerit. Sed sit amet dignissim ligula. Suspendisse efficitur semper
+                    velit, molestie posuere
+                    leo porta scelerisque. Suspendisse volutpat elementum tortor, eu dictum tortor
+                    interdum ut. Fusce
+                    pulvinar justo vitae leo malesuada consequat. Quisque sagittis nulla ac risus
+                    porta lobortis. Mauris est
+                    ipsum, congue non urna id, pellentesque pretium leo.
+
+                    In malesuada orci vitae felis efficitur vehicula. Morbi ipsum nisl, pharetra in
+                    erat a, viverra iaculis
+                    est. Curabitur gravida, nisl ac aliquam vehicula, lorem ante accumsan risus,
+                    quis molestie nunc erat et
+                    dui. Quisque vehicula enim lorem, a pellentesque enim varius et. Pellentesque
+                    iaculis quis metus ut
+                    tincidunt. Nam vestibulum libero placerat tortor finibus, vel condimentum quam
+                    tincidunt. Quisque
+                    laoreet mauris sit amet massa dapibus blandit. Phasellus eu elementum magna.
+
+                    Pellentesque in aliquet libero, non egestas turpis. Sed vehicula ex leo, ac
+                    feugiat dolor molestie non.
+                    Vestibulum sapien lacus, cursus non laoreet nec, mattis in lacus. Sed at tellus
+                    eget ante ultrices
+                    gravida. Pellentesque magna orci, ullamcorper at placerat vitae, fringilla ac
+                    est. Aliquam mauris nulla,
+                    pharetra sit amet erat eget, cursus faucibus eros. Duis vel volutpat lacus. Orci
+                    varius natoque
+                    penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus
+                    lorem leo, vehicula sit
+                    amet tincidunt id, tincidunt mollis felis. Nunc pulvinar a mi a gravida. Vivamus
+                    eros est, hendrerit ac
+                    congue in, porta vel nisl. Pellentesque aliquam porttitor semper. Aenean
+                    pellentesque vitae lacus sed
+                    mollis. Nunc velit enim, venenatis vel interdum sit amet, lacinia semper diam.
+                    Proin volutpat luctus
+                    nibh quis consectetur.</p>
             </div>
-        </div>
-        <div class="overall-strength">
-            <div class="overall-strength-weight">
-                <label class="bigger-label" for="bench-weight-slider">Bench press - weight</label>
-                <input name="bench-weight-slider" id="bench-weight-slider" type="range" min="1" max="250" value="125"
-                       step="0.5" class="slider overall-strength-weight"
-                       oninput="updateGS('bench-weight',this.value,'bench-weight','bench-reps','bench-max')"><br/>
-            </div>
-            <div class="overall-strength-reps">
-                <label for="bench-reps-slider">Reps</label>
-                <input name="bench-reps-slider" id="bench-reps-slider" type="range" min="1" max="19" value="1" step="1"
-                       class="slider overall-strength-reps"
-                       oninput="updateGS('bench-reps',this.value,'bench-weight','bench-reps','bench-max')"><br/>
-            </div>
-            <div class="overall-strength-text-inputs">
-                <table class="overall-strength-table">
-                    <tr>
-                        <td><label for="bench-weight">Weight</label></td>
-                        <td><input type="number" name="squat-weight" id="bench-weight" value="125" min="1"
-                                   max="250" step="0.5"
-                                   oninput="updateGS('bench-weight-slider',this.value,'bench-weight','bench-reps','bench-max')">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="bench-reps">Reps</label></td>
-                        <td><input type="number" name="bench-reps" id="bench-reps" value="1" min="1" max="19"
-                                   oninput="updateGS('bench-reps-slider',this.value,'bench-weight','bench-reps','bench-max')">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="bench-max">Max</label></td>
-                        <td><input type="text" id="bench-max" value="" readonly></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="overall-strength">
-            <div class="overall-strength-weight">
-                <label class="bigger-label" for="deadlift-weight-slider">Deadlift - weight</label>
-                <input name="deadlift-weight-slider" id="deadlift-weight-slider" type="range" min="1" max="350"
-                       value="175"
-                       step="0.5" class="slider overall-strength-weight"
-                       oninput="updateGS('deadlift-weight',this.value,'deadlift-weight','deadlift-reps','deadlift-max')"><br/>
-            </div>
-            <div class="overall-strength-reps">
-                <label for="deadlift-reps-slider">Reps</label>
-                <input name="deadlift-reps-slider" id="deadlift-reps-slider" type="range" min="1" max="19" value="1"
-                       step="1"
-                       class="slider overall-strength-reps"
-                       oninput="updateGS('deadlift-reps',this.value,'deadlift-weight','deadlift-reps','deadlift-max')"><br/>
-            </div>
-            <div class="overall-strength-text-inputs">
-                <table class="overall-strength-table">
-                    <tr>
-                        <td><label for="deadlift-weight">Weight</label></td>
-                        <td><input type="number" name="squat-weight" id="deadlift-weight" value="175" min="1"
-                                   max="350" step="0.5"
-                                   oninput="updateGS('deadlift-weight-slider',this.value,'deadlift-weight','deadlift-reps','deadlift-max')">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="deadlift-reps">Reps</label></td>
-                        <td><input type="number" name="deadlift-reps" id="deadlift-reps" value="1" min="1" max="19"
-                                   oninput="updateGS('deadlift-reps-slider',this.value,'deadlift-weight','deadlift-reps','deadlift-max')">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="deadlift-max">Max</label></td>
-                        <td><input type="text" id="deadlift-max" value="" readonly></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="overall-strength">
-            <div class="overall-strength-weight">
-                <label class="bigger-label" for="military-weight-slider">Military press - weight</label>
-                <input name="military-weight-slider" id="military-weight-slider" type="range" min="1" max="150"
-                       value="75"
-                       step="0.5" class="slider overall-strength-weight"
-                       oninput="updateGS('military-weight',this.value,'military-weight','military-reps','military-max')"><br/>
-            </div>
-            <div class="overall-strength-reps">
-                <label for="military-reps-slider">Reps</label>
-                <input name="military-reps-slider" id="military-reps-slider" type="range" min="1" max="19" value="1"
-                       step="1"
-                       class="slider overall-strength-reps"
-                       oninput="updateGS('military-reps',this.value,'military-weight','military-reps','military-max')"><br/>
-            </div>
-            <div class="overall-strength-text-inputs">
-                <table class="overall-strength-table">
-                    <tr>
-                        <td><label for="military-weight">Weight</label></td>
-                        <td><input type="number" name="military-weight" id="military-weight" value="75" min="1"
-                                   max="150" step="0.5"
-                                   oninput="updateGS('military-weight-slider',this.value,'military-weight','military-reps','military-max')">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="military-reps">Reps</label></td>
-                        <td><input type="number" name="military-reps" id="military-reps" value="1" min="1" max="19"
-                                   oninput="updateGS('military-reps-slider',this.value,'military-weight','military-reps','military-max')">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="military-max">Max</label></td>
-                        <td><input type="text" id="military-max" value="" readonly></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="overall-strength">
-            <div class="overall-strength-weight">
-                <label class="bigger-label" for="row-weight-slider">Barbell row - weight</label>
-                <input name="row-weight-slider" id="row-weight-slider" type="range" min="1" max="200" value="100"
-                       step="0.5" class="slider overall-strength-weight"
-                       oninput="updateGS('row-weight',this.value,'row-weight','row-reps','row-max')"><br/>
-            </div>
-            <div class="overall-strength-reps">
-                <label for="row-reps-slider">Reps</label>
-                <input name="row-reps-slider" id="row-reps-slider" type="range" min="1" max="19" value="1" step="1"
-                       class="slider overall-strength-reps"
-                       oninput="updateGS('row-reps',this.value,'row-weight','row-reps','row-max')"><br/>
-            </div>
-            <div class="overall-strength-text-inputs">
-                <table class="overall-strength-table">
-                    <tr>
-                        <td><label for="row-weight">Weight</label></td>
-                        <td><input type="number" name="row-weight" id="row-weight" value="100" min="1"
-                                   max="200" step="0.5"
-                                   oninput="updateGS('row-weight-slider',this.value,'row-weight','row-reps','row-max')">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="row-reps">Reps</label></td>
-                        <td><input type="number" name="row-reps" id="row-reps" value="1" min="1" max="19"
-                                   oninput="updateGS('row-reps-slider',this.value,'row-weight','row-reps','row-max')">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="row-max">Max</label></td>
-                        <td><input type="text" id="row-max" value="" readonly></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="overall-strength">
-            <div class="overall-strength-weight">
-                <label class="bigger-label" for="pullup-weight-slider">Weighted pull-up - weight</label>
-                <input name="pullup-weight-slider" id="pullup-weight-slider" type="range" min="1" max="150" value="75"
-                       step="0.5" class="slider overall-strength-weight"
-                       oninput="updateGS('pullup-weight',this.value,'pullup-weight','pullup-reps','pullup-max')"><br/>
-            </div>
-            <div class="overall-strength-reps">
-                <label for="pullup-reps-slider">Reps</label>
-                <input name="pullup-reps-slider" id="pullup-reps-slider" type="range" min="1" max="19" value="1"
-                       step="1"
-                       class="slider overall-strength-reps"
-                       oninput="updateGS('pullup-reps',this.value,'pullup-weight','pullup-reps','pullup-max')"><br/>
-            </div>
-            <div class="overall-strength-text-inputs">
-                <table class="overall-strength-table">
-                    <tr>
-                        <td><label for="pullup-weight">Weight</label></td>
-                        <td><input type="number" name="pullup-weight" id="pullup-weight" value="75" min="1"
-                                   max="150" step="0.5"
-                                   oninput="updateGS('pullup-weight-slider',this.value,'pullup-weight','pullup-reps','pullup-max')">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="pullup-reps">Reps</label></td>
-                        <td><input type="number" name="pullup-reps" id="pullup-reps" value="1" min="1" max="19"
-                                   oninput="updateGS('pullup-reps-slider',this.value,'pullup-weight','pullup-reps','pullup-max')">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="pullup-max">Max</label></td>
-                        <td><input type="text" id="pullup-max" value="" readonly></td>
-                    </tr>
-                </table>
+
+            <!--Tab#4 content-->
+            <div id="tab4" class="tab-pane centered fade"
+                 th:classappend="${showCalc == null}? 'in active'">
+                <div th:if="${!page.isEmpty()}" th:replace="__${page}__">
+                    <p>If you see this message, something went wrong...</p>
+                </div>
             </div>
         </div>
     </div>
-
-    <!--Tab#2 content - percentages calculator-->
-    <div id="tab2" class="tab-pane centered fade">
-        <br/>
-        <h3 class="tab-title">1 Rep Max and Percentages Calculator</h3>
-        <br>
-
-        <!--Weight slider-->
-        <div class="one-rep-max-inputs">
-            <label for="weight">Weight lifted</label>
-            <input name="weight" id="weight" type="range" min="1" max="200" value="100" class="slider" step="0.5"
-                   oninput="update('weight-text',this.value)"><br/>
-            <label for="weight-text"></label><input type="text" id="weight-text" value="100"
-                                                    oninput="update('weight',this.value)">
-        </div>
-        <br/>
-
-        <!--Number of reps performed slider-->
-        <div class="one-rep-max-inputs">
-            <label for="reps">Number of reps:</label>
-            <input name="reps" id="reps" type="range" min="1" max="19" value="10" class="slider" step="1"
-                   oninput="update('reps-text',this.value)"><br/>
-            <label for="reps-text"></label><input type="text" id="reps-text" value="10"
-                                                  oninput="update('reps',this.value)">
-        </div>
-        <br/>
-        <div>
-
-            <!--Percentages calculator-->
-            <table id="percentages">
-                <tr>
-                    <!--1 rep max result and "calculate" button-->
-                    <td class="centered" colspan="4">
-                        <label for="result">1 Rep Max - 100%:</label><input id="result" type="text" value="" readonly>
-                        <button class="my-button" type="button" onclick="calculate1RM()">Calculate</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><p id="percentage-description-1">Increases maximal strength via neural factors. Good for displaying strength. Difficult to recover from.</p></td>
-                    <td><label for="percentage-input-1">%</label></td>
-                    <td><input class="percentage-input" id="percentage-input-1" type="number" value="95" max="100"
-                               onchange="updatePercentageDescription('percentage-description-1', this.value)"/></td>
-                    <td id="percentage-1"></td>
-                </tr>
-                <tr>
-                    <td><p id="percentage-description-2">Best for building muscle strength, use ~80% for easy recovery, ~90% for quick strength peaking.</p></td>
-                    <td><label for="percentage-input-2">%</label></td>
-                    <td><input class="percentage-input" id="percentage-input-2" type="number" value="90" max="100"
-                               onchange="updatePercentageDescription('percentage-description-2', this.value)"/></td>
-                    <td id="percentage-2"></td>
-                </tr>
-                <tr>
-                    <td><p id="percentage-description-3">Best for building muscle strength, use ~80% for easy recovery, ~90% for quick strength peaking.</p></td>
-                    <td><label for="percentage-input-3">%</label></td>
-                    <td><input class="percentage-input" id="percentage-input-3" type="number" value="85" max="100"
-                               onchange="updatePercentageDescription('percentage-description-3', this.value)"/></td>
-                    <td id="percentage-3"></td>
-                </tr>
-                <tr>
-                    <td><p id="percentage-description-4">Best range for muscle mass building, also good for explosiveness (~70%) and strength (~80%) in Olympic lifting.</p></td>
-                    <td><label for="percentage-input-4">%</label></td>
-                    <td><input class="percentage-input" id="percentage-input-4" type="number" value="80" max="100"
-                               onchange="updatePercentageDescription('percentage-description-4', this.value)"/></td>
-                    <td id="percentage-4"></td>
-                </tr>
-                <tr>
-                    <td><p id="percentage-description-5">Best range for muscle mass building, also good for explosiveness (70%) and strength (80%) in Olympic lifting.</p></td>
-                    <td><label for="percentage-input-5">%</label></td>
-                    <td><input class="percentage-input" id="percentage-input-5" type="number" value="75" max="100"
-                               onchange="updatePercentageDescription('percentage-description-5', this.value)"/></td>
-                    <td id="percentage-5"></td>
-                </tr>
-                <tr>
-                    <td><p id="percentage-description-6">Best range for muscle mass building, also good for explosiveness (70%) and strength (80%) in Olympic lifting.</p></td>
-                    <td><label for="percentage-input-6">%</label></td>
-                    <td><input class="percentage-input" id="percentage-input-6" type="number" value="70" max="100"
-                               onchange="updatePercentageDescription('percentage-description-6', this.value)"/></td>
-                    <td id="percentage-6"></td>
-                </tr>
-                <tr>
-                    <td><p id="percentage-description-7">Best range for muscle mass building, also good for explosiveness (70%) and strength (80%) in Olympic lifting.</p></td>
-                    <td><label for="percentage-input-7">%</label></td>
-                    <td><input class="percentage-input" id="percentage-input-7" type="number" value="65" max="100"
-                               onchange="updatePercentageDescription('percentage-description-7', this.value)"/></td>
-                    <td id="percentage-7"></td>
-                </tr>
-                <tr>
-                    <td><p id="percentage-description-8">Explosiveness, speed and power. Great for muscle hardness. 60% can be used for hypertrophy when done to failure.</p></td>
-                    <td><label for="percentage-input-8">%</label></td>
-                    <td><input class="percentage-input" id="percentage-input-8" type="number" value="60" max="100"
-                               onchange="updatePercentageDescription('percentage-description-8', this.value)"/></td>
-                    <td id="percentage-8"></td>
-                </tr>
-                <tr>
-                    <td><p id="percentage-description-9">Explosiveness, speed and power. Great for muscle hardness. 60% can be used for hypertrophy when done to failure.</p></td>
-                    <td><label for="percentage-input-9">%</label></td>
-                    <td><input class="percentage-input" id="percentage-input-9" type="number" value="50" max="100"
-                               onchange="updatePercentageDescription('percentage-description-9', this.value)"/></td>
-                    <td id="percentage-9"></td>
-                </tr>
-                <tr>
-                    <td><p id="percentage-description-10"></p>Lower body ballistic work. Improves muscle hardness, develops power and contraction speed.</td>
-                    <td><label for="percentage-input-10">%</label></td>
-                    <td><input class="percentage-input" id="percentage-input-10" type="number" value="40" max="100"
-                               onchange="updatePercentageDescription('percentage-description-10', this.value)"/></td>
-                    <td id="percentage-10"></td>
-                </tr>
-                <tr>
-                    <td><p id="percentage-description-11"></p>Lower body ballistic work. Improves muscle hardness develops power and contraction speed.</td>
-                    <td><label for="percentage-input-11">%</label></td>
-                    <td><input class="percentage-input" id="percentage-input-11" type="number" value="30" max="100"
-                               onchange="updatePercentageDescription('percentage-description-11', this.value)"/></td>
-                    <td id="percentage-11"></td>
-                </tr>
-                <tr>
-                    <td><p id="percentage-description-12">Upper body ballistic work, lower body plyometrics. Improves muscle hardness and contraction speed.</p></td>
-                    <td><label for="percentage-input-12">%</label></td>
-                    <td><input class="percentage-input" id="percentage-input-12" type="number" value="20" max="100"
-                               onchange="updatePercentageDescription('percentage-description-12', this.value)"/></td>
-                    <td id="percentage-12"></td>
-                </tr>
-                <tr>
-                    <td><p id="percentage-description-13">Upper body ballistic work, lower body plyometrics. Improves muscle hardness and contraction speed.</p></td>
-                    <td><label for="percentage-input-13">%</label></td>
-                    <td><input class="percentage-input" id="percentage-input-13" type="number" value="10" max="100"
-                               onchange="updatePercentageDescription('percentage-description-13', this.value)"/></td>
-                    <td id="percentage-13"></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <!--Tab#3 content-->
-    <div id="tab3" class="tab-pane centered fade">
-        <br/>
-        <h3 class="tab-title">Calculator #2</h3>
-        <br/>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed imperdiet ante elit, ac congue eros viverra
-            id. Phasellus quis sagittis urna. Sed in justo est. Maecenas nulla nibh, vehicula ac quam ac, mattis
-            placerat risus. Donec ac tortor at ex ultrices faucibus in id mauris. Quisque sed egestas neque.
-            Curabitur varius placerat gravida. Aliquam nunc diam, rhoncus eu odio id, vestibulum convallis libero.
-            Vestibulum a sem ipsum. Integer maximus metus dapibus bibendum ornare. Morbi id leo vel arcu lacinia
-            sagittis in sit amet leo. Suspendisse id cursus justo, at aliquet neque. Maecenas a lobortis mi. Ut
-            ultrices ex non dictum consequat. Suspendisse tempor viverra est et lacinia.
-
-            Fusce cursus sit amet massa quis interdum. Suspendisse pretium ornare lacus, quis ornare nisi euismod
-            et. Proin in gravida odio. Aliquam metus mi, egestas vel orci mollis, hendrerit malesuada odio. Duis
-            pulvinar mollis nulla, eget semper velit laoreet non. In venenatis venenatis magna. Nulla aliquet
-            finibus tortor, quis pellentesque urna euismod dapibus. Vestibulum ut arcu sed ipsum iaculis condimentum
-            sit amet in urna. Pellentesque aliquam vestibulum tortor, et tincidunt est. Maecenas ac leo non turpis
-            lobortis fermentum sit amet vitae arcu. Pellentesque at mattis odio. Aenean a tempus massa. Curabitur a
-            lectus non neque fermentum suscipit. Interdum et malesuada fames ac ante ipsum primis in faucibus. In id
-            turpis scelerisque, gravida turpis a, ornare nulla.
-
-            Aenean convallis, lectus ut pretium aliquam, urna neque porttitor leo, vel ultrices massa justo et ante.
-            Cras egestas, nulla scelerisque rhoncus tincidunt, quam neque accumsan ligula, et semper leo diam ac
-            magna. Quisque at porttitor diam. Integer viverra diam eros, non egestas nisi lacinia nec. Donec dui
-            tortor, suscipit in lorem eget, porttitor ullamcorper elit. Nulla sit amet leo sit amet turpis lacinia
-            vulputate. Suspendisse non efficitur orci, at porta sem. Ut a sapien eu libero faucibus volutpat nec et
-            dolor. Aliquam varius eu nulla sed malesuada. Nam id eros vel magna tincidunt iaculis. Vivamus tincidunt
-            metus odio, sit amet feugiat enim pulvinar in. Integer bibendum est a velit pharetra tincidunt.
-            Phasellus quis malesuada sapien. Praesent erat dolor, lacinia sit amet magna vitae, convallis vestibulum
-            ligula. Cras maximus, nisl lacinia euismod imperdiet, magna urna posuere lectus, in finibus risus ante
-            et sem.
-
-            Cras sapien mi, luctus in malesuada sit amet, tincidunt sed mi. Nunc auctor consequat mi, id maximus
-            nisi efficitur venenatis. Aenean porta nisl vitae sagittis accumsan. Duis sem velit, venenatis sed justo
-            quis, imperdiet malesuada magna. Praesent non sodales eros. Integer nec malesuada dolor, a vestibulum
-            urna. Aliquam erat volutpat. Nunc nulla turpis, efficitur ut leo eu, faucibus bibendum lacus. Etiam
-            luctus dui sit amet est tristique, ut laoreet erat consequat. Nunc condimentum vestibulum dolor ut
-            tempus. In vel dui et orci euismod feugiat sed ut ex.
-
-            Pellentesque ac turpis mattis, accumsan magna eget, lobortis lacus. Mauris mi est, pulvinar a pulvinar
-            quis, commodo in felis. In volutpat urna dui. Sed placerat tortor eu faucibus dapibus. Sed iaculis ut
-            enim ut malesuada. Maecenas vitae velit ex. Nullam lobortis lorem non ante bibendum, ac rhoncus ante
-            eleifend. Aenean finibus tempus mauris, sodales congue diam sodales in. Maecenas tempus lacinia
-            accumsan. Etiam commodo felis vel semper eleifend. Quisque non faucibus diam. Donec lobortis lacus
-            risus, at lobortis quam porttitor sed. Nullam scelerisque imperdiet lorem eu feugiat. Proin finibus
-            elementum ipsum et scelerisque. In eros ante, efficitur rhoncus lacus quis, mollis gravida lacus.
-
-            Suspendisse tempor venenatis sem, in auctor erat pretium a. Vivamus eget gravida purus, a dapibus
-            tortor. Donec tristique sapien et dui sollicitudin bibendum. Nulla facilisi. Pellentesque habitant morbi
-            tristique senectus et netus et malesuada fames ac turpis egestas. Praesent id volutpat diam. Proin
-            ullamcorper erat posuere, aliquam elit non, bibendum quam. Maecenas at suscipit mi, consequat ornare ex.
-            Sed imperdiet dui sit amet suscipit bibendum. Quisque vel lobortis nunc. Proin consectetur, arcu eget
-            tincidunt tempus, nunc diam volutpat magna, sed facilisis risus eros quis tellus. Integer pretium
-            vestibulum mauris, non facilisis leo imperdiet in.
-
-            Sed vulputate felis eu orci maximus, a condimentum libero hendrerit. Vestibulum id dignissim erat.
-            Praesent placerat, nisl ac condimentum condimentum, quam dolor molestie ante, rhoncus sollicitudin
-            mauris felis ut augue. Fusce id augue eros. Sed tincidunt ex quis aliquet ultricies. Aliquam pretium
-            volutpat metus at maximus. Donec condimentum sodales diam, vel fermentum felis tempor ut.
-
-            Vivamus tincidunt, velit a rhoncus egestas, urna est venenatis sapien, vitae euismod mi sem non nisi.
-            Vivamus eu tincidunt turpis. Suspendisse a feugiat dolor, quis hendrerit risus. Sed rutrum ante sed
-            tincidunt hendrerit. Sed sit amet dignissim ligula. Suspendisse efficitur semper velit, molestie posuere
-            leo porta scelerisque. Suspendisse volutpat elementum tortor, eu dictum tortor interdum ut. Fusce
-            pulvinar justo vitae leo malesuada consequat. Quisque sagittis nulla ac risus porta lobortis. Mauris est
-            ipsum, congue non urna id, pellentesque pretium leo.
-
-            In malesuada orci vitae felis efficitur vehicula. Morbi ipsum nisl, pharetra in erat a, viverra iaculis
-            est. Curabitur gravida, nisl ac aliquam vehicula, lorem ante accumsan risus, quis molestie nunc erat et
-            dui. Quisque vehicula enim lorem, a pellentesque enim varius et. Pellentesque iaculis quis metus ut
-            tincidunt. Nam vestibulum libero placerat tortor finibus, vel condimentum quam tincidunt. Quisque
-            laoreet mauris sit amet massa dapibus blandit. Phasellus eu elementum magna.
-
-            Pellentesque in aliquet libero, non egestas turpis. Sed vehicula ex leo, ac feugiat dolor molestie non.
-            Vestibulum sapien lacus, cursus non laoreet nec, mattis in lacus. Sed at tellus eget ante ultrices
-            gravida. Pellentesque magna orci, ullamcorper at placerat vitae, fringilla ac est. Aliquam mauris nulla,
-            pharetra sit amet erat eget, cursus faucibus eros. Duis vel volutpat lacus. Orci varius natoque
-            penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus lorem leo, vehicula sit
-            amet tincidunt id, tincidunt mollis felis. Nunc pulvinar a mi a gravida. Vivamus eros est, hendrerit ac
-            congue in, porta vel nisl. Pellentesque aliquam porttitor semper. Aenean pellentesque vitae lacus sed
-            mollis. Nunc velit enim, venenatis vel interdum sit amet, lacinia semper diam. Proin volutpat luctus
-            nibh quis consectetur.</p>
-    </div>
-
-    <!--Tab#4 content-->
-    <div id="tab4" class="tab-pane centered fade"
-         th:classappend="${showCalc == null}? 'in active'">
-        <div th:if="${!page.isEmpty()}" th:replace="__${page}__">
-            <p>If you see this message, something went wrong...</p>
-        </div>
-    </div>
-</div>
-</div>
     <!--Page footer content-->
 </div>
 </body>
