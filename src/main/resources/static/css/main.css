@@ -206,7 +206,7 @@ button:active, input[type=submit]:active, .my-button:active {
     width: 100%;
 }
 
-/* navigation tabs */
+/* Navigation tabs */
 #big-tabs li a {
     border: 1px solid white;
     border-bottom: 0;
@@ -233,6 +233,10 @@ button:active, input[type=submit]:active, .my-button:active {
     /*background-color: #FFFFFF;*/
     border: 1px solid #FF9200;
     border-bottom: 0;
+}
+
+#filler {
+    height: 33px;
 }
 
 /* Overall strength tab */

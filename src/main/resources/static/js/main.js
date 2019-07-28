@@ -6,31 +6,32 @@ $(document).ready(function () {
 
     let logo = document.getElementById('logo-container');
     let navbar = document.getElementById('big-tabs');
-    let tab4 = document.getElementById('testdonthide')
-    let donthide = false;
+    let tab4 = document.getElementById('testdonthide');
+    let filler = document.getElementById('filler');
+    let dontshow = false;
 
     window.addEventListener('scroll', function () {
+        console.log($(this).scrollTop());
         if ($(this).scrollTop() === 0) {
-            if (donthide === false) {
+            if (dontshow === false) {
                 if (logo.style.display === 'none') {
                     navbar.classList.remove('sticky');
+                    $(filler).slideUp('fast');
                     $(logo).show('fast');
                 }
             } else {
-                donthide = false;
+                dontshow = false;
             }
 
         } else if (logo.style.display !== 'none') {
             $(logo).slideUp('fast');
+            $(filler).show('fast');
             navbar.classList.add('sticky');
         }
     });
 
-    tab4.addEventListener('click', function() {
-        console.log(donthide);
-        console.log("don't hide!");
-        donthide = true;
-        console.log(donthide);
+    tab4.addEventListener('click', function () {
+        dontshow = true;
     });
 });
 
@@ -50,7 +51,12 @@ function updateGS(fieldToUpdate, value, weightField, repsField, maxField) {
     document.getElementById(maxField).value = Math.round(weight * (1 + (reps / 30)) * 100) / 100;
 }
 
-/* function calculates the 1 rep max and percentages in 1 Rep Max tab */
+/* This function updates an element of certain id with given value */
+function update(field, val) {
+    document.getElementById(field).value = val;
+}
+
+/* This function calculates the 1 rep max and percentages in 1 Rep Max tab */
 function calculate1RM() {
     let weight = document.getElementById('weight-text').value;
     let reps = document.getElementById('reps-text').value;
@@ -83,12 +89,6 @@ function calculate1RM() {
     document.getElementById('percentage-13').value =
         (document.getElementById('percentage-input-13').value * 0.01 * result).toFixed(2);
 }
-
-/* This function updates an element of certain id with given value */
-function update(field, val) {
-    document.getElementById(field).value = val;
-}
-
 
 /* This function updates descriptions for percentages of 1 Rep Max */
 function updatePercentageDescription(description, percentage) {

@@ -25,25 +25,27 @@
         <!--Navbar section-->
 
         <!--Tab header section-->
-        <!--Either main calculator tab or login tab are active depending on boolean sent from controller-->
+        <!--Either main calculator tab or login tab are active
+        depending on boolean variable sent from controller-->
         <ul class="nav nav-tabs nav-justified" id="big-tabs">
-            <li class="" th:classappend="${showCalc != null}? active"><a data-toggle="tab"
-                                                                         href="#tab1">Overall
-                Strength</a>
+            <li class="" th:classappend="${showCalc != null}? active">
+                <a data-toggle="tab" href="#tab1">Overall Strength</a>
             </li>
             <li><a data-toggle="tab" href="#tab2">1 Rep Max</a></li>
             <li><a data-toggle="tab" href="#tab3">Calculator #2</a></li>
-            <li class="" th:classappend="${showCalc == null}? active"><a data-toggle="tab"
-                                                                         href="#tab4"
-                                                                         id="testdonthide">Training
-                Log</a>
+            <li class="" th:classappend="${showCalc == null}? active">
+                <a data-toggle="tab" href="#tab4" id="testdonthide">Training Log</a>
             </li>
         </ul>
     </div>
 
     <!--Tab content-->
-    <!--Either main calculator tab or login tab content are visible depending on boolean sent from controller-->
-    <div class="center-container" id="cc">
+    <!--Either main calculator tab or login tab content are visible
+    depending on boolean variable sent from controller-->
+    <div class="center-container">
+        <div id="filler" style="display: none;">
+            <h5>This is the fucking filler!!!</h5>
+        </div>
         <div class="tab-content">
 
             <!--Tab#1 content - overall strength calculator-->
@@ -59,14 +61,16 @@
                         <input name="squat-weight-slider" id="squat-weight-slider" type="range"
                                min="1" max="300" value="150"
                                step="0.5" class="slider overall-strength-weight"
-                               oninput="updateGS('squat-weight',this.value,'squat-weight','squat-reps','squat-max')"><br/>
+                               oninput="updateGS('squat-weight',this.value,
+                               'squat-weight','squat-reps','squat-max')"><br/>
                     </div>
                     <div class="overall-strength-reps">
                         <label for="squat-reps-slider">Reps</label>
                         <input name="squat-reps-slider" id="squat-reps-slider" type="range" min="1"
                                max="19" value="1" step="1"
                                class="slider overall-strength-reps"
-                               oninput="updateGS('squat-reps',this.value,'squat-weight','squat-reps','squat-max')"><br/>
+                               oninput="updateGS('squat-reps',this.value,
+                               'squat-weight','squat-reps','squat-max')"><br/>
                     </div>
                     <div class="overall-strength-text-inputs">
                         <table class="overall-strength-table">
@@ -75,14 +79,16 @@
                                 <td><input type="number" name="squat-weight" id="squat-weight"
                                            value="150" min="1"
                                            max="300" step="0.5"
-                                           oninput="updateGS('squat-weight-slider',this.value,'squat-weight','squat-reps','squat-max')">
+                                           oninput="updateGS('squat-weight-slider',
+                                           this.value,'squat-weight','squat-reps','squat-max')">
                                 </td>
                             </tr>
                             <tr>
                                 <td><label for="squat-reps">Reps</label></td>
                                 <td><input type="number" name="squat-reps" id="squat-reps" value="1"
                                            min="1" max="19"
-                                           oninput="updateGS('squat-reps-slider',this.value,'squat-weight','squat-reps','squat-max')">
+                                           oninput="updateGS('squat-reps-slider',
+                                           this.value,'squat-weight','squat-reps','squat-max')">
                                 </td>
                             </tr>
                             <tr>
@@ -99,14 +105,16 @@
                         <input name="bench-weight-slider" id="bench-weight-slider" type="range"
                                min="1" max="250" value="125"
                                step="0.5" class="slider overall-strength-weight"
-                               oninput="updateGS('bench-weight',this.value,'bench-weight','bench-reps','bench-max')"><br/>
+                               oninput="updateGS('bench-weight',
+                               this.value,'bench-weight','bench-reps','bench-max')"><br/>
                     </div>
                     <div class="overall-strength-reps">
                         <label for="bench-reps-slider">Reps</label>
                         <input name="bench-reps-slider" id="bench-reps-slider" type="range" min="1"
                                max="19" value="1" step="1"
                                class="slider overall-strength-reps"
-                               oninput="updateGS('bench-reps',this.value,'bench-weight','bench-reps','bench-max')"><br/>
+                               oninput="updateGS('bench-reps',
+                               this.value,'bench-weight','bench-reps','bench-max')"><br/>
                     </div>
                     <div class="overall-strength-text-inputs">
                         <table class="overall-strength-table">
@@ -115,14 +123,16 @@
                                 <td><input type="number" name="squat-weight" id="bench-weight"
                                            value="125" min="1"
                                            max="250" step="0.5"
-                                           oninput="updateGS('bench-weight-slider',this.value,'bench-weight','bench-reps','bench-max')">
+                                           oninput="updateGS('bench-weight-slider',
+                                           this.value,'bench-weight','bench-reps','bench-max')">
                                 </td>
                             </tr>
                             <tr>
                                 <td><label for="bench-reps">Reps</label></td>
                                 <td><input type="number" name="bench-reps" id="bench-reps" value="1"
                                            min="1" max="19"
-                                           oninput="updateGS('bench-reps-slider',this.value,'bench-weight','bench-reps','bench-max')">
+                                           oninput="updateGS('bench-reps-slider',
+                                           this.value,'bench-weight','bench-reps','bench-max')">
                                 </td>
                             </tr>
                             <tr>
@@ -140,7 +150,8 @@
                                type="range" min="1" max="350"
                                value="175"
                                step="0.5" class="slider overall-strength-weight"
-                               oninput="updateGS('deadlift-weight',this.value,'deadlift-weight','deadlift-reps','deadlift-max')"><br/>
+                               oninput="updateGS('deadlift-weight',this.value,
+                               'deadlift-weight','deadlift-reps','deadlift-max')"><br/>
                     </div>
                     <div class="overall-strength-reps">
                         <label for="deadlift-reps-slider">Reps</label>
@@ -148,7 +159,8 @@
                                min="1" max="19" value="1"
                                step="1"
                                class="slider overall-strength-reps"
-                               oninput="updateGS('deadlift-reps',this.value,'deadlift-weight','deadlift-reps','deadlift-max')"><br/>
+                               oninput="updateGS('deadlift-reps',this.value,
+                               'deadlift-weight','deadlift-reps','deadlift-max')"><br/>
                     </div>
                     <div class="overall-strength-text-inputs">
                         <table class="overall-strength-table">
@@ -157,14 +169,16 @@
                                 <td><input type="number" name="squat-weight" id="deadlift-weight"
                                            value="175" min="1"
                                            max="350" step="0.5"
-                                           oninput="updateGS('deadlift-weight-slider',this.value,'deadlift-weight','deadlift-reps','deadlift-max')">
+                                           oninput="updateGS('deadlift-weight-slider',
+                                           this.value,'deadlift-weight','deadlift-reps','deadlift-max')">
                                 </td>
                             </tr>
                             <tr>
                                 <td><label for="deadlift-reps">Reps</label></td>
                                 <td><input type="number" name="deadlift-reps" id="deadlift-reps"
                                            value="1" min="1" max="19"
-                                           oninput="updateGS('deadlift-reps-slider',this.value,'deadlift-weight','deadlift-reps','deadlift-max')">
+                                           oninput="updateGS('deadlift-reps-slider',
+                                           this.value,'deadlift-weight','deadlift-reps','deadlift-max')">
                                 </td>
                             </tr>
                             <tr>
@@ -182,7 +196,8 @@
                                type="range" min="1" max="150"
                                value="75"
                                step="0.5" class="slider overall-strength-weight"
-                               oninput="updateGS('military-weight',this.value,'military-weight','military-reps','military-max')"><br/>
+                               oninput="updateGS('military-weight',this.value,
+                               'military-weight','military-reps','military-max')"><br/>
                     </div>
                     <div class="overall-strength-reps">
                         <label for="military-reps-slider">Reps</label>
@@ -190,7 +205,8 @@
                                min="1" max="19" value="1"
                                step="1"
                                class="slider overall-strength-reps"
-                               oninput="updateGS('military-reps',this.value,'military-weight','military-reps','military-max')"><br/>
+                               oninput="updateGS('military-reps',this.value,
+                               'military-weight','military-reps','military-max')"><br/>
                     </div>
                     <div class="overall-strength-text-inputs">
                         <table class="overall-strength-table">
@@ -199,14 +215,16 @@
                                 <td><input type="number" name="military-weight" id="military-weight"
                                            value="75" min="1"
                                            max="150" step="0.5"
-                                           oninput="updateGS('military-weight-slider',this.value,'military-weight','military-reps','military-max')">
+                                           oninput="updateGS('military-weight-slider',this.value,
+                                           'military-weight','military-reps','military-max')">
                                 </td>
                             </tr>
                             <tr>
                                 <td><label for="military-reps">Reps</label></td>
                                 <td><input type="number" name="military-reps" id="military-reps"
                                            value="1" min="1" max="19"
-                                           oninput="updateGS('military-reps-slider',this.value,'military-weight','military-reps','military-max')">
+                                           oninput="updateGS('military-reps-slider',this.value,
+                                           'military-weight','military-reps','military-max')">
                                 </td>
                             </tr>
                             <tr>
@@ -223,14 +241,16 @@
                         <input name="row-weight-slider" id="row-weight-slider" type="range" min="1"
                                max="200" value="100"
                                step="0.5" class="slider overall-strength-weight"
-                               oninput="updateGS('row-weight',this.value,'row-weight','row-reps','row-max')"><br/>
+                               oninput="updateGS('row-weight',this.value,
+                               'row-weight','row-reps','row-max')"><br/>
                     </div>
                     <div class="overall-strength-reps">
                         <label for="row-reps-slider">Reps</label>
                         <input name="row-reps-slider" id="row-reps-slider" type="range" min="1"
                                max="19" value="1" step="1"
                                class="slider overall-strength-reps"
-                               oninput="updateGS('row-reps',this.value,'row-weight','row-reps','row-max')"><br/>
+                               oninput="updateGS('row-reps',
+                               this.value,'row-weight','row-reps','row-max')"><br/>
                     </div>
                     <div class="overall-strength-text-inputs">
                         <table class="overall-strength-table">
@@ -239,14 +259,16 @@
                                 <td><input type="number" name="row-weight" id="row-weight"
                                            value="100" min="1"
                                            max="200" step="0.5"
-                                           oninput="updateGS('row-weight-slider',this.value,'row-weight','row-reps','row-max')">
+                                           oninput="updateGS('row-weight-slider',
+                                           this.value,'row-weight','row-reps','row-max')">
                                 </td>
                             </tr>
                             <tr>
                                 <td><label for="row-reps">Reps</label></td>
                                 <td><input type="number" name="row-reps" id="row-reps" value="1"
                                            min="1" max="19"
-                                           oninput="updateGS('row-reps-slider',this.value,'row-weight','row-reps','row-max')">
+                                           oninput="updateGS('row-reps-slider',
+                                           this.value,'row-weight','row-reps','row-max')">
                                 </td>
                             </tr>
                             <tr>
@@ -263,7 +285,8 @@
                         <input name="pullup-weight-slider" id="pullup-weight-slider" type="range"
                                min="1" max="150" value="75"
                                step="0.5" class="slider overall-strength-weight"
-                               oninput="updateGS('pullup-weight',this.value,'pullup-weight','pullup-reps','pullup-max')"><br/>
+                               oninput="updateGS('pullup-weight',
+                               this.value,'pullup-weight','pullup-reps','pullup-max')"><br/>
                     </div>
                     <div class="overall-strength-reps">
                         <label for="pullup-reps-slider">Reps</label>
@@ -271,7 +294,8 @@
                                min="1" max="19" value="1"
                                step="1"
                                class="slider overall-strength-reps"
-                               oninput="updateGS('pullup-reps',this.value,'pullup-weight','pullup-reps','pullup-max')"><br/>
+                               oninput="updateGS('pullup-reps',
+                               this.value,'pullup-weight','pullup-reps','pullup-max')"><br/>
                     </div>
                     <div class="overall-strength-text-inputs">
                         <table class="overall-strength-table">
@@ -280,14 +304,16 @@
                                 <td><input type="number" name="pullup-weight" id="pullup-weight"
                                            value="75" min="1"
                                            max="150" step="0.5"
-                                           oninput="updateGS('pullup-weight-slider',this.value,'pullup-weight','pullup-reps','pullup-max')">
+                                           oninput="updateGS('pullup-weight-slider',
+                                           this.value,'pullup-weight','pullup-reps','pullup-max')">
                                 </td>
                             </tr>
                             <tr>
                                 <td><label for="pullup-reps">Reps</label></td>
                                 <td><input type="number" name="pullup-reps" id="pullup-reps"
                                            value="1" min="1" max="19"
-                                           oninput="updateGS('pullup-reps-slider',this.value,'pullup-weight','pullup-reps','pullup-max')">
+                                           oninput="updateGS('pullup-reps-slider',
+                                           this.value,'pullup-weight','pullup-reps','pullup-max')">
                                 </td>
                             </tr>
                             <tr>
@@ -349,10 +375,12 @@
                             <td><label for="percentage-input-1">%</label></td>
                             <td><input class="percentage-input" id="percentage-input-1"
                                        type="number" value="95" max="100"
-                                       onchange="updatePercentageDescription('percentage-description-1', this.value)"/>
+                                       onchange="updatePercentageDescription
+                                       ('percentage-description-1', this.value)"/>
                             </td>
                             <td><label for="percentage-1"></label>
-                                <input type="text" id="percentage-1" value="" size="4" readonly></td>
+                                <input type="text" id="percentage-1" value="" size="4" readonly>
+                            </td>
                         </tr>
                         <tr>
                             <td><p id="percentage-description-2">Best for building muscle strength,
@@ -361,10 +389,12 @@
                             <td><label for="percentage-input-2">%</label></td>
                             <td><input class="percentage-input" id="percentage-input-2"
                                        type="number" value="90" max="100"
-                                       onchange="updatePercentageDescription('percentage-description-2', this.value)"/>
+                                       onchange="updatePercentageDescription
+                                       ('percentage-description-2', this.value)"/>
                             </td>
                             <td><label for="percentage-2"></label>
-                                <input type="text" id="percentage-2" value="" size="4" readonly></td>
+                                <input type="text" id="percentage-2" value="" size="4" readonly>
+                            </td>
                         </tr>
                         <tr>
                             <td><p id="percentage-description-3">Best for building muscle strength,
@@ -373,10 +403,12 @@
                             <td><label for="percentage-input-3">%</label></td>
                             <td><input class="percentage-input" id="percentage-input-3"
                                        type="number" value="85" max="100"
-                                       onchange="updatePercentageDescription('percentage-description-3', this.value)"/>
+                                       onchange="updatePercentageDescription
+                                       ('percentage-description-3', this.value)"/>
                             </td>
                             <td><label for="percentage-3"></label>
-                                <input type="text" id="percentage-3" value="" size="4" readonly></td>
+                                <input type="text" id="percentage-3" value="" size="4" readonly>
+                            </td>
                         </tr>
                         <tr>
                             <td><p id="percentage-description-4">Best range for muscle mass
@@ -385,10 +417,12 @@
                             <td><label for="percentage-input-4">%</label></td>
                             <td><input class="percentage-input" id="percentage-input-4"
                                        type="number" value="80" max="100"
-                                       onchange="updatePercentageDescription('percentage-description-4', this.value)"/>
+                                       onchange="updatePercentageDescription
+                                       ('percentage-description-4', this.value)"/>
                             </td>
                             <td><label for="percentage-4"></label>
-                                <input type="text" id="percentage-4" value="" size="4" readonly></td>
+                                <input type="text" id="percentage-4" value="" size="4" readonly>
+                            </td>
                         </tr>
                         <tr>
                             <td><p id="percentage-description-5">Best range for muscle mass
@@ -398,10 +432,12 @@
                             <td><label for="percentage-input-5">%</label></td>
                             <td><input class="percentage-input" id="percentage-input-5"
                                        type="number" value="75" max="100"
-                                       onchange="updatePercentageDescription('percentage-description-5', this.value)"/>
+                                       onchange="updatePercentageDescription
+                                       ('percentage-description-5', this.value)"/>
                             </td>
                             <td><label for="percentage-5"></label>
-                                <input type="text" id="percentage-5" value="" size="4" readonly></td>
+                                <input type="text" id="percentage-5" value="" size="4" readonly>
+                            </td>
                         </tr>
                         <tr>
                             <td><p id="percentage-description-6">Best range for muscle mass
@@ -410,10 +446,12 @@
                             <td><label for="percentage-input-6">%</label></td>
                             <td><input class="percentage-input" id="percentage-input-6"
                                        type="number" value="70" max="100"
-                                       onchange="updatePercentageDescription('percentage-description-6', this.value)"/>
+                                       onchange="updatePercentageDescription
+                                       ('percentage-description-6', this.value)"/>
                             </td>
                             <td><label for="percentage-6"></label>
-                                <input type="text" id="percentage-6" value="" size="4" readonly></td>
+                                <input type="text" id="percentage-6" value="" size="4" readonly>
+                            </td>
                         </tr>
                         <tr>
                             <td><p id="percentage-description-7">Best range for muscle mass
@@ -422,10 +460,12 @@
                             <td><label for="percentage-input-7">%</label></td>
                             <td><input class="percentage-input" id="percentage-input-7"
                                        type="number" value="65" max="100"
-                                       onchange="updatePercentageDescription('percentage-description-7', this.value)"/>
+                                       onchange="updatePercentageDescription
+                                       ('percentage-description-7', this.value)"/>
                             </td>
                             <td><label for="percentage-7"></label>
-                                <input type="text" id="percentage-7" value="" size="4" readonly></td>
+                                <input type="text" id="percentage-7" value="" size="4" readonly>
+                            </td>
                         </tr>
                         <tr>
                             <td><p id="percentage-description-8">Explosiveness, speed and power.
@@ -434,10 +474,12 @@
                             <td><label for="percentage-input-8">%</label></td>
                             <td><input class="percentage-input" id="percentage-input-8"
                                        type="number" value="60" max="100"
-                                       onchange="updatePercentageDescription('percentage-description-8', this.value)"/>
+                                       onchange="updatePercentageDescription
+                                       ('percentage-description-8', this.value)"/>
                             </td>
                             <td><label for="percentage-8"></label>
-                                <input type="text" id="percentage-8" value="" size="4" readonly></td>
+                                <input type="text" id="percentage-8" value="" size="4" readonly>
+                            </td>
                         </tr>
                         <tr>
                             <td><p id="percentage-description-9">Explosiveness, speed and power.
@@ -446,10 +488,12 @@
                             <td><label for="percentage-input-9">%</label></td>
                             <td><input class="percentage-input" id="percentage-input-9"
                                        type="number" value="50" max="100"
-                                       onchange="updatePercentageDescription('percentage-description-9', this.value)"/>
+                                       onchange="updatePercentageDescription
+                                       ('percentage-description-9', this.value)"/>
                             </td>
                             <td><label for="percentage-9"></label>
-                                <input type="text" id="percentage-9" value="" size="4" readonly></td>
+                                <input type="text" id="percentage-9" value="" size="4" readonly>
+                            </td>
                         </tr>
                         <tr>
                             <td><p id="percentage-description-10">Lower body ballistic work.
@@ -458,10 +502,12 @@
                             <td><label for="percentage-input-10">%</label></td>
                             <td><input class="percentage-input" id="percentage-input-10"
                                        type="number" value="40" max="100"
-                                       onchange="updatePercentageDescription('percentage-description-10', this.value)"/>
+                                       onchange="updatePercentageDescription
+                                       ('percentage-description-10', this.value)"/>
                             </td>
                             <td><label for="percentage-10"></label>
-                                <input type="text" id="percentage-10" value="" size="4" readonly></td>
+                                <input type="text" id="percentage-10" value="" size="4" readonly>
+                            </td>
                         </tr>
                         <tr>
                             <td><p id="percentage-description-11">Lower body ballistic work.
@@ -470,10 +516,12 @@
                             <td><label for="percentage-input-11">%</label></td>
                             <td><input class="percentage-input" id="percentage-input-11"
                                        type="number" value="30" max="100"
-                                       onchange="updatePercentageDescription('percentage-description-11', this.value)"/>
+                                       onchange="updatePercentageDescription
+                                       ('percentage-description-11', this.value)"/>
                             </td>
                             <td><label for="percentage-11"></label>
-                                <input type="text" id="percentage-11" value="" size="4" readonly></td>
+                                <input type="text" id="percentage-11" value="" size="4" readonly>
+                            </td>
                         </tr>
                         <tr>
                             <td><p id="percentage-description-12">Upper body ballistic work, lower
@@ -482,10 +530,12 @@
                             <td><label for="percentage-input-12">%</label></td>
                             <td><input class="percentage-input" id="percentage-input-12"
                                        type="number" value="20" max="100"
-                                       onchange="updatePercentageDescription('percentage-description-12', this.value)"/>
+                                       onchange="updatePercentageDescription
+                                       ('percentage-description-12', this.value)"/>
                             </td>
                             <td><label for="percentage-12"></label>
-                                <input type="text" id="percentage-12" value="" size="4" readonly></td>
+                                <input type="text" id="percentage-12" value="" size="4" readonly>
+                            </td>
                         </tr>
                         <tr>
                             <td><p id="percentage-description-13">Upper body ballistic work, lower
@@ -494,10 +544,12 @@
                             <td><label for="percentage-input-13">%</label></td>
                             <td><input class="percentage-input" id="percentage-input-13"
                                        type="number" value="10" max="100"
-                                       onchange="updatePercentageDescription('percentage-description-13', this.value)"/>
+                                       onchange="updatePercentageDescription
+                                       ('percentage-description-13', this.value)"/>
                             </td>
                             <td><label for="percentage-13"></label>
-                                <input type="text" id="percentage-13" value="" size="4" readonly></td>
+                                <input type="text" id="percentage-13" value="" size="4" readonly>
+                            </td>
                         </tr>
                     </table>
                 </div>
