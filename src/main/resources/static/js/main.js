@@ -16,16 +16,16 @@ $(document).ready(function () {
             if (dontshow === false) {
                 if (logo.style.display === 'none') {
                     navbar.classList.remove('sticky');
-                    $(filler).slideUp('fast');
-                    $(logo).show('fast');
+                    $(filler).slideUp('fast').queue(false);
+                    $(logo).show('fast').queue(false);
                 }
             } else {
                 dontshow = false;
             }
 
         } else if (logo.style.display !== 'none') {
-            $(logo).slideUp('fast');
-            $(filler).show('fast');
+            $(logo).slideUp('fast').queue(false);
+            $(filler).show('fast').queue(false);
             navbar.classList.add('sticky');
         }
     });
