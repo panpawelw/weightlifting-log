@@ -207,6 +207,10 @@ button:active, input[type=submit]:active, .my-button:active {
 }
 
 /* Navigation tabs */
+#big-tabs {
+    z-index: 2;
+}
+
 #big-tabs li a {
     border: 1px solid white;
     border-bottom: 0;
@@ -235,8 +239,14 @@ button:active, input[type=submit]:active, .my-button:active {
     border-bottom: 0;
 }
 
-#filler {
-    height: 33px;
+#filler-1 {
+    height: 40px;
+    background-color: #454343;
+    z-index: 1;
+}
+
+#filler-2 {
+    height: 40px;
     background-color: #454343;
 }
 

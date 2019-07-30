@@ -7,7 +7,8 @@ $(document).ready(function () {
     let logo = document.getElementById('logo-container');
     let navbar = document.getElementById('big-tabs');
     let tab4 = document.getElementById('testdonthide');
-    let filler = document.getElementById('filler');
+    let filler1 = document.getElementById('filler-1');
+    let filler2 = document.getElementById('filler-2');
     let dontshow = false;
 
     window.addEventListener('scroll', function () {
@@ -16,7 +17,9 @@ $(document).ready(function () {
             if (dontshow === false) {
                 if (logo.style.display === 'none') {
                     navbar.classList.remove('sticky');
-                    $(filler).slideUp('fast').queue(false);
+                    filler1.classList.remove('sticky');
+                    $(filler1).slideUp('fast').queue(false);
+                    $(filler2).slideUp('fast').queue(false);
                     $(logo).show('fast').queue(false);
                 }
             } else {
@@ -25,12 +28,15 @@ $(document).ready(function () {
 
         } else if (logo.style.display !== 'none') {
             $(logo).slideUp('fast').queue(false);
-            $(filler).show('fast').queue(false);
+            $(filler2).show('fast').queue(false);
+            $(filler1).show('fast').queue(false);
+            filler1.classList.add('sticky');
             navbar.classList.add('sticky');
         }
     });
 
     tab4.addEventListener('click', function () {
+        $(this).scrollTop(1);
         dontshow = true;
     });
 });
