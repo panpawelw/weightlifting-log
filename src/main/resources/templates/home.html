@@ -29,12 +29,12 @@
         depending on boolean variable sent from controller-->
         <ul class="nav nav-tabs nav-justified" id="big-tabs">
             <li class="" th:classappend="${showCalc != null}? active">
-                <a data-toggle="tab" href="#tab1">Overall Strength</a>
+                <a data-toggle="tab" href="#tab1" id="tab1handle">Overall Strength</a>
             </li>
-            <li><a data-toggle="tab" href="#tab2">1 Rep Max</a></li>
-            <li><a data-toggle="tab" href="#tab3">Calculator #2</a></li>
+            <li><a data-toggle="tab" href="#tab2" id="tab2handle">1 Rep Max</a></li>
+            <li><a data-toggle="tab" href="#tab3" id="tab3handle">Calculator #2</a></li>
             <li class="" th:classappend="${showCalc == null}? active">
-                <a data-toggle="tab" href="#tab4" id="testdonthide">Training Log</a>
+                <a data-toggle="tab" href="#tab4" id="tab4handle">Training Log</a>
             </li>
         </ul>
     </div>

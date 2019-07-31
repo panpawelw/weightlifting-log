@@ -1,12 +1,12 @@
 $(document).ready(function () {
 
-    /* This event listener is responsible for hiding the logo container and making the tab navigation bar stick to the
-       top of the screen when user is scrolling down the page and showing the logo container and unsticking the
-       navigation bar when the page is scrolled back to the very top. */
+    /* This event listener is responsible for hiding the logo container and
+     making the tab navigation bar stick to the top of the screen when user is
+     scrolling down the page and showing the logo container and unsticking the
+     navigation bar when the page is scrolled back to the very top. */
 
     let logo = document.getElementById('logo-container');
     let navbar = document.getElementById('big-tabs');
-    let tab4 = document.getElementById('testdonthide');
     let filler1 = document.getElementById('filler-1');
     let filler2 = document.getElementById('filler-2');
     let dontshow = false;
@@ -27,16 +27,27 @@ $(document).ready(function () {
             }
 
         } else if (logo.style.display !== 'none') {
+            navbar.classList.add('sticky');
+            filler1.classList.add('sticky');
             $(logo).slideUp('fast').queue(false);
             $(filler2).show('fast').queue(false);
             $(filler1).show('fast').queue(false);
-            filler1.classList.add('sticky');
-            navbar.classList.add('sticky');
         }
     });
 
-    tab4.addEventListener('click', function () {
-        $(this).scrollTop(1);
+    $('#tab1handle').bind('click', function () {
+        window.scrollTo(0,1);
+    });
+
+    $('#tab2handle').bind('click', function () {
+        window.scrollTo(0,1);
+    });
+
+    $('#tab3handle').bind('click', function () {
+        window.scrollTo(0,1);
+    });
+
+    $('#tab4handle').bind('click', function () {
         dontshow = true;
     });
 });
