@@ -1,4 +1,7 @@
 /* general properties */
+html {
+    overflow-y: scroll;
+}
 html, body, .main-container {
     height: 100%;
     margin: 0;
@@ -6,10 +9,6 @@ html, body, .main-container {
 html body {
     background-color: #454343;
     color: #FF9200;
-}
-
-body {
-    overflow-y: scroll;
 }
 
 /* scrollbar styling */

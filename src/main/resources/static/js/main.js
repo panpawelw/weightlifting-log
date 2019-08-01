@@ -9,46 +9,90 @@ $(document).ready(function () {
     let navbar = document.getElementById('big-tabs');
     let filler1 = document.getElementById('filler-1');
     let filler2 = document.getElementById('filler-2');
-    let dontshow = false;
+    let OkToToggleLogo = true;
 
     window.addEventListener('scroll', function () {
-        console.log($(this).scrollTop());
-        if ($(this).scrollTop() === 0) {
-            if (dontshow === false) {
-                if (logo.style.display === 'none') {
-                    navbar.classList.remove('sticky');
-                    filler1.classList.remove('sticky');
-                    $(filler1).slideUp('fast').queue(false);
-                    $(filler2).slideUp('fast').queue(false);
-                    $(logo).show('fast').queue(false);
-                }
-            } else {
-                dontshow = false;
-            }
+        let pagePosition = $('html').scrollTop();
+        console.log('Page position: ' + pagePosition + ', OkToToggleLogo: ' + OkToToggleLogo);
 
-        } else if (logo.style.display !== 'none') {
+        if (OkToToggleLogo === true && pagePosition === 0 && logo.style.display === 'none') {
+
+            console.log('show logo!');
+            navbar.classList.remove('sticky');
+            filler1.classList.remove('sticky');
+            $(filler1).slideUp('fast').queue(false);
+            $(filler2).slideUp('fast').queue(false);
+            $(logo).show('fast').queue(false);
+        }
+
+        if (OkToToggleLogo === true && pagePosition !== 0 && pagePosition !== 1 && logo.style.display !== 'none') {
+
+            console.log('hide logo!');
             navbar.classList.add('sticky');
             filler1.classList.add('sticky');
             $(logo).slideUp('fast').queue(false);
             $(filler2).show('fast').queue(false);
             $(filler1).show('fast').queue(false);
         }
+
+        if(OkToToggleLogo === 'false' && pagePosition === 0) {
+
+            OkToToggleLogo = true;
+            console.log('Ok to change logo again after!');
+        }
+
+    // if(dontChangeLogo === false) {
+    //     if (pagePosition === 0) {
+    //         if (logo.style.display === 'none') {
+    //             console.log('show logo!');
+    //             navbar.classList.remove('sticky');
+    //             filler1.classList.remove('sticky');
+    //             $(filler1).slideUp('fast').queue(false);
+    //             $(filler2).slideUp('fast').queue(false);
+    //             $(logo).show('fast').queue(false);
+    //         }
+    //     } else if (logo.style.display !== 'none') {
+    //         console.log('hide logo!');
+    //         navbar.classList.add('sticky');
+    //         filler1.classList.add('sticky');
+    //         $(logo).slideUp('fast').queue(false);
+    //         $(filler2).show('fast').queue(false);
+    //         $(filler1).show('fast').queue(false);
+    //     }
+    // } else if (pagePosition === 0) {
+    //     dontChangeLogo = false;
+    //     console.log("didn't change logo!");
+    // }
     });
 
     $('#tab1handle').bind('click', function () {
-        window.scrollTo(0,1);
+        OkToToggleLogo = false;
+        console.log('tab1, ' + $('html').scrollTop() + ' , ' + OkToToggleLogo);
+        $('html').animate({scrollTop: 1}, 'fast');
+        OkToToggleLogo = true;
+        console.log('tab1, ' + $('html').scrollTop() + ' , ' + OkToToggleLogo);
     });
 
     $('#tab2handle').bind('click', function () {
-        window.scrollTo(0,1);
+        OkToToggleLogo = false;
+        console.log('tab2, ' + $('html').scrollTop() + ' , ' + OkToToggleLogo);
+        $('html').animate({scrollTop: 1}, 'fast');
+        OkToToggleLogo = true;
+        console.log('tab2, ' + $('html').scrollTop() + ' , ' + OkToToggleLogo);
     });
 
     $('#tab3handle').bind('click', function () {
-        window.scrollTo(0,1);
+        OkToToggleLogo = false;
+        console.log('tab3, ' + $('html').scrollTop() + ' , ' + OkToToggleLogo);
+        $('html').animate({scrollTop: 1}, 'fast');
+        OkToToggleLogo = true;
+        console.log('tab3, ' + $('html').scrollTop() + ' , ' + OkToToggleLogo);
     });
 
     $('#tab4handle').bind('click', function () {
-        dontshow = true;
+        OkToToggleLogo = false;
+        console.log('tab4, ' + $('html').scrollTop() + ' , ' + OkToToggleLogo);
+        $('html').animate({scrollTop: 1}, 'fast');
     });
 });
 
