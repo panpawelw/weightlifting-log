@@ -7,91 +7,62 @@ $(document).ready(function () {
 
     let logo = document.getElementById('logo-container');
     let navbar = document.getElementById('big-tabs');
+
+    // Fillers are to prevent bootstrap graphical glitches
     let filler1 = document.getElementById('filler-1');
     let filler2 = document.getElementById('filler-2');
+
     let OkToToggleLogo = true;
 
     window.addEventListener('scroll', function () {
         let pagePosition = $('html').scrollTop();
-        console.log('Page position: ' + pagePosition + ', OkToToggleLogo: ' + OkToToggleLogo);
 
-        if (OkToToggleLogo === true && pagePosition === 0 && logo.style.display === 'none') {
+        // Is it OK to toggle logo visibility?
+        if (OkToToggleLogo) {
 
-            console.log('show logo!');
-            navbar.classList.remove('sticky');
-            filler1.classList.remove('sticky');
-            $(filler1).slideUp('fast').queue(false);
-            $(filler2).slideUp('fast').queue(false);
-            $(logo).show('fast').queue(false);
-        }
+            // Is page scrolled down and logo is visible? Hide logo.
+            if (pagePosition !== 0 && pagePosition !== 1 && logo.style.display !== 'none') {
 
-        if (OkToToggleLogo === true && pagePosition !== 0 && pagePosition !== 1 && logo.style.display !== 'none') {
+                navbar.classList.add('sticky');
+                filler1.classList.add('sticky');
+                $(logo).slideUp('fast').queue(false);
+                $(filler2).show('fast').queue(false);
+                $(filler1).show('fast').queue(false);
 
-            console.log('hide logo!');
-            navbar.classList.add('sticky');
-            filler1.classList.add('sticky');
-            $(logo).slideUp('fast').queue(false);
-            $(filler2).show('fast').queue(false);
-            $(filler1).show('fast').queue(false);
-        }
+            // Is page scrolled up and logo is hidden? Show logo.
+            } else if (pagePosition === 0 && logo.style.display === 'none') {
 
-        if(OkToToggleLogo === 'false' && pagePosition === 0) {
+                navbar.classList.remove('sticky');
+                filler1.classList.remove('sticky');
+                $(filler1).slideUp('fast').queue(false);
+                $(filler2).slideUp('fast').queue(false);
+                $(logo).show('fast').queue(false);
+            }
 
-            OkToToggleLogo = true;
-            console.log('Ok to change logo again after!');
-        }
-
-    // if(dontChangeLogo === false) {
-    //     if (pagePosition === 0) {
-    //         if (logo.style.display === 'none') {
-    //             console.log('show logo!');
-    //             navbar.classList.remove('sticky');
-    //             filler1.classList.remove('sticky');
-    //             $(filler1).slideUp('fast').queue(false);
-    //             $(filler2).slideUp('fast').queue(false);
-    //             $(logo).show('fast').queue(false);
-    //         }
-    //     } else if (logo.style.display !== 'none') {
-    //         console.log('hide logo!');
-    //         navbar.classList.add('sticky');
-    //         filler1.classList.add('sticky');
-    //         $(logo).slideUp('fast').queue(false);
-    //         $(filler2).show('fast').queue(false);
-    //         $(filler1).show('fast').queue(false);
-    //     }
-    // } else if (pagePosition === 0) {
-    //     dontChangeLogo = false;
-    //     console.log("didn't change logo!");
-    // }
+        // If it's not, but page is scrolled to the very top, allow logo toggling next time.
+        } else if (pagePosition === 0) {OkToToggleLogo = true;}
     });
 
     $('#tab1handle').bind('click', function () {
         OkToToggleLogo = false;
-        console.log('tab1, ' + $('html').scrollTop() + ' , ' + OkToToggleLogo);
         $('html').animate({scrollTop: 1}, 'fast');
         OkToToggleLogo = true;
-        console.log('tab1, ' + $('html').scrollTop() + ' , ' + OkToToggleLogo);
     });
 
     $('#tab2handle').bind('click', function () {
         OkToToggleLogo = false;
-        console.log('tab2, ' + $('html').scrollTop() + ' , ' + OkToToggleLogo);
         $('html').animate({scrollTop: 1}, 'fast');
         OkToToggleLogo = true;
-        console.log('tab2, ' + $('html').scrollTop() + ' , ' + OkToToggleLogo);
     });
 
     $('#tab3handle').bind('click', function () {
         OkToToggleLogo = false;
-        console.log('tab3, ' + $('html').scrollTop() + ' , ' + OkToToggleLogo);
         $('html').animate({scrollTop: 1}, 'fast');
         OkToToggleLogo = true;
-        console.log('tab3, ' + $('html').scrollTop() + ' , ' + OkToToggleLogo);
     });
 
     $('#tab4handle').bind('click', function () {
         OkToToggleLogo = false;
-        console.log('tab4, ' + $('html').scrollTop() + ' , ' + OkToToggleLogo);
         $('html').animate({scrollTop: 1}, 'fast');
     });
 });
