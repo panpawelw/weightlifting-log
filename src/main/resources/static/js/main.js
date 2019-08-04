@@ -1,4 +1,4 @@
-let OkToToggleLogo = true;
+let OkToToggleLogo = true; // Global flag for logo visibility toggling
 
 $(document).ready(function () {
 
@@ -49,13 +49,8 @@ $(document).ready(function () {
 
     /* These handlers are responsible for scrolling the document to the top
     when user is changing tabs, while not allowing the logo toggle action to be
-    triggered by the scrolling.
-     */
-    $('#tab1handle').bind('click', function() {scrollToTop()});
-
-    $('#tab2handle').bind('click',  function() {scrollToTop()});
-
-    $('#tab3handle').bind('click',  function() {scrollToTop()});
+    triggered by the scrolling. */
+    $('#tab1handle, #tab2handle, #tab3handle').bind('click', function() {scrollToTop()});
 
     $('#tab4handle').bind('click', function () {
         OkToToggleLogo = false;
