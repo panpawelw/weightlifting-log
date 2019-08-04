@@ -47,6 +47,10 @@ $(document).ready(function () {
         }
     });
 
+    /* These handlers are responsible for scrolling the document to the top
+    when user is changing tabs, while not allowing the logo toggle action to be
+    triggered by the scrolling.
+     */
     $('#tab1handle').bind('click', function() {scrollToTop()});
 
     $('#tab2handle').bind('click',  function() {scrollToTop()});
@@ -59,6 +63,7 @@ $(document).ready(function () {
     });
 });
 
+/* Auxiliary function for tab change event handlers */
 function scrollToTop() {
     OkToToggleLogo = false;
     $('html').animate({scrollTop: 1}, 'fast');
