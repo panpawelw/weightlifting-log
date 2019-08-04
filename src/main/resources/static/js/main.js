@@ -1,3 +1,5 @@
+let OkToToggleLogo = true;
+
 $(document).ready(function () {
 
     /* This event listener is responsible for hiding the logo container and
@@ -14,15 +16,13 @@ $(document).ready(function () {
     let filler1 = document.getElementById('filler-1');
     let filler2 = document.getElementById('filler-2');
 
-    let OkToToggleLogo = true;
-
     window.addEventListener('scroll', function () {
         let pagePosition = $('html').scrollTop();
 
         // Is it OK to toggle logo visibility?
         if (OkToToggleLogo) {
 
-            // Is page scrolled down and logo is visible? Hide logo.
+            // Is the page scrolled down and logo is visible? Hide logo.
             if (pagePosition !== 0 && pagePosition !== 1 && logo.style.display !== 'none') {
 
                 navbar.classList.add('sticky');
@@ -31,7 +31,7 @@ $(document).ready(function () {
                 $(filler2).show('fast').queue(false);
                 $(filler1).show('fast').queue(false);
 
-                // Is page scrolled up and logo is hidden? Show logo.
+            // Is the page scrolled up and logo is hidden? Show logo.
             } else if (pagePosition === 0 && logo.style.display === 'none') {
 
                 navbar.classList.remove('sticky');
@@ -41,35 +41,29 @@ $(document).ready(function () {
                 $(logo).show('fast').queue(false);
             }
 
-            // If it's not, but page is scrolled to the very top, allow logo toggling next time.
+        // If it's not, but the page is scrolled all the way up, allow logo toggling next time.
         } else if (pagePosition === 0) {
             OkToToggleLogo = true;
         }
     });
 
-    $('#tab1handle').bind('click', function () {
-        OkToToggleLogo = false;
-        $('html').animate({scrollTop: 1}, 'fast');
-        OkToToggleLogo = true;
-    });
+    $('#tab1handle').bind('click', function() {scrollToTop()});
 
-    $('#tab2handle').bind('click', function () {
-        OkToToggleLogo = false;
-        $('html').animate({scrollTop: 1}, 'fast');
-        OkToToggleLogo = true;
-    });
+    $('#tab2handle').bind('click',  function() {scrollToTop()});
 
-    $('#tab3handle').bind('click', function () {
-        OkToToggleLogo = false;
-        $('html').animate({scrollTop: 1}, 'fast');
-        OkToToggleLogo = true;
-    });
+    $('#tab3handle').bind('click',  function() {scrollToTop()});
 
     $('#tab4handle').bind('click', function () {
         OkToToggleLogo = false;
         $('html').animate({scrollTop: 1}, 'fast');
     });
 });
+
+function scrollToTop() {
+    OkToToggleLogo = false;
+    $('html').animate({scrollTop: 1}, 'fast');
+    OkToToggleLogo = true;
+}
 
 /* This function updates a single lift section in General Strength tab
    whenever the user moves the slider it updates the corresponding number
