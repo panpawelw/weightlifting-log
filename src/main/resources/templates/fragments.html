@@ -9,9 +9,7 @@
 <!--Login-->
 
 <div th:fragment="login">
-    <br/>
     <h3 class="tab-title">Login page</h3>
-    <br/>
     <!--/*@thymesVar id="loginError" type="java"*/-->
     <p th:if="${loginError}" class="alert">Wrong username or password</p>
     <form th:action="@{/login}" method="post">
@@ -23,7 +21,8 @@
         <input type="submit" value="Log in"/>
     </form>
     <br/>
-    <button class="my-button" onclick="location.href = '/wl/register'" type="button">Register</button>
+    <button class="my-button" onclick="location.href = '/wl/register'" type="button">
+        Register</button>
 </div>
 
 <!--Display on successful logout-->

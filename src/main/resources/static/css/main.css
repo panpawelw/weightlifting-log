@@ -326,6 +326,14 @@ button:active, input[type=submit]:active, .my-button:active {
     float: right;
 }
 
+/*.top-filler {*/
+/*    max-height: 25%;*/
+/*}*/
+
+/*.bottom-filler {*/
+/*    min-height: 50%;*/
+/*}*/
+
 /* General text styling */
 .bigger-label {
     font-weight: bold;

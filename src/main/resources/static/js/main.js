@@ -22,7 +22,7 @@ $(document).ready(function () {
         // Is it OK to toggle logo visibility?
         if (OkToToggleLogo) {
 
-            // Is the page scrolled down and logo is visible? Hide logo.
+            // Is the page scrolled down and is logo visible? Hide logo.
             if (pagePosition !== 0 && pagePosition !== 1 && logo.style.display !== 'none') {
 
                 navbar.classList.add('sticky');
@@ -31,7 +31,7 @@ $(document).ready(function () {
                 $(filler2).show('fast').queue(false);
                 $(filler1).show('fast').queue(false);
 
-            // Is the page scrolled up and logo is hidden? Show logo.
+            // Is the page scrolled up and is logo hidden? Show logo.
             } else if (pagePosition === 0 && logo.style.display === 'none') {
 
                 navbar.classList.remove('sticky');
@@ -41,7 +41,8 @@ $(document).ready(function () {
                 $(logo).show('fast').queue(false);
             }
 
-        // If it's not, but the page is scrolled all the way up, allow logo toggling next time.
+        /* If logo toggling is not allowed, but the page is scrolled
+         all the way up, allow logo toggling next time. */
         } else if (pagePosition === 0) {
             OkToToggleLogo = true;
         }
@@ -49,13 +50,9 @@ $(document).ready(function () {
 
     /* These handlers are responsible for scrolling the document to the top
     when user is changing tabs, while not allowing the logo toggle action to be
-    triggered by the scrolling. */
-    $('#tab1handle, #tab2handle, #tab3handle').bind('click', function() {scrollToTop()});
-
-    $('#tab4handle').bind('click', function () {
-        OkToToggleLogo = false;
-        $('html').animate({scrollTop: 1}, 'fast');
-    });
+    triggered by the scrolling (only if the content is larger than screen. */
+    $('#tab1handle, #tab2handle, #tab3handle, #tab4handle')
+        .bind('click', function() {scrollToTop()});
 });
 
 /* Auxiliary function for tab change event handlers */
