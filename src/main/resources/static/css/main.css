@@ -35,8 +35,6 @@ html body {
     border: 1px solid #FFFFFF;
 }
 
-
-
 /* no outline for selected input fields and buttons*/
 input:focus, button:focus {
     outline: none;
@@ -295,11 +293,16 @@ button:active, input[type=submit]:active, .my-button:active {
 
 #percentages td {
     padding: 3px;
+    text-align: center;
 }
 
 .percentage-input {
     width: 5vw;
-    text-align: right;
+    /*text-align: right;*/
+}
+
+.percentage-result {
+
 }
 
 /* User tab */
@@ -349,4 +352,11 @@ button:active, input[type=submit]:active, .my-button:active {
     margin-top: 1em;
     margin-right: 1em;
     text-align: right;
+}
+
+@media screen and (max-width: 320px) {
+
+    .percentage-input {
+        width: 10vw;
+    }
 }
