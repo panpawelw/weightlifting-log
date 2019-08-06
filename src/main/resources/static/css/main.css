@@ -298,11 +298,6 @@ button:active, input[type=submit]:active, .my-button:active {
 
 .percentage-input {
     width: 5vw;
-    /*text-align: right;*/
-}
-
-.percentage-result {
-
 }
 
 /* User tab */
@@ -354,9 +349,31 @@ button:active, input[type=submit]:active, .my-button:active {
     text-align: right;
 }
 
-@media screen and (max-width: 320px) {
+/* Responsive elements */
+@media screen and (max-width: 280px) {
 
     .percentage-input {
-        width: 10vw;
+        width: 15vw;
+    }
+}
+
+@media screen and (min-width: 281px) and (max-width: 320px) {
+
+    .percentage-input {
+        width: 12vw;
+    }
+}
+
+@media screen and (min-width: 321px) and (max-width: 400px) {
+
+    .percentage-input {
+        width: 9.5vw;
+    }
+}
+
+@media screen and (min-width:401px) and (max-width: 600px) {
+
+    .percentage-input {
+        width: 7vw;
     }
 }
