@@ -1,4 +1,4 @@
-package pl.pjm77.weightliftinglog.config;
+package pl.pjm77.weightliftinglog.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
