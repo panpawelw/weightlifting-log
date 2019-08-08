@@ -1,5 +1,7 @@
 package pl.pjm77.weightliftinglog.models;
 
+import pl.pjm77.weightliftinglog.security.constraint.ValidPassword;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -20,9 +22,11 @@ public class User implements Serializable {
     private String name;
 
     @NotBlank(message = "Please enter your password!")
+    @ValidPassword
     private String password;
 
     @Transient
+    @ValidPassword
     @NotBlank(message = "Please confirm your password!")
     private String confirmPassword;
 

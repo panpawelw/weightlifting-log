@@ -1,7 +1,6 @@
 package pl.pjm77.weightliftinglog.security.constraint;
 
 import org.passay.*;
-import org.passay.dictionary.WordList;
 import org.passay.dictionary.WordListDictionary;
 import org.passay.dictionary.WordLists;
 import org.passay.dictionary.sort.ArraysSort;
