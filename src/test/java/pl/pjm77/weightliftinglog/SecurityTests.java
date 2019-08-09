@@ -34,7 +34,27 @@ public class SecurityTests {
                 .param("age", "55")
                 .param("gender", "null")
                 .param("role", "USER"))
-         .andExpect(model().hasErrors())
-         .andExpect(status().isOk());
+        .andExpect(model().hasErrors())
+        .andExpect(model().attributeHasFieldErrors("user", "password", "confirmPassword"))
+        .andExpect(status().isOk());
+    }
+
+    @Test
+    public void submitRegistrationSuccess() throws Exception {
+        this.mockMvc.perform(post("/saveuser").with(csrf())
+                                .param("id", "0")
+                                .param("name", "passwordConstraintTestUser")
+                                .param("password", "password")
+                                .param("confirmPassword", "password")
+                                .param("email", "emai@email.com")
+                                .param("realEmail", "false")
+                                .param("firstName", "Firstname")
+                                .param("lastName", "Lastname")
+                                .param("age", "55")
+                                .param("gender", "null")
+                                .param("role", "USER"))
+                .andExpect(model().hasNoErrors())
+                .andExpect(redirectedUrl("/registration?success"))
+                .andExpect(status().is3xxRedirection());
     }
 }
