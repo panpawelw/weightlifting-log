@@ -12,7 +12,7 @@ import pl.pjm77.weightliftinglog.repositories.UserRepository;
 @Service
 public class SecureUserDetailsService implements UserDetailsService {
 
-    private UserRepository secureUserRepository;
+    private final UserRepository secureUserRepository;
 
     @Autowired
     public SecureUserDetailsService(UserRepository secureUserRepository){

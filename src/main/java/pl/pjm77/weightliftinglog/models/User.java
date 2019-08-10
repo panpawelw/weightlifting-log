@@ -10,6 +10,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * User entity represents a user who logs his workouts.
+ *
+ * Mandatory fields are:
+ * id - database Id, equals 0 until user has been persisted in database
+ * name - username
+ * password - user password
+ * confirmPassword - password confirmation, not stored in database, needed only when registering
+ *                   a new user or modifying user data
+ * email - user email, has to be unique
+ * realEmail - boolean indicating that this is a real email and user wants to be sent a
+ *             registration confirmation email
+ * role - user's Spring Security role - eiter USER or ADMIN
+ *
+ * Non - mandatory fields:
+ * firstName - user's first name
+ * lastName - user's last name
+ * age - user's age
+ * gender - user's gender, can remain null
+ */
 @Entity
 @Table(name = "users")
 public class User implements Serializable {

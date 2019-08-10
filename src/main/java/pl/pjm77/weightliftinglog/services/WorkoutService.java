@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class WorkoutService {
 
-    private WorkoutRepository workoutRepository;
+    private final WorkoutRepository workoutRepository;
 
     @Autowired
     public WorkoutService(WorkoutRepository workoutRepository) {
