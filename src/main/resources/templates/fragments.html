@@ -65,7 +65,9 @@
         <p>Confirm password: <input type="password" th:field="*{confirmPassword}"/>
             <span th:if="${#fields.hasErrors('confirmPassword')}" class="alert" th:errors="*{confirmPassword}"></span></p>
         <p>Email: <input type="text" th:field="*{email}"/>
-            <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span></p>
+            <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span>
+            <!--/*@thymesVar id="emailExists" type="java"*/-->
+            <span class='alert' th:text="${emailExists}"></span></p>
         <p><input type="checkbox" th:field="*{realEmail}" th:value ="false"/>
             <span>This is a real email, please send me an activation message</span></p>
         <p>First name: <input type="text" th:field="*{firstName}"/></p>

@@ -1,6 +1,7 @@
 package pl.pjm77.weightliftinglog.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,7 @@ import pl.pjm77.weightliftinglog.services.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @Controller
 public class HomeController {
@@ -98,18 +100,22 @@ public class HomeController {
 
     @PostMapping("/saveuser")
     public String registerPost(@Valid User user, BindingResult bindingResult, Model model) {
+        model.addAttribute("topMessage", "Please enter your details to register...");
+        model.addAttribute("buttonText", "Register");
+        model.addAttribute("page", "fragments.html :: edit-user-details");
         if (bindingResult.hasErrors()) {
-            if (user.getId() == null) {
-                model.addAttribute("topMessage", "Please enter your details to register...");
-                model.addAttribute("buttonText", "Register");
-            } else {
+            if (user.getId() != null) {
                 model.addAttribute("topMessage", "Please edit your details...");
                 model.addAttribute("buttonText", "Save details");
             }
-            model.addAttribute("page", "fragments.html :: edit-user-details");
         } else {
-            model.addAttribute("page", "fragments.html :: edit-user-success");
-            userService.saveUser(user);
+            try {
+                userService.saveUser(user);
+                model.addAttribute("page", "fragments.html :: edit-user-success");
+            }catch(DataIntegrityViolationException e){
+                model.addAttribute
+                        ("emailExists", "    This email already exists in our database!");
+            }
         }
         return "home";
     }

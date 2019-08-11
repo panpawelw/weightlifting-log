@@ -22,7 +22,7 @@ import java.util.Objects;
  * email - user email, has to be unique
  * realEmail - boolean indicating that this is a real email and user wants to be sent a
  *             registration confirmation email
- * role - user's Spring Security role - eiter USER or ADMIN
+ * role - user's Spring Security role - either USER or ADMIN
  *
  * Non - mandatory fields:
  * firstName - user's first name
@@ -42,14 +42,13 @@ public class User implements Serializable {
     private String name;
 
     @NotBlank(message = "Please enter your password!")
-    @ValidPassword
     private String password;
 
     @Transient
-    @ValidPassword
     @NotBlank(message = "Please confirm your password!")
     private String confirmPassword;
 
+    @Column(unique=true)
     @Email(message = "Please enter a valid email!")
     private String email;
 
