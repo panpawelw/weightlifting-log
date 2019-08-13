@@ -1,7 +1,5 @@
 package pl.pjm77.weightliftinglog.models;
 
-import pl.pjm77.weightliftinglog.security.constraint.ValidPassword;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -38,17 +36,16 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Please enter your user name!")
+    @NotBlank(message = "This field is mandatory!")
     private String name;
 
-    @NotBlank(message = "Please enter your password!")
     private String password;
 
     @Transient
-    @NotBlank(message = "Please confirm your password!")
     private String confirmPassword;
 
     @Column(unique=true)
+    @NotBlank(message = "This field is mandatory!")
     @Email(message = "Please enter a valid email!")
     private String email;
 

@@ -57,7 +57,7 @@
     <h2 th:text="${topMessage}"></h2><br/>
     <!--/*@thymesVar id="user" type="java"*/-->
     <!--/*@thymesVar id="passwordValidation" type="java"*/-->
-    <form th:action="@{/saveuser}" th:object="${user}, ${passwordValidation}" method="post">
+    <form th:action="@{/saveuser}" th:object="${user}" method="post">
         <input type="hidden" th:field="*{id}"/>
         <p>Username: <input type="text" th:field="*{name}" autofocus="autofocus"/>
             <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span></p>

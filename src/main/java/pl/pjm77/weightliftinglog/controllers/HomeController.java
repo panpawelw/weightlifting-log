@@ -9,10 +9,8 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import pl.pjm77.weightliftinglog.models.*;
 import pl.pjm77.weightliftinglog.security.validator.PasswordValidator;
 import pl.pjm77.weightliftinglog.services.UserService;
@@ -31,6 +29,12 @@ public class HomeController {
     public HomeController(UserService userService, PasswordValidator passwordValidator) {
         this.userService = userService;
         this.passwordValidator = passwordValidator;
+    }
+
+    @InitBinder
+    protected void initBinder(final WebDataBinder binder)
+    {
+        binder.addValidators(passwordValidator);
     }
 
     @GetMapping("/")
@@ -82,7 +86,9 @@ public class HomeController {
     public String registerGet(Model model) {
         User user = new User();
         user.setRole("USER");
+        User passwordValidation = new User();
         model.addAttribute("user", user);
+        model.addAttribute("passwordValidation", passwordValidation);
         model.addAttribute("topMessage", "Please enter your details to register...");
         model.addAttribute("buttonText", "Register");
         model.addAttribute("page", "fragments.html :: edit-user-details");
@@ -102,14 +108,12 @@ public class HomeController {
     }
 
     @PostMapping("/saveuser")
-    public String registerPost(@Valid User user, BindingResult bindingResult,
-                               @ModelAttribute("passwordValidation") User passwordValidation,
-                               BindingResult passwordBindingResult, Model model) {
-        passwordValidator.validate(passwordValidation, passwordBindingResult);
+    public String registerPost(@Valid @ModelAttribute("user") User user,
+                               BindingResult bindingResult, Model model) {
         model.addAttribute("topMessage", "Please enter your details to register...");
         model.addAttribute("buttonText", "Register");
         model.addAttribute("page", "fragments.html :: edit-user-details");
-        if (bindingResult.hasErrors() || passwordBindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             if (user.getId() != null) {
                 model.addAttribute("topMessage", "Please edit your details...");
                 model.addAttribute("buttonText", "Save details");

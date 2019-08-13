@@ -25,8 +25,8 @@ public class SecurityTests {
         this.mockMvc.perform(post("/saveuser").with(csrf())
                 .param("id", "0")
                 .param("name", "passwordConstraintTestUser")
-                .param("password", "invalid password")
-                .param("confirmPassword", "invalid password")
+                .param("password", "xxx")
+                .param("confirmPassword", "xx")
                 .param("email", "emai@email.com")
                 .param("realEmail", "false")
                 .param("firstName", "Firstname")
@@ -35,7 +35,7 @@ public class SecurityTests {
                 .param("gender", "true")
                 .param("role", "USER"))
         .andExpect(model().hasErrors())
-        .andExpect(model().attributeHasFieldErrors("user", "password", "confirmPassword"))
+        .andExpect(model().attributeHasFieldErrors("user", "password"))
         .andExpect(status().isOk());
     }
 
