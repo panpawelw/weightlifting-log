@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-public class SecurityTests {
+public class PasswordValidatorTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -40,6 +40,25 @@ public class SecurityTests {
     }
 
     @Test
+    public void submitRegistrationPasswordsDontMatch() throws Exception {
+        this.mockMvc.perform(post("/saveuser").with(csrf())
+                .param("id", "0")
+                .param("name", "passwordConstraintTestUser")
+                .param("password", "password")
+                .param("confirmPassword", "notpassword")
+                .param("email", "emai@email.com")
+                .param("realEmail", "false")
+                .param("firstName", "Firstname")
+                .param("lastName", "Lastname")
+                .param("age", "55")
+                .param("gender", "true")
+                .param("role", "USER"))
+                .andExpect(model().hasErrors())
+                .andExpect(model().attributeHasFieldErrors("user", "confirmPassword"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     public void submitRegistrationSuccess() throws Exception {
         this.mockMvc.perform(post("/saveuser").with(csrf())
                 .param("id", "0")
@@ -54,7 +73,5 @@ public class SecurityTests {
                 .param("gender", "false")
                 .param("role", "USER"))
         .andExpect(model().hasNoErrors());
-//        .andExpect(redirectedUrl("/registration?success"))
-//        .andExpect(status().is3xxRedirection());
     }
 }
