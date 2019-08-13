@@ -10,24 +10,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.pjm77.weightliftinglog.models.*;
+import pl.pjm77.weightliftinglog.security.validator.PasswordValidator;
 import pl.pjm77.weightliftinglog.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 @Controller
 public class HomeController {
 
     private final UserService userService;
+    private final PasswordValidator passwordValidator;
 
     @Autowired
-    public HomeController(UserService userService) {
+    public HomeController(UserService userService, PasswordValidator passwordValidator) {
         this.userService = userService;
+        this.passwordValidator = passwordValidator;
     }
 
     @GetMapping("/")
@@ -99,11 +102,14 @@ public class HomeController {
     }
 
     @PostMapping("/saveuser")
-    public String registerPost(@Valid User user, BindingResult bindingResult, Model model) {
+    public String registerPost(@Valid User user, BindingResult bindingResult,
+                               @ModelAttribute("passwordValidation") User passwordValidation,
+                               BindingResult passwordBindingResult, Model model) {
+        passwordValidator.validate(passwordValidation, passwordBindingResult);
         model.addAttribute("topMessage", "Please enter your details to register...");
         model.addAttribute("buttonText", "Register");
         model.addAttribute("page", "fragments.html :: edit-user-details");
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors() || passwordBindingResult.hasErrors()) {
             if (user.getId() != null) {
                 model.addAttribute("topMessage", "Please edit your details...");
                 model.addAttribute("buttonText", "Save details");
