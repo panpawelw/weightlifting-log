@@ -97,7 +97,7 @@ public class HomeController {
 
     @GetMapping("/edituserdetails")
     public String editUserDetails(Model model) {
-        String userName = getLoggedInUserName();
+        String userName = userService.getLoggedInUserName();
         User user = userService.findUserByName(userName);
         user.setPassword("");
         model.addAttribute("user", user);
@@ -120,6 +120,11 @@ public class HomeController {
             }
         } else {
             try {
+//                if(!userService.checkCurrentUserPassword(user.getPassword())) {
+//                  model.addAttribute
+//                          ("passwordsDontMatch", "     The password doesn't match!");
+//                  return "home";
+//                }
                 userService.saveUser(user);
                 model.addAttribute("page", "fragments.html :: edit-user-success");
             }catch(DataIntegrityViolationException e){
@@ -128,21 +133,5 @@ public class HomeController {
             }
         }
         return "home";
-    }
-
-    /**
-     * Provides the name of the user who is currently logged in, or a string representation of principal object if it's
-     * anything else than instance of UserDetail
-     * @return string value with name of the user or string representation of principal object
-     */
-    static String getLoggedInUserName() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userName;
-        if (principal instanceof UserDetails) {
-            userName = ((UserDetails) principal).getUsername();
-        } else {
-            userName = principal.toString();
-        }
-        return userName;
     }
 }
