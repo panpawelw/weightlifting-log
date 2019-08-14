@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.repositories.UserRepository;
-import pl.pjm77.weightliftinglog.security.validator.PasswordValidator;
 
 @Service
 public class UserService {

@@ -7,7 +7,6 @@
 <body>
 
 <!--Login-->
-
 <div th:fragment="login">
     <h3 class="tab-title">Login page</h3>
     <!--/*@thymesVar id="loginError" type="java"*/-->
@@ -26,7 +25,6 @@
 </div>
 
 <!--Display on successful logout-->
-
 <div th:fragment="logout-success">
     <br/>
     <h3 class="tab-title">Logout page</h3>
@@ -38,7 +36,6 @@
 </div>
 
 <!--Display on unsuccessful logout-->
-
 <div th:fragment="logout-failure">
     <br/>
     <h3 class="tab-title">Logout page</h3>
@@ -49,15 +46,11 @@
     </form>
 </div>
 
-<!--User details edition-->
-<!--This form is used for new user registration and existing user details edition-->
-
-<div th:fragment="edit-user-details">
-    <!--/*@thymesVar id="topMessage" type="java"*/-->
-    <h2 th:text="${topMessage}"></h2><br/>
+<!--User registration form-->
+<div th:fragment="register-user">
+    <h2>Please enter your details to register...</h2><br/>
     <!--/*@thymesVar id="user" type="java"*/-->
-    <!--/*@thymesVar id="passwordValidation" type="java"*/-->
-    <form th:action="@{/saveuser}" th:object="${user}" method="post">
+    <form th:action="@{/register}" th:object="${user}" method="post">
         <input type="hidden" th:field="*{id}"/>
         <p>Username: <input type="text" th:field="*{name}" autofocus="autofocus"/>
             <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span></p>
@@ -79,21 +72,31 @@
         <p>Female: <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
             Male: <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/></p>
         <input type="hidden" th:field="*{role}"/>
-        <!--/*@thymesVar id="buttonText" type="java"*/-->
-        <input type="submit" th:value="${buttonText}">
+        <input type="submit" th:value="Register">
         <button class="my-button" onclick="location.href='/wl/login'" type="button">Cancel</button>
     </form>
 </div>
 
-<!--User details edition successful-->
+<!--User details edition form-->
+<div th:fragment="edit-user-details">
+    <h2>Please edit your details...</h2><br/>
+    <br/><h2>Feature under construction!</h2><br/>
+    <button class="my-button" onclick="location.href='/wl/user'" type="button">OK</button>
+</div>
 
-<div th:fragment="edit-user-success">
+<!--User details registration successful-->
+<div th:fragment="register-user-success">
     <br/><h2>User details saved to database!</h2><br/>
     <button class="my-button" onclick="location.href='/wl/login'" type="button">OK</button>
 </div>
 
-<!--User panel-->
+<!--User details edition successful-->
+<div th:fragment="edit-user-success">
+    <br/><h2>User details saved to database!</h2><br/>
+    <button class="my-button" onclick="location.href='/wl/user'" type="button">OK</button>
+</div>
 
+<!--User panel-->
 <div th:fragment="user-panel">
     <div class="workout-content-container">
         <div class="workout-content">
@@ -115,7 +118,6 @@
 </div>
 
 <!--Admin panel-->
-
 <div th:fragment="admin-panel">
     <div class="controls">
         <!--/*@thymesVar id="adminGreeting" type="java"*/-->

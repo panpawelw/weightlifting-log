@@ -15,14 +15,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-public class PasswordValidatorTests {
+public class RegistrationAndPasswordValidatorTests {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     public void submitRegistrationPasswordNotValid() throws Exception {
-        this.mockMvc.perform(post("/saveuser").with(csrf())
+        this.mockMvc.perform(post("/register").with(csrf())
                 .param("id", "0")
                 .param("name", "passwordConstraintTestUser")
                 .param("password", "xxx")
@@ -41,7 +41,7 @@ public class PasswordValidatorTests {
 
     @Test
     public void submitRegistrationPasswordsDontMatch() throws Exception {
-        this.mockMvc.perform(post("/saveuser").with(csrf())
+        this.mockMvc.perform(post("/register").with(csrf())
                 .param("id", "0")
                 .param("name", "passwordConstraintTestUser")
                 .param("password", "password")
@@ -53,14 +53,14 @@ public class PasswordValidatorTests {
                 .param("age", "55")
                 .param("gender", "true")
                 .param("role", "USER"))
-                .andExpect(model().hasErrors())
-                .andExpect(model().attributeHasFieldErrors("user", "confirmPassword"))
-                .andExpect(status().isOk());
+        .andExpect(model().hasErrors())
+        .andExpect(model().attributeHasFieldErrors("user", "confirmPassword"))
+        .andExpect(status().isOk());
     }
 
     @Test
     public void submitRegistrationSuccess() throws Exception {
-        this.mockMvc.perform(post("/saveuser").with(csrf())
+        this.mockMvc.perform(post("/register").with(csrf())
                 .param("id", "0")
                 .param("name", "passwordConstraintTestUser")
                 .param("password", "password")

@@ -31,9 +31,8 @@ public class HomeController {
         this.passwordValidator = passwordValidator;
     }
 
-    @InitBinder
-    protected void initBinder(final WebDataBinder binder)
-    {
+    @InitBinder("user")
+    protected void initBinder(final WebDataBinder binder) {
         binder.addValidators(passwordValidator);
     }
 
@@ -86,48 +85,20 @@ public class HomeController {
     public String registerGet(Model model) {
         User user = new User();
         user.setRole("USER");
-        User passwordValidation = new User();
         model.addAttribute("user", user);
-        model.addAttribute("passwordValidation", passwordValidation);
-        model.addAttribute("topMessage", "Please enter your details to register...");
-        model.addAttribute("buttonText", "Register");
-        model.addAttribute("page", "fragments.html :: edit-user-details");
+        model.addAttribute("page", "fragments.html :: register-user");
         return "home";
     }
 
-    @GetMapping("/edituserdetails")
-    public String editUserDetails(Model model) {
-        String userName = userService.getLoggedInUserName();
-        User user = userService.findUserByName(userName);
-        user.setPassword("");
-        model.addAttribute("user", user);
-        model.addAttribute("topMessage", "Please edit your details...");
-        model.addAttribute("buttonText", "Save details");
-        model.addAttribute("page", "fragments.html :: edit-user-details");
-        return "home";
-    }
-
-    @PostMapping("/saveuser")
+    @PostMapping("/register")
     public String registerPost(@Valid @ModelAttribute("user") User user,
                                BindingResult bindingResult, Model model) {
-        model.addAttribute("topMessage", "Please enter your details to register...");
-        model.addAttribute("buttonText", "Register");
-        model.addAttribute("page", "fragments.html :: edit-user-details");
-        if (bindingResult.hasErrors()) {
-            if (user.getId() != null) {
-                model.addAttribute("topMessage", "Please edit your details...");
-                model.addAttribute("buttonText", "Save details");
-            }
-        } else {
+        model.addAttribute("page", "fragments.html :: register-user");
+        if (!bindingResult.hasErrors()) {
             try {
-//                if(!userService.checkCurrentUserPassword(user.getPassword())) {
-//                  model.addAttribute
-//                          ("passwordsDontMatch", "     The password doesn't match!");
-//                  return "home";
-//                }
                 userService.saveUser(user);
-                model.addAttribute("page", "fragments.html :: edit-user-success");
-            }catch(DataIntegrityViolationException e){
+                model.addAttribute("page", "fragments.html :: register-user-success");
+            } catch (DataIntegrityViolationException e) {
                 model.addAttribute
                         ("emailExists", "    This email already exists in our database!");
             }
