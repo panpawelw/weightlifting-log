@@ -78,21 +78,45 @@
 </div>
 
 <!--User details edition form-->
-<div th:fragment="edit-user-details">
+<div th:fragment="update-user">
     <h2>Please edit your details...</h2><br/>
-    <br/><h2>Feature under construction!</h2><br/>
-    <button class="my-button" onclick="location.href='/wl/user'" type="button">OK</button>
+    <!--/*@thymesVar id="user" type="java"*/-->
+    <form th:action="@{/update}" th:object="${user}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <p>Username: <input type="text" th:field="*{name}" autofocus="autofocus"/>
+            <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span></p>
+        <p>Password: <input type="password" th:field="*{password}"/>
+            <span th:if="${#fields.hasErrors('password')}" class="alert" th:errors="*{password}"></span>
+            <!--/*@thymesVar id="passwordsDontMatch" type="java"*/-->
+            <span class='alert' th:text="${passwordsDontMatch}"></span></p>
+        <p>Confirm password: <input type="password" th:field="*{confirmPassword}"/>
+            <span th:if="${#fields.hasErrors('confirmPassword')}" class="alert" th:errors="*{confirmPassword}"></span></p>
+        <p>Email: <input type="text" th:field="*{email}"/>
+            <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span>
+            <!--/*@thymesVar id="emailExists" type="java"*/-->
+            <span class='alert' th:text="${emailExists}"></span></p>
+        <p><input type="checkbox" th:field="*{realEmail}" th:value ="false"/>
+            <span>This is a real email, please send me a confirmation message</span></p>
+        <p>First name: <input type="text" th:field="*{firstName}"/></p>
+        <p>Surname: <input type="text" th:field="*{lastName}"/></p>
+        <p>Age: <input class="centered" type="number" th:field="*{age}"/></p>
+        <p>Female: <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
+            Male: <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/></p>
+        <input type="hidden" th:field="*{role}"/>
+        <input type="submit" th:value="Update">
+        <button class="my-button" onclick="location.href='/wl/login'" type="button">Cancel</button>
+    </form>
 </div>
 
 <!--User details registration successful-->
 <div th:fragment="register-user-success">
-    <br/><h2>User details saved to database!</h2><br/>
+    <br/><h2>Registration successfull!</h2><br/>
     <button class="my-button" onclick="location.href='/wl/login'" type="button">OK</button>
 </div>
 
-<!--User details edition successful-->
-<div th:fragment="edit-user-success">
-    <br/><h2>User details saved to database!</h2><br/>
+<!--User details update successful-->
+<div th:fragment="update-user-success">
+    <br/><h2>User details updated!</h2><br/>
     <button class="my-button" onclick="location.href='/wl/user'" type="button">OK</button>
 </div>
 
@@ -109,10 +133,13 @@
         <div class="controls">
             <!--/*@thymesVar id="userGreeting" type="java"*/-->
             <p class="same-row" th:text="${userGreeting}"></p>
-            <button class="same-row my-button" onclick="location.href='/wl/logout'" type="button">Log out</button>
-            <button class="same-row my-button" onclick="location.href='/wl/edituserdetails'" type="button">My profile</button>
+            <button class="same-row my-button" onclick="location.href='/wl/logout'"
+                    type="button">Log out</button>
+            <button class="same-row my-button" onclick="location.href='/wl/update'"
+                    type="button">My profile</button>
             <!--/*@thymesVar id="adminRights" type="java"*/-->
-            <button th:if="${adminRights}" class="same-row my-button" onclick="location.href='/wl/admin'">Admin panel</button>
+            <button th:if="${adminRights}" class="same-row my-button"
+                    onclick="location.href='/wl/admin'">Admin panel</button>
         </div>
     </div>
 </div>
@@ -122,9 +149,10 @@
     <div class="controls">
         <!--/*@thymesVar id="adminGreeting" type="java"*/-->
         <p class="same-row" th:text="${adminGreeting}"></p>
-        <button class="same-row my-button" onclick="location.href='/wl/logout'" type="button">Log out</button>
-        <button class="same-row my-button" onclick="location.href='/wl/edituserdetails'" type="button">My profile</button>
-        <button class="same-row my-button" onclick="location.href='/wl/login'" type="button">Back</button>
+        <button class="same-row my-button" onclick="location.href='/wl/logout'"
+                type="button">Log out</button>
+        <button class="same-row my-button" onclick="location.href='/wl/user'"
+                type="button">Back</button>
     </div>
     <h2>Welcome, Admin!</h2>
 </div>

@@ -60,30 +60,21 @@ public class UserController {
         return "home";
     }
 
-    @GetMapping("/edituserdetails")
+    @GetMapping("/update")
     public String editUserDetails(Model model) {
         String userName = getLoggedInUserName();
         User user = userService.findUserByName(userName);
         user.setPassword("");
         model.addAttribute("user", user);
-        model.addAttribute("topMessage", "Please edit your details...");
-        model.addAttribute("buttonText", "Save details");
-        model.addAttribute("page", "fragments.html :: edit-user-details");
+        model.addAttribute("page", "fragments.html :: update-user");
         return "home";
     }
 
-    @PostMapping("/edituserdetails")
+    @PostMapping("/update")
     public String registerPost(@Valid @ModelAttribute("user") User user,
                                BindingResult bindingResult, Model model) {
-        model.addAttribute("topMessage", "Please enter your details to register...");
-        model.addAttribute("buttonText", "Register");
-        model.addAttribute("page", "fragments.html :: edit-user-details");
-        if (bindingResult.hasErrors()) {
-            if (user.getId() != null) {
-                model.addAttribute("topMessage", "Please edit your details...");
-                model.addAttribute("buttonText", "Save details");
-            }
-        } else {
+        model.addAttribute("page", "fragments.html :: update-user");
+        if (!bindingResult.hasErrors()) {
             try {
 //                if(!userService.checkCurrentUserPassword(user.getPassword())) {
 //                  model.addAttribute
@@ -91,7 +82,7 @@ public class UserController {
 //                  return "home";
 //                }
                 userService.saveUser(user);
-                model.addAttribute("page", "fragments.html :: edit-user-success");
+                model.addAttribute("page", "fragments.html :: update-user-success");
             }catch(DataIntegrityViolationException e){
                 model.addAttribute
                         ("emailExists", "    This email already exists in our database!");
