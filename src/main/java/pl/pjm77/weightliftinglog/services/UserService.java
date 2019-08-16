@@ -37,8 +37,6 @@ public class UserService {
      * @return boolean
      */
     public boolean checkCurrentUserPassword(String password) {
-        System.out.println(password);
-        System.out.println(getLoggedInUserPassword());
         return BCrypt.checkpw(password, getLoggedInUserPassword());
     }
 
