@@ -9,11 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import pl.pjm77.weightliftinglog.models.User;
+import pl.pjm77.weightliftinglog.security.validator.UpdatePasswordValidator;
 import pl.pjm77.weightliftinglog.services.UserService;
 
 import javax.validation.Valid;
@@ -26,10 +25,18 @@ import static pl.pjm77.weightliftinglog.services.UserService.getLoggedInUserName
 public class UserController {
 
     private final UserService userService;
+    private final UpdatePasswordValidator updatePasswordValidator;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          UpdatePasswordValidator updatePasswordValidator) {
         this.userService = userService;
+        this.updatePasswordValidator = updatePasswordValidator;
+    }
+
+    @InitBinder("user")
+    protected void initBinder(final WebDataBinder binder) {
+        binder.addValidators(updatePasswordValidator);
     }
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")

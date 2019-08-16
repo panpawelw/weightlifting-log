@@ -12,7 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import pl.pjm77.weightliftinglog.models.*;
-import pl.pjm77.weightliftinglog.security.validator.PasswordValidator;
+import pl.pjm77.weightliftinglog.security.validator.RegistrationPasswordValidator;
 import pl.pjm77.weightliftinglog.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,17 +23,18 @@ import javax.validation.Valid;
 public class HomeController {
 
     private final UserService userService;
-    private final PasswordValidator passwordValidator;
+    private final RegistrationPasswordValidator registrationPasswordValidator;
 
     @Autowired
-    public HomeController(UserService userService, PasswordValidator passwordValidator) {
+    public HomeController(UserService userService,
+                          RegistrationPasswordValidator registrationPasswordValidator) {
         this.userService = userService;
-        this.passwordValidator = passwordValidator;
+        this.registrationPasswordValidator = registrationPasswordValidator;
     }
 
     @InitBinder("user")
     protected void initBinder(final WebDataBinder binder) {
-        binder.addValidators(passwordValidator);
+        binder.addValidators(registrationPasswordValidator);
     }
 
     @GetMapping("/")
