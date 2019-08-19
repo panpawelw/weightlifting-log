@@ -12,7 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import pl.pjm77.weightliftinglog.models.User;
-import pl.pjm77.weightliftinglog.security.validator.UpdatePasswordValidator;
+import pl.pjm77.weightliftinglog.validators.UpdatePasswordValidator;
 import pl.pjm77.weightliftinglog.services.UserService;
 
 import javax.validation.Valid;

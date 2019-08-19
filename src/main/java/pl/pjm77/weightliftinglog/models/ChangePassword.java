@@ -3,57 +3,57 @@ package pl.pjm77.weightliftinglog.models;
 /**
  * This class is used when changing user's password
  *
- * OldPassword - user's current password
- * ConfirmOldPassword - confirmation of current password
- * NewPassword - user's new password
- * ConfirmNewPassword - confirmation of new password
+ * oldPassword - user's current password
+ * confirmOldPassword - confirmation of current password
+ * newPassword - user's new password
+ * confirmNewPassword - confirmation of new password
  */
 public class ChangePassword {
 
-    private String OldPassword;
-    private String ConfirmOldPassword;
-    private String NewPassword;
-    private String ConfirmNewPassword;
+    private String oldPassword;
+    private String confirmOldPassword;
+    private String newPassword;
+    private String confirmNewPassword;
 
     public ChangePassword() {}
 
     public ChangePassword(String oldPassword, String confirmOldPassword, String newPassword,
                           String confirmNewPassword) {
-        OldPassword = oldPassword;
-        ConfirmOldPassword = confirmOldPassword;
-        NewPassword = newPassword;
-        ConfirmNewPassword = confirmNewPassword;
+        this.oldPassword = oldPassword;
+        this.confirmOldPassword = confirmOldPassword;
+        this.newPassword = newPassword;
+        this.confirmNewPassword = confirmNewPassword;
     }
 
     public String getOldPassword() {
-        return OldPassword;
+        return oldPassword;
     }
 
     public void setOldPassword(String oldPassword) {
-        OldPassword = oldPassword;
+        this.oldPassword = oldPassword;
     }
 
     public String getConfirmOldPassword() {
-        return ConfirmOldPassword;
+        return confirmOldPassword;
     }
 
     public void setConfirmOldPassword(String confirmOldPassword) {
-        ConfirmOldPassword = confirmOldPassword;
+        this.confirmOldPassword = confirmOldPassword;
     }
 
     public String getNewPassword() {
-        return NewPassword;
+        return newPassword;
     }
 
     public void setNewPassword(String newPassword) {
-        NewPassword = newPassword;
+        this.newPassword = newPassword;
     }
 
     public String getConfirmNewPassword() {
-        return ConfirmNewPassword;
+        return confirmNewPassword;
     }
 
     public void setConfirmNewPassword(String confirmNewPassword) {
-        ConfirmNewPassword = confirmNewPassword;
+        this.confirmNewPassword = confirmNewPassword;
     }
 }
