@@ -72,7 +72,7 @@
         <p>Female: <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
             Male: <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/></p>
         <input type="hidden" th:field="*{role}"/>
-        <input type="submit" th:value="Register">
+        <input type="submit" value="Register new user">
         <button class="my-button" onclick="location.href='/wl/login'" type="button">Cancel</button>
     </form>
 </div>
@@ -87,7 +87,8 @@
             <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span></p>
         <p>Password: <input type="password" th:field="*{password}"/>
             <span th:if="${#fields.hasErrors('password')}" class="alert" th:errors="*{password}"></span>
-            <button class="my-button" onclick="location.href='/wl/login'" type="button">
+            <button class="my-button" onclick="location.href='/wl/changepassword'"
+                    type="button">
                 Change password</button>
         <p>Email: <input type="text" th:field="*{email}"/>
             <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span>
@@ -101,8 +102,30 @@
         <p>Female: <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
             Male: <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/></p>
         <input type="hidden" th:field="*{role}"/>
-        <input type="submit" th:value="Update">
+        <input type="submit" value="Update user details">
         <button class="my-button" onclick="location.href='/wl/login'" type="button">Cancel</button>
+    </form>
+</div>
+
+<!--Change user's password form-->
+<div th:fragment="change-password">
+    <h2>Please enter and confirm both current and new passwords...</h2><br/>
+    <!--/*@thymesVar id="changePassword" type="java"*/-->
+    <form th:action="@{/changepassword}" th:object="${changePassword}" method="post">
+        <p>Current password: <input type="password" th:field="*{oldPassword}" autofocus="autofocus"/>
+            <span th:if="${#fields.hasErrors('oldPassword')}" class="alert"
+                  th:errors="*{oldPassword}"></span></p>
+        <p>Confirm current password: <input type="password" th:field="*{confirmOldPassword}"/>
+            <span th:if="${#fields.hasErrors('confirmOldPassword')}" class="alert"
+                  th:errors="*{confirmOldPassword}"></span></p>
+        <p>New password: <input type="password" th:field="*{newPassword}"/>
+            <span th:if="${#fields.hasErrors('newPassword')}" class="alert"
+                  th:errors="*{newPassword}"></span></p>
+        <p>Confirm new password: <input type="password" th:field="*{confirmNewPassword}"/>
+            <span th:if="${#fields.hasErrors('confirmNewPassword')}" class="alert"
+                  th:errors="*{confirmNewPassword}"></span></p>
+        <input type="submit" value="Change password">
+        <button class="my-button" onclick="location.href='/wl/update'" type="button">Cancel</button>
     </form>
 </div>
 
@@ -116,6 +139,12 @@
 <div th:fragment="update-user-success">
     <br/><h2>User details updated!</h2><br/>
     <button class="my-button" onclick="location.href='/wl/user'" type="button">OK</button>
+</div>
+
+<!--Password change successful-->
+<div th:fragment="change-password-success">
+    <br/><h2>New password has been set!</h2><br/>
+    <button class="my-button" onclick="location.href='/wl/update'" type="button">OK</button>
 </div>
 
 <!--User panel-->
