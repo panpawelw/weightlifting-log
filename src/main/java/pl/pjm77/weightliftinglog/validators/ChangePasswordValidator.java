@@ -1,13 +1,22 @@
 package pl.pjm77.weightliftinglog.validators;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import pl.pjm77.weightliftinglog.models.ChangePassword;
+import pl.pjm77.weightliftinglog.services.UserService;
 
 @Component
 public class ChangePasswordValidator implements Validator {
+
+    private UserService userService;
+
+    @Autowired
+    public ChangePasswordValidator(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -43,6 +52,10 @@ public class ChangePasswordValidator implements Validator {
         if (!changePassword.getNewPassword().equals(changePassword.getConfirmNewPassword())) {
             errors.rejectValue("newPassword", "Diff.userForm.confirmPassword");
             errors.rejectValue("confirmNewPassword", "Diff.userForm.confirmPassword");
+        }
+
+        if(!userService.checkCurrentUserPassword(changePassword.getOldPassword())) {
+            errors.rejectValue("oldPassword", "Diff.userForm.wrongPassword");
         }
     }
 }

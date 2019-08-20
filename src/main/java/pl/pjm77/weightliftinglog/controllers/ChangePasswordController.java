@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.pjm77.weightliftinglog.models.ChangePassword;
+import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.services.ChangePasswordService;
 import pl.pjm77.weightliftinglog.services.UserService;
 import pl.pjm77.weightliftinglog.validators.ChangePasswordValidator;
@@ -52,6 +53,7 @@ public class ChangePasswordController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("page", "fragments.html :: change-password");
         } else {
+            userService.changeCurrentUserPassword(changePassword.getNewPassword());
             model.addAttribute("page", "fragments.html :: change-password-success");
         }
         return "home";

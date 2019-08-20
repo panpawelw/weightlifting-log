@@ -32,6 +32,16 @@ public class UserService {
     }
 
     /**
+     *
+     * @param password
+     */
+    public void changeCurrentUserPassword(String password) {
+        User user = findUserByName(UserService.getLoggedInUserName());
+        user.setPassword(password);
+        saveUser(user);
+    }
+
+    /**
      * Checks a string against currently logged in user's password.
      * @param password password that is supposed to be checked
      * @return boolean
