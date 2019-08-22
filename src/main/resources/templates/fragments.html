@@ -150,12 +150,12 @@
 </div>
 
 <!--User panel-->
-<div th:fragment="user-panel" class="row no-gutters workout-tab-container" style="height: 500px;">
+<div th:fragment="user-panel" class="row no-gutters workout-tab-container" style="height: 95vh;">
     <div id="workout-content-container" class="col">
-        <h2>Whatever</h2>
+        <p>Lorem ipsum dolor sit amet.</p>
     </div>
     <div id="workout-selection-container" class="col">
-        <h2>Wat?</h2>
+        <p>Lorem ipsum dolor sit amet.</p>
     </div>
     <script>
         let splitobj = Split(["#workout-content-container","#workout-selection-container"], {
@@ -164,109 +164,13 @@
                 return {'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)'}
             },
             gutterStyle: function (dimension, gutterSize) { return {'flex-basis':  gutterSize + 'px'} },
-            sizes: [75,25],
-            minSize: 0,
+            sizes: [74,24],
+            minSize: 24,
             gutterSize: 6,
             cursor: 'col-resize'
         });
     </script>
 </div>
-<!--<div th:fragment="user-panel" class="workout-tab-container">-->
-<!--    <div class="workout-content-container">-->
-<!--        <div class="workout-content">-->
-<!--            <h2>Select existing workout from the panel to the right or...</h2>-->
-<!--            <button class="my-button" onclick="location.href='/wl/newworkout'" type="button">-->
-<!--                Add new workout-->
-<!--            </button>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div class="workout-selection-container">-->
-<!--        <div class="workout-selection">-->
-<!--            <div class="controls">-->
-<!--                &lt;!&ndash;/*@thymesVar id="userGreeting" type="java"*/&ndash;&gt;-->
-<!--                <p class="same-row" th:text="${userGreeting}"></p>-->
-<!--                <button class="same-row my-button" onclick="location.href='/wl/logout'"-->
-<!--                        type="button">Log out-->
-<!--                </button>-->
-<!--                <button class="same-row my-button" onclick="location.href='/wl/update'"-->
-<!--                        type="button">My profile-->
-<!--                </button>-->
-<!--                &lt;!&ndash;/*@thymesVar id="adminRights" type="java"*/&ndash;&gt;-->
-<!--                <button th:if="${adminRights}" class="same-row my-button"-->
-<!--                        onclick="location.href='/wl/admin'">Admin panel-->
-<!--                </button>-->
-<!--            </div>-->
-<!--            <p>Pellentesque in aliquet libero, non egestas turpis. Sed vehicula ex leo, ac-->
-<!--                feugiat dolor molestie non.-->
-<!--                Vestibulum sapien lacus, cursus non laoreet nec, mattis in lacus. Sed at tellus-->
-<!--                eget ante ultrices-->
-<!--                gravida. Pellentesque magna orci, ullamcorper at placerat vitae, fringilla ac-->
-<!--                est. Aliquam mauris nulla,-->
-<!--                pharetra sit amet erat eget, cursus faucibus eros. Duis vel volutpat lacus. Orci-->
-<!--                varius natoque-->
-<!--                penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus-->
-<!--                lorem leo, vehicula sit-->
-<!--                amet tincidunt id, tincidunt mollis felis. Nunc pulvinar a mi a gravida. Vivamus-->
-<!--                eros est, hendrerit ac-->
-<!--                congue in, porta vel nisl. Pellentesque aliquam porttitor semper. Aenean-->
-<!--                pellentesque vitae lacus sed-->
-<!--                mollis. Nunc velit enim, venenatis vel interdum sit amet, lacinia semper diam.-->
-<!--                Proin volutpat luctus-->
-<!--                nibh quis consectetur.-->
-<!--                Pellentesque in aliquet libero, non egestas turpis. Sed vehicula ex leo, ac-->
-<!--                feugiat dolor molestie non.-->
-<!--                Vestibulum sapien lacus, cursus non laoreet nec, mattis in lacus. Sed at tellus-->
-<!--                eget ante ultrices-->
-<!--                gravida. Pellentesque magna orci, ullamcorper at placerat vitae, fringilla ac-->
-<!--                est. Aliquam mauris nulla,-->
-<!--                pharetra sit amet erat eget, cursus faucibus eros. Duis vel volutpat lacus. Orci-->
-<!--                varius natoque-->
-<!--                penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus-->
-<!--                lorem leo, vehicula sit-->
-<!--                amet tincidunt id, tincidunt mollis felis. Nunc pulvinar a mi a gravida. Vivamus-->
-<!--                eros est, hendrerit ac-->
-<!--                congue in, porta vel nisl. Pellentesque aliquam porttitor semper. Aenean-->
-<!--                pellentesque vitae lacus sed-->
-<!--                mollis. Nunc velit enim, venenatis vel interdum sit amet, lacinia semper diam.-->
-<!--                Proin volutpat luctus-->
-<!--                nibh quis consectetur.-->
-<!--                Pellentesque in aliquet libero, non egestas turpis. Sed vehicula ex leo, ac-->
-<!--                feugiat dolor molestie non.-->
-<!--                Vestibulum sapien lacus, cursus non laoreet nec, mattis in lacus. Sed at tellus-->
-<!--                eget ante ultrices-->
-<!--                gravida. Pellentesque magna orci, ullamcorper at placerat vitae, fringilla ac-->
-<!--                est. Aliquam mauris nulla,-->
-<!--                pharetra sit amet erat eget, cursus faucibus eros. Duis vel volutpat lacus. Orci-->
-<!--                varius natoque-->
-<!--                penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus-->
-<!--                lorem leo, vehicula sit-->
-<!--                amet tincidunt id, tincidunt mollis felis. Nunc pulvinar a mi a gravida. Vivamus-->
-<!--                eros est, hendrerit ac-->
-<!--                congue in, porta vel nisl. Pellentesque aliquam porttitor semper. Aenean-->
-<!--                pellentesque vitae lacus sed-->
-<!--                mollis. Nunc velit enim, venenatis vel interdum sit amet, lacinia semper diam.-->
-<!--                Proin volutpat luctus-->
-<!--                nibh quis consectetur.-->
-<!--                Pellentesque in aliquet libero, non egestas turpis. Sed vehicula ex leo, ac-->
-<!--                feugiat dolor molestie non.-->
-<!--                Vestibulum sapien lacus, cursus non laoreet nec, mattis in lacus. Sed at tellus-->
-<!--                eget ante ultrices-->
-<!--                gravida. Pellentesque magna orci, ullamcorper at placerat vitae, fringilla ac-->
-<!--                est. Aliquam mauris nulla,-->
-<!--                pharetra sit amet erat eget, cursus faucibus eros. Duis vel volutpat lacus. Orci-->
-<!--                varius natoque-->
-<!--                penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus-->
-<!--                lorem leo, vehicula sit-->
-<!--                amet tincidunt id, tincidunt mollis felis. Nunc pulvinar a mi a gravida. Vivamus-->
-<!--                eros est, hendrerit ac-->
-<!--                congue in, porta vel nisl. Pellentesque aliquam porttitor semper. Aenean-->
-<!--                pellentesque vitae lacus sed-->
-<!--                mollis. Nunc velit enim, venenatis vel interdum sit amet, lacinia semper diam.-->
-<!--                Proin volutpat luctus-->
-<!--                nibh quis consectetur.</p>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 
 <!--Admin panel-->
 <div th:fragment="admin-panel">

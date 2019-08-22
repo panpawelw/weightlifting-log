@@ -2,8 +2,8 @@
 html {
     overflow-y: scroll;
 }
-html, body, .main-container {
-    height: 101%;
+html, body, #main-container {
+    height: 100.5vh;
     margin: 0;
 }
 html body {
@@ -11,15 +11,15 @@ html body {
     color: #FF9200;
 }
 
-.main-container {
+#main-container {
     display: flex;
     flex-flow: column;
 }
 
-.top-container {
+#top-container {
 }
 
-.content-container {
+#content-container {
     margin: auto 0;
 }
 
@@ -347,18 +347,20 @@ button:active, input[type=submit]:active, .my-button:active {
 }
 
 #workout-content-container {
-    height: 500px;
     background-color: red;
-    width: 74.6vw;
+    /*width: 74.6vw;*/
     display: inline-block;
+    overflow-y: auto;
+    height: 95vh;
 }
 
 #workout-selection-container {
-    height: 500px;
     background-color: blue;
-    width: 24.6vw;
+    /*width: 24.6vw;*/
     display: inline-block;
     float: right;
+    overflow-y: auto;
+    height: 95vh;
 }
 
 /* General text styling */
