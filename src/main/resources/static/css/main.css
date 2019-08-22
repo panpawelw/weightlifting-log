@@ -11,6 +11,19 @@ html body {
     color: #FF9200;
 }
 
+.main-container {
+    display: flex;
+    flex-flow: column;
+}
+
+.top-container {
+}
+
+.content-container {
+    margin: auto 0;
+}
+
+
 /* scrollbar styling */
 ::-webkit-scrollbar-track
 {
@@ -307,27 +320,43 @@ button:active, input[type=submit]:active, .my-button:active {
     width: 5vw;
 }
 
-/* User tab */
-
-.main-container {
-    display: flex;
-    flex-flow: column;
+/* User/admin tab */
+.split {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.gutter {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: 50%;}
+.gutter.gutter-horizontal {
+    cursor: col-resize;
+    background-image:
+            url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+}
+.gutter.gutter-vertical {
+    cursor: row-resize;
+    background-image:
+            url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII='); }
+.split.split-horizontal, .gutter.gutter-horizontal {
+    height: 100%;
+    float: left;
 }
 
-.top-container {
-}
-
-.content-container {
-    margin: auto 0;
-}
-
-.workout-content-container {
-    width: 74vw;
+#workout-content-container {
+    height: 500px;
+    background-color: red;
+    width: 74.6vw;
     display: inline-block;
 }
 
-.workout-selection-container {
-    width: 24vw;
+#workout-selection-container {
+    height: 500px;
+    background-color: blue;
+    width: 24.6vw;
     display: inline-block;
     float: right;
 }
