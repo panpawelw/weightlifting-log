@@ -4,10 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
+    </script>-->
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <title>Weightlifting Log Home</title>
 </head>
@@ -26,17 +32,17 @@
 
         <!--Tab header section-->
         <!--Either main calculator tab or login tab are active
-        depending on boolean variable sent from controller-->
-        <ul class="nav nav-tabs nav-justified" id="big-tabs">
-            <li class="" th:classappend="${showCalc != null}? active">
-                <a data-toggle="tab" href="#tab1" id="tab1handle">Overall Strength</a>
-            </li>
-            <li><a data-toggle="tab" href="#tab2" id="tab2handle">1 Rep Max</a></li>
-            <li><a data-toggle="tab" href="#tab3" id="tab3handle">Calculator #2</a></li>
-            <li class="" th:classappend="${showCalc == null}? active">
-                <a data-toggle="tab" href="#tab4" id="tab4handle">Training Log</a>
-            </li>
-        </ul>
+        depending on boolean variable sent from the controller-->
+        <nav class="nav nav-tabs justify-content-center nav-justified" id="big-tabs">
+            <a class="nav-item nav-link" th:classappend="${showCalc != null}? active"
+                   data-toggle="tab" href="#tab1" id="tab1handle">Overall Strength</a>
+            <a class="nav-item nav-link" data-toggle="tab" href="#tab2" id="tab2handle">1 Rep
+                Max</a>
+            <a class="nav-item nav-link" data-toggle="tab" href="#tab3"
+               id="tab3handle">Calculator #2</a>
+            <a class="nav-item nav-link" th:classappend="${showCalc == null}? active"
+                   data-toggle="tab" href="#tab4" id="tab4handle">Training Log</a>
+        </nav>
     </div>
 
     <!--Tab content-->
@@ -53,14 +59,14 @@
 
             <!--Tab#1 content - overall strength calculator-->
             <div id="tab1" class="tab-pane centered fade"
-                 th:classappend="${showCalc != null}? 'in active'">
+                 th:classappend="${showCalc != null}? 'show active'">
                 <br/>
                 <h3 class="tab-title">Overall Strength</h3>
                 <br/>
                 <div class="overall-strength">
                     <div class="overall-strength-weight">
-                        <label class="bigger-label" for="squat-weight-slider">Back squat -
-                            weight</label>
+                        <label class="bigger-label" for="squat-weight-slider">
+                            Back squat - weight</label>
                         <input name="squat-weight-slider" id="squat-weight-slider" type="range"
                                min="1" max="300" value="150"
                                step="0.5" class="slider overall-strength-weight"
@@ -68,7 +74,7 @@
                                'squat-weight','squat-reps','squat-max')"><br/>
                     </div>
                     <div class="overall-strength-reps">
-                        <label for="squat-reps-slider">Reps</label>
+                        <label class="bigger-label" for="squat-reps-slider">Reps</label>
                         <input name="squat-reps-slider" id="squat-reps-slider" type="range" min="1"
                                max="19" value="1" step="1"
                                class="slider overall-strength-reps"
@@ -96,15 +102,16 @@
                             </tr>
                             <tr>
                                 <td><label for="squat-max">Max</label></td>
-                                <td><input type="text" id="squat-max" value="" readonly size="5"></td>
+                                <td><input type="text" id="squat-max" value="" readonly size="5">
+                                </td>
                             </tr>
                         </table>
                     </div>
                 </div>
                 <div class="overall-strength">
                     <div class="overall-strength-weight">
-                        <label class="bigger-label" for="bench-weight-slider">Bench press -
-                            weight</label>
+                        <label class="bigger-label" for="bench-weight-slider">
+                            Bench press - weight</label>
                         <input name="bench-weight-slider" id="bench-weight-slider" type="range"
                                min="1" max="250" value="125"
                                step="0.5" class="slider overall-strength-weight"
@@ -112,7 +119,7 @@
                                this.value,'bench-weight','bench-reps','bench-max')"><br/>
                     </div>
                     <div class="overall-strength-reps">
-                        <label for="bench-reps-slider">Reps</label>
+                        <label class="bigger-label" for="bench-reps-slider">Reps</label>
                         <input name="bench-reps-slider" id="bench-reps-slider" type="range" min="1"
                                max="19" value="1" step="1"
                                class="slider overall-strength-reps"
@@ -140,15 +147,16 @@
                             </tr>
                             <tr>
                                 <td><label for="bench-max">Max</label></td>
-                                <td><input type="text" id="bench-max" value="" readonly size="5"></td>
+                                <td><input type="text" id="bench-max" value="" readonly size="5">
+                                </td>
                             </tr>
                         </table>
                     </div>
                 </div>
                 <div class="overall-strength">
                     <div class="overall-strength-weight">
-                        <label class="bigger-label" for="deadlift-weight-slider">Deadlift -
-                            weight</label>
+                        <label class="bigger-label" for="deadlift-weight-slider">
+                            Deadlift - weight</label>
                         <input name="deadlift-weight-slider" id="deadlift-weight-slider"
                                type="range" min="1" max="350"
                                value="175"
@@ -157,7 +165,7 @@
                                'deadlift-weight','deadlift-reps','deadlift-max')"><br/>
                     </div>
                     <div class="overall-strength-reps">
-                        <label for="deadlift-reps-slider">Reps</label>
+                        <label class="bigger-label" for="deadlift-reps-slider">Reps</label>
                         <input name="deadlift-reps-slider" id="deadlift-reps-slider" type="range"
                                min="1" max="19" value="1"
                                step="1"
@@ -186,15 +194,16 @@
                             </tr>
                             <tr>
                                 <td><label for="deadlift-max">Max</label></td>
-                                <td><input type="text" id="deadlift-max" value="" readonly size="5"></td>
+                                <td><input type="text" id="deadlift-max" value="" readonly size="5">
+                                </td>
                             </tr>
                         </table>
                     </div>
                 </div>
                 <div class="overall-strength">
                     <div class="overall-strength-weight">
-                        <label class="bigger-label" for="military-weight-slider">Military press -
-                            weight</label>
+                        <label class="bigger-label" for="military-weight-slider">
+                            Military press - weight</label>
                         <input name="military-weight-slider" id="military-weight-slider"
                                type="range" min="1" max="150"
                                value="75"
@@ -203,7 +212,7 @@
                                'military-weight','military-reps','military-max')"><br/>
                     </div>
                     <div class="overall-strength-reps">
-                        <label for="military-reps-slider">Reps</label>
+                        <label class="bigger-label" for="military-reps-slider">Reps</label>
                         <input name="military-reps-slider" id="military-reps-slider" type="range"
                                min="1" max="19" value="1"
                                step="1"
@@ -232,15 +241,16 @@
                             </tr>
                             <tr>
                                 <td><label for="military-max">Max</label></td>
-                                <td><input type="text" id="military-max" value="" readonly size="5"></td>
+                                <td><input type="text" id="military-max" value="" readonly size="5">
+                                </td>
                             </tr>
                         </table>
                     </div>
                 </div>
                 <div class="overall-strength">
                     <div class="overall-strength-weight">
-                        <label class="bigger-label" for="row-weight-slider">Barbell row -
-                            weight</label>
+                        <label class="bigger-label" for="row-weight-slider">
+                            Barbell row - weight</label>
                         <input name="row-weight-slider" id="row-weight-slider" type="range" min="1"
                                max="200" value="100"
                                step="0.5" class="slider overall-strength-weight"
@@ -248,7 +258,7 @@
                                'row-weight','row-reps','row-max')"><br/>
                     </div>
                     <div class="overall-strength-reps">
-                        <label for="row-reps-slider">Reps</label>
+                        <label class="bigger-label" for="row-reps-slider">Reps</label>
                         <input name="row-reps-slider" id="row-reps-slider" type="range" min="1"
                                max="19" value="1" step="1"
                                class="slider overall-strength-reps"
@@ -283,8 +293,8 @@
                 </div>
                 <div class="overall-strength">
                     <div class="overall-strength-weight">
-                        <label class="bigger-label" for="pullup-weight-slider">Weighted pull-up -
-                            weight</label>
+                        <label class="bigger-label" for="pullup-weight-slider">
+                            Weighted pull-up - weight</label>
                         <input name="pullup-weight-slider" id="pullup-weight-slider" type="range"
                                min="1" max="150" value="75"
                                step="0.5" class="slider overall-strength-weight"
@@ -292,7 +302,7 @@
                                this.value,'pullup-weight','pullup-reps','pullup-max')"><br/>
                     </div>
                     <div class="overall-strength-reps">
-                        <label for="pullup-reps-slider">Reps</label>
+                        <label class="bigger-label" for="pullup-reps-slider">Reps</label>
                         <input name="pullup-reps-slider" id="pullup-reps-slider" type="range"
                                min="1" max="19" value="1"
                                step="1"
@@ -321,7 +331,8 @@
                             </tr>
                             <tr>
                                 <td><label for="pullup-max">Max</label></td>
-                                <td><input type="text" id="pullup-max" value="" readonly size="5"></td>
+                                <td><input type="text" id="pullup-max" value="" readonly size="5">
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -336,7 +347,7 @@
 
                 <!--Weight slider-->
                 <div class="one-rep-max-inputs">
-                    <label for="weight">Weight lifted</label>
+                    <label class="bigger-label" for="weight">Weight lifted</label>
                     <input name="weight" id="weight" type="range" min="1" max="200" value="100"
                            class="slider" step="0.5"
                            oninput="update('weight-text',this.value)"><br/>
@@ -347,7 +358,7 @@
 
                 <!--Number of reps performed slider-->
                 <div class="one-rep-max-inputs">
-                    <label for="reps">Number of reps:</label>
+                    <label class="bigger-label" for="reps">Number of reps</label>
                     <input name="reps" id="reps" type="range" min="1" max="19" value="10"
                            class="slider" step="1"
                            oninput="update('reps-text',this.value)"><br/>
@@ -362,10 +373,8 @@
                         <tr>
                             <!--1 rep max result and "calculate" button-->
                             <td class="centered" colspan="4">
-                                <label for="result">1 Rep Max - 100%:</label><input id="result"
-                                                                                    type="text"
-                                                                                    value=""
-                                                                                    readonly>
+                                <label class="bigger-label" for="result">1 Rep Max -
+                                    100%:</label><input id="result" type="text" value="" readonly>
                                 <button class="my-button" type="button" onclick="calculate1RM()">
                                     Calculate
                                 </button>
@@ -719,12 +728,13 @@
 
             <!--Tab#4 content-->
             <div id="tab4" class="tab-pane centered fade"
-                 th:classappend="${showCalc == null}? 'in active'">
+                 th:classappend="${showCalc == null}? 'show active'">
                 <div th:if="${!page.isEmpty()}" th:replace="__${page}__">
                     <p>If you see this message, something went wrong...</p>
                 </div>
             </div>
         </div>
+        <div><p><br/></p></div>
     </div>
     <!--Page footer content-->
 </div>

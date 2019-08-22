@@ -19,14 +19,12 @@ html body {
     background-color: #CCCCCC;
 }
 
-::-webkit-scrollbar
-{
+::-webkit-scrollbar {
     width: 8px;
     background-color: #454343;
 }
 
-::-webkit-scrollbar-thumb
-{
+::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: #FF9200;
     background-image: -webkit-linear-gradient(90deg,
@@ -208,30 +206,27 @@ button:active, input[type=submit]:active, .my-button:active {
     z-index: 2;
 }
 
-#big-tabs li a {
+#big-tabs a {
     border: 1px solid white;
     border-bottom: 0;
     border-radius: 12px 12px 0 0;
     box-shadow: 0 -3px 6px -3px #472900;
     color: black;
-    /*background-color: #FF9200;*/
     background: linear-gradient(#FF9200, #454343);
     font-weight: bold;
     margin-bottom: 0;
 }
 
-#big-tabs li.active a {
+#big-tabs a.active {
     color: black;
-    /*background-color: #FFFFFF;*/
     background: linear-gradient(#FFFFFF, #454343);
     border: 1px solid #FF9200;
     border-bottom: 0;
 }
 
-#big-tabs li a:hover {
+#big-tabs a:hover {
     color: black;
     background: linear-gradient(#FFFFFF, #454343);
-    /*background-color: #FFFFFF;*/
     border: 1px solid #FF9200;
     border-bottom: 0;
 }
@@ -263,6 +258,10 @@ button:active, input[type=submit]:active, .my-button:active {
     float: left;
 }
 
+.overall-strength-reps.slider {
+    width: 50vw;
+}
+
 .overall-strength-text-inputs {
     width: 50%;
     float: right;
@@ -280,6 +279,14 @@ button:active, input[type=submit]:active, .my-button:active {
 .one-rep-max-inputs {
     width: 95vw;
     margin: auto;
+}
+
+.one-rep-max-inputs #weight{
+    width: 95vw;
+}
+
+.one-rep-max-inputs #reps{
+    width: 95vw;
 }
 
 .same-row {
@@ -311,16 +318,17 @@ button:active, input[type=submit]:active, .my-button:active {
 }
 
 .content-container {
-    flex: 2;
+    margin: auto 0;
 }
 
-.workout-content {
-    width: 75%;
-    float: left;
+.workout-content-container {
+    width: 74vw;
+    display: inline-block;
 }
 
-.workout-selection {
-    width: 25%;
+.workout-selection-container {
+    width: 24vw;
+    display: inline-block;
     float: right;
 }
 
@@ -336,8 +344,8 @@ button:active, input[type=submit]:active, .my-button:active {
 
 /* Other */
 .controls {
-    margin-top: 1em;
-    margin-right: 1em;
+    margin-top: 0.5em;
+    margin-right: 0.5em;
     text-align: right;
 }
 
