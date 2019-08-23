@@ -320,7 +320,9 @@ button:active, input[type=submit]:active, .my-button:active {
     width: 5vw;
 }
 
-/* User/admin tab */
+/* User panel */
+
+/* Resizable columns */
 .split {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -329,7 +331,7 @@ button:active, input[type=submit]:active, .my-button:active {
     overflow-x: hidden;
 }
 .gutter {
-    background-color: transparent;
+    background-color: #FF9200;
     background-repeat: no-repeat;
     background-position: 50%;}
 .gutter.gutter-horizontal {
@@ -347,20 +349,24 @@ button:active, input[type=submit]:active, .my-button:active {
 }
 
 #workout-content-container {
-    background-color: red;
-    /*width: 74.6vw;*/
     display: inline-block;
     overflow-y: auto;
     height: 95vh;
 }
 
 #workout-selection-container {
-    background-color: blue;
-    /*width: 24.6vw;*/
     display: inline-block;
     float: right;
     overflow-y: auto;
     height: 95vh;
+}
+
+.controls {
+    top: 0;
+    right: 0;
+    margin-top: 1em;
+    margin-right: 0.5em;
+    text-align: right;
 }
 
 /* General text styling */
@@ -373,12 +379,13 @@ button:active, input[type=submit]:active, .my-button:active {
     font-weight: bold;
 }
 
-/* Other */
-.controls {
-    margin-top: 0.5em;
-    margin-right: 0.5em;
-    text-align: right;
+/* Admin panel */
+
+#admin-panel {
+    height: 95vh;
 }
+
+/* Other */
 
 /* Responsive elements */
 @media screen and (max-width: 280px) {

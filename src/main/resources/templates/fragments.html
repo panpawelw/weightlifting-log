@@ -152,11 +152,28 @@
 <!--User panel-->
 <div th:fragment="user-panel" class="row no-gutters workout-tab-container" style="height: 95vh;">
     <div id="workout-content-container" class="col">
+        <br/>
         <p>Lorem ipsum dolor sit amet.</p>
     </div>
     <div id="workout-selection-container" class="col">
+        <div class="controls">
+            <!--/*@thymesVar id="userGreeting" type="java"*/-->
+            <p class="same-row" th:text="${userGreeting}"></p>
+            <button class="same-row my-button" onclick="location.href='/wl/logout'"
+                    type="button">Log out
+            </button>
+            <button class="same-row my-button" onclick="location.href='/wl/user'"
+                    type="button">Back
+            </button>
+            <!--/*@thymesVar id="adminRights" type="java"*/-->
+            <button th:if="${adminRights}" class="same-row my-button"
+                    onclick="location.href='/wl/admin'">Admin panel</button>
+        </div>
+        <br/>
         <p>Lorem ipsum dolor sit amet.</p>
     </div>
+
+    <!-- JS code for smooth column size adjustment -->
     <script>
         let splitobj = Split(["#workout-content-container","#workout-selection-container"], {
             elementStyle: function (dimension, size, gutterSize) {
@@ -165,7 +182,7 @@
             },
             gutterStyle: function (dimension, gutterSize) { return {'flex-basis':  gutterSize + 'px'} },
             sizes: [74,24],
-            minSize: 24,
+            minSize: 50,
             gutterSize: 6,
             cursor: 'col-resize'
         });
@@ -173,7 +190,7 @@
 </div>
 
 <!--Admin panel-->
-<div th:fragment="admin-panel">
+<div th:fragment="admin-panel" id="admin-panel">
     <div class="controls">
         <!--/*@thymesVar id="adminGreeting" type="java"*/-->
         <p class="same-row" th:text="${adminGreeting}"></p>
