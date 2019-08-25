@@ -152,8 +152,11 @@
 <!--User panel-->
 <div th:fragment="user-panel" class="row no-gutters workout-tab-container" style="height: 95vh;">
     <div id="workout-content-container" class="col">
-        <br/>
-        <p>Lorem ipsum dolor sit amet.</p>
+        <div id="workout-content">
+            <h2>Select existing workout from the panel to the right or...</h2>
+            <button class="my-button" onclick="location.href='/wl/addworkout'" type="button">
+                Add new workout</button>
+        </div>
     </div>
     <div id="workout-selection-container" class="col">
         <div class="controls">
