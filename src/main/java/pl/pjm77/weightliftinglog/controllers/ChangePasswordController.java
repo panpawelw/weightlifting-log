@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.pjm77.weightliftinglog.models.ChangePassword;
-import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.services.ChangePasswordService;
 import pl.pjm77.weightliftinglog.services.UserService;
 import pl.pjm77.weightliftinglog.validators.ChangePasswordValidator;
@@ -38,7 +37,7 @@ public class ChangePasswordController {
         binder.addValidators(changePasswordValidator);
     }
 
-    @GetMapping("/changepassword")
+    @GetMapping("/user/changepassword")
     public String changePasswordGet(Model model) {
         ChangePassword changePassword = new ChangePassword();
         model.addAttribute("changePassword", changePassword);
@@ -46,7 +45,7 @@ public class ChangePasswordController {
         return "home";
     }
 
-    @PostMapping("/changepassword")
+    @PostMapping("/user/changepassword")
     public String changePasswordPost(
             @Valid @ModelAttribute("changePassword") ChangePassword changePassword,
             BindingResult bindingResult, Model model) {

@@ -67,7 +67,7 @@ public class UserController {
         return "home";
     }
 
-    @GetMapping("/update")
+    @GetMapping("/user/update")
     public String editUserDetails(Model model) {
         String userName = getLoggedInUserName();
         User user = userService.findUserByName(userName);
@@ -77,17 +77,12 @@ public class UserController {
         return "home";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/user/update")
     public String registerPost(@Valid @ModelAttribute("user") User user,
                                BindingResult bindingResult, Model model) {
         model.addAttribute("page", "fragments.html :: update-user");
         if (!bindingResult.hasErrors()) {
             try {
-//                if(!userService.checkCurrentUserPassword(user.getPassword())) {
-//                  model.addAttribute
-//                          ("passwordsDontMatch", "     The password doesn't match!");
-//                  return "home";
-//                }
                 userService.saveUser(user);
                 model.addAttribute("page", "fragments.html :: update-user-success");
             }catch(DataIntegrityViolationException e){

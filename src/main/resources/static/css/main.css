@@ -1,4 +1,3 @@
-/* general properties */
 html {
     overflow-y: scroll;
 }
@@ -7,7 +6,7 @@ html, body, #main-container {
     margin: 0;
 }
 html body {
-    background-color: #454343;
+    background: #454343 url("../images/background.jpg") repeat;
     color: #FF9200;
 }
 
@@ -22,7 +21,6 @@ html body {
 #content-container {
     margin: auto 0;
 }
-
 
 /* scrollbar styling */
 ::-webkit-scrollbar-track
