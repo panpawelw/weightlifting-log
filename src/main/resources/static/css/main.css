@@ -6,7 +6,7 @@ html, body, #main-container {
     margin: 0;
 }
 html body {
-    background: #454343 url("../images/background.jpg") repeat;
+    background: #454343 url("../images/background.png") repeat;
     color: #FF9200;
 }
 
@@ -64,7 +64,7 @@ input[type=range] {
     height: 34px;
     -webkit-appearance: none;
     margin: 5px 0;
-    background-color: #454343;
+    background: #454343 url("../images/background.png") repeat;
 }
 
 input[type=range]::-webkit-slider-runnable-track {
@@ -204,8 +204,8 @@ button:active, input[type=submit]:active, .my-button:active {
     box-shadow: 1px 1px 1px #472900;
     animation-duration: 0.2s;
 }
-/* sticky navigation bar */
 
+/* sticky navigation bar */
 .sticky {
     position: fixed;
     top: 0;
@@ -213,50 +213,53 @@ button:active, input[type=submit]:active, .my-button:active {
 }
 
 /* Navigation tabs */
+
+.nav-tabs {
+    border-bottom: none !important;
+}
+
 #big-tabs {
     z-index: 2;
 }
 
 #big-tabs a {
-    border: 1px solid white;
-    border-bottom: 0;
+    border: 1px solid #454343;
     border-radius: 12px 12px 0 0;
     box-shadow: 0 -3px 6px -3px #472900;
     color: black;
-    background: linear-gradient(#FF9200, #454343);
+    background-image: url("../images/background.png"), linear-gradient(#FF9200, #454343);
     font-weight: bold;
     margin-bottom: 0;
 }
 
 #big-tabs a.active {
     color: black;
-    background: linear-gradient(#FFFFFF, #454343);
-    border: 1px solid #FF9200;
-    border-bottom: 0;
+    background: url("../images/background.png"), linear-gradient(#FFFFFF, #454343);
+    border: 1px solid #454343;
 }
 
 #big-tabs a:hover {
     color: black;
-    background: linear-gradient(#FFFFFF, #454343);
-    border: 1px solid #FF9200;
-    border-bottom: 0;
+    background: url("../images/background.png"), linear-gradient(#FFFFFF, #454343);
+    border: 1px solid #454343;
 }
 
 #filler-1 {
     height: 40px;
-    background-color: #454343;
+    background: #454343 url("../images/background.png") repeat;
     z-index: 1;
 }
 
 #filler-2 {
     height: 40px;
-    background-color: #454343;
+    background: #454343 url("../images/background.png") repeat;
 }
 
 /* Overall strength tab */
 .overall-strength {
     width: 95vw;
     overflow: auto;
+    overflow-y: hidden;
     margin: auto auto 5vw;
 }
 
