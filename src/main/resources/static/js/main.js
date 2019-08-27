@@ -131,3 +131,8 @@ function updatePercentageDescription(description, percentage) {
     }
     document.getElementById(description).innerHTML = descriptions[x];
 }
+
+/* This function displays the list of all user's workouts */
+function getWorkoutsList() {
+    alert('Here goes the workouts list!');
+}
