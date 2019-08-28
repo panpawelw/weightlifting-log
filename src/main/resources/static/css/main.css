@@ -39,8 +39,7 @@ html body {
     border-radius: 10px;
     background-color: #FF9200;
     background-image: -webkit-linear-gradient(90deg,
-    transparent,
-    rgba(0, 0, 0, 0.4) 50%,transparent,transparent);
+    transparent, rgba(0, 0, 0, 0.4) 50%,transparent,transparent);
     border: 1px solid #FFFFFF;
 }
 
@@ -332,9 +331,8 @@ button:active, input[type=submit]:active, .my-button:active {
     overflow-x: hidden;
 }
 .gutter {
-    background-color: #FF9200;
-    background-repeat: no-repeat;
-    background-position: 50%;}
+    background: #9c5900 no-repeat 50%;
+}
 .gutter.gutter-horizontal {
     cursor: col-resize;
     background-image:

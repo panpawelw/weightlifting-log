@@ -3,12 +3,15 @@ package pl.pjm77.weightliftinglog.services;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.repositories.UserRepository;
+
+import java.util.Collection;
 
 @Service
 public class UserService {
@@ -32,11 +35,11 @@ public class UserService {
     }
 
     /**
-     *
-     * @param password
+     * Sets a new password for user who is currently logged in and saves it to database
+     * @param password - new password
      */
     public void changeCurrentUserPassword(String password) {
-        User user = findUserByName(UserService.getLoggedInUserName());
+        User user = findUserByName(getLoggedInUserName());
         user.setPassword(password);
         saveUser(user);
     }
@@ -44,10 +47,10 @@ public class UserService {
     /**
      * Checks a string against currently logged in user's password.
      * @param password password that is supposed to be checked
-     * @return boolean
+     * @return true for match, false for mismatch
      */
-    public boolean checkCurrentUserPassword(String password) {
-        return BCrypt.checkpw(password, getLoggedInUserPassword());
+    public static boolean passwordsDontMatch(String password) {
+        return !BCrypt.checkpw(password, getLoggedInUserPassword());
     }
 
     /**
@@ -64,6 +67,22 @@ public class UserService {
             userName = principal.toString();
         }
         return userName;
+    }
+
+    /**
+     * Check currently logged in user for admin rights
+     * @return true if user has admin rights, false if not
+     */
+    public static boolean checkLoggedInUserForAdminRights() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Collection<? extends GrantedAuthority> authorities;
+        if (principal instanceof UserDetails) {
+            authorities = ((UserDetails) principal).getAuthorities();
+            for (GrantedAuthority grantedAuthority : authorities) {
+                if (("ROLE_ADMIN").equals(grantedAuthority.getAuthority())) {return true;}
+            }
+        }
+        return false;
     }
 
     /**

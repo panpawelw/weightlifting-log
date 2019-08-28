@@ -29,14 +29,20 @@ public class WorkoutController {
         return new WorkoutDeserialized();
     }
 
+    @GetMapping("/add")
+    public String addWorkoutGet() {
+
+        return "home";
+    }
+
     @PostMapping("/add")
-    public void addWorkout(@RequestBody WorkoutDeserialized workoutDeserialized,
+    public void addWorkoutPost(@RequestBody WorkoutDeserialized workoutDeserialized,
                         HttpServletRequest request, HttpServletResponse response) {
     }
 
     @PutMapping("/update/{workoutId}")
     @ResponseBody
-    public void updateWorkout(@PathVariable long workoutId, @RequestBody(required=true)
+    public void updateWorkout(@PathVariable long workoutId, @RequestBody()//required = true)
             WorkoutDeserialized workoutDeserialized) {
     }
 
