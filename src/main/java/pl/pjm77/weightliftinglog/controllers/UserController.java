@@ -41,6 +41,7 @@ public class UserController {
         model.addAttribute("userGreeting", "Hello " + getLoggedInUserName() + "!");
         model.addAttribute("adminRights", checkLoggedInUserForAdminRights());
         model.addAttribute("page", "fragments.html :: user-panel");
+        model.addAttribute("userPanelPage", "fragments.html :: user-panel-default");
         return "home";
     }
 

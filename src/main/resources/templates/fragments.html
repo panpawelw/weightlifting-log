@@ -148,13 +148,27 @@
     <button class="my-button" onclick="location.href='/wl/user/update'" type="button">OK</button>
 </div>
 
+<!--Admin panel-->
+<div th:fragment="admin-panel" id="admin-panel">
+    <div class="controls">
+        <!--/*@thymesVar id="adminGreeting" type="java"*/-->
+        <p class="same-row" th:text="${adminGreeting}"></p>
+        <button class="same-row my-button" onclick="location.href='/wl/logout'"
+                type="button">Log out
+        </button>
+        <button class="same-row my-button" onclick="location.href='/wl/user'"
+                type="button">Back
+        </button>
+    </div>
+    <h2>Welcome, Admin!</h2>
+</div>
+
 <!--User panel-->
 <div th:fragment="user-panel" class="row no-gutters workout-tab-container" style="height: 95vh;">
     <div id="workout-content-container" class="col">
-        <div id="workout-content">
-            <h2>Select existing workout from the panel to the right or...</h2>
-            <button class="my-button" onclick="location.href='/wl/workout/add'" type="button">
-                Add new workout</button>
+        <!--/*@thymesVar id="userPanelPage" type="java"*/-->
+        <div th:if="${!userPanelPage.isEmpty()}" th:replace="__${userPanelPage}__">
+            <p>If you see this message, something went wrong...</p>
         </div>
     </div>
     <div id="workout-selection-container" class="col">
@@ -172,9 +186,8 @@
                     onclick="location.href='/wl/admin'">Admin panel</button>
         </div>
         <br/>
-        <p>Lorem ipsum dolor sit amet.</p>
+        <p id="workouts-list"></p>
         <script>getWorkoutsList();</script>
-        <div id="workouts-list"></div>
     </div>
 
     <!-- JS code for smooth column size adjustment -->
@@ -193,19 +206,19 @@
     </script>
 </div>
 
-<!--Admin panel-->
-<div th:fragment="admin-panel" id="admin-panel">
-    <div class="controls">
-        <!--/*@thymesVar id="adminGreeting" type="java"*/-->
-        <p class="same-row" th:text="${adminGreeting}"></p>
-        <button class="same-row my-button" onclick="location.href='/wl/logout'"
-                type="button">Log out
-        </button>
-        <button class="same-row my-button" onclick="location.href='/wl/user'"
-                type="button">Back
-        </button>
-    </div>
-    <h2>Welcome, Admin!</h2>
+<!-- user panel fragments - default -->
+<div th:fragment="user-panel-default" class="workout-content">
+    <h2>Select existing workout from the panel to the right or...</h2>
+    <button class="my-button" onclick="location.href='/wl/workout/add'" type="button">
+        Add new workout</button>
 </div>
+
+<!-- user panel fragments - add new workout-->
+<div th:fragment="user-panel-add-workout" class="workout-content">
+    <h2>Future add workout functionality!</h2>
+    <button class="my-button" onclick="location.href='/wl/workout/add'" type="button">
+        Save workout</button>
+</div>
+
 </body>
 </html>

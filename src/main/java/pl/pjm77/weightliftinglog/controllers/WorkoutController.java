@@ -1,15 +1,16 @@
 package pl.pjm77.weightliftinglog.controllers;
 
-import org.springframework.web.bind.annotation.*;
-import pl.pjm77.weightliftinglog.models.WorkoutDeserialized;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import pl.pjm77.weightliftinglog.services.WorkoutService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
+import static pl.pjm77.weightliftinglog.services.UserService.checkLoggedInUserForAdminRights;
+import static pl.pjm77.weightliftinglog.services.UserService.getLoggedInUserName;
 
-@RestController
+@Controller
 @RequestMapping("/workout")
 public class WorkoutController {
 
@@ -17,37 +18,13 @@ public class WorkoutController {
 
     public WorkoutController(WorkoutService workoutService) {this.workoutService = workoutService;}
 
-    @GetMapping("/")
-    @ResponseBody
-    public List<WorkoutDeserialized> getWorkoutsList() {
-        return new ArrayList<>();
-    }
-
-    @GetMapping("/{workoutId}")
-    @ResponseBody
-    public WorkoutDeserialized getWorkoutById(@PathVariable long workoutId) {
-        return new WorkoutDeserialized();
-    }
-
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/add")
-    public String addWorkoutGet() {
-
+    public String addWorkoutGet(Model model) {
+        model.addAttribute("userGreeting", "Hello " + getLoggedInUserName() + "!");
+        model.addAttribute("adminRights", checkLoggedInUserForAdminRights());
+        model.addAttribute("page", "fragments.html :: user-panel");
+        model.addAttribute("userPanelPage", "fragments.html :: user-panel-add-workout");
         return "home";
-    }
-
-    @PostMapping("/add")
-    public void addWorkoutPost(@RequestBody WorkoutDeserialized workoutDeserialized,
-                        HttpServletRequest request, HttpServletResponse response) {
-    }
-
-    @PutMapping("/update/{workoutId}")
-    @ResponseBody
-    public void updateWorkout(@PathVariable long workoutId, @RequestBody()//required = true)
-            WorkoutDeserialized workoutDeserialized) {
-    }
-
-    @DeleteMapping("/{workoutId}")
-    @ResponseBody
-    public void deleteWorkout(@PathVariable long workoutId) {
     }
 }

@@ -134,5 +134,8 @@ function updatePercentageDescription(description, percentage) {
 
 /* This function displays the list of all user's workouts */
 function getWorkoutsList() {
-    alert('Here goes the workouts list!');
+    let workoutsList = document.getElementById("workouts-list");
+    let text = document.createTextNode("Here goes the workout list!");
+
+    workoutsList.appendChild(text);
 }
