@@ -1,3 +1,4 @@
+/* general properties */
 html {
     overflow-y: scroll;
 }
@@ -389,6 +390,13 @@ button:active, input[type=submit]:active, .my-button:active {
 }
 
 /* Other */
+
+#error-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 /* Responsive elements */
 @media screen and (max-width: 280px) {

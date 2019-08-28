@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
     <meta charset="UTF-8">
     <title>Weightlifting Log Error Panel</title>
-    <style>
-        html, body {
-            height: 100%;
-            display: grid;
-        }
-    </style>
 </head>
 <body>
-<div style="margin: auto; text-align: center">
-    <h2>Error!</h2>
-    <p>You don't have the credentials to use this feature!</p>
-    <button class="my-button" onclick = "location.href = '/wl/login'" type="button">Take me back</button>
+<div id="error-container">
+    <div class="centered">
+        <h2>Error!</h2>
+        <p>You don't have the credentials to use this feature!</p>
+        <button class="my-button" onclick = "location.href = '/wl/login'" type="button">
+            Take me back</button>
+    </div>
 </div>
 </body>
 </html>
