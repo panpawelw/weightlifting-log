@@ -136,6 +136,17 @@ function updatePercentageDescription(description, percentage) {
 function getWorkoutsList() {
     let workoutsList = document.getElementById("workouts-list");
     let text = document.createTextNode("Here goes the workout list!");
-
     workoutsList.appendChild(text);
+}
+
+function buildWorkout() {
+    document.getElementById("created").value = new Date();
+}
+
+function addWorkoutNote() {
+    alert('Adding note!');
+}
+
+function addExercise() {
+    alert('Adding exercise');
 }
