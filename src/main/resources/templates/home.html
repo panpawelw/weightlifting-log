@@ -336,10 +336,10 @@
                 </div>
             </div>
 
-            <!--Tab#2 content - percentages calculator-->
+            <!--Tab#2 content - 1 rep max and percentages calculator-->
             <div id="tab2" class="tab-pane centered fade">
                 <br/>
-                <h3 class="tab-title">1 Rep Max and Percentages Calculator</h3>
+                <h3 class="tab-title">1 Rep Max Calculator</h3>
                 <br>
 
                 <!--Weight slider-->
@@ -364,17 +364,23 @@
                 </div>
                 <br/>
                 <div>
+                    <label class="bigger-label" for="result">1 Rep Max:</label>
+                    <input id="result" type="text" value="" readonly>
+                    <button class="my-button" type="button" onclick="calculate1RM()">
+                        Calculate
+                    </button>
+                </div>
 
-                    <!--Percentages calculator-->
+                <!--Percentages calculator-->
+                <div>
+                    <br/><br/>
+                    <h3 class="tab-title">Percentages Calculator</h3>
+                    <br>
                     <table id="percentages">
                         <tr>
                             <!--1 rep max result and "calculate" button-->
                             <td class="centered" colspan="4">
-                                <label class="bigger-label" for="result">1 Rep Max -
-                                    100%:</label><input id="result" type="text" value="" readonly>
-                                <button class="my-button" type="button" onclick="calculate1RM()">
-                                    Calculate
-                                </button>
+
                             </td>
                         </tr>
                         <tr>
