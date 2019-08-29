@@ -303,10 +303,6 @@ button:active, input[type=submit]:active, .my-button:active {
     width: 95vw;
 }
 
-.same-row {
-    display: inline-block;
-}
-
 #percentages {
     margin-left: auto;
     margin-right: auto;
@@ -390,6 +386,10 @@ button:active, input[type=submit]:active, .my-button:active {
 }
 
 /* Other */
+
+.same-row {
+    display: inline-block;
+}
 
 #error-container {
     height: 100vh;
