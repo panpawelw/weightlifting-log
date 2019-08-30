@@ -134,19 +134,31 @@ function updatePercentageDescription(description, percentage) {
 
 /* This function displays the list of all user's workouts */
 function getWorkoutsList() {
-    let workoutsList = document.getElementById("workouts-list");
-    let text = document.createTextNode("Here goes the workout list!");
-    workoutsList.appendChild(text);
+    document.getElementById("workouts-list").innerHTML +=
+    "Here goes the workout list!";
 }
 
+let exerciseNumber = 0;
+let workoutNoteNumber = 0;
 function buildWorkout() {
+    exerciseNumber = 0;
+    workoutNoteNumber = 0;
     document.getElementById("created").value = new Date();
 }
 
-function addWorkoutNote() {
-    alert('Adding note!');
+function addExercise() {
+    exerciseNumber++;
+    document.getElementById("workout-exercises").innerHTML +=
+        "<div id='exercise1-container'><label for='exercise1'>" +
+        "Exercise #" + exerciseNumber + ":</label><input type='text' " +
+        "name='exercise1' id='exercise1' minlength='20' value=''/></div>";
+
 }
 
-function addExercise() {
-    alert('Adding exercise');
+function addWorkoutNote() {
+    workoutNoteNumber++;
+    document.getElementById("workout-notes").innerHTML +=
+        "<div id='workout-note1-container'><label for='workout-note1'>" +
+        "Workout Note #" + workoutNoteNumber + ":</label><input type='text' " +
+        "name='workout-note1' id='workout-note1' minlength='20' value=''/></div>";
 }

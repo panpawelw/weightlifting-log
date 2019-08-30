@@ -224,13 +224,16 @@
 
     <br/><br/>
     <label for="title">Workout title: </label>
-    <input type="text" name="title" id="title" size="20" value=""/>
+    <input type="text" name="title" id="title" minlength="20" value=""/>
     <label for="created">Created: </label>
     <input type="text" name="created" id="created" value=""/>
     <button class="my-button" onclick="addWorkoutNote();">Add workout note</button>
     <button class="my-button" onclick="addExercise();">Add exercise</button>
     <script>buildWorkout();</script>
     <br/><br/>
+    <div id="workout-notes"></div>
+    <div id="workout-exercises"></div>
+
 
     <div class="same-row">
         <button class="my-button" onclick="location.href='/wl/user'" type="button">
