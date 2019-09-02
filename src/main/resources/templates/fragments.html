@@ -208,13 +208,16 @@
 
 <!-- user panel fragments - default -->
 <div th:fragment="user-panel-default" class="workout-content">
+    <br/><br/>
     <h2>Select existing workout from the panel to the right or...</h2>
     <button class="my-button" onclick="location.href='/wl/workout/add'" type="button">
         Add new workout</button>
 </div>
 
 <!-- user panel fragments - add new workout-->
+
 <div th:fragment="user-panel-add-workout" class="workout-content">
+    <br/>
     <div class="same-row">
         <button class="my-button" onclick="location.href='/wl/user'" type="button">
             Save</button>
@@ -227,13 +230,15 @@
     <input type="text" name="title" id="title" minlength="20" value=""/>
     <label for="created">Created: </label>
     <input type="text" name="created" id="created" value=""/>
-    <button class="my-button" onclick="addWorkoutNote();">Add workout note</button>
-    <button class="my-button" onclick="addExercise();">Add exercise</button>
-    <script>buildWorkout();</script>
-    <br/><br/>
+    <br/>
     <div id="workout-notes"></div>
+    <br/>
+    <button class="my-button" onclick="addNote();">Add workout note</button>
+    <br/>
     <div id="workout-exercises"></div>
-
+    <br/>
+    <button class="my-button" onclick="addExercise();">Add exercise</button>
+    <br/><br/>
 
     <div class="same-row">
         <button class="my-button" onclick="location.href='/wl/user'" type="button">
@@ -241,6 +246,7 @@
         <button class="my-button" onclick="location.href='/wl/user'" type="button">
             Cancel</button>
     </div>
+    <script>buildWorkout();</script>
 </div>
 
 <!-- user panel fragments - update existing workout-->

@@ -151,14 +151,21 @@ function buildWorkout() {
 function addExercise() {
     exerciseNumber++;
     let newExercise = document.createElement('div');
-    newExercise.innerHTML = "<div id='exercise1-container'>" +
-        "<label for='exercise1'>Exercise #" + exerciseNumber + ":</label>" +
-        "<input type='text' name='exercise1' id='exercise1' minlength='20' " +
-        "value=''/></div>";
+    newExercise.innerHTML = "<div id='exercise" + exerciseNumber + "-container'>" +
+        "<label for='exercise" + exerciseNumber + "'>Exercise #" + exerciseNumber + ":</label>" +
+        "<input type='text' name='exercise" + exerciseNumber + "' id='exercise1" + exerciseNumber + "'" +
+        " minlength='20' value=''/></div><div id='exercise" + exerciseNumber + "-notes'></div><br/>" +
+        "<button class='my-button' onclick='addNote();'>Add exercise note</button><br/><br/>" +
+        "<div id='exercise" + exerciseNumber + "-sets'></div><button class='my-button' " +
+        "onclick='addSet();'>Add set</button><br/><br/>";
     document.getElementById("workout-exercises").appendChild(newExercise);
 }
 
-function addWorkoutNote() {
+function addSet() {
+    alert('Adding set!');
+}
+
+function addNote() {
     workoutNoteNumber++;
     shortcut = 'workout-note' + workoutNoteNumber;
     let newWorkoutNote = document.createElement('div');
