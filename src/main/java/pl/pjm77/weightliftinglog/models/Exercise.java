@@ -6,29 +6,29 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Single exercise consists of name and any number of sets, also any number of notes can be
+ * Single exercise consists of title and any number of sets, also any number of notes can be
  * attached to it.
  */
 public class Exercise implements Serializable {
 
-    private String name;
+    private String title;
     private List<Set> sets = new ArrayList<>();
     private List<Note> exerciseNotes = new ArrayList<>();
 
     public Exercise() {}
 
-    public Exercise(String name, List<Set> sets, List<Note> exerciseNotes) {
-        this.name = name;
+    public Exercise(String title, List<Set> sets, List<Note> exerciseNotes) {
+        this.title = title;
         this.sets = sets;
         this.exerciseNotes = exerciseNotes;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public List<Set> getSets() {
@@ -50,7 +50,7 @@ public class Exercise implements Serializable {
     @Override
     public String toString() {
         return "Exercise{" +
-                "name='" + name + '\'' +
+                "title='" + title + '\'' +
                 ", sets=" + sets +
                 ", exerciseNotes=" + exerciseNotes +
                 '}';
@@ -61,13 +61,13 @@ public class Exercise implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Exercise)) return false;
         Exercise exercise = (Exercise) o;
-        return Objects.equals(getName(), exercise.getName()) &&
+        return Objects.equals(getTitle(), exercise.getTitle()) &&
                 Objects.equals(getSets(), exercise.getSets()) &&
                 Objects.equals(getExerciseNotes(), exercise.getExerciseNotes());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getSets(), getExerciseNotes());
+        return Objects.hash(getTitle(), getSets(), getExerciseNotes());
     }
 }

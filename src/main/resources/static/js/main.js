@@ -31,7 +31,7 @@ $(document).ready(function () {
                 $(filler2).show('fast').queue(false);
                 $(filler1).show('fast').queue(false);
 
-            // Is the page scrolled up and is logo hidden? Show logo.
+                // Is the page scrolled up and is logo hidden? Show logo.
             } else if (pagePosition === 0 && logo.style.display === 'none') {
 
                 navbar.classList.remove('sticky');
@@ -41,8 +41,8 @@ $(document).ready(function () {
                 $(logo).show('fast').queue(false);
             }
 
-        /* If logo toggling is not allowed, but the page is scrolled
-         all the way up, allow logo toggling next time. */
+            /* If logo toggling is not allowed, but the page is scrolled
+             all the way up, allow logo toggling next time. */
         } else if (pagePosition === 0) {
             OkToToggleLogo = true;
         }
@@ -52,7 +52,9 @@ $(document).ready(function () {
     when user is changing tabs, while not allowing the logo toggle action to be
     triggered by the scrolling (only if the content is larger than screen. */
     $('#tab1handle, #tab2handle, #tab3handle, #tab4handle')
-        .bind('click', function() {scrollToTop()});
+        .bind('click', function () {
+            scrollToTop()
+        });
 });
 
 /* Auxiliary function for tab change event handlers */
@@ -94,8 +96,8 @@ function calculate1RM() {
         = result.toFixed(2);
 
     for (let i = 1; i < 14; i++) {
-        document.getElementById('percentage-'+i).value =
-            (document.getElementById('percentage-input-'+i)
+        document.getElementById('percentage-' + i).value =
+            (document.getElementById('percentage-input-' + i)
                 .value * 0.01 * result).toFixed(2);
     }
 }
@@ -139,64 +141,79 @@ function getWorkoutsList() {
     workoutsList.appendChild(text);
 }
 
-let exerciseNumber = 0;
-let workoutNoteNumber = 0;
+let workout = {workoutNotes:[], exercises:[]};
 let shortcut = "";
+
 function buildWorkout() {
-    exerciseNumber = 0;
-    workoutNoteNumber = 0;
+    workout = {workoutNotes:[], exercises:[]};
+    console.log(workout);
     document.getElementById("created").value = new Date();
 }
 
 function addExercise() {
-    exerciseNumber++;
+    let exercise = {title:null, exerciseNotes:[], sets:[]};
+    workout.exercises.push(exercise);
+    console.log(workout);
+    let exerciseNumber = workout.exercises.length;
     let newExercise = document.createElement('div');
-    newExercise.innerHTML = "<div id='exercise" + exerciseNumber + "-container'>" +
+    newExercise.innerHTML = "<br/><div id='exercise" + exerciseNumber + "-container'>" +
         "<label for='exercise" + exerciseNumber + "'>Exercise #" + exerciseNumber + ":</label>" +
-        "<input type='text' name='exercise" + exerciseNumber + "' id='exercise1" + exerciseNumber + "'" +
-        " minlength='20' value=''/></div><div id='exercise" + exerciseNumber + "-notes'></div><br/>" +
+        "<input type='text' name='exercise" + exerciseNumber + "' " +
+        "id='exercise1" + exerciseNumber + "' minlength='20' value='' " +
+        "onchange='addExerciseTitle(" + exerciseNumber + ", this.value)'/>" +
+        "</div><div id='exercise" + exerciseNumber + "-notes'></div><br/>" +
         "<button class='my-button' onclick='addNote();'>Add exercise note</button><br/><br/>" +
         "<div id='exercise" + exerciseNumber + "-sets'></div><button class='my-button' " +
-        "onclick='addSet();'>Add set</button><br/><br/>";
+        "onclick='addSet(" + exerciseNumber + ");'>Add set</button><br/><br/>";
     document.getElementById("workout-exercises").appendChild(newExercise);
 }
 
-function addSet() {
-    alert('Adding set!');
+function addExerciseTitle(exerciseNumber, exerciseTitle) {
+    workout.exercises[exerciseNumber-1].title = exerciseTitle;
+    console.log(workout.exercises[exerciseNumber-1]);
+}
+
+function addSet(exerciseNumber) {
+    let newSet = {setData:null, setNotes:[]};
+    workout.exercises[exerciseNumber-1].sets.push(newSet);
+    console.log(workout.exercises[exerciseNumber-1].sets);
 }
 
 function addNote() {
-    workoutNoteNumber++;
-    shortcut = 'workout-note' + workoutNoteNumber;
-    let newWorkoutNote = document.createElement('div');
-    newWorkoutNote.setAttribute('id', shortcut+'-container');
-    newWorkoutNote.innerHTML = "<label for='" + shortcut + "'>" +
-        "Workout Note #" + workoutNoteNumber + ":</label><input type='text' " +
+    let note = {noteType:0, noteContent:null};
+    workout.workoutNotes.push(note);
+    shortcut = 'workout-note' + workout.workoutNotes.length;
+    console.log(workout.workoutNotes);
+    let newNote = document.createElement('div');
+    newNote.setAttribute('id', shortcut + '-container');
+    newNote.innerHTML = "<label for='" + shortcut + "'>" +
+        "Workout Note #" + workout[0] + ":</label><input type='text' " +
         "name='" + shortcut + "' id='" + shortcut + "' minlength='20' value=''/>" +
         "<select onchange='noteTypeSelectionDetection(this, shortcut);' " +
         "name='" + shortcut + "-type'><option value='0'>Text note</option>" +
         "<option value='1'>Audio note</option><option value='2'>Picture</option>" +
         "<option value='3'>Video</option></select></>";
-    document.getElementById("workout-notes").appendChild(newWorkoutNote);
+    document.getElementById("workout-notes").appendChild(newNote);
 }
 
 function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
     let replacement = document.createElement('input');
-    replacement.setAttribute('type','file');
-    switch(selectFieldValue.value) {
-        case '0': break;
+    replacement.setAttribute('type', 'file');
+    switch (selectFieldValue.value) {
+        case '0':
+            break;
         case '1':
 
             replacement.setAttribute
-                ('accept', 'audio/mpeg, audio/ogg, audio/wav');
+            ('accept', 'audio/mpeg, audio/ogg, audio/wav');
             break;
         case '2':
             replacement.setAttribute
-                ('accept', 'image/gif, image/jpeg, image/png');
+            ('accept', 'image/gif, image/jpeg, image/png');
             break;
         case '3':
             replacement.setAttribute
-                ('accept', 'video/mp4, video/ogg, video/webm');
+            ('accept', 'video/mp4, video/ogg, video/webm');
             break;
     }
     document.getElementById(fieldToReplaceID).setAttribute('id', 'tempID');
