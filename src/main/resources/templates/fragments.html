@@ -88,7 +88,8 @@
             <span th:if="${#fields.hasErrors('password')}" class="alert"
                   th:errors="*{password}"></span>
             <button class="my-button" onclick="location.href='/wl/user/changepassword'"
-                    type="button">Change password</button>
+                    type="button">Change password
+            </button>
         <p>Email: <input type="text" th:field="*{email}"/>
             <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span>
             <!--/*@thymesVar id="emailExists" type="java"*/-->
@@ -183,7 +184,8 @@
             </button>
             <!--/*@thymesVar id="adminRights" type="java"*/-->
             <button th:if="${adminRights}" class="same-row my-button"
-                    onclick="location.href='/wl/admin'">Admin panel</button>
+                    onclick="location.href='/wl/admin'">Admin panel
+            </button>
         </div>
         <br/>
         <p id="workouts-list"></p>
@@ -192,13 +194,15 @@
 
     <!-- JS code for smooth column size adjustment -->
     <script>
-        let splitobj = Split(["#workout-content-container","#workout-selection-container"], {
+        let splitobj = Split(["#workout-content-container", "#workout-selection-container"], {
             elementStyle: function (dimension, size, gutterSize) {
                 $(window).trigger('resize'); // Optional
                 return {'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)'}
             },
-            gutterStyle: function (dimension, gutterSize) { return {'flex-basis':  gutterSize + 'px'} },
-            sizes: [74,24],
+            gutterStyle: function (dimension, gutterSize) {
+                return {'flex-basis': gutterSize + 'px'}
+            },
+            sizes: [74, 24],
             minSize: 50,
             gutterSize: 6,
             cursor: 'col-resize'
@@ -211,7 +215,8 @@
     <br/><br/>
     <h2>Select existing workout from the panel to the right or...</h2>
     <button class="my-button" onclick="location.href='/wl/workout/add'" type="button">
-        Add new workout</button>
+        Add new workout
+    </button>
 </div>
 
 <!-- user panel fragments - add new workout-->
@@ -220,14 +225,16 @@
     <br/>
     <div class="same-row">
         <button class="my-button" onclick="location.href='/wl/user'" type="button">
-            Save</button>
+            Save
+        </button>
         <button class="my-button" onclick="location.href='/wl/user'" type="button">
-            Cancel</button>
+            Cancel
+        </button>
     </div>
 
     <br/><br/>
     <label for="title">Workout title: </label>
-    <input type="text" name="title" id="title" minlength="20" value=""/>
+    <input type="text" name="title" id="title" minlength="20" value="" autofocus="autofocus"/>
     <label for="created">Created: </label>
     <input type="text" name="created" id="created" value=""/>
     <br/>
@@ -242,9 +249,11 @@
 
     <div class="same-row">
         <button class="my-button" onclick="location.href='/wl/user'" type="button">
-            Save</button>
+            Save
+        </button>
         <button class="my-button" onclick="location.href='/wl/user'" type="button">
-            Cancel</button>
+            Cancel
+        </button>
     </div>
     <script>buildWorkout();</script>
 </div>
@@ -253,7 +262,8 @@
 <div th:fragment="user-panel-update-workout" class="workout-content">
     <h2>Future update workout functionality!</h2>
     <button class="my-button" onclick="location.href='/wl/user'" type="button">
-        Save workout</button>
+        Save workout
+    </button>
 </div>
 
 </body>
