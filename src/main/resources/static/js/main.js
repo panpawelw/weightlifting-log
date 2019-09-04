@@ -146,40 +146,47 @@ let shortcut = null;
 
 function buildWorkout() {
     workout =
-        {id:0, title:null, created:null, updated:null, user:null, workoutNotes:[], exercises:[]};
+        {
+            id: 0,
+            title: null,
+            created: null,
+            updated: null,
+            user: null,
+            workoutNotes: [],
+            exercises: []
+        };
     console.log(workout);
     document.getElementById("created").value = new Date();
 }
 
 function addExercise() {
-    let newExercise = {title:null, exerciseNotes:[], sets:[]};
+    let newExercise = {title: null, exerciseNotes: [], sets: []};
     workout.exercises.push(newExercise);
     console.log(workout);
-    let exerciseNumber = workout.exercises.length - 1;
-    let short = 'exercise' + exerciseNumber;
+    let exerciseNo = workout.exercises.length - 1;
+    const short = 'exercise' + exerciseNo;
     let newExerciseHTML = document.createElement('div');
     newExerciseHTML.setAttribute('id', short + '-container');
-    newExerciseHTML.innerHTML = "<br/><label for='" + short + "'>" +
-        "Exercise #" + (exerciseNumber + 1) + ":</label><input type='text' name='" + short + "' " +
-        "id='" + short + "' minlength='20' value='' " +
-        "onchange='addExerciseTitle(" + exerciseNumber + ", this.value);'/>" +
-        "<div id='" + short + "-notes'></div><br/><button class='my-button' " +
-        "onclick='addNote();'>Add exercise note</button><br/><br/><div id='" + short + "-sets'>" +
-        "</div><button class='my-button' onclick='addSet(" + exerciseNumber + ");'>Add set" +
-        "</button><br/><br/>";
+    newExerciseHTML.innerHTML = "<br/><label for=${short}>Exercise #" + (exerciseNo + 1) + ":</label>" +
+        "<input type='text' name=${short} id=${short} minlength='20' value='' " +
+        "onchange='addExerciseTitle(" + exerciseNo + ", this.value);'/>" +
+        "<button class='my-button handwriting' onclick='addNote();'></button>" +
+        "<div id='" + short + "-notes'></div><br/>" +
+        "<div id='" + short + "-sets'></div><button class='my-button' " +
+        "onclick='addSet(" + exerciseNo + ");'>Add set</button><br/>";
     document.getElementById("workout-exercises").appendChild(newExerciseHTML);
 }
 
 function addSet(exerciseNumber) {
-    let newSet = {data:null, setNotes:[]};
+    let newSet = {data: null, setNotes: []};
     workout.exercises[exerciseNumber].sets.push(newSet);
     console.log(workout.exercises[exerciseNumber].sets);
     let setNumber = workout.exercises[exerciseNumber].sets.length - 1;
     shortcut = "'workout.exercises[" + exerciseNumber + "].sets[" + setNumber + "].data'";
     let newSetHTML = document.createElement('div');
     newSetHTML.setAttribute
-        ('id', 'exercise' + exerciseNumber + 'set' + setNumber + '-container');
-    newSetHTML.innerHTML = "<br/><label for='exercise" + exerciseNumber + "set" + setNumber +"'>" +
+    ('id', 'exercise' + exerciseNumber + 'set' + setNumber + '-container');
+    newSetHTML.innerHTML = "<br/><label for='exercise" + exerciseNumber + "set" + setNumber + "'>" +
         "Set #" + (setNumber + 1) + ":</label><input type='text' " +
         "name='exercise" + exerciseNumber + "set" + setNumber + "' " +
         "id='exercise" + exerciseNumber + "set" + setNumber + "' minlength='20' " +
@@ -200,7 +207,7 @@ function addExerciseTitle(exerciseNumber, exerciseTitle) {
 }
 
 function addNote() {
-    let note = {noteType:0, noteContent:null};
+    let note = {noteType: 0, noteContent: null};
     workout.workoutNotes.push(note);
     shortcut = 'workout-note' + workout.workoutNotes.length - 1;
     console.log(workout.workoutNotes);

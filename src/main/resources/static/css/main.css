@@ -205,6 +205,12 @@ button:active, input[type=submit]:active, .my-button:active {
     animation-duration: 0.2s;
 }
 
+.handwriting {
+    height: 1em;
+    width: 1em;
+    background: #FFFFFF url("../images/handwriting.png");
+}
+
 /* sticky navigation bar */
 .sticky {
     position: fixed;
