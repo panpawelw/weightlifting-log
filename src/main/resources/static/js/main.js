@@ -167,13 +167,12 @@ function addExercise() {
     const short = 'exercise' + exerciseNo;
     let newExerciseHTML = document.createElement('div');
     newExerciseHTML.setAttribute('id', short + '-container');
-    newExerciseHTML.innerHTML = "<br/><label for=${short}>Exercise #" + (exerciseNo + 1) + ":</label>" +
-        "<input type='text' name=${short} id=${short} minlength='20' value='' " +
-        "onchange='addExerciseTitle(" + exerciseNo + ", this.value);'/>" +
-        "<button class='my-button handwriting' onclick='addNote();'></button>" +
-        "<div id='" + short + "-notes'></div><br/>" +
-        "<div id='" + short + "-sets'></div><button class='my-button' " +
-        "onclick='addSet(" + exerciseNo + ");'>Add set</button><br/>";
+    newExerciseHTML.innerHTML = "<br/><div><label for=${short}>Exercise #" + (exerciseNo + 1) + ":" +
+        "</label><input type='text' name=${short} id=${short} minlength='20' value='' " +
+        "onchange='addExerciseTitle(" + exerciseNo + ", this.value);'/><button " +
+        "class='my-button handwriting' onclick='addNote();'>&nbsp</button><button class='my-button'" +
+        " onclick='addSet(" + exerciseNo + ");'>Add set</button></div><div id='" + short + "-notes'>" +
+        "</div><br/><div id='" + short + "-sets'></div><br/>";
     document.getElementById("workout-exercises").appendChild(newExerciseHTML);
 }
 
@@ -190,9 +189,9 @@ function addSet(exerciseNumber) {
         "Set #" + (setNumber + 1) + ":</label><input type='text' " +
         "name='exercise" + exerciseNumber + "set" + setNumber + "' " +
         "id='exercise" + exerciseNumber + "set" + setNumber + "' minlength='20' " +
-        "value='' onchange='storeFieldValue(shortcut, this.value);'/>" +
-        "<div id='exercise" + exerciseNumber + "set" + "-notes'></div><br/>" +
-        "<button class='my-button' onclick='addNote();'>Add set note</button><br/><br/>";
+        "value='' onchange='storeFieldValue(shortcut, this.value);'/><button " +
+        "class='my-button handwriting' onclick='addNote();'>&nbsp</button>" +
+        "<div id='exercise" + exerciseNumber + "set" + "-notes'></div><br/>";
     document.getElementById("exercise" + exerciseNumber + "-sets")
         .appendChild(newSetHTML);
 }

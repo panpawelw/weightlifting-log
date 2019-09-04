@@ -190,6 +190,14 @@ input[type=password] {
 }
 
 /* buttons */
+.handwriting {
+    height: 2em;
+    width: 2em;
+    background: #FF9200 url("../images/handwriting.png");
+    background-size: cover;
+    margin: 0 0.5em;
+}
+
 button, input[type=submit], .my-button {
     background-color: #FF9200;
     color: black;
@@ -203,12 +211,6 @@ button, input[type=submit], .my-button {
 button:active, input[type=submit]:active, .my-button:active {
     box-shadow: 1px 1px 1px #472900;
     animation-duration: 0.2s;
-}
-
-.handwriting {
-    height: 1em;
-    width: 1em;
-    background: #FFFFFF url("../images/handwriting.png");
 }
 
 /* sticky navigation bar */
