@@ -155,38 +155,43 @@ function addExercise() {
     let newExercise = {title:null, exerciseNotes:[], sets:[]};
     workout.exercises.push(newExercise);
     console.log(workout);
-    let exerciseNumber = workout.exercises.length;
+    let exerciseNumber = workout.exercises.length - 1;
+    let short = 'exercise' + exerciseNumber;
     let newExerciseHTML = document.createElement('div');
-    newExerciseHTML.setAttribute('id', 'exercise' + exerciseNumber + '-container');
-    newExerciseHTML.innerHTML = "<br/><label for='exercise" + exerciseNumber + "'>" +
-        "Exercise #" + exerciseNumber + ":</label><input type='text' " +
-        "name='exercise" + exerciseNumber + "' id='exercise" + exerciseNumber + "' minlength='20' " +
-        "value='' onchange='addExerciseTitle(" + (exerciseNumber - 1) + ", this.value)'/>" +
-        "<div id='exercise" + exerciseNumber + "-notes'></div><br/>" +
-        "<button class='my-button' onclick='addNote();'>Add exercise note</button><br/><br/>" +
-        "<div id='exercise" + exerciseNumber + "-sets'></div><button class='my-button' " +
-        "onclick='addSet(" + (exerciseNumber - 1) + ");'>Add set</button><br/><br/>";
+    newExerciseHTML.setAttribute('id', short + '-container');
+    newExerciseHTML.innerHTML = "<br/><label for='" + short + "'>" +
+        "Exercise #" + (exerciseNumber + 1) + ":</label><input type='text' name='" + short + "' " +
+        "id='" + short + "' minlength='20' value='' " +
+        "onchange='addExerciseTitle(" + exerciseNumber + ", this.value);'/>" +
+        "<div id='" + short + "-notes'></div><br/><button class='my-button' " +
+        "onclick='addNote();'>Add exercise note</button><br/><br/><div id='" + short + "-sets'>" +
+        "</div><button class='my-button' onclick='addSet(" + exerciseNumber + ");'>Add set" +
+        "</button><br/><br/>";
     document.getElementById("workout-exercises").appendChild(newExerciseHTML);
 }
 
 function addSet(exerciseNumber) {
-    let newSet = {setData:null, setNotes:[]};
+    let newSet = {data:null, setNotes:[]};
     workout.exercises[exerciseNumber].sets.push(newSet);
     console.log(workout.exercises[exerciseNumber].sets);
-
-    let setNumber = workout.exercises[exerciseNumber].sets.length;
+    let setNumber = workout.exercises[exerciseNumber].sets.length - 1;
+    shortcut = "'workout.exercises[" + exerciseNumber + "].sets[" + setNumber + "].data'";
     let newSetHTML = document.createElement('div');
     newSetHTML.setAttribute
         ('id', 'exercise' + exerciseNumber + 'set' + setNumber + '-container');
     newSetHTML.innerHTML = "<br/><label for='exercise" + exerciseNumber + "set" + setNumber +"'>" +
-        "Set #" + setNumber + ":</label><input type='text' " +
+        "Set #" + (setNumber + 1) + ":</label><input type='text' " +
         "name='exercise" + exerciseNumber + "set" + setNumber + "' " +
         "id='exercise" + exerciseNumber + "set" + setNumber + "' minlength='20' " +
-        "value='' onchange='addSetData()'/>" +
+        "value='' onchange='storeFieldValue(shortcut, this.value);'/>" +
         "<div id='exercise" + exerciseNumber + "set" + "-notes'></div><br/>" +
         "<button class='my-button' onclick='addNote();'>Add set note</button><br/><br/>";
-    document.getElementById("exercise" + (exerciseNumber + 1) + "-sets")
+    document.getElementById("exercise" + exerciseNumber + "-sets")
         .appendChild(newSetHTML);
+}
+
+function storeFieldValue(variable, value) {
+
 }
 
 function addExerciseTitle(exerciseNumber, exerciseTitle) {
@@ -194,14 +199,10 @@ function addExerciseTitle(exerciseNumber, exerciseTitle) {
     console.log(workout.exercises[exerciseNumber]);
 }
 
-function addSetData(){
-
-}
-
 function addNote() {
     let note = {noteType:0, noteContent:null};
     workout.workoutNotes.push(note);
-    shortcut = 'workout-note' + workout.workoutNotes.length;
+    shortcut = 'workout-note' + workout.workoutNotes.length - 1;
     console.log(workout.workoutNotes);
     let newNote = document.createElement('div');
     newNote.setAttribute('id', shortcut + '-container');
