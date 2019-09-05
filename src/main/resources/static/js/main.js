@@ -155,21 +155,26 @@ function buildWorkout() {
             workoutNotes: [],
             exercises: []
         };
-    console.log(workout);
-    document.getElementById("created").value = new Date();
+    const created = new Date();
+    document.getElementById("created").value = created;
+    storeFieldValue('workout.created', created);
+}
+
+function storeFieldValue(variable, value) {
+    eval(variable + " = '" + value + "'");
 }
 
 function addExercise() {
     let newExercise = {title: null, exerciseNotes: [], sets: []};
     workout.exercises.push(newExercise);
-    console.log(workout);
     let exerciseNo = workout.exercises.length - 1;
     const short = 'exercise' + exerciseNo;
+    shortcut = "workout.exercises[" + exerciseNo + "].title";
     let newExerciseHTML = document.createElement('div');
     newExerciseHTML.setAttribute('id', short + '-container');
     newExerciseHTML.innerHTML = "<br/><div><label for=${short}>Exercise #" + (exerciseNo + 1) + ":" +
         "</label><input type='text' name=${short} id=${short} minlength='20' value='' " +
-        "onchange='addExerciseTitle(" + exerciseNo + ", this.value);'/><button " +
+        "onchange='storeFieldValue(shortcut, this.value);'/><button " +
         "class='my-button handwriting' onclick='addNote();'>&nbsp</button><button class='my-button'" +
         " onclick='addSet(" + exerciseNo + ");'>Add set</button></div><div id='" + short + "-notes'>" +
         "</div><br/><div id='" + short + "-sets'></div><br/>";
@@ -179,37 +184,26 @@ function addExercise() {
 function addSet(exerciseNumber) {
     let newSet = {data: null, setNotes: []};
     workout.exercises[exerciseNumber].sets.push(newSet);
-    console.log(workout.exercises[exerciseNumber].sets);
     let setNumber = workout.exercises[exerciseNumber].sets.length - 1;
-    shortcut = "'workout.exercises[" + exerciseNumber + "].sets[" + setNumber + "].data'";
+    shortcut = "workout.exercises[" + exerciseNumber + "].sets[" + setNumber + "].data";
     let newSetHTML = document.createElement('div');
     newSetHTML.setAttribute
     ('id', 'exercise' + exerciseNumber + 'set' + setNumber + '-container');
     newSetHTML.innerHTML = "<br/><label for='exercise" + exerciseNumber + "set" + setNumber + "'>" +
         "Set #" + (setNumber + 1) + ":</label><input type='text' " +
         "name='exercise" + exerciseNumber + "set" + setNumber + "' " +
-        "id='exercise" + exerciseNumber + "set" + setNumber + "' minlength='20' " +
-        "value='' onchange='storeFieldValue(shortcut, this.value);'/><button " +
+        "id='exercise" + exerciseNumber + "set" + setNumber + "' minlength='20' value=''" +
+        " onchange='storeFieldValue(shortcut, this.value);'/><button " +
         "class='my-button handwriting' onclick='addNote();'>&nbsp</button>" +
         "<div id='exercise" + exerciseNumber + "set" + "-notes'></div><br/>";
     document.getElementById("exercise" + exerciseNumber + "-sets")
         .appendChild(newSetHTML);
 }
 
-function storeFieldValue(variable, value) {
-
-}
-
-function addExerciseTitle(exerciseNumber, exerciseTitle) {
-    workout.exercises[exerciseNumber].title = exerciseTitle;
-    console.log(workout.exercises[exerciseNumber]);
-}
-
 function addNote() {
     let note = {noteType: 0, noteContent: null};
     workout.workoutNotes.push(note);
     shortcut = 'workout-note' + workout.workoutNotes.length - 1;
-    console.log(workout.workoutNotes);
     let newNote = document.createElement('div');
     newNote.setAttribute('id', shortcut + '-container');
     newNote.innerHTML = "<label for='" + shortcut + "'>" +
