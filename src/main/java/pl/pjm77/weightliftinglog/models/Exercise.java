@@ -13,14 +13,14 @@ public class Exercise implements Serializable {
 
     private String title;
     private List<Set> sets = new ArrayList<>();
-    private List<Note> exerciseNotes = new ArrayList<>();
+    private List<Note> notes = new ArrayList<>();
 
     public Exercise() {}
 
-    public Exercise(String title, List<Set> sets, List<Note> exerciseNotes) {
+    public Exercise(String title, List<Set> sets, List<Note> notes) {
         this.title = title;
         this.sets = sets;
-        this.exerciseNotes = exerciseNotes;
+        this.notes = notes;
     }
 
     public String getTitle() {
@@ -39,12 +39,12 @@ public class Exercise implements Serializable {
         this.sets = sets;
     }
 
-    public List<Note> getExerciseNotes() {
-        return exerciseNotes;
+    public List<Note> getNotes() {
+        return notes;
     }
 
-    public void setExerciseNotes(List<Note> exerciseNotes) {
-        this.exerciseNotes = exerciseNotes;
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Exercise implements Serializable {
         return "Exercise{" +
                 "title='" + title + '\'' +
                 ", sets=" + sets +
-                ", exerciseNotes=" + exerciseNotes +
+                ", exerciseNotes=" + notes +
                 '}';
     }
 
@@ -63,11 +63,11 @@ public class Exercise implements Serializable {
         Exercise exercise = (Exercise) o;
         return Objects.equals(getTitle(), exercise.getTitle()) &&
                 Objects.equals(getSets(), exercise.getSets()) &&
-                Objects.equals(getExerciseNotes(), exercise.getExerciseNotes());
+                Objects.equals(getNotes(), exercise.getNotes());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTitle(), getSets(), getExerciseNotes());
+        return Objects.hash(getTitle(), getSets(), getNotes());
     }
 }

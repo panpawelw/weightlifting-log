@@ -20,19 +20,19 @@ public class WorkoutDeserialized implements Serializable {
     private Timestamp updated;
     private User user;
     private List<Exercise> exercises = new ArrayList<>();
-    private List<Note> workoutNotes = new ArrayList<>();
+    private List<Note> notes = new ArrayList<>();
 
     public WorkoutDeserialized() {}
 
     public WorkoutDeserialized(Long id, String title, Timestamp created, Timestamp updated,
-                               User user, List<Exercise> exercises, List<Note> workoutNotes) {
+                               User user, List<Exercise> exercises, List<Note> notes) {
         this.id = id;
         this.title = title;
         this.created = created;
         this.updated = updated;
         this.user = user;
         this.exercises = exercises;
-        this.workoutNotes = workoutNotes;
+        this.notes = notes;
     }
 
     public Long getId() {
@@ -83,12 +83,12 @@ public class WorkoutDeserialized implements Serializable {
         this.exercises = exercises;
     }
 
-    public List<Note> getWorkoutNotes() {
-        return workoutNotes;
+    public List<Note> getNotes() {
+        return notes;
     }
 
-    public void setWorkoutNotes(List<Note> workoutNotes) {
-        this.workoutNotes = workoutNotes;
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class WorkoutDeserialized implements Serializable {
                 ", updated=" + updated +
                 ", user=" + user +
                 ", exercises=" + exercises +
-                ", workoutNotes=" + workoutNotes +
+                ", notes=" + notes +
                 '}';
     }
 
@@ -115,12 +115,12 @@ public class WorkoutDeserialized implements Serializable {
                 Objects.equals(getUpdated(), that.getUpdated()) &&
                 Objects.equals(getUser(), that.getUser()) &&
                 Objects.equals(getExercises(), that.getExercises()) &&
-                Objects.equals(getWorkoutNotes(), that.getWorkoutNotes());
+                Objects.equals(getNotes(), that.getNotes());
     }
 
     @Override
     public int hashCode() {
         return Objects
-                .hash(getId(), getTitle(), getCreated(), getUpdated(), getUser(), getExercises(), getWorkoutNotes());
+                .hash(getId(), getTitle(), getCreated(), getUpdated(), getUser(), getExercises(), getNotes());
     }
 }

@@ -8,13 +8,13 @@ import java.util.Objects;
 public class Set implements Serializable {
 
     private String setData;
-    private List<Note> setNotes = new ArrayList<>();
+    private List<Note> notes = new ArrayList<>();
 
     public Set() {}
 
-    public Set(String setData, List<Note> setNotes) {
+    public Set(String setData, List<Note> notes) {
         this.setData = setData;
-        this.setNotes = setNotes;
+        this.notes = notes;
     }
 
     public String getSetData() {
@@ -25,19 +25,19 @@ public class Set implements Serializable {
         this.setData = setData;
     }
 
-    public List<Note> getSetNotes() {
-        return setNotes;
+    public List<Note> getNotes() {
+        return notes;
     }
 
-    public void setSetNotes(List<Note> setNotes) {
-        this.setNotes = setNotes;
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
     }
 
     @Override
     public String toString() {
         return "Set{" +
                 "setData='" + setData + '\'' +
-                ", setNotes=" + setNotes +
+                ", setNotes=" + notes +
                 '}';
     }
 
@@ -47,11 +47,11 @@ public class Set implements Serializable {
         if (!(o instanceof Set)) return false;
         Set set = (Set) o;
         return Objects.equals(getSetData(), set.getSetData()) &&
-                Objects.equals(getSetNotes(), set.getSetNotes());
+                Objects.equals(getNotes(), set.getNotes());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getSetData(), getSetNotes());
+        return Objects.hash(getSetData(), getNotes());
     }
 }

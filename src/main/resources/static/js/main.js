@@ -142,77 +142,113 @@ function getWorkoutsList() {
 }
 
 let workout = null;
-let target = null;
 
 function buildWorkout() {
-    workout =
-        {
-            id: 0,
-            title: null,
-            created: null,
-            updated: null,
-            user: null,
-            workoutNotes: [],
-            exercises: []
-        };
+    workout = {
+        id: 0, title: null, created: null, updated: null, user: null,
+        notes: [], exercises: []
+    };
     const created = new Date();
     document.getElementById("created").value = created;
     storeFieldValue('workout.created', created);
 }
 
 function storeFieldValue(variable, value) {
+    console.log(variable);
     eval(variable + " = '" + value + "'");
 }
 
 function addExercise() {
-    let newExercise = {title: null, exerciseNotes: [], sets: []};
+    let newExercise = {title: null, notes: [], sets: []};
     workout.exercises.push(newExercise);
     let exerciseNo = workout.exercises.length - 1;
-    const short = 'exercise' + exerciseNo;
-    target = "workout.exercises[" + exerciseNo + "].title";
+    // const short = 'exercise' + exerciseNo;
+    const short = "workout.exercises[" + exerciseNo + "].title";
     let newExerciseHTML = document.createElement('div');
     newExerciseHTML.setAttribute('id', short + '-container');
     newExerciseHTML.innerHTML = "<br/><div><label for=${short}>Exercise #" + (exerciseNo + 1) + ":" +
-        "</label><input type='text' name=${short} id=${short} minlength='20' value='' " +
-        "onchange='storeFieldValue(target, this.value);'/><button " +
-        "class='my-button handwriting' onclick='addNote();'>&nbsp</button><button class='my-button'" +
-        " onclick='addSet(" + exerciseNo + ");'>Add set</button></div><div id='" + short + "-notes'>" +
-        "</div><br/><div id='" + short + "-sets'></div><br/>";
-    document.getElementById("workout-exercises").appendChild(newExerciseHTML);
+        "</label><input type='text' name=${short} id='" + short + "' minlength='20' value='' " +
+        "onchange='storeFieldValue(this.id, this.value);'/><button class='my-button handwriting' " +
+        "onclick='addNote(" + exerciseNo + ");'>&nbsp</button><button class='my-button'" +
+        " onclick='addSet(" + exerciseNo + ");'>Add set</button></div>" +
+        "<div id='" + short + "-notes'></div><br/><div id='" + short + "-sets'></div><br/>";
+    document.getElementById("exercises").appendChild(newExerciseHTML);
 }
 
 function addSet(exerciseNo) {
-    let newSet = {data: null, setNotes: []};
+    let newSet = {data: null, notes: []};
     workout.exercises[exerciseNo].sets.push(newSet);
     let setNo = workout.exercises[exerciseNo].sets.length - 1;
-    target = "workout.exercises[" + exerciseNo + "].sets[" + setNo + "].data";
-    const short = 'exercise' + exerciseNo + 'set' + setNo;
+    const short = "workout.exercises[" + exerciseNo + "].sets[" + setNo + "].data";
+    // const short = 'exercise' + exerciseNo + 'set' + setNo;
     let newSetHTML = document.createElement('div');
     newSetHTML.setAttribute
-    ('id', 'exercise' + exerciseNo + 'set' + setNo + '-container');
+    ('id', short + '-container');
     newSetHTML.innerHTML = "<br/><label for=${short}>Set #" + (setNo + 1) + ":</label>" +
-        "<input type='text' name=${short} id=${short} minlength='20' value='' " +
-        "onchange='storeFieldValue(target, this.value);'/><button class='my-button handwriting' " +
-        "onclick='addNote();'>&nbsp</button><div id='"+ short + "-notes'></div><br/>";
-    document.getElementById("exercise" + exerciseNo + "-sets")
+        "<input type='text' name=${short} id='" + short + "' minlength='20' value='' " +
+        "onchange='storeFieldValue(this.id, this.value);'/><button class='my-button handwriting' " +
+        "onclick='addNote(" + exerciseNo + ", " + setNo + ");'>&nbsp</button>" +
+        "<div id='" + short + "-notes'></div><br/>";
+    document.getElementById("exercise[" + exerciseNo + "]-sets")
         .appendChild(newSetHTML);
 }
 
 function addNote() {
-    let note = {noteType: 0, noteContent: null};
-    workout.workoutNotes.push(note);
-    target = 'workout-note' + workout.workoutNotes.length - 1;
-    let newNote = document.createElement('div');
-    newNote.setAttribute('id', target + '-container');
-    newNote.innerHTML = "<label for='" + target + "'>" +
-        "Workout Note #" + workout.workoutNotes.length + ":</label><input type='text' " +
-        "name='" + target + "' id='" + target + "' minlength='20' value=''/>" +
+    let newNote = {noteType: 0, noteContent: null};
+    let short, short1, noteNo = null;
+    switch (arguments.length) {
+        case 0:
+            workout.notes.push(newNote);
+            noteNo = workout.notes.length - 1;
+            short = "workout.notes[" + noteNo + "].noteContent";
+            // short = 'note' + noteNo;
+            short1 = 'notes';
+            break;
+        case 1:
+            workout.exercises[arguments[0]].notes.push(newNote);
+            noteNo = workout.exercises[arguments[0]].notes.length - 1;
+            short = "workout.exercises[" + arguments[0] + "].notes[" + noteNo + "].noteContent";
+            // short = 'exercise' + arguments[0] + 'note' + noteNo;
+            short1 = 'exercise' + arguments[0] + '-notes';
+            break;
+        case 2:
+            workout.exercises[arguments[0]].sets[arguments[1]].notes.push(newNote);
+            noteNo = workout.exercises[arguments[0]].sets[arguments[1]].notes.length - 1;
+            short = "workout.exercises[" + arguments[0] + "].sets[" +
+                arguments[1] + "].notes[" + noteNo + "].noteContent";
+            // short = 'exercise' + arguments[0] + 'set' + arguments[1] + 'note' + noteNo;
+            short1 = 'exercise' + arguments[0] + 'set' + arguments[1] + '-notes';
+            break;
+    }
+    let newNoteHTML = document.createElement('div');
+    newNoteHTML.setAttribute('id', short + '-container');
+    newNoteHTML.innerHTML = "<label for=${short}>Note #" + (noteNo + 1) + ":</label>" +
+        "<input type='text' name=${short} id='" + short + "' minlength='20' value='' " +
+        "onchange='storeFieldValue(this.id, this.value);'/>" +
         "<select onchange='noteTypeSelectionDetection(this, target);' " +
-        "name='" + target + "-type'><option value='0'>Text note</option>" +
+        "name='" + short + "-type'><option value='0'>Text note</option>" +
         "<option value='1'>Audio note</option><option value='2'>Picture</option>" +
         "<option value='3'>Video</option></select></>";
-    document.getElementById("workout-notes").appendChild(newNote);
+    console.log(short1);
+    alert(document.getElementById(short1));
+    document.getElementById(short1).appendChild(newNoteHTML);
 }
+
+// function addNoteOld() {
+//     let newNote = {noteType: 0, noteContent: null};
+//     workout.notes.push(newNote);
+//     target = 'note' + workout.notes.length - 1;
+//     let newNoteHTML = document.createElement('div');
+//     newNote.setAttribute('id', target + '-container');
+//     newNoteHTML.innerHTML = "<label for='" + target + "'>" +
+//         "Workout Note #" + workout.notes.length + ":</label><input type='text' " +
+//         "name='" + target + "' id='" + target + "' minlength='20' value=''/>" +
+//         "<select onchange='noteTypeSelectionDetection(this, target);' " +
+//         "name='" + target + "-type'><option value='0'>Text note</option>" +
+//         "<option value='1'>Audio note</option><option value='2'>Picture</option>" +
+//         "<option value='3'>Video</option></select></>";
+//     document.getElementById("workout-notes").appendChild(newNoteHTML);
+// }
 
 function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
     let replacement = document.createElement('input');
@@ -221,7 +257,6 @@ function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
         case '0':
             break;
         case '1':
-
             replacement.setAttribute
             ('accept', 'audio/mpeg, audio/ogg, audio/wav');
             break;
@@ -234,7 +269,8 @@ function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
             ('accept', 'video/mp4, video/ogg, video/webm');
             break;
     }
-    document.getElementById(fieldToReplaceID).setAttribute('id', 'tempID');
+    console.log(fieldToReplaceID);
+    document.getElementById("'" + fieldToReplaceID + "'").setAttribute('id', 'tempID');
     let fieldToReplaceNode = document.getElementById('tempID');
     let fieldToReplaceParent = fieldToReplaceNode.parentElement;
     replacement.setAttribute('id', fieldToReplaceID);
