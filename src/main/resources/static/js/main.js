@@ -150,27 +150,28 @@ function buildWorkout() {
     };
     const created = new Date();
     document.getElementById("created").value = created;
-    storeFieldValue('workout.created', created);
+    storeFieldValue('workout.','created','', created);
 }
 
-function storeFieldValue(variable, value) {
-    console.log(variable);
-    eval(variable + " = '" + value + "'");
+function storeFieldValue(varPart1, varPart2, varPart3, value) {
+    console.log(varPart1 + varPart2 + varPart3 + " = '" + value + "'");
+    eval(varPart1 + varPart2 + varPart3 + " = '" + value + "'");
 }
 
 function addExercise() {
     let newExercise = {title: null, notes: [], sets: []};
     workout.exercises.push(newExercise);
     let exerciseNo = workout.exercises.length - 1;
-    // const short = 'exercise' + exerciseNo;
-    const short = "workout.exercises[" + exerciseNo + "].title";
+    const short = "exercises[" + exerciseNo + "]";
+    const onchange = 'onchange="storeFieldValue(\'workout.\',\'' + short + '\', \'.title\',' +
+        ' this.value);"';
     let newExerciseHTML = document.createElement('div');
     newExerciseHTML.setAttribute('id', short + '-container');
-    newExerciseHTML.innerHTML = "<br/><div><label for=${short}>Exercise #" + (exerciseNo + 1) + ":" +
-        "</label><input type='text' name=${short} id='" + short + "' minlength='20' value='' " +
-        "onchange='storeFieldValue(this.id, this.value);'/><button class='my-button handwriting' " +
-        "onclick='addNote(" + exerciseNo + ");'>&nbsp</button><button class='my-button'" +
-        " onclick='addSet(" + exerciseNo + ");'>Add set</button></div>" +
+    newExerciseHTML.innerHTML = "<br/><div><label for='" + short + "'>Exercise #" +
+        (exerciseNo + 1) + ":</label><input type='text' name='" + short + "' id='" + short + "' " +
+        "minlength='20' value='' " + onchange + "/><button class='my-button handwriting' " +
+        "onclick='addNote(" + exerciseNo + ");'>&nbsp</button><button class='my-button' " +
+        "onclick='addSet(" + exerciseNo + ");'>Add set</button></div>" +
         "<div id='" + short + "-notes'></div><br/><div id='" + short + "-sets'></div><br/>";
     document.getElementById("exercises").appendChild(newExerciseHTML);
 }
@@ -179,17 +180,17 @@ function addSet(exerciseNo) {
     let newSet = {data: null, notes: []};
     workout.exercises[exerciseNo].sets.push(newSet);
     let setNo = workout.exercises[exerciseNo].sets.length - 1;
-    const short = "workout.exercises[" + exerciseNo + "].sets[" + setNo + "].data";
-    // const short = 'exercise' + exerciseNo + 'set' + setNo;
+    const short = "exercises[" + exerciseNo + "].sets[" + setNo + "]";
+    const onchange = 'onchange="storeFieldValue(\'workout.\',\'' + short + '\', \'.data\',' +
+        ' this.value);"';
     let newSetHTML = document.createElement('div');
     newSetHTML.setAttribute
     ('id', short + '-container');
-    newSetHTML.innerHTML = "<br/><label for=${short}>Set #" + (setNo + 1) + ":</label>" +
-        "<input type='text' name=${short} id='" + short + "' minlength='20' value='' " +
-        "onchange='storeFieldValue(this.id, this.value);'/><button class='my-button handwriting' " +
-        "onclick='addNote(" + exerciseNo + ", " + setNo + ");'>&nbsp</button>" +
-        "<div id='" + short + "-notes'></div><br/>";
-    document.getElementById("exercise[" + exerciseNo + "]-sets")
+    newSetHTML.innerHTML = "<br/><label for='" + short + "'>Set #" + (setNo + 1) + ":</label>" +
+        "<input type='text' name='" + short + "' id='" + short + "' minlength='20' value='' " +
+        onchange + "/><button class='my-button handwriting' onclick='addNote(" + exerciseNo +
+        ", " + setNo + ");'>&nbsp</button><div id='" + short + "-notes'></div><br/>";
+    document.getElementById("exercises[" + exerciseNo + "]-sets")
         .appendChild(newSetHTML);
 }
 
@@ -226,29 +227,13 @@ function addNote() {
         "<input type='text' name=${short} id='" + short + "' minlength='20' value='' " +
         "onchange='storeFieldValue(this.id, this.value);'/>" +
         "<select onchange='noteTypeSelectionDetection(this, target);' " +
-        "name='" + short + "-type'><option value='0'>Text note</option>" +
-        "<option value='1'>Audio note</option><option value='2'>Picture</option>" +
+        "name='" + short + "-type'><option value='0'>Text</option>" +
+        "<option value='1'>Audio</option><option value='2'>Picture</option>" +
         "<option value='3'>Video</option></select></>";
     console.log(short1);
     alert(document.getElementById(short1));
     document.getElementById(short1).appendChild(newNoteHTML);
 }
-
-// function addNoteOld() {
-//     let newNote = {noteType: 0, noteContent: null};
-//     workout.notes.push(newNote);
-//     target = 'note' + workout.notes.length - 1;
-//     let newNoteHTML = document.createElement('div');
-//     newNote.setAttribute('id', target + '-container');
-//     newNoteHTML.innerHTML = "<label for='" + target + "'>" +
-//         "Workout Note #" + workout.notes.length + ":</label><input type='text' " +
-//         "name='" + target + "' id='" + target + "' minlength='20' value=''/>" +
-//         "<select onchange='noteTypeSelectionDetection(this, target);' " +
-//         "name='" + target + "-type'><option value='0'>Text note</option>" +
-//         "<option value='1'>Audio note</option><option value='2'>Picture</option>" +
-//         "<option value='3'>Video</option></select></>";
-//     document.getElementById("workout-notes").appendChild(newNoteHTML);
-// }
 
 function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
     let replacement = document.createElement('input');
