@@ -196,54 +196,47 @@ function addSet(exerciseNo) {
 
 function addNote() {
     let newNote = {noteType: 0, noteContent: null};
-    let noteNo, short, onchange = null;
+    let noteNo, short = null;
     let appendHere = document.getElementById('notes');
     switch (arguments.length) {
         case 0:
             workout.notes.push(newNote);
             noteNo = workout.notes.length - 1;
             short = "notes[" + noteNo + "]";
-            onchange = 'onchange="storeFieldValue(\'workout.\',\'' + short + '\',' +
-                ' \'noteContent\', this.value);"';
             break;
         case 1:
             workout.exercises[arguments[0]].notes.push(newNote);
             noteNo = workout.exercises[arguments[0]].notes.length - 1;
             short = "exercises[" + arguments[0] + "].notes[" + noteNo + "]";
-            onchange = 'onchange="storeFieldValue(\'workout.\',\'' + short + '\',' +
-                ' \'noteContent\', this.value);"';
-            appendHere = document.getElementById('exercises[' + arguments[0] + ']-notes');
-
+            appendHere = document.getElementById("exercises[" + arguments[0] + "]-notes");
             break;
         case 2:
             workout.exercises[arguments[0]].sets[arguments[1]].notes.push(newNote);
             noteNo = workout.exercises[arguments[0]].sets[arguments[1]].notes.length - 1;
             short = "exercises[" + arguments[0] + "].sets[" + arguments[1] +
                 "].notes[" + noteNo + "]";
-            onchange = 'onchange="storeFieldValue(\'workout.\',\'' + short + '\',' +
-                ' \'noteContent\', this.value);"';
-            let temp = 'exercises[' + arguments[0] + ']sets[' + arguments[1] + ']-notes';
-            console.log(temp);
-            appendHere = document.getElementById(temp);
+            appendHere = document.getElementById(
+                "exercises[" + arguments[0] + "]sets[" + arguments[1] + "]-notes");
             break;
     }
+    let onchangeValue =
+        'onchange="storeFieldValue(\'workout.\',\'' + short + '\', \'noteContent\', this.value);"';
     let newNoteHTML = document.createElement('div');
     newNoteHTML.setAttribute('id', short + '-container');
-    newNoteHTML.innerHTML = "<label for='" + short + "'>Note #" + (noteNo + 1) + ":</label>" +
-        "<input type='text' name='" + short + "' id='" + short + "' minlength='20' value='' " +
-        onchange + "/><select onchange='noteTypeSelectionDetection(this, target);' " +
-        "name='" + short + "-type'><option value='0'>Text</option>" +
-        "<option value='1'>Audio</option><option value='2'>Picture</option>" +
-        "<option value='3'>Video</option></select></>";
-    console.log(appendHere);
+    newNoteHTML.innerHTML = '<label for="' + short + '">Note #' + (noteNo + 1) + ':</label><input ' +
+        'type="text" name="' + short + '" id="' + short + '" minlength="20" value="" ' + onchangeValue +
+        '/><select onchange="noteTypeSelectionDetection(this.value, \'' + short + '\');"' +
+        ' name="' + short + '-type"><option value="0">Text</option><option value="1">' +
+        'Audio</option><option value="2">Picture</option><option value="3">Video</option></select>';
     appendHere.appendChild(newNoteHTML);
 }
 
 function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
     let replacement = document.createElement('input');
     replacement.setAttribute('type', 'file');
-    switch (selectFieldValue.value) {
+    switch (selectFieldValue) {
         case '0':
+            replacement.setAttribute('type', 'text');
             break;
         case '1':
             replacement.setAttribute
@@ -258,8 +251,7 @@ function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
             ('accept', 'video/mp4, video/ogg, video/webm');
             break;
     }
-    console.log(fieldToReplaceID);
-    document.getElementById("'" + fieldToReplaceID + "'").setAttribute('id', 'tempID');
+    document.getElementById(fieldToReplaceID).setAttribute('id', 'tempID');
     let fieldToReplaceNode = document.getElementById('tempID');
     let fieldToReplaceParent = fieldToReplaceNode.parentElement;
     replacement.setAttribute('id', fieldToReplaceID);
