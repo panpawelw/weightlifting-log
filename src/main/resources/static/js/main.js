@@ -150,7 +150,7 @@ function buildWorkout() {
     };
     const created = new Date();
     document.getElementById("created").value = created;
-    storeFieldValue('workout.','created','', created);
+    storeFieldValue('workout.', 'created', '', created);
 }
 
 function storeFieldValue(varPart1, varPart2, varPart3, value) {
@@ -180,9 +180,9 @@ function addSet(exerciseNo) {
     let newSet = {data: null, notes: []};
     workout.exercises[exerciseNo].sets.push(newSet);
     let setNo = workout.exercises[exerciseNo].sets.length - 1;
-    const short = "exercises[" + exerciseNo + "].sets[" + setNo + "]";
-    const onchange = 'onchange="storeFieldValue(\'workout.\',\'' + short + '\', \'.data\',' +
-        ' this.value);"';
+    const short = "exercises[" + exerciseNo + "]sets[" + setNo + "]";
+    const onchange = 'onchange="storeFieldValue(\'workout.\',\'exercises[' + exerciseNo + '].sets['
+        + setNo + '].data\', \'\',' + ' this.value);"';
     let newSetHTML = document.createElement('div');
     newSetHTML.setAttribute
     ('id', short + '-container');
@@ -196,43 +196,47 @@ function addSet(exerciseNo) {
 
 function addNote() {
     let newNote = {noteType: 0, noteContent: null};
-    let short, short1, noteNo = null;
+    let noteNo, short, onchange = null;
+    let appendHere = document.getElementById('notes');
     switch (arguments.length) {
         case 0:
             workout.notes.push(newNote);
             noteNo = workout.notes.length - 1;
-            short = "workout.notes[" + noteNo + "].noteContent";
-            // short = 'note' + noteNo;
-            short1 = 'notes';
+            short = "notes[" + noteNo + "]";
+            onchange = 'onchange="storeFieldValue(\'workout.\',\'' + short + '\',' +
+                ' \'noteContent\', this.value);"';
             break;
         case 1:
             workout.exercises[arguments[0]].notes.push(newNote);
             noteNo = workout.exercises[arguments[0]].notes.length - 1;
-            short = "workout.exercises[" + arguments[0] + "].notes[" + noteNo + "].noteContent";
-            // short = 'exercise' + arguments[0] + 'note' + noteNo;
-            short1 = 'exercise' + arguments[0] + '-notes';
+            short = "exercises[" + arguments[0] + "].notes[" + noteNo + "]";
+            onchange = 'onchange="storeFieldValue(\'workout.\',\'' + short + '\',' +
+                ' \'noteContent\', this.value);"';
+            appendHere = document.getElementById('exercises[' + arguments[0] + ']-notes');
+
             break;
         case 2:
             workout.exercises[arguments[0]].sets[arguments[1]].notes.push(newNote);
             noteNo = workout.exercises[arguments[0]].sets[arguments[1]].notes.length - 1;
-            short = "workout.exercises[" + arguments[0] + "].sets[" +
-                arguments[1] + "].notes[" + noteNo + "].noteContent";
-            // short = 'exercise' + arguments[0] + 'set' + arguments[1] + 'note' + noteNo;
-            short1 = 'exercise' + arguments[0] + 'set' + arguments[1] + '-notes';
+            short = "exercises[" + arguments[0] + "].sets[" + arguments[1] +
+                "].notes[" + noteNo + "]";
+            onchange = 'onchange="storeFieldValue(\'workout.\',\'' + short + '\',' +
+                ' \'noteContent\', this.value);"';
+            let temp = 'exercises[' + arguments[0] + ']sets[' + arguments[1] + ']-notes';
+            console.log(temp);
+            appendHere = document.getElementById(temp);
             break;
     }
     let newNoteHTML = document.createElement('div');
     newNoteHTML.setAttribute('id', short + '-container');
-    newNoteHTML.innerHTML = "<label for=${short}>Note #" + (noteNo + 1) + ":</label>" +
-        "<input type='text' name=${short} id='" + short + "' minlength='20' value='' " +
-        "onchange='storeFieldValue(this.id, this.value);'/>" +
-        "<select onchange='noteTypeSelectionDetection(this, target);' " +
+    newNoteHTML.innerHTML = "<label for='" + short + "'>Note #" + (noteNo + 1) + ":</label>" +
+        "<input type='text' name='" + short + "' id='" + short + "' minlength='20' value='' " +
+        onchange + "/><select onchange='noteTypeSelectionDetection(this, target);' " +
         "name='" + short + "-type'><option value='0'>Text</option>" +
         "<option value='1'>Audio</option><option value='2'>Picture</option>" +
         "<option value='3'>Video</option></select></>";
-    console.log(short1);
-    alert(document.getElementById(short1));
-    document.getElementById(short1).appendChild(newNoteHTML);
+    console.log(appendHere);
+    appendHere.appendChild(newNoteHTML);
 }
 
 function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
