@@ -154,7 +154,6 @@ function buildWorkout() {
 }
 
 function storeFieldValue(varPart1, varPart2, varPart3, value) {
-    console.log(varPart1 + varPart2 + varPart3 + " = '" + value + "'");
     eval(varPart1 + varPart2 + varPart3 + " = '" + value + "'");
 }
 
@@ -220,7 +219,7 @@ function addNote() {
             break;
     }
     let onchangeValue =
-        'onchange="storeFieldValue(\'workout.\',\'' + short + '\', \'noteContent\', this.value);"';
+        'onchange="storeFieldValue(\'workout.\',\'' + short + '\', \'.noteContent\', this.value);"';
     let newNoteHTML = document.createElement('div');
     newNoteHTML.setAttribute('id', short + '-container');
     newNoteHTML.innerHTML = '<label for="' + short + '">Note #' + (noteNo + 1) + ':</label><input ' +
@@ -256,4 +255,17 @@ function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
     let fieldToReplaceParent = fieldToReplaceNode.parentElement;
     replacement.setAttribute('id', fieldToReplaceID);
     fieldToReplaceParent.replaceChild(replacement, fieldToReplaceNode);
+}
+
+function saveWorkout(workout) {
+    console.log('saving workout...');
+    $.ajax({
+        url: window.location.href,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(workout),
+        async: false
+    }).done(function() {
+        console.log('workout sent to controller');
+    });
 }
