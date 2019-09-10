@@ -1,5 +1,7 @@
 package pl.pjm77.weightliftinglog.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -17,13 +19,11 @@ public class WorkoutSerialized {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String title;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp created;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp updated;
-
     private byte[] data;
 
     @JoinColumn

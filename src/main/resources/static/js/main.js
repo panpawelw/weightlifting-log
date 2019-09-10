@@ -148,7 +148,7 @@ function buildWorkout() {
         id: 0, title: null, created: null, updated: null, user: null,
         notes: [], exercises: []
     };
-    const created = new Date();
+    const created = new Date().toISOString().slice(0, 19).replace('T', ' ');
     document.getElementById("created").value = created;
     storeFieldValue('workout.', 'created', '', created);
 }
@@ -258,9 +258,9 @@ function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
 }
 
 function saveWorkout(workout) {
-    console.log('saving workout...');
-    // Obrain CSRF token
+    // Obtain CSRF token
     let token = $("meta[name='_csrf']").attr("content");
+    // Send workout object in JSON format
     $.ajax({
         url: window.location.href,
         headers: {"X-CSRF-TOKEN": token},
@@ -269,7 +269,5 @@ function saveWorkout(workout) {
         data: JSON.stringify(workout),
         async: true,
 
-    }).done(function() {
-        console.log('workout sent to the controller...');
-    });
+    }).done(function() {});
 }
