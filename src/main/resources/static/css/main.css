@@ -45,7 +45,7 @@ html body {
 }
 
 /* no outline for selected input fields and buttons*/
-input:focus, button:focus {
+input:focus, button:focus, .my-button:focus, select:focus {
     outline: none;
 }
 
@@ -158,29 +158,8 @@ input[type=range]:focus::-ms-fill-upper {
     background: #FF9200;
 }
 
-/* text input fields */
-input[type=text] {
-    background-color: #FFFFFF;
-    color: black;
-    border: 2px solid #FF9200;
-    box-shadow: 3px 3px 3px #472900;
-    border-radius: 23px;
-    text-align: center;
-    font-weight: bold;
-}
-
-/*number input fields */
-input[type=number] {
-    color: black;
-    border: 2px solid #FF9200;
-    box-shadow: 3px 3px 3px #472900;
-    border-radius: 23px;
-    font-weight: bold;
-    text-align: center;
-}
-
-/* password input field */
-input[type=password] {
+/* text, number, password input fields */
+input[type=text], input[type=number], input[type=password] {
     color: black;
     border: 2px solid #FF9200;
     box-shadow: 3px 3px 3px #472900;
@@ -198,7 +177,7 @@ input[type=password] {
     margin: 0 0.5em;
 }
 
-button, input[type=submit], .my-button {
+button, input[type=submit], .my-button, select {
     background-color: #FF9200;
     color: black;
     border: 2px solid #FFFFFF;

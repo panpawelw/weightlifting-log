@@ -264,8 +264,11 @@ function saveWorkout(workout) {
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(workout),
-        async: false
+        async: true,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="token"]').attr('content')
+        }
     }).done(function() {
-        console.log('workout sent to controller');
+        console.log('workout sent to the controller...');
     });
 }
