@@ -259,15 +259,16 @@ function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
 
 function saveWorkout(workout) {
     console.log('saving workout...');
+    // Obrain CSRF token
+    let token = $("meta[name='_csrf']").attr("content");
     $.ajax({
         url: window.location.href,
+        headers: {"X-CSRF-TOKEN": token},
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(workout),
         async: true,
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="token"]').attr('content')
-        }
+
     }).done(function() {
         console.log('workout sent to the controller...');
     });
