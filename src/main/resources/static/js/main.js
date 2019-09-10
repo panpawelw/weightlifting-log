@@ -173,6 +173,7 @@ function addExercise() {
         "onclick='addSet(" + exerciseNo + ");'>Add set</button></div>" +
         "<div id='" + short + "-notes'></div><br/><div id='" + short + "-sets'></div><br/>";
     document.getElementById("exercises").appendChild(newExerciseHTML);
+    document.getElementById(short).focus();
 }
 
 function addSet(exerciseNo) {
@@ -191,6 +192,7 @@ function addSet(exerciseNo) {
         ", " + setNo + ");'>&nbsp</button><div id='" + short + "-notes'></div><br/>";
     document.getElementById("exercises[" + exerciseNo + "]-sets")
         .appendChild(newSetHTML);
+    document.getElementById(short).focus();
 }
 
 function addNote() {
@@ -228,6 +230,7 @@ function addNote() {
         ' name="' + short + '-type"><option value="0">Text</option><option value="1">' +
         'Audio</option><option value="2">Picture</option><option value="3">Video</option></select>';
     appendHere.appendChild(newNoteHTML);
+    document.getElementById(short).focus();
 }
 
 function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
@@ -268,6 +271,5 @@ function saveWorkout(workout) {
         contentType: 'application/json',
         data: JSON.stringify(workout),
         async: true,
-
     }).done(function() {});
 }
