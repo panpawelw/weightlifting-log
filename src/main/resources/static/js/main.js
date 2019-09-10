@@ -196,7 +196,7 @@ function addSet(exerciseNo) {
 }
 
 function addNote() {
-    let newNote = {noteType: 0, noteContent: null};
+    let newNote = {type: 0, content: null};
     let noteNo, short = null;
     let appendHere = document.getElementById('notes');
     switch (arguments.length) {
@@ -221,7 +221,7 @@ function addNote() {
             break;
     }
     let onchangeValue =
-        'onchange="storeFieldValue(\'workout.\',\'' + short + '\', \'.noteContent\', this.value);"';
+        'onchange="storeFieldValue(\'workout.\',\'' + short + '\', \'.content\', this.value);"';
     let newNoteHTML = document.createElement('div');
     newNoteHTML.setAttribute('id', short + '-container');
     newNoteHTML.innerHTML = '<label for="' + short + '">Note #' + (noteNo + 1) + ':</label><input ' +
@@ -261,6 +261,7 @@ function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
 }
 
 function saveWorkout(workout) {
+    console.log(JSON.stringify(workout));
     // Obtain CSRF token
     let token = $("meta[name='_csrf']").attr("content");
     // Send workout object in JSON format

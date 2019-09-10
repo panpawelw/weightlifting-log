@@ -7,22 +7,22 @@ import java.util.Objects;
 
 public class Set implements Serializable {
 
-    private String setData;
+    private String data;
     private List<Note> notes = new ArrayList<>();
 
     public Set() {}
 
     public Set(String setData, List<Note> notes) {
-        this.setData = setData;
+        this.data = setData;
         this.notes = notes;
     }
 
-    public String getSetData() {
-        return setData;
+    public String getData() {
+        return data;
     }
 
-    public void setSetData(String setData) {
-        this.setData = setData;
+    public void setData(String data) {
+        this.data = data;
     }
 
     public List<Note> getNotes() {
@@ -36,8 +36,8 @@ public class Set implements Serializable {
     @Override
     public String toString() {
         return "Set{" +
-                "setData='" + setData + '\'' +
-                ", setNotes=" + notes +
+                "data='" + data + '\'' +
+                ", notes=" + notes +
                 '}';
     }
 
@@ -46,12 +46,12 @@ public class Set implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Set)) return false;
         Set set = (Set) o;
-        return Objects.equals(getSetData(), set.getSetData()) &&
+        return Objects.equals(getData(), set.getData()) &&
                 Objects.equals(getNotes(), set.getNotes());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getSetData(), getNotes());
+        return Objects.hash(getData(), getNotes());
     }
 }
