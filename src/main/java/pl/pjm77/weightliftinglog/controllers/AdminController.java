@@ -13,7 +13,7 @@ public class AdminController {
     @RequestMapping("/admin")
     public String admin(Model model) {
         String adminName = UserService.getLoggedInUserName();
-        model.addAttribute("adminGreeting", "Hello " + adminName + "!");
+        model.addAttribute("adminName", adminName);
         model.addAttribute("page", "fragments.html :: admin-panel");
         return "home";
     }

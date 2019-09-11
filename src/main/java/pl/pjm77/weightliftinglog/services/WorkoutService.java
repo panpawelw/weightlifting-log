@@ -29,8 +29,13 @@ public class WorkoutService {
         return usersWorkoutsDeserialized;
     }
 
+    public WorkoutDeserialized findWorkoutById(long id) {
+        WorkoutSerialized workoutSerialized = workoutRepository.getOne(id);
+        return deserializeWorkout(workoutSerialized);
+    }
+
     public void saveWorkout(WorkoutDeserialized workoutDeserialized) {
-        workoutRepository.save(serializeWorkout(workoutDeserialized));
+        workoutRepository.saveAndFlush(serializeWorkout(workoutDeserialized));
     }
 
     public WorkoutSerialized serializeWorkout

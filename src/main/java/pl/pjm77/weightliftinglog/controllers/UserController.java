@@ -38,7 +38,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @RequestMapping("/user")
     public String user(Model model) {
-        model.addAttribute("userGreeting", "Hello " + getLoggedInUserName() + "!");
+        model.addAttribute("userName", getLoggedInUserName());
         model.addAttribute("adminRights", checkLoggedInUserForAdminRights());
         model.addAttribute("page", "fragments.html :: user-panel");
         model.addAttribute("userPanelPage", "fragments.html :: user-panel-default");

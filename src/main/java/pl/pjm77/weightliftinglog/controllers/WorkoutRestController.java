@@ -1,7 +1,10 @@
 package pl.pjm77.weightliftinglog.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.pjm77.weightliftinglog.models.WorkoutDeserialized;
+import pl.pjm77.weightliftinglog.models.WorkoutSerialized;
+import pl.pjm77.weightliftinglog.services.UserService;
 import pl.pjm77.weightliftinglog.services.WorkoutService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,8 +17,13 @@ import java.util.List;
 public class WorkoutRestController {
 
     private final WorkoutService workoutService;
+    private final UserService userService;
 
-    public WorkoutRestController(WorkoutService workoutService) {this.workoutService = workoutService;}
+    @Autowired
+    public WorkoutRestController(WorkoutService workoutService, UserService userService) {
+        this.workoutService = workoutService;
+        this.userService = userService;
+    }
 
     @GetMapping("/")
     public List<WorkoutDeserialized> getWorkoutsList() {
@@ -30,8 +38,10 @@ public class WorkoutRestController {
     @PostMapping("/add")
     public void addWorkoutPost(@RequestBody WorkoutDeserialized workoutDeserialized,
                         HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("Receiving workout...");
+        workoutDeserialized.setUser
+                (userService.findUserByName(UserService.getLoggedInUserName()));
         System.out.println(workoutDeserialized);
+        workoutService.saveWorkout(workoutDeserialized);
     }
 
     @PutMapping("/update/{workoutId}")

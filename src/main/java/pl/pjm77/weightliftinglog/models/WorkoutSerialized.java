@@ -3,6 +3,7 @@ package pl.pjm77.weightliftinglog.models;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
+import java.sql.Clob;
 import java.sql.Timestamp;
 import java.util.Arrays;
 
@@ -24,6 +25,7 @@ public class WorkoutSerialized {
     private Timestamp created;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp updated;
+    @Lob
     private byte[] data;
 
     @JoinColumn

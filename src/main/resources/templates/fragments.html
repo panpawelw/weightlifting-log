@@ -133,7 +133,7 @@
 
 <!--User details registration successful-->
 <div th:fragment="register-user-success">
-    <h2>Registration successfull!</h2><br/>
+    <h2>Registration successful!</h2><br/>
     <button class="my-button" onclick="location.href='/wl/login'" type="button">OK</button>
 </div>
 
@@ -152,8 +152,8 @@
 <!--Admin panel-->
 <div th:fragment="admin-panel" id="admin-panel">
     <div class="controls">
-        <!--/*@thymesVar id="adminGreeting" type="java"*/-->
-        <p class="same-row" th:text="${adminGreeting}"></p>
+        <!--/*@thymesVar id="adminName" type="java"*/-->
+        <p class="same-row" th:text="'Hello ' + ${adminName} + '!'"></p>
         <button class="same-row my-button" onclick="location.href='/wl/logout'"
                 type="button">Log out
         </button>
@@ -174,8 +174,8 @@
     </div>
     <div id="workout-selection-container" class="col">
         <div class="controls">
-            <!--/*@thymesVar id="userGreeting" type="java"*/-->
-            <p class="same-row" th:text="${userGreeting}"></p>
+            <!--/*@thymesVar id="userName" type="java"*/-->
+            <p class="same-row" th:text="'Hello ' + ${userName} + '!'"></p>
             <button class="same-row my-button" onclick="location.href='/wl/logout'"
                     type="button">Log out
             </button>
@@ -238,7 +238,7 @@
         onchange="storeFieldValue('workout.','title', '', this.value);"/>
     <label for="created">Created: </label>
     <input type="text" name="created" id="created" value=""
-           onchange="storeFieldValue('workout.','created','', created);;"/>
+           onchange="storeFieldValue('workout.','created','', created);"/>
     <button class='my-button handwriting' onclick='addNote();'>&nbsp</button>
     <br/>
     <div id="notes"></div>
