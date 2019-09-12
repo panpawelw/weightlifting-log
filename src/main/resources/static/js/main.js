@@ -134,13 +134,7 @@ function updatePercentageDescription(description, percentage) {
     document.getElementById(description).innerHTML = descriptions[x];
 }
 
-/* This function displays the list of all user's workouts */
-function getWorkoutsList() {
-    let workoutsList = document.getElementById("workouts-list");
-    let text = document.createTextNode("Here goes the workout list!");
-    workoutsList.appendChild(text);
-}
-
+/* Workout-related functions */
 let workout = null;
 
 function buildWorkout() {

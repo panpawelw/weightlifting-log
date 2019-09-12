@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.pjm77.weightliftinglog.models.ChangePassword;
-import pl.pjm77.weightliftinglog.services.ChangePasswordService;
 import pl.pjm77.weightliftinglog.services.UserService;
 import pl.pjm77.weightliftinglog.validators.ChangePasswordValidator;
 
@@ -20,15 +19,12 @@ import javax.validation.Valid;
 public class ChangePasswordController {
 
     private ChangePasswordValidator changePasswordValidator;
-    private ChangePasswordService changePasswordService;
     private UserService userService;
 
     @Autowired
     public ChangePasswordController(ChangePasswordValidator changePasswordValidator,
-                                    ChangePasswordService changePasswordService,
                                     UserService userService) {
         this.changePasswordValidator = changePasswordValidator;
-        this.changePasswordService = changePasswordService;
         this.userService = userService;
     }
 
