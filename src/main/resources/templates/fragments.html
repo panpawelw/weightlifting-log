@@ -188,8 +188,16 @@
             </button>
         </div>
         <br/>
-        <div id="workouts-list"></div>
-        <script>getWorkoutsList();</script>
+        <table id="workouts-list">
+            <!--/*@thymesVar id="workouts" type="java"*/-->
+            <tr th:each="workout: ${workouts}">
+                <td>
+                    <button class="my-button"><th:block th:text="${workout.title}"/>
+                        <br/><th:block th:text="${workout.created}"/></button>
+                </td>
+            </tr>
+        </table>
+
     </div>
 
     <!-- JS code for smooth column size adjustment -->
@@ -203,7 +211,7 @@
                 return {'flex-basis': gutterSize + 'px'}
             },
             sizes: [74, 24],
-            minSize: 50,
+            minSize: 100,
             gutterSize: 6,
             cursor: 'col-resize'
         });
@@ -235,7 +243,7 @@
     <br/><br/>
     <label for="title">Workout title: </label>
     <input type="text" name="title" id="title" minlength="20" value="" autofocus="autofocus"
-        onchange="storeFieldValue('workout.','title', '', this.value);"/>
+           onchange="storeFieldValue('workout.','title', '', this.value);"/>
     <label for="created">Created: </label>
     <input type="text" name="created" id="created" value=""
            onchange="storeFieldValue('workout.','created','', created);"/>

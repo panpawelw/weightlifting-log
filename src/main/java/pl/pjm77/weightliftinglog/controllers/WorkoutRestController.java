@@ -40,7 +40,6 @@ public class WorkoutRestController {
                         HttpServletRequest request, HttpServletResponse response) {
         workoutDeserialized.setUser
                 (userService.findUserByName(UserService.getLoggedInUserName()));
-        System.out.println(workoutDeserialized);
         workoutService.saveWorkout(workoutDeserialized);
     }
 

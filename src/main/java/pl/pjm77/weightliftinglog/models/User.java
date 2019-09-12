@@ -192,7 +192,7 @@ public class User implements Serializable {
                 ", age=" + age +
                 ", gender=" + gender +
                 ", role='" + role + '\'' +
-                ", workouts=" + workouts +
+//                ", workouts=" + workouts +
                 '}';
     }
 

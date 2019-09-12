@@ -355,6 +355,10 @@ button:active, input[type=submit]:active, .my-button:active {
     text-align: right;
 }
 
+#workouts-list {
+    margin: auto;
+}
+
 /* General text styling */
 .bigger-label {
     font-weight: bold;

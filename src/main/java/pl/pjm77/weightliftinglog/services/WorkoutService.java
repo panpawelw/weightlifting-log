@@ -21,13 +21,19 @@ public class WorkoutService {
         this.workoutRepository = workoutRepository;
     }
 
-    public List<WorkoutDeserialized> findWorkoutsByUser(User user) {
-        List<WorkoutSerialized> usersWorkoutsSerialized;
-        usersWorkoutsSerialized = workoutRepository.findAllByUserOrderByCreatedDesc(user);
-        List<WorkoutDeserialized> usersWorkoutsDeserialized = new ArrayList<>();
-        usersWorkoutsSerialized.forEach((n) -> usersWorkoutsDeserialized.add(deserializeWorkout(n)));
-        return usersWorkoutsDeserialized;
+    public List<WorkoutSerialized> findWorkoutsByUser(User user) {
+        List<WorkoutSerialized> usersWorkoutsSerialized =
+                workoutRepository.findAllByUserOrderByCreatedDesc(user);
+        return usersWorkoutsSerialized;
     }
+
+//    public List<WorkoutDeserialized> findWorkoutsByUser(User user) {
+//        List<WorkoutSerialized> usersWorkoutsSerialized;
+//        usersWorkoutsSerialized = workoutRepository.findAllByUserOrderByCreatedDesc(user);
+//        List<WorkoutDeserialized> usersWorkoutsDeserialized = new ArrayList<>();
+//        usersWorkoutsSerialized.forEach((n) -> usersWorkoutsDeserialized.add(deserializeWorkout(n)));
+//        return usersWorkoutsDeserialized;
+//    }
 
     public WorkoutDeserialized findWorkoutById(long id) {
         WorkoutSerialized workoutSerialized = workoutRepository.getOne(id);

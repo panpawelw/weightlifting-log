@@ -9,10 +9,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import pl.pjm77.weightliftinglog.models.User;
+import pl.pjm77.weightliftinglog.models.WorkoutSerialized;
+import pl.pjm77.weightliftinglog.services.WorkoutService;
 import pl.pjm77.weightliftinglog.validators.UpdatePasswordValidator;
 import pl.pjm77.weightliftinglog.services.UserService;
 
 import javax.validation.Valid;
+
+import java.util.List;
 
 import static pl.pjm77.weightliftinglog.services.UserService.checkLoggedInUserForAdminRights;
 import static pl.pjm77.weightliftinglog.services.UserService.getLoggedInUserName;
@@ -21,12 +25,14 @@ import static pl.pjm77.weightliftinglog.services.UserService.getLoggedInUserName
 public class UserController {
 
     private final UserService userService;
+    private final WorkoutService workoutService;
     private final UpdatePasswordValidator updatePasswordValidator;
 
     @Autowired
-    public UserController(UserService userService,
+    public UserController(UserService userService, WorkoutService workoutService,
                           UpdatePasswordValidator updatePasswordValidator) {
         this.userService = userService;
+        this.workoutService = workoutService;
         this.updatePasswordValidator = updatePasswordValidator;
     }
 
@@ -38,10 +44,13 @@ public class UserController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @RequestMapping("/user")
     public String user(Model model) {
-        model.addAttribute("userName", getLoggedInUserName());
+        String username = getLoggedInUserName();
+        model.addAttribute("userName", username);
         model.addAttribute("adminRights", checkLoggedInUserForAdminRights());
         model.addAttribute("page", "fragments.html :: user-panel");
         model.addAttribute("userPanelPage", "fragments.html :: user-panel-default");
+        User user = userService.findUserByName(username);
+        model.addAttribute("workouts", workoutService.findWorkoutsByUser(user));
         return "home";
     }
 
