@@ -255,7 +255,6 @@ function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
 }
 
 function saveWorkout(workout) {
-    console.log(JSON.stringify(workout));
     // Obtain CSRF token
     let token = $("meta[name='_csrf']").attr("content");
     // Send workout object in JSON format
@@ -266,5 +265,6 @@ function saveWorkout(workout) {
         contentType: 'application/json',
         data: JSON.stringify(workout),
         async: true,
-    }).done(function() {});
+    }).done(function() {window.location.pathname = 'wl/user'})
+        .fail(function() {alert('There\'s been a problem!')});
 }

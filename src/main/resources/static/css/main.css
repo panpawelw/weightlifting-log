@@ -370,13 +370,11 @@ button:active, input[type=submit]:active, .my-button:active {
 }
 
 /* Admin panel */
-
 #admin-panel {
     height: 95vh;
 }
 
 /* Other */
-
 .same-row {
     display: inline-block;
 }

@@ -2,10 +2,8 @@ package pl.pjm77.weightliftinglog.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -69,12 +67,7 @@ public class HomeController {
 
     @RequestMapping("/logout")
     public String logout(Model model, HttpServletRequest request, HttpServletResponse response) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            new SecurityContextLogoutHandler().logout(request, response, authentication);
-        }
-        authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
+        if (userService.logoutUser(request, response) == null) {
             model.addAttribute("page", "fragments.html :: logout-success");
         } else {
             model.addAttribute("page", "fragments.html :: logout-failure");

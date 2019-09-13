@@ -36,8 +36,7 @@ public class WorkoutRestController {
     }
 
     @PostMapping("/add")
-    public void addWorkoutPost(@RequestBody WorkoutDeserialized workoutDeserialized,
-                        HttpServletRequest request, HttpServletResponse response) {
+    public void addWorkoutPost(@RequestBody WorkoutDeserialized workoutDeserialized) {
         workoutDeserialized.setUser
                 (userService.findUserByName(UserService.getLoggedInUserName()));
         workoutService.saveWorkout(workoutDeserialized);

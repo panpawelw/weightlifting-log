@@ -3,14 +3,18 @@ package pl.pjm77.weightliftinglog.services;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.repositories.UserRepository;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 
 @Service
@@ -32,6 +36,21 @@ public class UserService {
     public void saveUser(User user) throws DataIntegrityViolationException {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+    }
+
+    /**
+     * Logs current user out
+     * @param request - HttpServletRequest passed from controller
+     * @param response - HttpServletResponse passed from controller
+     * @return null if logout succesful, Authentication object if failure
+     */
+    public Authentication logoutUser(HttpServletRequest request, HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication;
     }
 
     /**
