@@ -3,11 +3,14 @@ package pl.pjm77.weightliftinglog.services;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 import pl.pjm77.weightliftinglog.models.User;
@@ -22,11 +25,14 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
 
     public User findUserByName(String name) {
@@ -36,6 +42,21 @@ public class UserService {
     public void saveUser(User user) throws DataIntegrityViolationException {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+    }
+
+    /**
+     * Automatic user login
+     * @param request - HttpServletRequest passed from controller
+     * @param username
+     * @param password
+     */
+    public void autoLogin(HttpServletRequest request, String username, String password) {
+        UsernamePasswordAuthenticationToken token =
+                new UsernamePasswordAuthenticationToken(username, password);
+        request.getSession();
+        token.setDetails(new WebAuthenticationDetails(request));
+        Authentication authenticatedUser = authenticationManager.authenticate(token);
+        SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
     }
 
     /**

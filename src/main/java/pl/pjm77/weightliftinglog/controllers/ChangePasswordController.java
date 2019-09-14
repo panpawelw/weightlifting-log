@@ -13,13 +13,15 @@ import pl.pjm77.weightliftinglog.models.ChangePassword;
 import pl.pjm77.weightliftinglog.services.UserService;
 import pl.pjm77.weightliftinglog.validators.ChangePasswordValidator;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
 public class ChangePasswordController {
 
-    private ChangePasswordValidator changePasswordValidator;
-    private UserService userService;
+    private final ChangePasswordValidator changePasswordValidator;
+    private final UserService userService;
 
     @Autowired
     public ChangePasswordController(ChangePasswordValidator changePasswordValidator,
@@ -44,11 +46,15 @@ public class ChangePasswordController {
     @PostMapping("/user/changepassword")
     public String changePasswordPost(
             @Valid @ModelAttribute("changePassword") ChangePassword changePassword,
-            BindingResult bindingResult, Model model) {
+            BindingResult bindingResult, Model model, HttpServletRequest request,
+            HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("page", "fragments.html :: change-password");
         } else {
+            String username = UserService.getLoggedInUserName();
             userService.changeCurrentUserPassword(changePassword.getNewPassword());
+            userService.logoutUser(request, response);
+            userService.autoLogin(request, username, changePassword.getNewPassword());
             model.addAttribute("page", "fragments.html :: change-password-success");
         }
         return "home";
