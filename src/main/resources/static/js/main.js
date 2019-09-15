@@ -136,6 +136,7 @@ function updatePercentageDescription(description, percentage) {
 
 /* Workout-related functions */
 let workout = null;
+let files = [];
 
 function buildWorkout() {
     workout = {
@@ -251,7 +252,18 @@ function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
     let fieldToReplaceNode = document.getElementById('tempID');
     let fieldToReplaceParent = fieldToReplaceNode.parentElement;
     replacement.setAttribute('id', fieldToReplaceID);
+    replacement.setAttribute('onchange', 'uploadFile(this.files[0]);');
     fieldToReplaceParent.replaceChild(replacement, fieldToReplaceNode);
+}
+
+function uploadFile(file) {
+    let reader = new FileReader();
+    reader.onloadend = function(evt) {
+        if (evt.target.readyState === FileReader.DONE) {
+            files.push(reader.result);
+        }
+    };
+    reader.readAsBinaryString(file);
 }
 
 function saveWorkout(workout) {
