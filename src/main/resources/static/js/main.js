@@ -149,7 +149,6 @@ function buildWorkout() {
 }
 
 function storeFieldValue(varPart1, varPart2, varPart3, value) {
-    alert(varPart1 + ' , ' + varPart2 + ' , ' + varPart3 + ' , ' + value);
     eval(varPart1 + varPart2 + varPart3 + " = '" + value + "'");
 }
 
@@ -253,9 +252,9 @@ function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
     let fieldToReplaceNode = document.getElementById('tempID');
     let fieldToReplaceParent = fieldToReplaceNode.parentElement;
     replacement.setAttribute('id', fieldToReplaceID);
-    replacement.setAttribute('onchange', 'storeFieldValue("workout.","' + fieldToReplaceID +
-        '", ".content", this.files[0].name);storeFieldValue("workout.","' + fieldToReplaceID +
-        '", ".type", "' + selectFieldValue + '"); uploadFile(this.files[0]);');
+    replacement.setAttribute('onchange', 'storeFieldValue("workout.","' +
+        fieldToReplaceID + '", ".content", this.files[0].name);storeFieldValue("workout.","' +
+        fieldToReplaceID + '", ".type", "' + selectFieldValue + '"); uploadFile(this.files[0]);');
     fieldToReplaceParent.replaceChild(replacement, fieldToReplaceNode);
 }
 

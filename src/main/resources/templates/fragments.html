@@ -229,7 +229,6 @@
 </div>
 
 <!-- user panel fragments - add new workout-->
-
 <div th:fragment="user-panel-add-workout" class="workout-content">
     <br/>
     <div class="same-row">
@@ -242,12 +241,16 @@
     </div>
 
     <br/><br/>
-    <label for="title">Workout title: </label>
-    <input type="text" name="title" id="title" minlength="20" value="" autofocus="autofocus"
-           onchange="storeFieldValue('workout.','title', '', this.value);"/>
     <label for="created">Created: </label>
     <input type="text" name="created" id="created" value=""
            onchange="storeFieldValue('workout.','created','', created);"/>
+    <div>
+        <label for="title">Title: </label><br/>
+        <!--    <input type="text" name="title" id="title" minlength="20" value="" autofocus="autofocus"-->
+        <!--           onchange="storeFieldValue('workout.','title', '', this.value);"/>-->
+        <span onchange="storeFieldValue('workout.','title', '', this.value);" contenteditable="true"
+              class="my-input" id="title"></span>
+    </div>
     <button class='my-button handwriting' onclick='addNote();'>&nbsp</button>
     <br/>
     <div id="notes"></div>
@@ -265,7 +268,7 @@
             Cancel
         </button>
     </div>
-    <script>buildWorkout();</script>
+    <script>document.getElementById('title').focus();buildWorkout();</script>
 </div>
 
 <!-- user panel fragments - update existing workout-->
