@@ -45,7 +45,7 @@ html body {
 }
 
 /* no outline for selected input fields and buttons*/
-input:focus, button:focus, .my-button:focus, select:focus {
+input:focus, button:focus, .my-button:focus, .my-input:focus, select:focus {
     outline: none;
 }
 
@@ -161,8 +161,8 @@ input[type=range]:focus::-ms-fill-upper {
 /* text, number, password input fields */
 .my-input {
     display: inline-block;
-    min-width: 20vw;
-    max-width: 90vw;
+    min-width: 20%;
+    max-width: 95%;
     background-color: #FFFFFF;
 }
 
@@ -391,6 +391,23 @@ button:active, input[type=submit]:active, .my-button:active {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.wrapper {
+    overflow: auto;
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+}
+
+.left {
+    width: 90%;
+    display: table-cell;
+}
+
+.right {
+    display: table-cell;
+    vertical-align: middle;
 }
 
 /* Responsive elements */

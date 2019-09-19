@@ -102,7 +102,8 @@
         <input type="submit" value="Update user details">
         <button class="my-button" onclick="location.href='/wl/login'" type="button">Cancel</button>
         <button class="my-button" onclick="location.href='/wl/user/changepassword'"
-                type="button">Change password</button>
+                type="button">Change password
+        </button>
     </form>
 </div>
 
@@ -146,7 +147,8 @@
 <div th:fragment="change-password-success">
     <h2>New password has been set!</h2><br/>
     <button class="my-button" onclick="window.location.pathname = 'wl/user/update';"
-            type="button">OK</button>
+            type="button">OK
+    </button>
 </div>
 
 <!--Admin panel-->
@@ -194,7 +196,9 @@
                 <td>
                     <button class="my-button" onclick="alert('Edit workout!');">
                         <th:block th:text="${workout.title}"/>
-                        <br/><th:block th:text="${workout.created}"/></button>
+                        <br/>
+                        <th:block th:text="${workout.created}"/>
+                    </button>
                 </td>
             </tr>
         </table>
@@ -241,17 +245,25 @@
     </div>
 
     <br/><br/>
-    <label for="created">Created: </label>
-    <input type="text" name="created" id="created" value=""
-           onchange="storeFieldValue('workout.','created','', created);"/>
+    <div>
+        <label for="created">Created: </label>
+        <input type="text" name="created" id="created" value=""
+               onchange="storeFieldValue('workout.','created','', created);"/>
+    </div>
+    <br/>
     <div>
         <label for="title">Title: </label><br/>
-        <!--    <input type="text" name="title" id="title" minlength="20" value="" autofocus="autofocus"-->
-        <!--           onchange="storeFieldValue('workout.','title', '', this.value);"/>-->
-        <span onchange="storeFieldValue('workout.','title', '', this.value);" contenteditable="true"
-              class="my-input" id="title"></span>
+        <div class="wrapper">
+            <div class="left">
+                <span onchange="storeFieldValue('workout.','title', '', this.value);"
+                       contenteditable="true" class="my-input" id="title"></span>
+            </div>
+            <div class="right">
+                <button class='my-button handwriting' title="Add workout note..."
+                        onclick='addNote();'>&nbsp</button>
+            </div>
+        </div>
     </div>
-    <button class='my-button handwriting' onclick='addNote();'>&nbsp</button>
     <br/>
     <div id="notes"></div>
     <br/>
@@ -268,7 +280,8 @@
             Cancel
         </button>
     </div>
-    <script>document.getElementById('title').focus();buildWorkout();</script>
+    <script>document.getElementById('title').focus();
+    buildWorkout();</script>
 </div>
 
 <!-- user panel fragments - update existing workout-->
