@@ -9,12 +9,12 @@ $(document).ready(function () {
      coordinated with switching tabs, which automatically scrolls page to the
      very top.*/
 
-    let logo = document.getElementById('logo-container');
-    let navbar = document.getElementById('big-tabs');
+    const logo = document.getElementById('logo-container');
+    const navbar = document.getElementById('big-tabs');
 
     // Fillers are to prevent bootstrap graphical glitches
-    let filler1 = document.getElementById('filler-1');
-    let filler2 = document.getElementById('filler-2');
+    const filler1 = document.getElementById('filler-1');
+    const filler2 = document.getElementById('filler-2');
 
     window.addEventListener('scroll', function () {
         let pagePosition = $('html').scrollTop();
@@ -51,10 +51,16 @@ $(document).ready(function () {
     /* These handlers are responsible for scrolling the document to the top
     when user is changing tabs, while not allowing the logo toggle action to be
     triggered by the scrolling (only if the content is larger than screen. */
-    $('#tab1handle, #tab2handle, #tab3handle, #tab4handle')
-        .bind('click', function () {
-            scrollToTop()
-        });
+    $('#tab1handle, #tab2handle, #tab3handle, #tab4handle').bind('click', function () {
+        scrollToTop();
+    });
+
+    window.addEventListener('input', function (event) {
+        let currentItem = event.target;
+        if (currentItem.className === 'my-input') {
+            workout[currentItem.id] = currentItem.innerHTML
+        }
+    });
 });
 
 /* Auxiliary function for tab change event handlers */
@@ -260,7 +266,7 @@ function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
 
 function uploadFile(file) {
     let reader = new FileReader();
-    reader.onloadend = function(evt) {
+    reader.onloadend = function (evt) {
         if (evt.target.readyState === FileReader.DONE) {
             files.push(reader.result);
         }
@@ -279,6 +285,10 @@ function saveWorkout(workout) {
         contentType: 'application/json',
         data: JSON.stringify(workout),
         async: true,
-    }).done(function() {window.location.pathname = 'wl/user'})
-        .fail(function() {alert('There\'s been a problem!')});
+    }).done(function () {
+        window.location.pathname = 'wl/user'
+    })
+        .fail(function () {
+            alert('There\'s been a problem!')
+        });
 }
