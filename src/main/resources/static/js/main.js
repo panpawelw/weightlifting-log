@@ -50,7 +50,7 @@ $(document).ready(function () {
 
     /* These handlers are responsible for scrolling the document to the top
     when user is changing tabs, while not allowing the logo toggle action to be
-    triggered by the scrolling (only if the content is larger than screen. */
+    triggered by the scrolling (only if the content is larger than screen). */
     $('#tab1handle, #tab2handle, #tab3handle, #tab4handle').bind('click', function () {
         scrollToTop();
     });
@@ -110,34 +110,27 @@ function calculate1RM() {
 
 /* This function updates descriptions for percentages of 1 Rep Max */
 function updatePercentageDescription(description, percentage) {
-    let x = 0;
-    let descriptions = [
-        "Upper body ballistic work, lower body plyometrics. Improves muscle " +
-        "hardness and contraction speed.",
-        "Lower body ballistic work. Improves muscle hardness, develops power " +
-        "and contraction speed.",
-        "Explosiveness, speed and power. Great for muscle hardness. 60% can " +
-        "be used for hypertrophy when done to failure.",
-        "Best range for muscle mass building, also good for explosiveness" +
-        " (~70%) and strength (~80%) in Olympic lifting.",
-        "Best for building muscle strength, use ~80% for easy recovery, ~90%" +
-        " for quick strength peaking.",
-        "Increases maximal strength via neural factors. Good for displaying" +
-        " strength. Difficult to recover from."];
+    let descriptionText;
     if (percentage < 21) {
-        x = 0;
+        descriptionText = "Upper body ballistic work, lower body plyometrics. Improves muscle " +
+            "hardness and contraction speed.";
     } else if (percentage < 41) {
-        x = 1;
+        descriptionText = "Lower body ballistic work. Improves muscle hardness, develops power " +
+            "and contraction speed.";
     } else if (percentage < 61) {
-        x = 2;
+        descriptionText = "Explosiveness, speed and power. Great for muscle hardness. 60% can " +
+            "be used for hypertrophy when done to failure.";
     } else if (percentage < 81) {
-        x = 3;
+        descriptionText = "Best range for muscle mass building, also good for explosiveness" +
+            " (~70%) and strength (~80%) in Olympic lifting.";
     } else if (percentage < 91) {
-        x = 4;
+        descriptionText = "Best for building muscle strength, use ~80% for easy recovery, ~90%" +
+            " for quick strength peaking.";
     } else {
-        x = 5;
+        descriptionText = "Increases maximal strength via neural factors. Good for displaying" +
+            " strength. Difficult to recover from.";
     }
-    document.getElementById(description).innerHTML = descriptions[x];
+    document.getElementById(description).innerHTML = descriptionText;
 }
 
 /* Workout-related functions */
@@ -163,18 +156,22 @@ function addExercise() {
     workout.exercises.push(newExercise);
     let exerciseNo = workout.exercises.length - 1;
     const short = "exercises[" + exerciseNo + "]";
-    const onchange = 'onchange="storeFieldValue(\'workout.\',\'' + short + '\', \'.title\',' +
-        ' this.value);"';
     let newExerciseHTML = document.createElement('div');
     newExerciseHTML.setAttribute('id', short + '-container');
-    newExerciseHTML.innerHTML = "<br/><div><label for='" + short + "'>Exercise #" +
-        (exerciseNo + 1) + ":</label><input type='text' name='" + short + "' id='" + short + "' " +
-        "minlength='20' value='' " + onchange + "/><button class='my-button handwriting' " +
-        "onclick='addNote(" + exerciseNo + ");'>&nbsp</button><button class='my-button' " +
-        "onclick='addSet(" + exerciseNo + ");'>Add set</button></div>" +
-        "<div id='" + short + "-notes'></div><br/><div id='" + short + "-sets'></div><br/>";
+    newExerciseHTML.innerHTML =
+        '<br/>' +
+        '<label for="' + short + '">Exercise #' + (exerciseNo + 1) + ':</label>' +
+        '<div>' +
+        '<span  contenteditable="true" class="my-input" id="' + short + '.title" ></span>' +
+        '<button class="my-button handwriting" onclick="addNote(' + exerciseNo + ');">&nbsp</button>' +
+        '</div>' +
+        '<div id="' + short + '-notes"></div>' +
+        '<br/>' +
+        '<div id="' + short + '-sets"></div>' +
+        '<button class="my-button" onclick="addSet(' + exerciseNo + ');">Add set</button>' +
+        '<br/>';
     document.getElementById("exercises").appendChild(newExerciseHTML);
-    document.getElementById(short).focus();
+    document.getElementById(short + '.title').focus();
 }
 
 function addSet(exerciseNo) {
