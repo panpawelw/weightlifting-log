@@ -8,18 +8,18 @@
 
 <!--Login-->
 <div th:fragment="login">
-    <h3 class="tab-title">Login page</h3><br/>
+    <h3 class="tab-title">Login page</h3><br>
     <!--/*@thymesVar id="loginError" type="java"*/-->
     <p th:if="${loginError}" class="alert">Wrong username or password</p>
     <form th:action="@{/login}" method="post">
         <label for="username">Username</label>:
-        <input type="text" id="username" name="username" autofocus="autofocus"/> <br/>
+        <input type="text" id="username" name="username" autofocus="autofocus"/> <br>
         <label for="password">Password</label>:
-        <input type="password" id="password" name="password"/> <br/>
-        <br/>
+        <input type="password" id="password" name="password"/> <br>
+        <br>
         <input type="submit" value="Log in"/>
     </form>
-    <br/>
+    <br>
     <button class="my-button" onclick="location.href = '/wl/register';" type="button">
         Register
     </button>
@@ -27,7 +27,7 @@
 
 <!--Display on successful logout-->
 <div th:fragment="logout-success">
-    <h3 class="tab-title">Logout page</h3><br/>
+    <h3 class="tab-title">Logout page</h3><br>
     <p class="alert">Logout successful!</p>
     <form th:action="@{/login}" method="get">
         <input type="submit" value="OK"/>
@@ -36,7 +36,7 @@
 
 <!--Display on unsuccessful logout-->
 <div th:fragment="logout-failure">
-    <h3 class="tab-title">Logout page</h3><br/>
+    <h3 class="tab-title">Logout page</h3><br>
     <p class="alert">Logout error, please try again!</p>
     <form th:action="@{/user}" method="get">
         <input type="submit" value="OK"/>
@@ -45,7 +45,7 @@
 
 <!--User registration form-->
 <div th:fragment="register-user">
-    <h2>Please enter your details to register...</h2><br/>
+    <h2>Please enter your details to register...</h2><br>
     <!--/*@thymesVar id="user" type="java"*/-->
     <form th:action="@{/register}" th:object="${user}" method="post">
         <input type="hidden" th:field="*{id}"/>
@@ -78,7 +78,7 @@
 
 <!--User details edition form-->
 <div th:fragment="update-user">
-    <h2>Please edit your details...</h2><br/>
+    <h2>Please edit your details...</h2><br>
     <!--/*@thymesVar id="user" type="java"*/-->
     <form th:action="@{/user/update}" th:object="${user}" method="post">
         <input type="hidden" th:field="*{id}"/>
@@ -109,7 +109,7 @@
 
 <!--Change user's password form-->
 <div th:fragment="change-password">
-    <h2>Please enter and confirm both current and new passwords...</h2><br/>
+    <h2>Please enter and confirm both current and new passwords...</h2><br>
     <!--/*@thymesVar id="changePassword" type="java"*/-->
     <form th:action="@{/user/changepassword}" th:object="${changePassword}" method="post">
         <p>Current password: <input type="password" th:field="*{oldPassword}"
@@ -133,19 +133,19 @@
 
 <!--User details registration successful-->
 <div th:fragment="register-user-success">
-    <h2>Registration successful!</h2><br/>
+    <h2>Registration successful!</h2><br>
     <button class="my-button" onclick="location.href='/wl/login';" type="button">OK</button>
 </div>
 
 <!--User details update successful-->
 <div th:fragment="update-user-success">
-    <h2>User details updated!</h2><br/>
+    <h2>User details updated!</h2><br>
     <button class="my-button" onclick="location.href='/wl/user';" type="button">OK</button>
 </div>
 
 <!--Password change successful-->
 <div th:fragment="change-password-success">
-    <h2>New password has been set!</h2><br/>
+    <h2>New password has been set!</h2><br>
     <button class="my-button" onclick="window.location.pathname = 'wl/user/update';"
             type="button">OK
     </button>
@@ -189,14 +189,14 @@
                     onclick="location.href='/wl/admin';">Admin panel
             </button>
         </div>
-        <br/>
+        <br>
         <table id="workouts-list">
             <!--/*@thymesVar id="workouts" type="java"*/-->
             <tr th:each="workout: ${workouts}">
                 <td>
                     <button class="my-button" onclick="alert('Edit workout!');">
                         <th:block th:text="${workout.title}"/>
-                        <br/>
+                        <br>
                         <th:block th:text="${workout.created}"/>
                     </button>
                 </td>
@@ -225,7 +225,7 @@
 
 <!-- user panel fragments - default -->
 <div th:fragment="user-panel-default" class="workout-content">
-    <br/><br/>
+    <br><br>
     <h2>Select existing workout from the panel to the right or...</h2>
     <button class="my-button" onclick="location.href='/wl/workout/add'" type="button">
         Add new workout
@@ -234,7 +234,7 @@
 
 <!-- user panel fragments - add new workout-->
 <div th:fragment="user-panel-add-workout" class="workout-content">
-    <br/>
+    <br>
     <div class="same-row">
         <button class="my-button" onclick="saveWorkout(workout);" type="button">
             Save
@@ -244,15 +244,15 @@
         </button>
     </div>
 
-    <br/><br/>
+    <br><br>
     <div>
         <label for="created">Created: </label>
         <input type="text" name="created" id="created" value=""
-               onchange="storeFieldValue('workout.','created','', this.value);"/>
+               onchange="workout['created'] = this.value;"/>
     </div>
-    <br/>
+    <br>
     <div>
-        <label for="title">Title: </label><br/>
+        <label for="title">Title: </label><br>
         <div class="wrapper">
             <div class="left">
                 <span contenteditable="true" class="my-input" id="title"></span>
@@ -263,13 +263,13 @@
             </div>
         </div>
     </div>
-    <br/>
+    <br>
     <div id="notes"></div>
-    <br/>
+    <br>
     <div id="exercises"></div>
-    <br/>
+    <br>
     <button class="my-button" onclick="addExercise();">Add exercise</button>
-    <br/><br/>
+    <br><br>
 
     <div class="same-row">
         <button class="my-button" onclick="saveWorkout(workout);" type="button">
@@ -286,8 +286,7 @@
 <div th:fragment="user-panel-update-workout" class="workout-content">
     <h2>Future update workout functionality!</h2>
     <button class="my-button" onclick="location.href='/wl/user';" type="button">
-        Save workout
-    </button>
+        Save workout</button>
 </div>
 
 </body>

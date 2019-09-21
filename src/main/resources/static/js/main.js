@@ -55,10 +55,21 @@ $(document).ready(function () {
         scrollToTop();
     });
 
-    window.addEventListener('input', function (event) {
+    window.addEventListener('input', function(event) {
         let currentItem = event.target;
         if (currentItem.className === 'my-input') {
-            workout[currentItem.id] = currentItem.innerHTML
+            let data = $(currentItem).data('set');
+            switch(data.length){
+                case 1:
+                    workout[data[0]] = currentItem.innerHTML;
+                    break;
+                case 3:
+                    workout[data[0]][data[1]][data[2]] = currentItem.innerHTML;
+                    break;
+                case 5:
+                    workout[data[0]][data[1]][data[2]][data[3]][data[4]] = currentItem.innerHTML;
+                    break;
+            }
         }
     });
 });
@@ -144,7 +155,8 @@ function buildWorkout() {
     };
     const created = new Date().toISOString().slice(0, 19).replace('T', ' ');
     document.getElementById("created").value = created;
-    storeFieldValue('workout.', 'created', '', created);
+    workout['created'] = created;
+    document.getElementById('title').setAttribute('data-set', '["title"]');
 }
 
 function storeFieldValue(varPart1, varPart2, varPart3, value) {
@@ -154,42 +166,37 @@ function storeFieldValue(varPart1, varPart2, varPart3, value) {
 function addExercise() {
     let newExercise = {title: null, notes: [], sets: []};
     workout.exercises.push(newExercise);
-    let exerciseNo = workout.exercises.length - 1;
-    const short = "exercises[" + exerciseNo + "]";
+    const exerciseNo = workout.exercises.length - 1;
+    const short = 'exercise' + exerciseNo;
     let newExerciseHTML = document.createElement('div');
     newExerciseHTML.setAttribute('id', short + '-container');
-    newExerciseHTML.innerHTML =
-        '<br/>' +
-        '<label for="' + short + '">Exercise #' + (exerciseNo + 1) + ':</label>' +
-        '<div>' +
-        '<span  contenteditable="true" class="my-input" id="' + short + '.title" ></span>' +
-        '<button class="my-button handwriting" onclick="addNote(' + exerciseNo + ');">&nbsp</button>' +
-        '</div>' +
-        '<div id="' + short + '-notes"></div>' +
-        '<br/>' +
-        '<div id="' + short + '-sets"></div>' +
-        '<button class="my-button" onclick="addSet(' + exerciseNo + ');">Add set</button>' +
-        '<br/>';
+    newExerciseHTML.innerHTML = '<br><label for="' + short + '">Exercise #' + (exerciseNo + 1) +
+        ':</label><div><span contenteditable="true" class="my-input" id="' + short +
+        '"></span><button class="my-button handwriting" onclick="addNote(' + exerciseNo +
+        ');">&nbsp</button></div><div id="' + short + '-notes"></div><br><div id="' + short +
+        '-sets"></div><button class="my-button" onclick="addSet(' + exerciseNo +
+        ');">Add set</button><br>';
     document.getElementById("exercises").appendChild(newExerciseHTML);
-    document.getElementById(short + '.title').focus();
+    document.getElementById(short).setAttribute('data-set',
+        '["exercises","' + exerciseNo + '","title"]');
+    document.getElementById(short).focus();
 }
 
 function addSet(exerciseNo) {
     let newSet = {data: null, notes: []};
     workout.exercises[exerciseNo].sets.push(newSet);
     let setNo = workout.exercises[exerciseNo].sets.length - 1;
-    const short = "exercises[" + exerciseNo + "]sets[" + setNo + "]";
-    const onchange = 'onchange="storeFieldValue(\'workout.\',\'exercises[' + exerciseNo + '].sets['
-        + setNo + '].data\', \'\',' + ' this.value);"';
+    const short = "exercise" + exerciseNo + "set" + setNo;
     let newSetHTML = document.createElement('div');
-    newSetHTML.setAttribute
-    ('id', short + '-container');
-    newSetHTML.innerHTML = "<br/><label for='" + short + "'>Set #" + (setNo + 1) + ":</label>" +
-        "<input type='text' name='" + short + "' id='" + short + "' minlength='20' value='' " +
-        onchange + "/><button class='my-button handwriting' onclick='addNote(" + exerciseNo +
-        ", " + setNo + ");'>&nbsp</button><div id='" + short + "-notes'></div><br/>";
-    document.getElementById("exercises[" + exerciseNo + "]-sets")
-        .appendChild(newSetHTML);
+    newSetHTML.setAttribute('id', short + '-container');
+    newSetHTML.innerHTML = '<br><label for="' + short + '">Set #' + (setNo + 1) + ':</label>' +
+        '<span contenteditable="true" class="my-input" id="' + short + '"></span><button ' +
+        'class="my-button handwriting" onclick="addNote(' + exerciseNo + ', ' + setNo + ');"' +
+        '>&nbsp</button><div id="' + short + '-notes"></div><br>';
+    console.log("exercise" + exerciseNo + "-sets");
+    document.getElementById("exercise" + exerciseNo + "-sets").appendChild(newSetHTML);
+    document.getElementById(short).setAttribute('data-set',
+        '["exercises","' + exerciseNo + '","sets","'+ setNo +'","data"]');
     document.getElementById(short).focus();
 }
 
@@ -224,14 +231,14 @@ function addNote() {
     newNoteHTML.setAttribute('id', short + '-container');
     newNoteHTML.innerHTML = '<label for="' + short + '">Note #' + (noteNo + 1) + ':</label><input ' +
         'type="text" name="' + short + '" id="' + short + '" minlength="20" value="" ' + onchangeValue +
-        '/><select onchange="noteTypeSelectionDetection(this.value, \'' + short + '\');"' +
+        '/><select onchange="changeNoteType(this.value, \'' + short + '\');"' +
         ' name="' + short + '-type"><option value="0">Text</option><option value="1">' +
         'Audio</option><option value="2">Picture</option><option value="3">Video</option></select>';
     appendHere.appendChild(newNoteHTML);
     document.getElementById(short).focus();
 }
 
-function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
+function changeNoteType(selectFieldValue, fieldToReplaceID) {
     let replacement = document.createElement('input');
     replacement.setAttribute('type', 'file');
     switch (selectFieldValue) {
@@ -253,18 +260,20 @@ function noteTypeSelectionDetection(selectFieldValue, fieldToReplaceID) {
     }
     document.getElementById(fieldToReplaceID).setAttribute('id', 'tempID');
     let fieldToReplaceNode = document.getElementById('tempID');
-    let fieldToReplaceParent = fieldToReplaceNode.parentElement;
     replacement.setAttribute('id', fieldToReplaceID);
-    replacement.setAttribute('onchange', 'storeFieldValue("workout.","' +
-        fieldToReplaceID + '", ".content", this.files[0].name);storeFieldValue("workout.","' +
-        fieldToReplaceID + '", ".type", "' + selectFieldValue + '"); uploadFile(this.files[0]);');
-    fieldToReplaceParent.replaceChild(replacement, fieldToReplaceNode);
+    replacement.onchange = function(){
+        workout[fieldToReplaceID + '.content'] = this.files[0].name;
+        workout[fieldToReplaceID + '.type'] = selectFieldValue;
+        uploadFile(this.files[0]);
+    };
+    fieldToReplaceNode.parentElement.replaceChild(replacement, fieldToReplaceNode);
 }
 
 function uploadFile(file) {
     let reader = new FileReader();
-    reader.onloadend = function (evt) {
-        if (evt.target.readyState === FileReader.DONE) {
+    reader.onloadend = function (event) {
+        let currentEvent = event.target;
+        if (currentEvent.readyState === FileReader.DONE) {
             files.push(reader.result);
         }
     };
