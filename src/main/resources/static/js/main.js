@@ -6,8 +6,8 @@ $(document).ready(function () {
      making the tab navigation bar stick to the top of the screen when user is
      scrolling down the page and showing the logo container and unsticking the
      navigation bar when the page is scrolled back to the very top. It has to be
-     coordinated with switching tabs, which automatically scrolls page to the
-     very top.*/
+     coordinated with switching tabs, which automatically scrolls the page to
+     the very top.*/
 
     const logo = document.getElementById('logo-container');
     const navbar = document.getElementById('big-tabs');
@@ -68,6 +68,10 @@ $(document).ready(function () {
                     break;
                 case 5:
                     workout[data[0]][data[1]][data[2]][data[3]][data[4]] = currentItem.innerHTML;
+                    break;
+                case 7:
+                    workout[data[0]][data[1]][data[2]][data[3]][data[4]][data[5]][data[6]]
+                        = currentItem.innerHTML;
                     break;
             }
         }
@@ -159,10 +163,6 @@ function buildWorkout() {
     document.getElementById('title').setAttribute('data-set', '["title"]');
 }
 
-function storeFieldValue(varPart1, varPart2, varPart3, value) {
-    eval(varPart1 + varPart2 + varPart3 + " = '" + value + "'");
-}
-
 function addExercise() {
     let newExercise = {title: null, notes: [], sets: []};
     workout.exercises.push(newExercise);
@@ -196,45 +196,48 @@ function addSet(exerciseNo) {
     console.log("exercise" + exerciseNo + "-sets");
     document.getElementById("exercise" + exerciseNo + "-sets").appendChild(newSetHTML);
     document.getElementById(short).setAttribute('data-set',
-        '["exercises","' + exerciseNo + '","sets","'+ setNo +'","data"]');
+        '["exercises","' + exerciseNo + '","sets","' + setNo + '","data"]');
     document.getElementById(short).focus();
 }
 
 function addNote() {
     let newNote = {type: 0, content: null};
-    let noteNo, short = null;
+    let noteNo, short, dataSetContent = null;
     let appendHere = document.getElementById('notes');
     switch (arguments.length) {
         case 0:
             workout.notes.push(newNote);
             noteNo = workout.notes.length - 1;
-            short = "notes[" + noteNo + "]";
+            short = "note" + noteNo;
+            dataSetContent = '["notes","' + noteNo + '","content"]';
             break;
         case 1:
             workout.exercises[arguments[0]].notes.push(newNote);
             noteNo = workout.exercises[arguments[0]].notes.length - 1;
-            short = "exercises[" + arguments[0] + "].notes[" + noteNo + "]";
-            appendHere = document.getElementById("exercises[" + arguments[0] + "]-notes");
+            short = "exercise" + arguments[0] + "note" + noteNo;
+            appendHere = document.getElementById("exercise" + arguments[0] + "-notes");
+            dataSetContent = '["exercises","' + arguments[0] + '","notes","' + noteNo +
+                '","content"]';
             break;
         case 2:
             workout.exercises[arguments[0]].sets[arguments[1]].notes.push(newNote);
             noteNo = workout.exercises[arguments[0]].sets[arguments[1]].notes.length - 1;
-            short = "exercises[" + arguments[0] + "].sets[" + arguments[1] +
-                "].notes[" + noteNo + "]";
+            short = "exercise" + arguments[0] + "set" + arguments[1] + "note" + noteNo;
             appendHere = document.getElementById(
-                "exercises[" + arguments[0] + "]sets[" + arguments[1] + "]-notes");
+                "exercise" + arguments[0] + "set" + arguments[1] + "-notes");
+            dataSetContent = '["exercises","' + arguments[0] + '","sets","' + arguments[1] +
+                '","notes","' + noteNo + '","content"]';
             break;
     }
-    let onchangeValue =
-        'onchange="storeFieldValue(\'workout.\',\'' + short + '\', \'.content\', this.value);"';
     let newNoteHTML = document.createElement('div');
     newNoteHTML.setAttribute('id', short + '-container');
-    newNoteHTML.innerHTML = '<label for="' + short + '">Note #' + (noteNo + 1) + ':</label><input ' +
-        'type="text" name="' + short + '" id="' + short + '" minlength="20" value="" ' + onchangeValue +
-        '/><select onchange="changeNoteType(this.value, \'' + short + '\');"' +
+    newNoteHTML.innerHTML = '<label for="' + short + '">Note #' + (noteNo + 1) + ':</label>' +
+        '<span contenteditable="true" class="my-input" id="' + short + '"></span>' +
+        '<select onchange="changeNoteType(this.value, \'' + short + '\');"' +
         ' name="' + short + '-type"><option value="0">Text</option><option value="1">' +
         'Audio</option><option value="2">Picture</option><option value="3">Video</option></select>';
     appendHere.appendChild(newNoteHTML);
+    document.getElementById(short).setAttribute('data-set', dataSetContent);
     document.getElementById(short).focus();
 }
 
@@ -243,6 +246,9 @@ function changeNoteType(selectFieldValue, fieldToReplaceID) {
     replacement.setAttribute('type', 'file');
     switch (selectFieldValue) {
         case '0':
+            replacement = document.createElement('span');
+            replacement.className = 'my-input';
+            replacement.setAttribute('contenteditable', 'true');
             replacement.setAttribute('type', 'text');
             break;
         case '1':
