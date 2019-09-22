@@ -54,28 +54,6 @@ $(document).ready(function () {
     $('#tab1handle, #tab2handle, #tab3handle, #tab4handle').bind('click', function () {
         scrollToTop();
     });
-
-    window.addEventListener('input', function(event) {
-        let currentItem = event.target;
-        if (currentItem.className === 'my-input') {
-            let data = $(currentItem).data('set');
-            switch(data.length){
-                case 1:
-                    workout[data[0]] = currentItem.innerHTML;
-                    break;
-                case 3:
-                    workout[data[0]][data[1]][data[2]] = currentItem.innerHTML;
-                    break;
-                case 5:
-                    workout[data[0]][data[1]][data[2]][data[3]][data[4]] = currentItem.innerHTML;
-                    break;
-                case 7:
-                    workout[data[0]][data[1]][data[2]][data[3]][data[4]][data[5]][data[6]]
-                        = currentItem.innerHTML;
-                    break;
-            }
-        }
-    });
 });
 
 /* Auxiliary function for tab change event handlers */
@@ -152,15 +130,50 @@ function updatePercentageDescription(description, percentage) {
 let workout = null;
 let files = [];
 
+/* Stores given value in workout entry. Last <br> in value is removed (single <br> value tends to
+ get stuck in contenteditable fields) and the rest are changed into \n symbols. The entry name is
+ constructed from string array using bracket notation */
+function storeInWorkout(entry, value) {
+    value = value.replace(/^\s*<br\s*\/?>|<br\s*\/?>\s*$/g, '');
+    value = value.replace(/<br\s*[\/]?>/gi, "\n");
+    switch (entry.length) {
+        case 1:
+            workout[entry[0]] = value;
+            break;
+        case 3:
+            workout[entry[0]][entry[1]][entry[2]] = value;
+            break;
+        case 5:
+            workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]] = value;
+            break;
+        case 7:
+            workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]][entry[6]]
+                = value;
+            break;
+    }
+}
+
 function buildWorkout() {
     workout = {
         id: 0, title: null, created: null, updated: null, user: null,
         notes: [], exercises: []
     };
+    /* This event listener is responsible for transferring values from content editable span
+     elements marked with "my-input" class to workout object entries. Values are extracted from
+     innerHTML properties. Workout entries are in custom data attributes of said elements as JSON */
+    document.getElementsByClassName('workout-content')[0]
+        .addEventListener('input', function (event) {
+            const elementHoldingValue = event.target;
+            if (elementHoldingValue.className === 'my-input') {
+                let workoutVariableInJSON = $(elementHoldingValue).data('set');
+                storeInWorkout(workoutVariableInJSON, elementHoldingValue.innerHTML);
+            }
+        });
     const created = new Date().toISOString().slice(0, 19).replace('T', ' ');
     document.getElementById("created").value = created;
     workout['created'] = created;
-    document.getElementById('title').setAttribute('data-set', '["title"]');
+    document.getElementById('title')
+        .setAttribute('data-set', '["title"]');
 }
 
 function addExercise() {
@@ -193,7 +206,6 @@ function addSet(exerciseNo) {
         '<span contenteditable="true" class="my-input" id="' + short + '"></span><button ' +
         'class="my-button handwriting" onclick="addNote(' + exerciseNo + ', ' + setNo + ');"' +
         '>&nbsp</button><div id="' + short + '-notes"></div><br>';
-    console.log("exercise" + exerciseNo + "-sets");
     document.getElementById("exercise" + exerciseNo + "-sets").appendChild(newSetHTML);
     document.getElementById(short).setAttribute('data-set',
         '["exercises","' + exerciseNo + '","sets","' + setNo + '","data"]');
@@ -267,7 +279,7 @@ function changeNoteType(selectFieldValue, fieldToReplaceID) {
     document.getElementById(fieldToReplaceID).setAttribute('id', 'tempID');
     let fieldToReplaceNode = document.getElementById('tempID');
     replacement.setAttribute('id', fieldToReplaceID);
-    replacement.onchange = function(){
+    replacement.onchange = function () {
         workout[fieldToReplaceID + '.content'] = this.files[0].name;
         workout[fieldToReplaceID + '.type'] = selectFieldValue;
         uploadFile(this.files[0]);
