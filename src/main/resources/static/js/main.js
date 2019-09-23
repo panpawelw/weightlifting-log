@@ -165,8 +165,8 @@ function buildWorkout() {
         .addEventListener('input', function (event) {
             const elementHoldingValue = event.target;
             if (elementHoldingValue.className === 'my-input') {
-                let workoutVariableInJSON = $(elementHoldingValue).data('set');
-                storeInWorkout(workoutVariableInJSON, elementHoldingValue.innerHTML);
+                let workoutEntry = $(elementHoldingValue).data('set');
+                storeInWorkout(workoutEntry, elementHoldingValue.innerHTML);
             }
         });
     const created = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -254,14 +254,19 @@ function addNote() {
 }
 
 function changeNoteType(selectFieldValue, fieldToReplaceID) {
+    setNoteContentAndType(document.getElementById(fieldToReplaceID), '', selectFieldValue);
     let replacement = document.createElement('input');
     replacement.setAttribute('type', 'file');
+    replacement.onchange = function () {
+        setNoteContentAndType(this, this.files[0].name, selectFieldValue);
+        uploadFile(this.files[0]);
+    };
     switch (selectFieldValue) {
         case '0':
             replacement = document.createElement('span');
             replacement.className = 'my-input';
             replacement.setAttribute('contenteditable', 'true');
-            replacement.setAttribute('type', 'text');
+            replacement.removeAttribute('onchange');
             break;
         case '1':
             replacement.setAttribute
@@ -278,13 +283,16 @@ function changeNoteType(selectFieldValue, fieldToReplaceID) {
     }
     document.getElementById(fieldToReplaceID).setAttribute('id', 'tempID');
     let fieldToReplaceNode = document.getElementById('tempID');
+    replacement.dataset.set = fieldToReplaceNode.dataset.set;
     replacement.setAttribute('id', fieldToReplaceID);
-    replacement.onchange = function () {
-        workout[fieldToReplaceID + '.content'] = this.files[0].name;
-        workout[fieldToReplaceID + '.type'] = selectFieldValue;
-        uploadFile(this.files[0]);
-    };
     fieldToReplaceNode.parentElement.replaceChild(replacement, fieldToReplaceNode);
+}
+
+function setNoteContentAndType(noteId, content, type) {
+    let workoutEntry = $(noteId).attr('data-set');
+    storeInWorkout(workoutEntry, content);
+    workoutEntry[workoutEntry.length-1] = "type";
+    storeInWorkout(workoutEntry, type);
 }
 
 function uploadFile(file) {
