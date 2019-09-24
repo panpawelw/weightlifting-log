@@ -160,12 +160,12 @@ function buildWorkout() {
     };
     /* This event listener is responsible for transferring values from content editable span
      elements marked with "my-input" class to workout object entries. Values are extracted from
-     innerHTML properties. Workout entries are in custom data attributes of said elements as JSON */
+     innerHTML properties. Workout entries are stored in custom data attributes of said elements */
     document.getElementsByClassName('workout-content')[0]
         .addEventListener('input', function (event) {
             const elementHoldingValue = event.target;
             if (elementHoldingValue.className === 'my-input') {
-                let workoutEntry = $(elementHoldingValue).data('set');
+                let workoutEntry = $(elementHoldingValue).data('set').split(',');
                 storeInWorkout(workoutEntry, elementHoldingValue.innerHTML);
             }
         });
@@ -173,7 +173,7 @@ function buildWorkout() {
     document.getElementById("created").value = created;
     workout['created'] = created;
     document.getElementById('title')
-        .setAttribute('data-set', '["title"]');
+        .setAttribute('data-set', "title");
 }
 
 function addExercise() {
@@ -184,14 +184,14 @@ function addExercise() {
     let newExerciseHTML = document.createElement('div');
     newExerciseHTML.setAttribute('id', short + '-container');
     newExerciseHTML.innerHTML = '<br><label for="' + short + '">Exercise #' + (exerciseNo + 1) +
-        ':</label><div><span contenteditable="true" class="my-input" id="' + short +
+        ': </label><div><span contenteditable="true" class="my-input" id="' + short +
         '"></span><button class="my-button handwriting" onclick="addNote(' + exerciseNo +
         ');">&nbsp</button></div><div id="' + short + '-notes"></div><br><div id="' + short +
         '-sets"></div><button class="my-button" onclick="addSet(' + exerciseNo +
         ');">Add set</button><br>';
     document.getElementById("exercises").appendChild(newExerciseHTML);
     document.getElementById(short).setAttribute('data-set',
-        '["exercises","' + exerciseNo + '","title"]');
+        "exercises," + exerciseNo + ",title");
     document.getElementById(short).focus();
 }
 
@@ -202,13 +202,13 @@ function addSet(exerciseNo) {
     const short = "exercise" + exerciseNo + "set" + setNo;
     let newSetHTML = document.createElement('div');
     newSetHTML.setAttribute('id', short + '-container');
-    newSetHTML.innerHTML = '<br><label for="' + short + '">Set #' + (setNo + 1) + ':</label>' +
+    newSetHTML.innerHTML = '<br><label for="' + short + '">Set #' + (setNo + 1) + ': </label>' +
         '<span contenteditable="true" class="my-input" id="' + short + '"></span><button ' +
         'class="my-button handwriting" onclick="addNote(' + exerciseNo + ', ' + setNo + ');"' +
         '>&nbsp</button><div id="' + short + '-notes"></div><br>';
     document.getElementById("exercise" + exerciseNo + "-sets").appendChild(newSetHTML);
     document.getElementById(short).setAttribute('data-set',
-        '["exercises","' + exerciseNo + '","sets","' + setNo + '","data"]');
+        "exercises," + exerciseNo + ",sets," + setNo + ",data");
     document.getElementById(short).focus();
 }
 
@@ -221,15 +221,14 @@ function addNote() {
             workout.notes.push(newNote);
             noteNo = workout.notes.length - 1;
             short = "note" + noteNo;
-            dataSetContent = '["notes","' + noteNo + '","content"]';
+            dataSetContent = "notes," + noteNo + ",content";
             break;
         case 1:
             workout.exercises[arguments[0]].notes.push(newNote);
             noteNo = workout.exercises[arguments[0]].notes.length - 1;
             short = "exercise" + arguments[0] + "note" + noteNo;
             appendHere = document.getElementById("exercise" + arguments[0] + "-notes");
-            dataSetContent = '["exercises","' + arguments[0] + '","notes","' + noteNo +
-                '","content"]';
+            dataSetContent = "exercises," + arguments[0] + ",notes," + noteNo + ",content";
             break;
         case 2:
             workout.exercises[arguments[0]].sets[arguments[1]].notes.push(newNote);
@@ -237,8 +236,8 @@ function addNote() {
             short = "exercise" + arguments[0] + "set" + arguments[1] + "note" + noteNo;
             appendHere = document.getElementById(
                 "exercise" + arguments[0] + "set" + arguments[1] + "-notes");
-            dataSetContent = '["exercises","' + arguments[0] + '","sets","' + arguments[1] +
-                '","notes","' + noteNo + '","content"]';
+            dataSetContent = "exercises," + arguments[0] + ",sets," + arguments[1] + ",notes," +
+                noteNo + ",content";
             break;
     }
     let newNoteHTML = document.createElement('div');
@@ -289,7 +288,7 @@ function changeNoteType(selectFieldValue, fieldToReplaceID) {
 }
 
 function setNoteContentAndType(noteId, content, type) {
-    let workoutEntry = $(noteId).attr('data-set');
+    let workoutEntry = $(noteId).data('set').split(',');
     storeInWorkout(workoutEntry, content);
     workoutEntry[workoutEntry.length-1] = "type";
     storeInWorkout(workoutEntry, type);
