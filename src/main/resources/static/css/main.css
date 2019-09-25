@@ -176,10 +176,17 @@ input[type=text], input[type=number], input[type=password], .my-input {
 }
 
 /* buttons */
-.handwriting {
+.add-note {
     height: 2em;
     width: 2em;
-    background: #FF9200 url("../images/handwriting.png");
+    background: #FF9200 url("../images/add-note.png");
+    background-size: cover;
+    margin: 0 0.5em;
+
+}.remove {
+    height: 2em;
+    width: 2em;
+    background: #FF9200 url("../images/remove.png");
     background-size: cover;
     margin: 0 0.5em;
 }
@@ -393,22 +400,22 @@ button:active, input[type=submit]:active, .my-button:active {
     align-items: center;
 }
 
-.wrapper {
-    overflow: auto;
-    width: 100%;
-    display: table;
-    table-layout: fixed;
-}
+/*.wrapper {*/
+/*    overflow: auto;*/
+/*    width: 100%;*/
+/*    display: table;*/
+/*    table-layout: fixed;*/
+/*}*/
 
-.left {
-    width: 90%;
-    display: table-cell;
-}
+/*.left {*/
+/*    width: 90%;*/
+/*    display: table-cell;*/
+/*}*/
 
-.right {
-    display: table-cell;
-    vertical-align: middle;
-}
+/*.right {*/
+/*    display: table-cell;*/
+/*    vertical-align: middle;*/
+/*}*/
 
 /* Responsive elements */
 @media screen and (max-width: 280px) {

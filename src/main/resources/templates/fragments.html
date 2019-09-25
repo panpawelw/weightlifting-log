@@ -252,23 +252,19 @@
     </div>
     <br>
     <div>
-        <label for="title">Title: </label><br>
-        <div class="wrapper">
-            <div class="left">
-                <span contenteditable="true" class="my-input" id="title"></span>
-            </div>
-            <div class="right">
-                <button class='my-button handwriting' title="Add workout note..."
-                        onclick='addNote();'>&nbsp</button>
-            </div>
+        <div>
+            <br><label for="title">Workout title: </label>
+            <span contenteditable="true" class="my-input" id="title"></span>
+            <button class='my-button add-note' title="Add workout note"
+                    onclick='addNote();'>&nbsp
+            </button>
         </div>
+        <div id="notes"></div>
+        <br>
+        <div id="exercises"></div>
+        <br>
+        <button class="my-button" onclick="addExercise();">Add exercise</button>
     </div>
-    <br>
-    <div id="notes"></div>
-    <br>
-    <div id="exercises"></div>
-    <br>
-    <button class="my-button" onclick="addExercise();">Add exercise</button>
     <br><br>
 
     <div class="same-row">
@@ -279,14 +275,16 @@
             Cancel
         </button>
     </div>
-    <script>document.getElementById('title').focus(); buildWorkout();</script>
+    <script>document.getElementById('title').focus();
+    buildWorkout();</script>
 </div>
 
 <!-- user panel fragments - update existing workout-->
 <div th:fragment="user-panel-update-workout" class="workout-content">
     <h2>Future update workout functionality!</h2>
     <button class="my-button" onclick="location.href='/wl/user';" type="button">
-        Save workout</button>
+        Save workout
+    </button>
 </div>
 
 </body>

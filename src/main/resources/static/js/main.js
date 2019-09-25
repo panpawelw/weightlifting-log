@@ -184,11 +184,12 @@ function addExercise() {
     let newExerciseHTML = document.createElement('div');
     newExerciseHTML.setAttribute('id', short + '-container');
     newExerciseHTML.innerHTML = '<br><label for="' + short + '">Exercise #' + (exerciseNo + 1) +
-        ': </label><div><span contenteditable="true" class="my-input" id="' + short +
-        '"></span><button class="my-button handwriting" onclick="addNote(' + exerciseNo +
-        ');">&nbsp</button></div><div id="' + short + '-notes"></div><br><div id="' + short +
-        '-sets"></div><button class="my-button" onclick="addSet(' + exerciseNo +
-        ');">Add set</button><br>';
+        ': </label><span contenteditable="true" class="my-input" id="' + short +
+        '"></span><button class="my-button add-note" onclick="addNote(' + exerciseNo +
+        ');" title="Add exercise note">&nbsp</button><button class="my-button remove"' +
+        ' onclick="remove(' + short + ');" title="Delete exercise">&nbsp</button><div id="' +
+        short + '-notes"></div><br><div id="' + short + '-sets"></div><button class="my-button" ' +
+        'onclick="addSet(' + exerciseNo + ');">Add set</button><br>';
     document.getElementById("exercises").appendChild(newExerciseHTML);
     document.getElementById(short).setAttribute('data-set',
         "exercises," + exerciseNo + ",title");
@@ -204,8 +205,10 @@ function addSet(exerciseNo) {
     newSetHTML.setAttribute('id', short + '-container');
     newSetHTML.innerHTML = '<br><label for="' + short + '">Set #' + (setNo + 1) + ': </label>' +
         '<span contenteditable="true" class="my-input" id="' + short + '"></span><button ' +
-        'class="my-button handwriting" onclick="addNote(' + exerciseNo + ', ' + setNo + ');"' +
-        '>&nbsp</button><div id="' + short + '-notes"></div><br>';
+        'class="my-button add-note" onclick="addNote(' + exerciseNo + ', ' + setNo + ');" ' +
+        'title="Add set note">&nbsp</button><button class="my-button remove" ' +
+        'onclick="remove(' + short + ');" title="Delete set">&nbsp</button>' +
+        '<div id="' + short + '-notes"></div><br>';
     document.getElementById("exercise" + exerciseNo + "-sets").appendChild(newSetHTML);
     document.getElementById(short).setAttribute('data-set',
         "exercises," + exerciseNo + ",sets," + setNo + ",data");
@@ -242,11 +245,13 @@ function addNote() {
     }
     let newNoteHTML = document.createElement('div');
     newNoteHTML.setAttribute('id', short + '-container');
-    newNoteHTML.innerHTML = '<label for="' + short + '">Note #' + (noteNo + 1) + ':</label>' +
+    newNoteHTML.innerHTML = '<label for="' + short + '">Note #' + (noteNo + 1) + ': </label>' +
         '<span contenteditable="true" class="my-input" id="' + short + '"></span>' +
         '<select onchange="changeNoteType(this.value, \'' + short + '\');"' +
         ' name="' + short + '-type"><option value="0">Text</option><option value="1">' +
-        'Audio</option><option value="2">Picture</option><option value="3">Video</option></select>';
+        'Audio</option><option value="2">Picture</option><option value="3">Video</option>' +
+        '</select><button class="my-button remove" onclick="remove(' + short + ');" ' +
+        'title="Delete note">&nbsp</button>';
     appendHere.appendChild(newNoteHTML);
     document.getElementById(short).setAttribute('data-set', dataSetContent);
     document.getElementById(short).focus();
@@ -303,6 +308,23 @@ function uploadFile(file) {
         }
     };
     reader.readAsBinaryString(file);
+}
+
+function remove(element) {
+    const entry = $(element).data('set').split(',');
+    const toRemove = element.parentElement;
+    toRemove.parentElement.removeChild(toRemove);
+    switch (entry.length) {
+        case 3:
+            workout[entry[0]].splice(entry[1],1);
+            break;
+        case 5:
+            workout[entry[0]][entry[1]][entry[2]].splice(entry[3],1);
+            break;
+        case 7:
+            workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]].splice(entry[5],1);
+            break;
+    }
 }
 
 function saveWorkout(workout) {
