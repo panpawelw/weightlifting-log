@@ -8,7 +8,6 @@ import pl.pjm77.weightliftinglog.models.WorkoutSerialized;
 import pl.pjm77.weightliftinglog.repositories.WorkoutRepository;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,18 +21,8 @@ public class WorkoutService {
     }
 
     public List<WorkoutSerialized> findWorkoutsByUser(User user) {
-        List<WorkoutSerialized> usersWorkoutsSerialized =
-                workoutRepository.findAllByUserOrderByCreatedDesc(user);
-        return usersWorkoutsSerialized;
+        return workoutRepository.findAllByUserOrderByCreatedDesc(user);
     }
-
-//    public List<WorkoutDeserialized> findWorkoutsByUser(User user) {
-//        List<WorkoutSerialized> usersWorkoutsSerialized;
-//        usersWorkoutsSerialized = workoutRepository.findAllByUserOrderByCreatedDesc(user);
-//        List<WorkoutDeserialized> usersWorkoutsDeserialized = new ArrayList<>();
-//        usersWorkoutsSerialized.forEach((n) -> usersWorkoutsDeserialized.add(deserializeWorkout(n)));
-//        return usersWorkoutsDeserialized;
-//    }
 
     public WorkoutDeserialized findWorkoutById(long id) {
         WorkoutSerialized workoutSerialized = workoutRepository.getOne(id);

@@ -295,7 +295,7 @@ function changeNoteType(selectFieldValue, fieldToReplaceID) {
 function setNoteContentAndType(noteId, content, type) {
     let workoutEntry = $(noteId).data('set').split(',');
     storeInWorkout(workoutEntry, content);
-    workoutEntry[workoutEntry.length-1] = "type";
+    workoutEntry[workoutEntry.length - 1] = "type";
     storeInWorkout(workoutEntry, type);
 }
 
@@ -316,15 +316,29 @@ function remove(element) {
     toRemove.parentElement.removeChild(toRemove);
     switch (entry.length) {
         case 3:
-            workout[entry[0]].splice(entry[1],1);
+            workout[entry[0]].splice(entry[1], 1);
             break;
         case 5:
-            workout[entry[0]][entry[1]][entry[2]].splice(entry[3],1);
+            workout[entry[0]][entry[1]][entry[2]].splice(entry[3], 1);
             break;
         case 7:
-            workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]].splice(entry[5],1);
+            workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]].splice(entry[5], 1);
             break;
     }
+}
+
+function editWorkout(workoutId) {
+    $.ajax({
+        type: 'GET',
+        // url: window.location.href + workoutId,
+        url: 'http://localhost:8080/wl/workout/' + workoutId,
+        dataType: 'JSON'
+    }).done(function (workout) {
+        alert(JSON.stringify(workout));
+    })
+        .fail(function () {
+            alert('There\'s been a problem!')
+        });
 }
 
 function saveWorkout(workout) {

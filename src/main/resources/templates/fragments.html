@@ -194,7 +194,7 @@
             <!--/*@thymesVar id="workouts" type="java"*/-->
             <tr th:each="workout: ${workouts}">
                 <td>
-                    <button class="my-button" onclick="alert('Edit workout!');">
+                    <button class="my-button" th:onclick="'editWorkout(' + ${workout.id} + ');'">
                         <th:block th:text="${workout.title}"/>
                         <br>
                         <th:block th:text="${workout.created}"/>

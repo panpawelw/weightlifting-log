@@ -3,12 +3,9 @@ package pl.pjm77.weightliftinglog.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.pjm77.weightliftinglog.models.WorkoutDeserialized;
-import pl.pjm77.weightliftinglog.models.WorkoutSerialized;
 import pl.pjm77.weightliftinglog.services.UserService;
 import pl.pjm77.weightliftinglog.services.WorkoutService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +29,10 @@ public class WorkoutRestController {
 
     @GetMapping("/{workoutId}")
     public WorkoutDeserialized getWorkoutById(@PathVariable long workoutId) {
-        return new WorkoutDeserialized();
+        System.out.println(workoutId);
+        WorkoutDeserialized workoutDeserialized = workoutService.findWorkoutById(workoutId);
+        System.out.println(workoutDeserialized);
+        return workoutDeserialized;
     }
 
     @PostMapping("/add")
