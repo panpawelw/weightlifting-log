@@ -328,10 +328,13 @@ function remove(element) {
 }
 
 function editWorkout(workoutId) {
+    // Obtain CSRF token
+    let token = $("meta[name='_csrf']").attr("content");
+    // Request workout object in JSON format
     $.ajax({
-        type: 'GET',
-        // url: window.location.href + workoutId,
         url: 'http://localhost:8080/wl/workout/' + workoutId,
+        headers: {"X-CSRF-TOKEN": token},
+        type: 'GET',
         dataType: 'JSON'
     }).done(function (workout) {
         alert(JSON.stringify(workout));

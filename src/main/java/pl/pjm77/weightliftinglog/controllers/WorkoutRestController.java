@@ -29,10 +29,7 @@ public class WorkoutRestController {
 
     @GetMapping("/{workoutId}")
     public WorkoutDeserialized getWorkoutById(@PathVariable long workoutId) {
-        System.out.println(workoutId);
-        WorkoutDeserialized workoutDeserialized = workoutService.findWorkoutById(workoutId);
-        System.out.println(workoutDeserialized);
-        return workoutDeserialized;
+        return workoutService.findWorkoutById(workoutId);
     }
 
     @PostMapping("/add")

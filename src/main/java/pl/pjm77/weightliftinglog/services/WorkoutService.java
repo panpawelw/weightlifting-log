@@ -80,6 +80,7 @@ public class WorkoutService {
                 e.printStackTrace();
             }
         }
+        workoutDeserialized.setId(workoutSerialized.getId());
         return workoutDeserialized;
     }
 }

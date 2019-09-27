@@ -1,6 +1,7 @@
 package pl.pjm77.weightliftinglog.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -22,6 +23,7 @@ public class WorkoutDeserialized implements Serializable {
     private Timestamp created;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp updated;
+    @JsonIgnore
     private User user;
     private List<Exercise> exercises = new ArrayList<>();
     private List<Note> notes = new ArrayList<>();
