@@ -1,3 +1,7 @@
+/****************************************************************
+ * Functions and variables related to page navigation and layout*
+ ****************************************************************/
+
 let OkToToggleLogo = true; // Global flag for logo visibility toggling
 
 $(document).ready(function () {
@@ -64,16 +68,8 @@ function scrollToTop() {
 }
 
 /* This function updates a single lift section in General Strength tab
-   whenever the user moves the slider it updates the corresponding number
-   field and calculates 1 rep max when number field is updated it moves the
-   slider and 1 rep max is calculated.
-   Parameters are:
-    fieldToUpdate - id of the corresponding field to update
-    value - value that fieldToUpdate will be updated with
-    weightField - id of the field holding weight for the current lift
-    repsField - id of the field holding repetitions for the current lift
-    maxField - id of the field holding the 1 rep max for the current lift
-               that will be calculated */
+   whenever there's an input from user by entering a value or moving the slider. The other input
+    gets updated (slider or input field) and new max is calculated based on weight and reps fields*/
 function updateGS(fieldToUpdate, value, weightField, repsField, maxField) {
     document.getElementById(fieldToUpdate).value = value;
     let weight = document.getElementById(weightField).value;
@@ -126,13 +122,16 @@ function updatePercentageDescription(description, percentage) {
     document.getElementById(description).innerHTML = descriptionText;
 }
 
-/* Workout-related functions */
-let workout = null;
-let files = [];
+/****************************************************************************
+ * Functions and variables related to workout data creation an manipulation *
+ ****************************************************************************/
 
-/* Stores given value in workout entry. Last <br> in value is removed (single <br> value tends to
- get stuck in contenteditable fields) and the rest are changed into \n symbols. The entry name is
- constructed from string array using bracket notation */
+let workout = null; // Global workout object variable
+let files = []; // Array for storing files attached to media notes (will eventually be removed)
+
+/* Stores given value in workout object entry. Last <br> in value is removed (single <br> values
+ tend to get stuck in contenteditable fields) and the rest are changed into \n symbols. The entry
+ name is constructed from string array using bracket notation */
 function storeInWorkout(entry, value) {
     value = value.replace(/^\s*<br\s*\/?>|<br\s*\/?>\s*$/g, '');
     value = value.replace(/<br\s*[\/]?>/gi, "\n");
@@ -172,8 +171,6 @@ function buildWorkout() {
     const created = new Date().toISOString().slice(0, 19).replace('T', ' ');
     document.getElementById("created").value = created;
     workout['created'] = created;
-    document.getElementById('title')
-        .setAttribute('data-set', "title");
 }
 
 function addExercise() {
@@ -257,8 +254,13 @@ function addNote() {
     document.getElementById(short).focus();
 }
 
+/* Changes a note type when user chooses a different one using the select element.
+ SelectFieldValue is 0 for text, 1 for audio, 2 for picture, 3 for video, fieldToReplaceId is a
+  note field ID as string.*/
 function changeNoteType(selectFieldValue, fieldToReplaceID) {
+    // clear note content and set new note type in corresponding workout object entries
     setNoteContentAndType(document.getElementById(fieldToReplaceID), '', selectFieldValue);
+    // assume that new note is a media note (to avoid a lot of duplicate code below)
     let replacement = document.createElement('input');
     replacement.setAttribute('type', 'file');
     replacement.onchange = function () {
@@ -267,6 +269,7 @@ function changeNoteType(selectFieldValue, fieldToReplaceID) {
     };
     switch (selectFieldValue) {
         case '0':
+            // if new note is a text note after all - change HTML element type and attributes
             replacement = document.createElement('span');
             replacement.className = 'my-input';
             replacement.setAttribute('contenteditable', 'true');
@@ -285,6 +288,7 @@ function changeNoteType(selectFieldValue, fieldToReplaceID) {
             ('accept', 'video/mp4, video/ogg, video/webm');
             break;
     }
+    // switch IDs of old and new elements, copy data and replace
     document.getElementById(fieldToReplaceID).setAttribute('id', 'tempID');
     let fieldToReplaceNode = document.getElementById('tempID');
     replacement.dataset.set = fieldToReplaceNode.dataset.set;
@@ -292,6 +296,8 @@ function changeNoteType(selectFieldValue, fieldToReplaceID) {
     fieldToReplaceNode.parentElement.replaceChild(replacement, fieldToReplaceNode);
 }
 
+/* Auxiliary function used to set corresponding entries in workout object when user changes the
+ type of a note. Workout entries are identified using custom dataset attached to HTML note element */
 function setNoteContentAndType(noteId, content, type) {
     let workoutEntry = $(noteId).data('set').split(',');
     storeInWorkout(workoutEntry, content);
@@ -299,6 +305,7 @@ function setNoteContentAndType(noteId, content, type) {
     storeInWorkout(workoutEntry, type);
 }
 
+/* Stores file attached to a media note in files array */
 function uploadFile(file) {
     let reader = new FileReader();
     reader.onloadend = function (event) {
@@ -310,6 +317,8 @@ function uploadFile(file) {
     reader.readAsBinaryString(file);
 }
 
+/* Removes element from workout and corresponding entry in workout object.
+ Used to remove exercise, set or note of any kind from workout */
 function remove(element) {
     const entry = $(element).data('set').split(',');
     const toRemove = element.parentElement;
@@ -327,6 +336,7 @@ function remove(element) {
     }
 }
 
+/* Gets existing workout details in JSON format from REST controller */
 function editWorkout(workoutId) {
     // Obtain CSRF token
     let token = $("meta[name='_csrf']").attr("content");
@@ -344,6 +354,7 @@ function editWorkout(workoutId) {
         });
 }
 
+/* Sends new workout object in JSON format to REST controller using POST AJAX call */
 function saveWorkout(workout) {
     // Obtain CSRF token
     let token = $("meta[name='_csrf']").attr("content");
