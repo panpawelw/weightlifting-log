@@ -129,6 +129,39 @@ function updatePercentageDescription(description, percentage) {
 let workout = null; // Global workout object variable
 let files = []; // Array for storing files attached to media notes (will eventually be removed)
 
+function addWorkout() {
+    workout = {
+        id: 0, title: null, created: null, updated: null, user: null,
+        notes: [], exercises: []
+    };
+    $('.show-on-edit').hide();
+    $('.show-on-add').show();
+    displayWorkout();
+}
+
+function editWorkout() {
+    $('.show-on-add').hide();
+    $('.show-on-edit').show();
+    displayWorkout();
+}
+
+function displayWorkout() {
+    /* This event listener is responsible for transferring values from content editable span
+     elements marked with "my-input" class to workout object entries. Values are extracted from
+     innerHTML properties. Workout entries are stored in custom data attributes of said elements */
+    document.getElementsByClassName('workout-content')[0]
+        .addEventListener('input', function (event) {
+            const elementHoldingValue = event.target;
+            if (elementHoldingValue.className === 'my-input') {
+                let workoutEntry = $(elementHoldingValue).data('set').split(',');
+                storeInWorkout(workoutEntry, elementHoldingValue.innerHTML);
+            }
+        });
+    const created = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    document.getElementById("created").value = created;
+    workout['created'] = created;
+}
+
 /* Stores given value in workout object entry. Last <br> in value is removed (single <br> values
  tend to get stuck in contenteditable fields) and the rest are changed into \n symbols. The entry
  name is constructed from string array using bracket notation */
@@ -150,27 +183,6 @@ function storeInWorkout(entry, value) {
                 = value;
             break;
     }
-}
-
-function buildWorkout() {
-    workout = {
-        id: 0, title: null, created: null, updated: null, user: null,
-        notes: [], exercises: []
-    };
-    /* This event listener is responsible for transferring values from content editable span
-     elements marked with "my-input" class to workout object entries. Values are extracted from
-     innerHTML properties. Workout entries are stored in custom data attributes of said elements */
-    document.getElementsByClassName('workout-content')[0]
-        .addEventListener('input', function (event) {
-            const elementHoldingValue = event.target;
-            if (elementHoldingValue.className === 'my-input') {
-                let workoutEntry = $(elementHoldingValue).data('set').split(',');
-                storeInWorkout(workoutEntry, elementHoldingValue.innerHTML);
-            }
-        });
-    const created = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    document.getElementById("created").value = created;
-    workout['created'] = created;
 }
 
 function addExercise() {
@@ -337,7 +349,7 @@ function remove(element) {
 }
 
 /* Gets existing workout details in JSON format from REST controller */
-function editWorkout(workoutId) {
+function loadWorkout(workoutId) {
     // Obtain CSRF token
     let token = $("meta[name='_csrf']").attr("content");
     // Request workout object in JSON format
@@ -346,8 +358,11 @@ function editWorkout(workoutId) {
         headers: {"X-CSRF-TOKEN": token},
         type: 'GET',
         dataType: 'JSON'
-    }).done(function (workout) {
-        alert(JSON.stringify(workout));
+    }).done(function(data) {
+        alert(JSON.stringify(data));
+        workout = data;
+        window.location.pathname = 'wl/workout/details';
+        editWorkout();
     })
         .fail(function () {
             alert('There\'s been a problem!')

@@ -194,7 +194,7 @@
             <!--/*@thymesVar id="workouts" type="java"*/-->
             <tr th:each="workout: ${workouts}">
                 <td>
-                    <button class="my-button" th:onclick="'editWorkout(' + ${workout.id} + ');'">
+                    <button class="my-button" th:onclick="'loadWorkout(' + ${workout.id} + ');'">
                         <th:block th:text="${workout.title}"/>
                         <br>
                         <th:block th:text="${workout.created}"/>
@@ -225,23 +225,20 @@
 
 <!-- user panel fragments - default -->
 <div th:fragment="user-panel-default" class="workout-content">
-    <br><br>
-    <h2>Select existing workout from the panel to the right or...</h2>
-    <button class="my-button" onclick="location.href='/wl/workout/add'" type="button">
-        Add new workout
-    </button>
+    <h3>Select existing workout from the panel to the right or...</h3>
+    <button class="my-button" onclick="location.href='/wl/workout/details'" type="button">
+        Add new workout</button>
 </div>
 
-<!-- user panel fragments - add new workout-->
-<div th:fragment="user-panel-add-workout" class="workout-content">
+<!-- user panel fragments - workout details -->
+<div th:fragment="user-panel-workout-details" class="workout-content">
     <br>
     <div class="same-row">
-        <button class="my-button" onclick="saveWorkout(workout);" type="button">
-            Save
-        </button>
-        <button class="my-button" onclick="location.href='/wl/user';" type="button">
-            Cancel
-        </button>
+        <button class="my-button show-on-add" onclick="saveWorkout(workout);" type="button">
+            Save</button>
+        <button class="my-button show-on-edit" onclick="" type="button">Update</button>
+        <button class="my-button show-on-edit" onclick="" type="button">Delete</button>
+        <button class="my-button" onclick="location.href='/wl/user';" type="button">Cancel</button>
     </div>
 
     <br><br>
@@ -249,6 +246,11 @@
         <label for="created">Created: </label>
         <input type="text" name="created" id="created" value=""
                onchange="workout['created'] = this.value;"/>
+    </div>
+    <div class="show-on-edit">
+        <label for="updated">Created: </label>
+        <input type="text" name="updated" id="updated" value=""
+               onchange="workout['updated'] = this.value;"/>
     </div>
     <br>
     <div>
@@ -268,24 +270,14 @@
     <br><br>
 
     <div class="same-row">
-        <button class="my-button" onclick="saveWorkout(workout);" type="button">
-            Save
-        </button>
-        <button class="my-button" onclick="location.href='/wl/user';" type="button">
-            Cancel
-        </button>
+        <button class="my-button show-on-add" onclick="saveWorkout(workout);" type="button">
+            Save</button>
+        <button class="my-button show-on-edit" onclick="" type="button">Update</button>
+        <button class="my-button show-on-edit" onclick="" type="button">Delete</button>
+        <button class="my-button" onclick="location.href='/wl/user';" type="button">Cancel</button>
     </div>
     <script>document.getElementById('title').focus();
-    buildWorkout();</script>
+    addWorkout();</script>
 </div>
-
-<!-- user panel fragments - update existing workout-->
-<div th:fragment="user-panel-update-workout" class="workout-content">
-    <h2>Future update workout functionality!</h2>
-    <button class="my-button" onclick="location.href='/wl/user';" type="button">
-        Save workout
-    </button>
-</div>
-
 </body>
 </html>

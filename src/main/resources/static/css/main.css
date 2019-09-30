@@ -341,17 +341,19 @@ button:active, input[type=submit]:active, .my-button:active {
     background-image:
             url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII='); }
 .split.split-horizontal, .gutter.gutter-horizontal {
-    height: 100%;
+    height: auto;
     float: left;
 }
 
 #workout-content-container {
-    display: inline-block;
+    display: table;
     overflow-y: auto;
     height: 95vh;
 }
 
 .workout-content {
+    display: table-cell;
+    vertical-align: middle;
 }
 
 #workout-selection-container {
@@ -399,23 +401,6 @@ button:active, input[type=submit]:active, .my-button:active {
     justify-content: center;
     align-items: center;
 }
-
-/*.wrapper {*/
-/*    overflow: auto;*/
-/*    width: 100%;*/
-/*    display: table;*/
-/*    table-layout: fixed;*/
-/*}*/
-
-/*.left {*/
-/*    width: 90%;*/
-/*    display: table-cell;*/
-/*}*/
-
-/*.right {*/
-/*    display: table-cell;*/
-/*    vertical-align: middle;*/
-/*}*/
 
 /* Responsive elements */
 @media screen and (max-width: 280px) {

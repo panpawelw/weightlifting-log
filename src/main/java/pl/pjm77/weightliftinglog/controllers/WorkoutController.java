@@ -23,25 +23,16 @@ public class WorkoutController {
         this.workoutService = workoutService;
     }
 
-    @GetMapping("/workout/add")
+    @GetMapping("/workout/details")
     public String addWorkoutGet(Model model) {
         String username =  getLoggedInUserName();
         model.addAttribute("userName", username);
         model.addAttribute("user", userService.findUserByName(UserService.getLoggedInUserName()));
         model.addAttribute("adminRights", checkLoggedInUserForAdminRights());
         model.addAttribute("page", "fragments.html :: user-panel");
-        model.addAttribute("userPanelPage", "fragments.html :: user-panel-add-workout");
+        model.addAttribute("userPanelPage", "fragments.html :: user-panel-workout-details");
         User user = userService.findUserByName(username);
         model.addAttribute("workouts", workoutService.findWorkoutsByUser(user));
-        return "home";
-    }
-
-    @GetMapping("/workout/update")
-    public String updateWorkoutGet(Model model) {
-        model.addAttribute("userName", "Hello " + getLoggedInUserName() + "!");
-        model.addAttribute("adminRights", checkLoggedInUserForAdminRights());
-        model.addAttribute("page", "fragments.html :: user-panel");
-        model.addAttribute("userPanelPage", "fragments.html :: user-panel-update-workout");
         return "home";
     }
 }
