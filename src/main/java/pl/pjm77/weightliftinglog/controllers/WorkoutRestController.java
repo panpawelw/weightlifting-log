@@ -32,7 +32,7 @@ public class WorkoutRestController {
         return workoutService.findWorkoutById(workoutId);
     }
 
-    @PostMapping("/add")
+    @PostMapping("/details")
     public void addWorkoutPost(@RequestBody WorkoutDeserialized workoutDeserialized) {
         workoutDeserialized.setUser
                 (userService.findUserByName(UserService.getLoggedInUserName()));

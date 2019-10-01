@@ -226,7 +226,7 @@
 <!-- user panel fragments - default -->
 <div th:fragment="user-panel-default" class="workout-content">
     <h3>Select existing workout from the panel to the right or...</h3>
-    <button class="my-button" onclick="location.href='/wl/workout/details'" type="button">
+    <button class="my-button" onclick="location.href='/wl/workout/add'" type="button">
         Add new workout</button>
 </div>
 
@@ -276,8 +276,11 @@
         <button class="my-button show-on-edit" onclick="" type="button">Delete</button>
         <button class="my-button" onclick="location.href='/wl/user';" type="button">Cancel</button>
     </div>
-    <script>document.getElementById('title').focus();
-    addWorkout();</script>
+    <script>
+        document.getElementById('title').focus();
+        if (sessionStorage.getItem('workout')) {editWorkout();}
+        else {addWorkout();}
+    </script>
 </div>
 </body>
 </html>

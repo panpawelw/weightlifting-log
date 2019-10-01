@@ -136,10 +136,14 @@ function addWorkout() {
     };
     $('.show-on-edit').hide();
     $('.show-on-add').show();
+    const created = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    document.getElementById("created").value = created;
+    workout['created'] = created;
     displayWorkout();
 }
 
 function editWorkout() {
+    alert(sessionStorage.getItem('workout'));
     $('.show-on-add').hide();
     $('.show-on-edit').show();
     displayWorkout();
@@ -157,9 +161,6 @@ function displayWorkout() {
                 storeInWorkout(workoutEntry, elementHoldingValue.innerHTML);
             }
         });
-    const created = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    document.getElementById("created").value = created;
-    workout['created'] = created;
 }
 
 /* Stores given value in workout object entry. Last <br> in value is removed (single <br> values
@@ -359,8 +360,7 @@ function loadWorkout(workoutId) {
         type: 'GET',
         dataType: 'JSON'
     }).done(function(data) {
-        alert(JSON.stringify(data));
-        workout = data;
+        sessionStorage.setItem('workout', JSON.stringify(data));
         window.location.pathname = 'wl/workout/details';
         editWorkout();
     })
