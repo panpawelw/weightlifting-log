@@ -134,8 +134,6 @@ function addWorkout() {
         id: 0, title: null, created: null, updated: null, user: null,
         notes: [], exercises: []
     };
-    $('.show-on-edit').hide();
-    $('.show-on-add').show();
     const created = new Date().toISOString().slice(0, 19).replace('T', ' ');
     document.getElementById("created").value = created;
     workout['created'] = created;
@@ -143,9 +141,9 @@ function addWorkout() {
 }
 
 function editWorkout() {
-    alert(sessionStorage.getItem('workout'));
-    $('.show-on-add').hide();
-    $('.show-on-edit').show();
+    workout = JSON.parse(sessionStorage.getItem('workout'));
+    document.getElementById("created").value = workout['created'];
+    document.getElementById("title").innerHTML = workout['title'];
     displayWorkout();
 }
 
@@ -362,7 +360,6 @@ function loadWorkout(workoutId) {
     }).done(function(data) {
         sessionStorage.setItem('workout', JSON.stringify(data));
         window.location.pathname = 'wl/workout/details';
-        editWorkout();
     })
         .fail(function () {
             alert('There\'s been a problem!')

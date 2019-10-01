@@ -202,7 +202,6 @@
                 </td>
             </tr>
         </table>
-
     </div>
 
     <!-- JS code for smooth column size adjustment -->
@@ -226,13 +225,12 @@
 <!-- user panel fragments - default -->
 <div th:fragment="user-panel-default" class="workout-content">
     <h3>Select existing workout from the panel to the right or...</h3>
-    <button class="my-button" onclick="location.href='/wl/workout/add'" type="button">
-        Add new workout</button>
+    <button class="my-button" onclick="sessionStorage.clear();location.href='/wl/workout/details'"
+            type="button">Add new workout</button>
 </div>
 
 <!-- user panel fragments - workout details -->
 <div th:fragment="user-panel-workout-details" class="workout-content">
-    <br>
     <div class="same-row">
         <button class="my-button show-on-add" onclick="saveWorkout(workout);" type="button">
             Save</button>
@@ -242,13 +240,14 @@
     </div>
 
     <br><br>
+
     <div>
         <label for="created">Created: </label>
         <input type="text" name="created" id="created" value=""
                onchange="workout['created'] = this.value;"/>
     </div>
     <div class="show-on-edit">
-        <label for="updated">Created: </label>
+        <label for="updated">Updated: </label>
         <input type="text" name="updated" id="updated" value=""
                onchange="workout['updated'] = this.value;"/>
     </div>
@@ -278,8 +277,9 @@
     </div>
     <script>
         document.getElementById('title').focus();
-        if (sessionStorage.getItem('workout')) {editWorkout();}
-        else {addWorkout();}
+        if (sessionStorage.getItem('workout')) {
+            $('.show-on-add').hide();$('.show-on-edit').show();editWorkout();}
+        else {$('.show-on-edit').hide();$('.show-on-add').show();addWorkout();}
     </script>
 </div>
 </body>
