@@ -144,6 +144,9 @@ function editWorkout() {
     workout = JSON.parse(sessionStorage.getItem('workout'));
     document.getElementById("created").value = workout['created'];
     document.getElementById("title").innerHTML = workout['title'];
+    const updated = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    document.getElementById("updated").value = updated;
+    workout['updated'] = updated;
     displayWorkout();
 }
 
@@ -159,6 +162,9 @@ function displayWorkout() {
                 storeInWorkout(workoutEntry, elementHoldingValue.innerHTML);
             }
         });
+    for (let i = 0; i < workout.exercises.length; i++) {
+        addExercise(i, workout.exercises[i].title);
+    }
 }
 
 /* Stores given value in workout object entry. Last <br> in value is removed (single <br> values
@@ -185,9 +191,14 @@ function storeInWorkout(entry, value) {
 }
 
 function addExercise() {
-    let newExercise = {title: null, notes: [], sets: []};
-    workout.exercises.push(newExercise);
-    const exerciseNo = workout.exercises.length - 1;
+    let exerciseNo = null;
+    if (arguments.length > 0) {
+        exerciseNo = arguments[0];
+    } else {
+        let newExercise = {title: null, notes: [], sets: []};
+        workout.exercises.push(newExercise);
+        exerciseNo = workout.exercises.length - 1;
+    }
     const short = 'exercise' + exerciseNo;
     let newExerciseHTML = document.createElement('div');
     newExerciseHTML.setAttribute('id', short + '-container');
@@ -201,7 +212,11 @@ function addExercise() {
     document.getElementById("exercises").appendChild(newExerciseHTML);
     document.getElementById(short).setAttribute('data-set',
         "exercises," + exerciseNo + ",title");
-    document.getElementById(short).focus();
+    if (arguments.length > 0) {
+        document.getElementById(short).innerHTML = arguments[1];
+    } else {
+        document.getElementById(short).focus();
+    }
 }
 
 function addSet(exerciseNo) {
@@ -357,7 +372,7 @@ function loadWorkout(workoutId) {
         headers: {"X-CSRF-TOKEN": token},
         type: 'GET',
         dataType: 'JSON'
-    }).done(function(data) {
+    }).done(function (data) {
         sessionStorage.setItem('workout', JSON.stringify(data));
         window.location.pathname = 'wl/workout/details';
     })

@@ -276,10 +276,17 @@
         <button class="my-button" onclick="location.href='/wl/user';" type="button">Cancel</button>
     </div>
     <script>
-        document.getElementById('title').focus();
         if (sessionStorage.getItem('workout')) {
-            $('.show-on-add').hide();$('.show-on-edit').show();editWorkout();}
-        else {$('.show-on-edit').hide();$('.show-on-add').show();addWorkout();}
+            $('.show-on-add').hide();
+            $('.show-on-edit').show();
+            editWorkout();
+        }
+        else {
+            $('.show-on-edit').hide();
+            $('.show-on-add').show();
+            document.getElementById('title').focus();
+            addWorkout();
+        }
     </script>
 </div>
 </body>
