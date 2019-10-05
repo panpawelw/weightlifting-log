@@ -164,6 +164,9 @@ function displayWorkout() {
         });
     for (let i = 0; i < workout.exercises.length; i++) {
         addExercise(i, workout.exercises[i].title);
+        for (let j = 0; j < workout.exercises[i].sets.length; j++) {
+            addSet(i,j,workout.exercises[i].sets[j].data);
+        }
     }
 }
 
@@ -220,9 +223,14 @@ function addExercise() {
 }
 
 function addSet(exerciseNo) {
-    let newSet = {data: null, notes: []};
-    workout.exercises[exerciseNo].sets.push(newSet);
-    let setNo = workout.exercises[exerciseNo].sets.length - 1;
+    let setNo = null;
+    if (arguments.length > 1) {
+        setNo = arguments[1];
+    } else {
+        let newSet = {data: null, notes: []};
+        workout.exercises[exerciseNo].sets.push(newSet);
+        setNo = workout.exercises[exerciseNo].sets.length - 1;
+    }
     const short = "exercise" + exerciseNo + "set" + setNo;
     let newSetHTML = document.createElement('div');
     newSetHTML.setAttribute('id', short + '-container');
@@ -235,7 +243,11 @@ function addSet(exerciseNo) {
     document.getElementById("exercise" + exerciseNo + "-sets").appendChild(newSetHTML);
     document.getElementById(short).setAttribute('data-set',
         "exercises," + exerciseNo + ",sets," + setNo + ",data");
-    document.getElementById(short).focus();
+    if (arguments.length > 1) {
+        document.getElementById(short).innerHTML = arguments[2];
+    } else {
+        document.getElementById(short).focus();
+    }
 }
 
 function addNote() {
