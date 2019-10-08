@@ -33,6 +33,10 @@ public class WorkoutService {
         workoutRepository.saveAndFlush(serializeWorkout(workoutDeserialized));
     }
 
+    public void deleteWorkout(long id) {
+        workoutRepository.deleteById(id);
+    }
+
     public WorkoutSerialized serializeWorkout
             (WorkoutDeserialized workoutDeserialized) {
         WorkoutSerialized workoutSerialized = new WorkoutSerialized();

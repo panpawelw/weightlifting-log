@@ -374,16 +374,19 @@ function remove(element) {
     }
 }
 
-/* Gets existing workout details in JSON format from REST controller */
+/** Gets existing workout details in JSON format from REST controller.
+ * @param {int} workoutId   id of workout to be loaded from database
+ */
 function loadWorkout(workoutId) {
     // Obtain CSRF token
     let token = $("meta[name='_csrf']").attr("content");
-    // Request workout object in JSON format
+    // Request workout object of given id in JSON format
     $.ajax({
         url: 'http://localhost:8080/wl/workout/' + workoutId,
         headers: {"X-CSRF-TOKEN": token},
         type: 'GET',
-        dataType: 'JSON'
+        dataType: 'JSON',
+        async: true,
     }).done(function (data) {
         sessionStorage.setItem('workout', JSON.stringify(data));
         window.location.pathname = 'wl/workout/details';
@@ -393,7 +396,9 @@ function loadWorkout(workoutId) {
         });
 }
 
-/* Sends new workout object in JSON format to REST controller using POST AJAX call */
+/** Sends new workout object in JSON format to REST controller using POST AJAX call.
+ * @param {object}  workout  workout object to be persisted
+ */
 function saveWorkout(workout) {
     // Obtain CSRF token
     let token = $("meta[name='_csrf']").attr("content");
@@ -404,6 +409,25 @@ function saveWorkout(workout) {
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(workout),
+        async: true,
+    }).done(function () {
+        window.location.pathname = 'wl/user'
+    })
+        .fail(function () {
+            alert('There\'s been a problem!')
+        });
+}
+
+/** Request deletion of the currently displayed workout from the database.
+ */
+function deleteWorkout() {
+    // Obtain CSRF token
+    let token = $("meta[name='_csrf']").attr("content");
+    // Request workout of given id to be deleted from
+    $.ajax({
+        url: 'http://localhost:8080/wl/workout/' + workout.id,
+        headers: {"X-CSRF-TOKEN": token},
+        type: 'DELETE',
         async: true,
     }).done(function () {
         window.location.pathname = 'wl/user'

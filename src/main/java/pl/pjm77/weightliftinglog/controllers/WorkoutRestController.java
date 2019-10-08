@@ -46,5 +46,6 @@ public class WorkoutRestController {
 
     @DeleteMapping("/{workoutId}")
     public void deleteWorkout(@PathVariable long workoutId) {
+        workoutService.deleteWorkout(workoutId);
     }
 }
