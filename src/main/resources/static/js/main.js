@@ -207,7 +207,7 @@ function addExercise() {
     newExerciseHTML.setAttribute('id', short + '-container');
     newExerciseHTML.innerHTML = '<br><label for="' + short + '">Exercise #' + (exerciseNo + 1) +
         ': </label><span contenteditable="true" class="my-input" id="' + short +
-        '"></span><button class="my-button add-note" onclick="addNote(' + exerciseNo +
+        '"></span><button class="my-button add-note" onclick="addNote(0, null, ' + exerciseNo +
         ');" title="Add exercise note">&nbsp</button><button class="my-button remove"' +
         ' onclick="remove(' + short + ');" title="Delete exercise">&nbsp</button><div id="' +
         short + '-notes"></div><br><div id="' + short + '-sets"></div><button class="my-button" ' +
@@ -236,8 +236,8 @@ function addSet(exerciseNo) {
     newSetHTML.setAttribute('id', short + '-container');
     newSetHTML.innerHTML = '<br><label for="' + short + '">Set #' + (setNo + 1) + ': </label>' +
         '<span contenteditable="true" class="my-input" id="' + short + '"></span><button ' +
-        'class="my-button add-note" onclick="addNote(' + exerciseNo + ', ' + setNo + ');" ' +
-        'title="Add set note">&nbsp</button><button class="my-button remove" ' +
+        'class="my-button add-note" onclick="addNote(0, null, ' + exerciseNo + ', ' + setNo + ');"' +
+        ' title="Add set note">&nbsp</button><button class="my-button remove" ' +
         'onclick="remove(' + short + ');" title="Delete set">&nbsp</button>' +
         '<div id="' + short + '-notes"></div><br>';
     document.getElementById("exercise" + exerciseNo + "-sets").appendChild(newSetHTML);
@@ -250,33 +250,36 @@ function addSet(exerciseNo) {
     }
 }
 
-function addNote() {
-    let newNote = {type: 0, content: null};
-    let noteNo, short, dataSetContent = null;
+function addNote(type, content) {
+    let newNote = {type: type, content: content};
     let appendHere = document.getElementById('notes');
+    let noteNo, short, dataSetContent, noteListAlias = null;
     switch (arguments.length) {
-        case 0:
-            workout.notes.push(newNote);
-            noteNo = workout.notes.length - 1;
-            short = "note" + noteNo;
-            dataSetContent = "notes," + noteNo + ",content";
+        case 3:
+            noteNo = workout.exercises[arguments[2]].notes.length;
+            noteListAlias = workout.exercises[arguments[2]].notes;
+            short = "exercise" + arguments[2] + "note" + noteNo;
+            appendHere = document.getElementById("exercise" + arguments[2] + "-notes");
+            dataSetContent = "exercises," + arguments[2] + ",notes," + noteNo + ",content";
             break;
-        case 1:
-            workout.exercises[arguments[0]].notes.push(newNote);
-            noteNo = workout.exercises[arguments[0]].notes.length - 1;
-            short = "exercise" + arguments[0] + "note" + noteNo;
-            appendHere = document.getElementById("exercise" + arguments[0] + "-notes");
-            dataSetContent = "exercises," + arguments[0] + ",notes," + noteNo + ",content";
-            break;
-        case 2:
-            workout.exercises[arguments[0]].sets[arguments[1]].notes.push(newNote);
-            noteNo = workout.exercises[arguments[0]].sets[arguments[1]].notes.length - 1;
-            short = "exercise" + arguments[0] + "set" + arguments[1] + "note" + noteNo;
+        case 4:
+            noteNo = workout.exercises[arguments[2]].sets[arguments[3]].notes.length;
+            noteListAlias = workout.exercises[arguments[2]].sets[arguments[3]].notes;
+            short = "exercise" + arguments[2] + "set" + arguments[3] + "note" + noteNo;
             appendHere = document.getElementById(
-                "exercise" + arguments[0] + "set" + arguments[1] + "-notes");
-            dataSetContent = "exercises," + arguments[0] + ",sets," + arguments[1] + ",notes," +
+                "exercise" + arguments[2] + "set" + arguments[3] + "-notes");
+            dataSetContent = "exercises," + arguments[2] + ",sets," + arguments[3] + ",notes," +
                 noteNo + ",content";
             break;
+        default:
+            noteNo = workout.notes.length;
+            short = "note" + noteNo;
+            dataSetContent = "notes," + noteNo + ",content";
+            noteListAlias = workout.notes;
+    }
+    if (newNote.content == null) {
+        newNote.content = '';
+        noteListAlias.push(newNote);
     }
     let newNoteHTML = document.createElement('div');
     newNoteHTML.setAttribute('id', short + '-container');
@@ -355,12 +358,12 @@ function uploadFile(file) {
     reader.readAsBinaryString(file);
 }
 
-/* Removes element from workout and corresponding entry in workout object.
- Used to remove exercise, set or note of any kind from workout */
+/** Removes element from workout and corresponding entry in workout object.
+ * Used to remove exercise, set or note of any kind from workout */
 function remove(element) {
     const entry = $(element).data('set').split(',');
-    const toRemove = element.parentElement;
-    toRemove.parentElement.removeChild(toRemove);
+    const parent = element.parentElement;
+    parent.parentElement.removeChild(parent);
     switch (entry.length) {
         case 3:
             workout[entry[0]].splice(entry[1], 1);
@@ -375,8 +378,7 @@ function remove(element) {
 }
 
 /** Gets existing workout details in JSON format from REST controller.
- * @param {int} workoutId   id of workout to be loaded from database
- */
+ * @param {int} workoutId   id of workout to be loaded from database */
 function loadWorkout(workoutId) {
     // Obtain CSRF token
     let token = $("meta[name='_csrf']").attr("content");
@@ -397,8 +399,7 @@ function loadWorkout(workoutId) {
 }
 
 /** Sends new workout object in JSON format to REST controller using POST AJAX call.
- * @param {object}  workout  workout object to be persisted
- */
+ * @param {object}  workout  workout object to be persisted */
 function saveWorkout(workout) {
     // Obtain CSRF token
     let token = $("meta[name='_csrf']").attr("content");
@@ -418,8 +419,7 @@ function saveWorkout(workout) {
         });
 }
 
-/** Request deletion of the currently displayed workout from the database.
- */
+/** Request deletion of the currently displayed workout from the database. */
 function deleteWorkout() {
     // Obtain CSRF token
     let token = $("meta[name='_csrf']").attr("content");
