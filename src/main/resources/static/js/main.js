@@ -162,10 +162,13 @@ function displayWorkout() {
                 storeInWorkout(workoutEntry, elementHoldingValue.innerHTML);
             }
         });
-    for (let i = 0; i < workout.exercises.length; i++) {
-        addExercise(i, workout.exercises[i].title);
-        for (let j = 0; j < workout.exercises[i].sets.length; j++) {
-            addSet(i,j,workout.exercises[i].sets[j].data);
+    for (let i = 0; i < workout.notes.length; i++) {
+        addNote(i, workout.notes[i].type, workout.notes[i].content);
+    }
+    for (let j = 0; j < workout.exercises.length; j++) {
+        addExercise(j, workout.exercises[j].title);
+        for (let l = 0; l < workout.exercises[j].sets.length; l++) {
+            addSet(j,l,workout.exercises[j].sets[l].data);
         }
     }
 }
@@ -207,7 +210,7 @@ function addExercise() {
     newExerciseHTML.setAttribute('id', short + '-container');
     newExerciseHTML.innerHTML = '<br><label for="' + short + '">Exercise #' + (exerciseNo + 1) +
         ': </label><span contenteditable="true" class="my-input" id="' + short +
-        '"></span><button class="my-button add-note" onclick="addNote(0, null, ' + exerciseNo +
+        '"></span><button class="my-button add-note" onclick="addNote(null, 0, null, ' + exerciseNo +
         ');" title="Add exercise note">&nbsp</button><button class="my-button remove"' +
         ' onclick="remove(' + short + ');" title="Delete exercise">&nbsp</button><div id="' +
         short + '-notes"></div><br><div id="' + short + '-sets"></div><button class="my-button" ' +
@@ -236,7 +239,8 @@ function addSet(exerciseNo) {
     newSetHTML.setAttribute('id', short + '-container');
     newSetHTML.innerHTML = '<br><label for="' + short + '">Set #' + (setNo + 1) + ': </label>' +
         '<span contenteditable="true" class="my-input" id="' + short + '"></span><button ' +
-        'class="my-button add-note" onclick="addNote(0, null, ' + exerciseNo + ', ' + setNo + ');"' +
+        'class="my-button add-note" ' +
+        'onclick="addNote(null, 0, null, ' + exerciseNo + ', ' + setNo + ');"' +
         ' title="Add set note">&nbsp</button><button class="my-button remove" ' +
         'onclick="remove(' + short + ');" title="Delete set">&nbsp</button>' +
         '<div id="' + short + '-notes"></div><br>';
@@ -250,36 +254,37 @@ function addSet(exerciseNo) {
     }
 }
 
-function addNote(type, content) {
+function addNote(number, type, content) {
     let newNote = {type: type, content: content};
+    let noteListAlias = workout.notes;
     let appendHere = document.getElementById('notes');
-    let noteNo, short, dataSetContent, noteListAlias = null;
+    let noteNo = number
+    if (number == null) {
+        noteNo = workout.notes.length;
+    }
+    let short = "note" + noteNo;
+    let dataSetContent = "notes," + noteNo + ",content";
     switch (arguments.length) {
-        case 3:
-            noteNo = workout.exercises[arguments[2]].notes.length;
-            noteListAlias = workout.exercises[arguments[2]].notes;
-            short = "exercise" + arguments[2] + "note" + noteNo;
-            appendHere = document.getElementById("exercise" + arguments[2] + "-notes");
-            dataSetContent = "exercises," + arguments[2] + ",notes," + noteNo + ",content";
-            break;
         case 4:
-            noteNo = workout.exercises[arguments[2]].sets[arguments[3]].notes.length;
-            noteListAlias = workout.exercises[arguments[2]].sets[arguments[3]].notes;
-            short = "exercise" + arguments[2] + "set" + arguments[3] + "note" + noteNo;
+            noteListAlias = workout.exercises[arguments[3]].notes;
+            appendHere = document.getElementById("exercise" + arguments[3] + "-notes");
+            if (number == null) {
+                noteNo = workout.exercises[arguments[3]].notes.length;
+            }
+            short = "exercise" + arguments[3] + "note" + noteNo;
+            dataSetContent = "exercises," + arguments[3] + ",notes," + noteNo + ",content";
+            break;
+        case 5:
+            noteListAlias = workout.exercises[arguments[3]].sets[arguments[4]].notes;
             appendHere = document.getElementById(
-                "exercise" + arguments[2] + "set" + arguments[3] + "-notes");
-            dataSetContent = "exercises," + arguments[2] + ",sets," + arguments[3] + ",notes," +
+                "exercise" + arguments[3] + "set" + arguments[4] + "-notes");
+            if (number == null) {
+                noteNo = workout.exercises[arguments[3]].sets[arguments[4]].notes.length;
+            }
+            short = "exercise" + arguments[3] + "set" + arguments[4] + "note" + noteNo;
+            dataSetContent = "exercises," + arguments[3] + ",sets," + arguments[4] + ",notes," +
                 noteNo + ",content";
             break;
-        default:
-            noteNo = workout.notes.length;
-            short = "note" + noteNo;
-            dataSetContent = "notes," + noteNo + ",content";
-            noteListAlias = workout.notes;
-    }
-    if (newNote.content == null) {
-        newNote.content = '';
-        noteListAlias.push(newNote);
     }
     let newNoteHTML = document.createElement('div');
     newNoteHTML.setAttribute('id', short + '-container');
@@ -292,7 +297,17 @@ function addNote(type, content) {
         'title="Delete note">&nbsp</button>';
     appendHere.appendChild(newNoteHTML);
     document.getElementById(short).setAttribute('data-set', dataSetContent);
-    document.getElementById(short).focus();
+    if (number == null) {
+        noteListAlias.push(newNote);
+        document.getElementById(short).focus();
+    } else {
+        if (newNote.type !== 0) {
+            changeNoteType(newNote.type, short);
+            document.getElementById(short).value = newNote.content;
+        } else {
+            document.getElementById(short).innerHTML = newNote.content;
+        }
+    }
 }
 
 /* Changes a note type when user chooses a different one using the select element.
