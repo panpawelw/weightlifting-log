@@ -167,8 +167,15 @@ function displayWorkout() {
     }
     for (let j = 0; j < workout.exercises.length; j++) {
         addExercise(j, workout.exercises[j].title);
+        for (let k = 0; k < workout.exercises[j].notes.length; k++) {
+            addNote(k, workout.exercises[j].notes[k].type, workout.exercises[j].notes[k].content, j);
+        }
         for (let l = 0; l < workout.exercises[j].sets.length; l++) {
             addSet(j,l,workout.exercises[j].sets[l].data);
+            for (let m = 0; m < workout.exercises[j].sets[l].notes.length; m++) {
+                addNote(m, workout.exercises[j].sets[l].notes[m].type,
+                    workout.exercises[j].sets[l].notes[m].content, j, l);
+            }
         }
     }
 }
@@ -258,7 +265,7 @@ function addNote(number, type, content) {
     let newNote = {type: type, content: content};
     let noteListAlias = workout.notes;
     let appendHere = document.getElementById('notes');
-    let noteNo = number
+    let noteNo = number;
     if (number == null) {
         noteNo = workout.notes.length;
     }
