@@ -397,7 +397,8 @@ function remove(element) {
             workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]].splice(entry[5], 1);
             break;
     }
-    document.getElementsByClassName('workout-content')[0].innerHTML = '';
+    document.getElementById('notes').innerHTML='';
+    document.getElementById('exercises').innerHTML='';
     displayWorkout();
 }
 
