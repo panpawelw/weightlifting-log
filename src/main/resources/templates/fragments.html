@@ -225,16 +225,15 @@
 <!-- user panel fragments - default -->
 <div th:fragment="user-panel-default" class="workout-content">
     <h3>Select existing workout from the panel to the right or...</h3>
-    <button class="my-button" onclick="sessionStorage.clear();location.href='/wl/workout/details'"
+    <button class="my-button" onclick="sessionStorage.clear();location.href='/wl/workout/'"
             type="button">Add new workout</button>
 </div>
 
 <!-- user panel fragments - workout details -->
 <div th:fragment="user-panel-workout-details" class="workout-content">
     <div class="same-row">
-        <button class="my-button show-on-add" onclick="saveWorkout(workout);" type="button">
+        <button class="my-button" onclick="saveWorkout(workout);" type="button">
             Save</button>
-        <button class="my-button show-on-edit" onclick="" type="button">Update</button>
         <button class="my-button show-on-edit" onclick="deleteWorkout()" type="button">
             Delete</button>
         <button class="my-button" onclick="location.href='/wl/user';" type="button">Cancel</button>
@@ -270,9 +269,8 @@
     <br><br>
 
     <div class="same-row">
-        <button class="my-button show-on-add" onclick="saveWorkout(workout);" type="button">
+        <button class="my-button" onclick="saveWorkout(workout);" type="button">
             Save</button>
-        <button class="my-button show-on-edit" onclick="" type="button">Update</button>
         <button class="my-button show-on-edit" onclick="deleteWorkout()" type="button">
             Delete</button>
         <button class="my-button" onclick="location.href='/wl/user';" type="button">Cancel</button>
@@ -290,7 +288,6 @@
             addWorkout();
         }
     </script>
-<!--    <div id="fresh-copy" th:replace="fragments.html :: user-panel-workout-details"></div>-->
 </div>
 </body>
 </html>

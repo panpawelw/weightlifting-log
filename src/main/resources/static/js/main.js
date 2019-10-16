@@ -416,7 +416,7 @@ function loadWorkout(workoutId) {
         async: true,
     }).done(function (data) {
         sessionStorage.setItem('workout', JSON.stringify(data));
-        window.location.pathname = 'wl/workout/details';
+        window.location.pathname = 'wl/workout/';
     })
         .fail(function () {
             alert('There\'s been a problem!')
