@@ -6,12 +6,12 @@ let OkToToggleLogo = true; // Global flag for logo visibility toggling
 
 $(document).ready(function () {
 
-    /* This event listener is responsible for hiding the logo container and
-     making the tab navigation bar stick to the top of the screen when user is
-     scrolling down the page and showing the logo container and unsticking the
-     navigation bar when the page is scrolled back to the very top. It has to be
-     coordinated with switching tabs, which automatically scrolls the page to
-     the very top.*/
+    /** This event listener is responsible for hiding the logo container and
+     * making the tab navigation bar stick to the top of the screen when user is
+     * scrolling down the page and showing the logo container and unsticking the
+     * navigation bar when the page is scrolled back to the very top. It has to be
+     * coordinated with switching tabs, which automatically scrolls the page to
+     * the very top.*/
 
     const logo = document.getElementById('logo-container');
     const navbar = document.getElementById('big-tabs');
@@ -67,9 +67,15 @@ function scrollToTop() {
     OkToToggleLogo = true;
 }
 
-/* This function updates a single lift section in General Strength tab
-   whenever there's an input from user by entering a value or moving the slider. The other input
-    gets updated (slider or input field) and new max is calculated based on weight and reps fields*/
+/** This function updates a single lift section in General Strength tab whenever there's an input
+ *  from user by entering a value or moving the slider. The other input gets updated (slider or
+ *  input field respectively) and new max is calculated based on weight and reps fields.
+ *  @param {String} fieldToUpdate   id of the other element to update
+ *  @param {number}  value   value that fieldToUpdate will be updated with
+ *  @param {String} weightField id of the element that stores the weight
+ *  @param {String} repsField   id of the element that stores the number of reps
+ *  @param {String} maxField    id of the element that will be updated with calculation result
+ */
 function updateGS(fieldToUpdate, value, weightField, repsField, maxField) {
     document.getElementById(fieldToUpdate).value = value;
     let weight = document.getElementById(weightField).value;
@@ -77,12 +83,16 @@ function updateGS(fieldToUpdate, value, weightField, repsField, maxField) {
     document.getElementById(maxField).value = Math.round(weight * (1 + (reps / 30)) * 100) / 100;
 }
 
-/* This function updates an element of certain id with given value */
-function update(field, val) {
-    document.getElementById(field).value = val;
+/** This function updates an element of certain id with given value.
+ * @param {String}  field   id of the element to update
+ * @param {number}  value   value the element will be updated with
+ */
+function update(field, value) {
+    document.getElementById(field).value = value;
 }
 
-/* This function calculates the 1 rep max and percentages in 1 Rep Max tab */
+/** This function calculates the 1 rep max and percentages in 1 Rep Max tab.
+ */
 function calculate1RM() {
     let weight = document.getElementById('weight-text').value;
     let reps = document.getElementById('reps-text').value;
@@ -97,7 +107,10 @@ function calculate1RM() {
     }
 }
 
-/* This function updates descriptions for percentages of 1 Rep Max */
+/** This function updates descriptions for percentages of 1 Rep Max.
+ * @param {String}  description id of the description to be updated
+ * @param {number}  percentage  the current value of percentage
+ */
 function updatePercentageDescription(description, percentage) {
     let descriptionText;
     if (percentage < 21) {
@@ -129,27 +142,40 @@ function updatePercentageDescription(description, percentage) {
 let workout = null; // Global workout object variable
 let files = []; // Array for storing files attached to media notes (will eventually be removed)
 
+/** This initializes a creation of a new workout in the left panel.
+ */
 function addWorkout() {
+    // Create an empty workout object
     workout = {
         id: 0, title: null, created: null, updated: null, user: null,
         notes: [], exercises: []
     };
+    // Update "created" entry with current timestamp
     const created = new Date().toISOString().slice(0, 19).replace('T', ' ');
     document.getElementById("created").value = created;
     workout['created'] = created;
+    // Continue with workout display and edition
     displayWorkout();
 }
 
+/** This initializes the edition of an existing workout in the left panel.
+ */
 function editWorkout() {
+    // Get existing workout object from session storage and update "created" and "title" entries
     workout = JSON.parse(sessionStorage.getItem('workout'));
     document.getElementById("created").value = workout['created'];
     document.getElementById("title").innerHTML = workout['title'];
+    // Update the "updated" entry with current timestamp
     const updated = new Date().toISOString().slice(0, 19).replace('T', ' ');
     document.getElementById("updated").value = updated;
     workout['updated'] = updated;
+    // Continue with workout display and edition
     displayWorkout();
 }
 
+/** This displays existing workout elements (if there are any) and allows the user to add,
+ *  delete and edit any of them.
+ */
 function displayWorkout() {
     /* This event listener is responsible for transferring values from content editable span
      elements marked with "my-input" class to workout object entries. Values are extracted from
@@ -162,16 +188,21 @@ function displayWorkout() {
                 storeInWorkout(workoutEntry, elementHoldingValue.innerHTML);
             }
         });
+    // Display existing workout notes
     for (let i = 0; i < workout.notes.length; i++) {
         addNote(i, workout.notes[i].type, workout.notes[i].content);
     }
+    // Display existing exercises
     for (let j = 0; j < workout.exercises.length; j++) {
         addExercise(j, workout.exercises[j].title);
+        // Display existing exercise notes
         for (let k = 0; k < workout.exercises[j].notes.length; k++) {
             addNote(k, workout.exercises[j].notes[k].type, workout.exercises[j].notes[k].content, j);
         }
+        // Display existing exercise sets
         for (let l = 0; l < workout.exercises[j].sets.length; l++) {
-            addSet(j,l,workout.exercises[j].sets[l].data);
+            addSet(j, l, workout.exercises[j].sets[l].data);
+            // Display existing set notes
             for (let m = 0; m < workout.exercises[j].sets[l].notes.length; m++) {
                 addNote(m, workout.exercises[j].sets[l].notes[m].type,
                     workout.exercises[j].sets[l].notes[m].content, j, l);
@@ -380,8 +411,8 @@ function uploadFile(file) {
     reader.readAsBinaryString(file);
 }
 
-/** Removes element from workout and corresponding entry in workout object.
- * Used to remove exercise, set or note of any kind from workout */
+/** Removes element from workout and corresponding entry in workout object. Used to remove
+ *  exercise, set or note of any kind from workout */
 function remove(element) {
     const entry = $(element).data('set').split(',');
     const parent = element.parentElement;
@@ -397,13 +428,13 @@ function remove(element) {
             workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]].splice(entry[5], 1);
             break;
     }
-    document.getElementById('notes').innerHTML='';
-    document.getElementById('exercises').innerHTML='';
+    document.getElementById('notes').innerHTML = '';
+    document.getElementById('exercises').innerHTML = '';
     displayWorkout();
 }
 
 /** Gets existing workout details in JSON format from REST controller.
- * @param {int} workoutId   id of workout to be loaded from database */
+ * @param {number} workoutId   id number of workout to be loaded from database */
 function loadWorkout(workoutId) {
     // Obtain CSRF token
     let token = $("meta[name='_csrf']").attr("content");
@@ -419,7 +450,7 @@ function loadWorkout(workoutId) {
         window.location.pathname = 'wl/workout/';
     })
         .fail(function () {
-            alert('There\'s been a problem!')
+            alert('There\'s been a problem loading the workout data!')
         });
 }
 
@@ -440,7 +471,7 @@ function saveWorkout(workout) {
         window.location.pathname = 'wl/user'
     })
         .fail(function () {
-            alert('There\'s been a problem!')
+            alert('There\'s been a problem saving the workout data!')
         });
 }
 
@@ -448,7 +479,7 @@ function saveWorkout(workout) {
 function deleteWorkout() {
     // Obtain CSRF token
     let token = $("meta[name='_csrf']").attr("content");
-    // Request workout of given id to be deleted from
+    // Request workout of given id to be deleted from database
     $.ajax({
         url: 'http://localhost:8080/wl/workout/' + workout.id,
         headers: {"X-CSRF-TOKEN": token},
@@ -458,6 +489,6 @@ function deleteWorkout() {
         window.location.pathname = 'wl/user'
     })
         .fail(function () {
-            alert('There\'s been a problem!')
+            alert('There\'s been a problem deleting this workout!')
         });
 }
