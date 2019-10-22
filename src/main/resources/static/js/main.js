@@ -70,11 +70,11 @@ function scrollToTop() {
 /** This function updates a single lift section in General Strength tab whenever there's an input
  *  from user by entering a value or moving the slider. The other input gets updated (slider or
  *  input field respectively) and new max is calculated based on weight and reps fields.
- *  @param {String} fieldToUpdate   id of the other element to update
+ *  @param {string} fieldToUpdate   id of the other element to update
  *  @param {number}  value   value that fieldToUpdate will be updated with
- *  @param {String} weightField id of the element that stores the weight
- *  @param {String} repsField   id of the element that stores the number of reps
- *  @param {String} maxField    id of the element that will be updated with calculation result
+ *  @param {string} weightField id of the element that stores the weight
+ *  @param {string} repsField   id of the element that stores the number of reps
+ *  @param {string} maxField    id of the element that will be updated with calculation result
  */
 function updateGS(fieldToUpdate, value, weightField, repsField, maxField) {
     document.getElementById(fieldToUpdate).value = value;
@@ -84,7 +84,7 @@ function updateGS(fieldToUpdate, value, weightField, repsField, maxField) {
 }
 
 /** This function updates an element of certain id with given value.
- * @param {String}  field   id of the element to update
+ * @param {string}  field   id of the element to update
  * @param {number}  value   value the element will be updated with
  */
 function update(field, value) {
@@ -108,7 +108,7 @@ function calculate1RM() {
 }
 
 /** This function updates descriptions for percentages of 1 Rep Max.
- * @param {String}  description id of the description to be updated
+ * @param {string}  description id of the description to be updated
  * @param {number}  percentage  the current value of percentage
  */
 function updatePercentageDescription(description, percentage) {
@@ -211,12 +211,16 @@ function displayWorkout() {
     }
 }
 
-/* Stores given value in workout object entry. Last <br> in value is removed (single <br> values
- tend to get stuck in contenteditable fields) and the rest are changed into \n symbols. The entry
- name is constructed from string array using bracket notation */
+/** Stores given value in workout object entry.
+ * @param entry {array}  workout object entry name
+ * @param value {string}    text to be stored in workout entry
+ */
 function storeInWorkout(entry, value) {
+    // remove last <br> (these often get stuck in content editable elements)
     value = value.replace(/^\s*<br\s*\/?>|<br\s*\/?>\s*$/g, '');
+    // replace other <br>s with \n
     value = value.replace(/<br\s*[\/]?>/gi, "\n");
+    // store the text in workout object entry using bracket notation
     switch (entry.length) {
         case 1:
             workout[entry[0]] = value;
@@ -234,6 +238,10 @@ function storeInWorkout(entry, value) {
     }
 }
 
+/** Adds exercise to workout.
+ * @param argument  {number} optional argument used when displaying existing workout. No
+ * arguments means add new empty exercise.
+ */
 function addExercise() {
     let exerciseNo = null;
     if (arguments.length > 0) {
