@@ -212,7 +212,7 @@ function displayWorkout() {
 }
 
 /** Stores given value in workout object entry.
- * @param entry {array}  workout object entry name
+ * @param entry {string[]}  workout object entry name
  * @param value {string}    text to be stored in workout entry
  */
 function storeInWorkout(entry, value) {
@@ -239,18 +239,17 @@ function storeInWorkout(entry, value) {
 }
 
 /** Adds exercise to workout.
- * @param argument  {number} optional argument used when displaying existing workout. No
- * arguments means add new empty exercise.
+ * @param {number} [exerciseNo] - exercise number (only when editing existing workout)
+ * @param {string} [title] - exercise title (only when editing existing workout)
  */
-function addExercise() {
-    let exerciseNo = null;
-    if (arguments.length > 0) {
-        exerciseNo = arguments[0];
-    } else {
+function addExercise(exerciseNo = undefined, title = undefined) {
+    // add workout object entry if it's a new exercise
+    if (exerciseNo === undefined) {
         let newExercise = {title: null, notes: [], sets: []};
         workout.exercises.push(newExercise);
         exerciseNo = workout.exercises.length - 1;
     }
+    // create an element, it's innerHTML and set it's attributes
     const short = 'exercise' + exerciseNo;
     let newExerciseHTML = document.createElement('div');
     newExerciseHTML.setAttribute('id', short + '-container');
@@ -264,22 +263,27 @@ function addExercise() {
     document.getElementById("exercises").appendChild(newExerciseHTML);
     document.getElementById(short).setAttribute('data-set',
         "exercises," + exerciseNo + ",title");
-    if (arguments.length > 0) {
-        document.getElementById(short).innerHTML = arguments[1];
+    // set content if displaying an existing exercise or focus on element if creating a new one
+    if (title !== undefined) {
+        document.getElementById(short).innerHTML = title;
     } else {
         document.getElementById(short).focus();
     }
 }
 
-function addSet(exerciseNo) {
-    let setNo = null;
-    if (arguments.length > 1) {
-        setNo = arguments[1];
-    } else {
+/** Adds set to workout.
+ * @param {number} [exerciseNo] - exercise number
+ * @param {number} [setNo] - set number (only when editing existing workout)
+ * @param {string} [data] - set data (only when editing existing workout)
+ */
+function addSet(exerciseNo, setNo = undefined, data = undefined) {
+    // add workout object entry if it's a new set
+    if (setNo === undefined) {
         let newSet = {data: null, notes: []};
         workout.exercises[exerciseNo].sets.push(newSet);
         setNo = workout.exercises[exerciseNo].sets.length - 1;
     }
+    // create an element, it's innerHTML and set it's attributes
     const short = "exercise" + exerciseNo + "set" + setNo;
     let newSetHTML = document.createElement('div');
     newSetHTML.setAttribute('id', short + '-container');
@@ -293,8 +297,9 @@ function addSet(exerciseNo) {
     document.getElementById("exercise" + exerciseNo + "-sets").appendChild(newSetHTML);
     document.getElementById(short).setAttribute('data-set',
         "exercises," + exerciseNo + ",sets," + setNo + ",data");
-    if (arguments.length > 1) {
-        document.getElementById(short).innerHTML = arguments[2];
+    // set content if displaying an existing set or focus on element if creating a new one
+    if (data !== undefined) {
+        document.getElementById(short).innerHTML = data;
     } else {
         document.getElementById(short).focus();
     }
@@ -420,7 +425,9 @@ function uploadFile(file) {
 }
 
 /** Removes element from workout and corresponding entry in workout object. Used to remove
- *  exercise, set or note of any kind from workout */
+ *  exercise, set or note of any kind from workout
+ *  @param {Node} [element] - element to remove
+ */
 function remove(element) {
     const entry = $(element).data('set').split(',');
     const parent = element.parentElement;
@@ -442,7 +449,7 @@ function remove(element) {
 }
 
 /** Gets existing workout details in JSON format from REST controller.
- * @param {number} workoutId   id number of workout to be loaded from database */
+ * @param {number} [workoutId] - id number of workout to be loaded from database */
 function loadWorkout(workoutId) {
     // Obtain CSRF token
     let token = $("meta[name='_csrf']").attr("content");
@@ -463,7 +470,7 @@ function loadWorkout(workoutId) {
 }
 
 /** Sends new workout object in JSON format to REST controller using POST AJAX call.
- * @param {object}  workout  workout object to be persisted */
+ * @param {object} [workout] - workout object to be persisted */
 function saveWorkout(workout) {
     // Obtain CSRF token
     let token = $("meta[name='_csrf']").attr("content");
