@@ -305,37 +305,31 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
     }
 }
 
-function addNote(number, type, content) {
+function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefined) {
+    let itsANewNote = (noteNo == null);
     let newNote = {type: type, content: content};
     let noteListAlias = workout.notes;
     let appendHere = document.getElementById('notes');
-    let noteNo = number;
-    if (number == null) {
+    if (itsANewNote) {
         noteNo = workout.notes.length;
     }
     let short = "note" + noteNo;
     let dataSetContent = "notes," + noteNo + ",content";
-    switch (arguments.length) {
-        case 4:
-            noteListAlias = workout.exercises[arguments[3]].notes;
-            appendHere = document.getElementById("exercise" + arguments[3] + "-notes");
-            if (number == null) {
-                noteNo = workout.exercises[arguments[3]].notes.length;
-            }
-            short = "exercise" + arguments[3] + "note" + noteNo;
-            dataSetContent = "exercises," + arguments[3] + ",notes," + noteNo + ",content";
-            break;
-        case 5:
-            noteListAlias = workout.exercises[arguments[3]].sets[arguments[4]].notes;
-            appendHere = document.getElementById(
-                "exercise" + arguments[3] + "set" + arguments[4] + "-notes");
-            if (number == null) {
-                noteNo = workout.exercises[arguments[3]].sets[arguments[4]].notes.length;
-            }
-            short = "exercise" + arguments[3] + "set" + arguments[4] + "note" + noteNo;
-            dataSetContent = "exercises," + arguments[3] + ",sets," + arguments[4] + ",notes," +
-                noteNo + ",content";
-            break;
+    if (exerciseNo !== undefined && setNo === undefined) {
+        noteListAlias = workout.exercises[arguments[3]].notes;
+        appendHere = document.getElementById("exercise" + arguments[3] + "-notes");
+        noteNo = workout.exercises[arguments[3]].notes.length;
+        short = "exercise" + arguments[3] + "note" + noteNo;
+        dataSetContent = "exercises," + arguments[3] + ",notes," + noteNo + ",content";
+    }
+    if (exerciseNo !== undefined && setNo !== undefined) {
+        noteListAlias = workout.exercises[arguments[3]].sets[arguments[4]].notes;
+        appendHere = document.getElementById(
+            "exercise" + arguments[3] + "set" + arguments[4] + "-notes");
+        noteNo = workout.exercises[arguments[3]].sets[arguments[4]].notes.length;
+        short = "exercise" + arguments[3] + "set" + arguments[4] + "note" + noteNo;
+        dataSetContent = "exercises," + arguments[3] + ",sets," + arguments[4] + ",notes," +
+            noteNo + ",content";
     }
     let newNoteHTML = document.createElement('div');
     newNoteHTML.setAttribute('id', short + '-container');
@@ -348,7 +342,7 @@ function addNote(number, type, content) {
         'title="Delete note">&nbsp</button>';
     appendHere.appendChild(newNoteHTML);
     document.getElementById(short).setAttribute('data-set', dataSetContent);
-    if (number == null) {
+    if (itsANewNote) {
         noteListAlias.push(newNote);
         document.getElementById(short).focus();
     } else {
