@@ -1,6 +1,6 @@
-/****************************************************************
- * Functions and variables related to page navigation and layout*
- ****************************************************************/
+/*****************************************************************
+ * Functions and variables related to page navigation and layout *
+ *****************************************************************/
 
 let OkToToggleLogo = true; // Global flag for logo visibility toggling
 
@@ -255,8 +255,8 @@ function addExercise(exerciseNo = undefined, title = undefined) {
     newExerciseHTML.setAttribute('id', short + '-container');
     newExerciseHTML.innerHTML = '<br><label for="' + short + '">Exercise #' + (exerciseNo + 1) +
         ': </label><span contenteditable="true" class="my-input" id="' + short +
-        '"></span><button class="my-button add-note" onclick="addNote(null, 0, null, ' + exerciseNo +
-        ');" title="Add exercise note">&nbsp</button><button class="my-button remove"' +
+        '"></span><button class="my-button add-note" onclick="addNote(undefined, 0, undefined, ' +
+        exerciseNo + ');" title="Add exercise note">&nbsp</button><button class="my-button remove"' +
         ' onclick="remove(' + short + ');" title="Delete exercise">&nbsp</button><div id="' +
         short + '-notes"></div><br><div id="' + short + '-sets"></div><button class="my-button" ' +
         'onclick="addSet(' + exerciseNo + ');">Add set</button><br>';
@@ -283,14 +283,14 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
         workout.exercises[exerciseNo].sets.push(newSet);
         setNo = workout.exercises[exerciseNo].sets.length - 1;
     }
-    // create an element, it's innerHTML and set it's attributes
+    // create an element, its innerHTML and set its attributes
     const short = "exercise" + exerciseNo + "set" + setNo;
     let newSetHTML = document.createElement('div');
     newSetHTML.setAttribute('id', short + '-container');
     newSetHTML.innerHTML = '<br><label for="' + short + '">Set #' + (setNo + 1) + ': </label>' +
         '<span contenteditable="true" class="my-input" id="' + short + '"></span><button ' +
         'class="my-button add-note" ' +
-        'onclick="addNote(null, 0, null, ' + exerciseNo + ', ' + setNo + ');"' +
+        'onclick="addNote(undefined, 0, undefined, ' + exerciseNo + ', ' + setNo + ');"' +
         ' title="Add set note">&nbsp</button><button class="my-button remove" ' +
         'onclick="remove(' + short + ');" title="Delete set">&nbsp</button>' +
         '<div id="' + short + '-notes"></div><br>';
@@ -305,8 +305,19 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
     }
 }
 
+/** Adds a note to workout, exercise or set - depending on parameters. It can be a fresh (empty)
+ * note added by user during workout creation / edition or already existing note when displaying an
+ * existing workout.
+ * @param {number} noteNo - the index in notes array (undefined when it's a fresh note)
+ * @param {number} type - text (0), audio (1), picture (2), video (3)
+ * @param {string} content - either text content of the text note or a filename for any other type
+ * @param {number} [exerciseNo] - optional number of exercise note is assigned to
+ * @param {number} [setNo] - optional number of set note is assigned to
+ */
 function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefined) {
-    let itsANewNote = (noteNo == null);
+    // is it a new note?
+    let itsANewNote = (noteNo === undefined);
+    // assume it's a workout note (to avoid code repetition)
     let newNote = {type: type, content: content};
     let noteListAlias = workout.notes;
     let appendHere = document.getElementById('notes');
@@ -315,22 +326,29 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
     }
     let short = "note" + noteNo;
     let dataSetContent = "notes," + noteNo + ",content";
+    // if it's an exercise note - modify values
     if (exerciseNo !== undefined && setNo === undefined) {
-        noteListAlias = workout.exercises[arguments[3]].notes;
-        appendHere = document.getElementById("exercise" + arguments[3] + "-notes");
-        noteNo = workout.exercises[arguments[3]].notes.length;
-        short = "exercise" + arguments[3] + "note" + noteNo;
-        dataSetContent = "exercises," + arguments[3] + ",notes," + noteNo + ",content";
+        noteListAlias = workout.exercises[exerciseNo].notes;
+        appendHere = document.getElementById("exercise" + exerciseNo + "-notes");
+        if (itsANewNote) {
+            noteNo = workout.exercises[exerciseNo].notes.length;
+        }
+        short = "exercise" + exerciseNo + "note" + noteNo;
+        dataSetContent = "exercises," + exerciseNo + ",notes," + noteNo + ",content";
     }
+    // same if it's a set note
     if (exerciseNo !== undefined && setNo !== undefined) {
-        noteListAlias = workout.exercises[arguments[3]].sets[arguments[4]].notes;
+        noteListAlias = workout.exercises[exerciseNo].sets[setNo].notes;
         appendHere = document.getElementById(
-            "exercise" + arguments[3] + "set" + arguments[4] + "-notes");
-        noteNo = workout.exercises[arguments[3]].sets[arguments[4]].notes.length;
-        short = "exercise" + arguments[3] + "set" + arguments[4] + "note" + noteNo;
-        dataSetContent = "exercises," + arguments[3] + ",sets," + arguments[4] + ",notes," +
+            "exercise" + exerciseNo + "set" + setNo + "-notes");
+        if (itsANewNote) {
+            noteNo = workout.exercises[exerciseNo].sets[setNo].notes.length;
+        }
+        short = "exercise" + exerciseNo + "set" + setNo + "note" + noteNo;
+        dataSetContent = "exercises," + exerciseNo + ",sets," + setNo + ",notes," +
             noteNo + ",content";
     }
+    // create an element, its innerHTML and set its attributes
     let newNoteHTML = document.createElement('div');
     newNoteHTML.setAttribute('id', short + '-container');
     newNoteHTML.innerHTML = '<label for="' + short + '">Note #' + (noteNo + 1) + ': </label>' +
@@ -342,9 +360,11 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
         'title="Delete note">&nbsp</button>';
     appendHere.appendChild(newNoteHTML);
     document.getElementById(short).setAttribute('data-set', dataSetContent);
+    // if new note - push it to note array and focus on element
     if (itsANewNote) {
         noteListAlias.push(newNote);
         document.getElementById(short).focus();
+    // if not - display the note content (and change type if other than text note)
     } else {
         if (newNote.type !== 0) {
             changeNoteType(newNote.type, short);
@@ -355,9 +375,10 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
     }
 }
 
-/* Changes a note type when user chooses a different one using the select element.
- SelectFieldValue is 0 for text, 1 for audio, 2 for picture, 3 for video, fieldToReplaceId is a
-  note field ID as string.*/
+/** Changes a note type when user chooses a different one using the select element.
+ * @param {number} selectFieldValue - 0 for text, 1 for audio, 2 for picture, 3 for video
+ * @param {string} fieldToReplaceID - id of note node
+ */
 function changeNoteType(selectFieldValue, fieldToReplaceID) {
     // clear note content and set new note type in corresponding workout object entries
     setNoteContentAndType(document.getElementById(fieldToReplaceID), '', selectFieldValue);
@@ -397,8 +418,12 @@ function changeNoteType(selectFieldValue, fieldToReplaceID) {
     fieldToReplaceNode.parentElement.replaceChild(replacement, fieldToReplaceNode);
 }
 
-/* Auxiliary function used to set corresponding entries in workout object when user changes the
- type of a note. Workout entries are identified using custom dataset attached to HTML note element */
+/** Auxiliary function used to set corresponding entries in workout object when user changes the
+ * type of note.
+ * @param {Node} noteId - note HTML node
+ * @param {string} content - content of note (text of filename)
+ * @param type - type of note (text(0), audio(1), picture(2), video(3))
+ */
 function setNoteContentAndType(noteId, content, type) {
     let workoutEntry = $(noteId).data('set').split(',');
     storeInWorkout(workoutEntry, content);
@@ -406,7 +431,9 @@ function setNoteContentAndType(noteId, content, type) {
     storeInWorkout(workoutEntry, type);
 }
 
-/* Stores file attached to a media note in files array */
+/** Stores file attached to a media note in files array.
+ * @param {Blob} file - file to upload
+ */
 function uploadFile(file) {
     let reader = new FileReader();
     reader.onloadend = function (event) {
