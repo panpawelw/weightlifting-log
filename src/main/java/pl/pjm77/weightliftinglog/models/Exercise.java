@@ -8,6 +8,10 @@ import java.util.Objects;
 /**
  * Single exercise consists of title and any number of sets, also any number of notes can be
  * attached to it.
+ *
+ * title - exercise title
+ * sets - list of sets of the exercise
+ * notes - list of notes attached to this exercise
  */
 public class Exercise implements Serializable {
 
