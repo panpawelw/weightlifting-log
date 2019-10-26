@@ -194,7 +194,8 @@
             <!--/*@thymesVar id="workouts" type="java"*/-->
             <tr th:each="workout: ${workouts}">
                 <td>
-                    <button class="my-button" th:onclick="'loadWorkout(' + ${workout.id} + ');'">
+                    <button class="my-button" th:data-id="${workout.id}"
+                            onclick="loadWorkout(this.getAttribute('data-id'))">
                         <th:block th:text="${workout.title}"/>
                         <br>
                         <th:block th:text="${workout.created}"/>
@@ -204,22 +205,8 @@
         </table>
     </div>
 
-    <!-- JS code for smooth column size adjustment -->
-    <script>
-        let splitobj = Split(["#workout-content-container", "#workout-selection-container"], {
-            elementStyle: function (dimension, size, gutterSize) {
-                $(window).trigger('resize'); // Optional
-                return {'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)'}
-            },
-            gutterStyle: function (dimension, gutterSize) {
-                return {'flex-basis': gutterSize + 'px'}
-            },
-            sizes: [74, 24],
-            minSize: 100,
-            gutterSize: 6,
-            cursor: 'col-resize'
-        });
-    </script>
+    <!-- for smooth column size adjustment -->
+    <script>split();</script>
 </div>
 
 <!-- user panel fragments - default -->

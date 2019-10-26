@@ -67,6 +67,24 @@ function scrollToTop() {
     OkToToggleLogo = true;
 }
 
+/** This function utilizes Split plugin to create two flexible columns with adjustable width.
+ */
+function split() {
+    Split(["#workout-content-container", "#workout-selection-container"], {
+        elementStyle: function (dimension, size, gutterSize) {
+            $(window).trigger('resize'); // Optional
+            return {'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)'}
+        },
+        gutterStyle: function (dimension, gutterSize) {
+            return {'flex-basis': gutterSize + 'px'}
+        },
+        sizes: [74, 24],
+        minSize: 100,
+        gutterSize: 6,
+        cursor: 'col-resize'
+    });
+}
+
 /** This function updates a single lift section in General Strength tab whenever there's an input
  *  from user by entering a value or moving the slider. The other input gets updated (slider or
  *  input field respectively) and new max is calculated based on weight and reps fields.
@@ -364,7 +382,7 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
     if (itsANewNote) {
         noteListAlias.push(newNote);
         document.getElementById(short).focus();
-    // if not - display the note content (and change type if other than text note)
+        // if not - display the note content (and change type if other than text note)
     } else {
         if (newNote.type !== 0) {
             changeNoteType(newNote.type, short);
