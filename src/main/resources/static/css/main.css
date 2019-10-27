@@ -54,6 +54,12 @@ input:focus, button:focus, .my-button:focus, .my-input:focus, select:focus {
     text-align: center;
 }
 
+/* elements even in one line */
+.even {
+    display: inline-flex;
+    align-items: center;
+}
+
 /* error messages */
 .alert {
     color: red;

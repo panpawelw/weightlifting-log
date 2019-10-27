@@ -242,7 +242,8 @@
     <div>
         <div>
             <br><label for="title">Workout title: </label>
-            <span contenteditable="true" class="my-input" id="title" data-set="title"></span>
+            <input type="text" name="title" id="title" value=""
+                   onchange="workout['title'] = this.value;"/>
             <button class='my-button add-note' title="Add workout note"
                     onclick='addNote(undefined, 0, undefined);'>&nbsp
             </button>
