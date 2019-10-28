@@ -198,7 +198,8 @@
                             onclick="loadWorkout(this.getAttribute('data-id'))">
                         <th:block th:text="${workout.title}"/>
                         <br>
-                        <th:block th:text="${workout.created}"/>
+                        <th:block
+                                th:text="${#dates.format(workout.created, 'dd-MM-yyyy HH:mm')}"/>
                     </button>
                 </td>
             </tr>
@@ -230,13 +231,13 @@
 
     <div>
         <label for="created">Created: </label>
-        <input type="text" name="created" id="created" value=""
-               onchange="workout['created'] = this.value;"/>
+        <input type="text" name="created" id="created" maxlength="16" size="14" value=""
+               onchange="workout['created'] = this.value + ':00';"/>
     </div>
     <div class="show-on-edit">
         <label for="updated">Updated: </label>
-        <input type="text" name="updated" id="updated" value=""
-               onchange="workout['updated'] = this.value;"/>
+        <input type="text" name="updated" id="updated" maxlength="16" size="14" value=""
+               onchange="workout['updated'] = this.value + ':00';"/>
     </div>
     <br>
     <div>

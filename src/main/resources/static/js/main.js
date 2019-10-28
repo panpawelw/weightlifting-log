@@ -79,7 +79,7 @@ function split() {
             return {'flex-basis': gutterSize + 'px'}
         },
         sizes: [74, 24],
-        minSize: 100,
+        minSize: 150,
         gutterSize: 6,
         cursor: 'col-resize'
     });
@@ -170,8 +170,8 @@ function addWorkout() {
     };
     // Update "created" entry with current timestamp
     const created = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    document.getElementById("created").value = created;
     workout['created'] = created;
+    document.getElementById("created").value = created.slice(0, 16);
     // Continue with workout display and edition
     displayWorkout();
 }
@@ -181,12 +181,12 @@ function addWorkout() {
 function editWorkout() {
     // Get existing workout object from session storage and update "created" and "title" entries
     workout = JSON.parse(sessionStorage.getItem('workout'));
-    document.getElementById("created").value = workout['created'];
+    document.getElementById("created").value = workout['created'].slice(0, 16);
     document.getElementById("title").value = workout['title'];
     // Update the "updated" entry with current timestamp
     const updated = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    document.getElementById("updated").value = updated;
     workout['updated'] = updated;
+    document.getElementById("updated").value = updated.slice(0, 16);
     // Continue with workout display and edition
     displayWorkout();
 }
@@ -270,8 +270,8 @@ function addExercise(exerciseNo = undefined, title = undefined) {
     let newExerciseHTML = document.createElement('div');
     newExerciseHTML.setAttribute('id', short + '-container');
     newExerciseHTML.innerHTML = '<div class="even"><br><label for="' + short + '">Exercise' + ' #' +
-        (exerciseNo + 1) + ': </label><span contenteditable="true" class="my-input" id="' + short +
-        '"></span><button class="my-button add-note" onclick="addNote(undefined, 0, undefined, ' +
+        (exerciseNo + 1) + ': </label><p contenteditable="true" class="my-input" id="' + short +
+        '"></p></div><button class="my-button add-note" onclick="addNote(undefined, 0, undefined, ' +
         exerciseNo + ');" title="Add exercise note">&nbsp</button><button class="my-button remove"' +
         ' onclick="remove(' + short + ');" title="Delete exercise">&nbsp</button></div><div id="' +
         short + '-notes"></div><br><div id="' + short + '-sets"></div><button class="my-button" ' +
