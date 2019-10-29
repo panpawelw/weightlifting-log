@@ -79,7 +79,7 @@ function split() {
             return {'flex-basis': gutterSize + 'px'}
         },
         sizes: [74, 24],
-        minSize: 150,
+        minSize: [150, 50],
         gutterSize: 6,
         cursor: 'col-resize'
     });
@@ -182,7 +182,7 @@ function editWorkout() {
     // Get existing workout object from session storage and update "created" and "title" entries
     workout = JSON.parse(sessionStorage.getItem('workout'));
     document.getElementById("created").value = workout['created'].slice(0, 16);
-    document.getElementById("title").value = workout['title'];
+    document.getElementById("title").innerHTML = workout['title'];
     // Update the "updated" entry with current timestamp
     const updated = new Date().toISOString().slice(0, 19).replace('T', ' ');
     workout['updated'] = updated;
@@ -269,9 +269,9 @@ function addExercise(exerciseNo = undefined, title = undefined) {
     const short = 'exercise' + exerciseNo;
     let newExerciseHTML = document.createElement('div');
     newExerciseHTML.setAttribute('id', short + '-container');
-    newExerciseHTML.innerHTML = '<div class="even"><br><label for="' + short + '">Exercise' + ' #' +
-        (exerciseNo + 1) + ': </label><p contenteditable="true" class="my-input" id="' + short +
-        '"></p></div><button class="my-button add-note" onclick="addNote(undefined, 0, undefined, ' +
+    newExerciseHTML.innerHTML = '<br><label for="' + short + '">Exercise #' +
+        (exerciseNo + 1) + ': </label><span contenteditable="true" class="my-input" id="' + short +
+        '"></span><button class="my-button add-note" onclick="addNote(undefined, 0, undefined, ' +
         exerciseNo + ');" title="Add exercise note">&nbsp</button><button class="my-button remove"' +
         ' onclick="remove(' + short + ');" title="Delete exercise">&nbsp</button></div><div id="' +
         short + '-notes"></div><br><div id="' + short + '-sets"></div><button class="my-button" ' +
@@ -303,12 +303,12 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
     const short = "exercise" + exerciseNo + "set" + setNo;
     let newSetHTML = document.createElement('div');
     newSetHTML.setAttribute('id', short + '-container');
-    newSetHTML.innerHTML = '<div class="even"><br><label for="' + short + '">Set #' +
+    newSetHTML.innerHTML = '<br><label for="' + short + '">Set #' +
         (setNo + 1) + ': </label><span contenteditable="true" class="my-input" ' +
         'id="' + short + '"></span><button class="my-button add-note" ' +
         'onclick="addNote(undefined, 0, undefined, ' + exerciseNo + ', ' + setNo + ');"' +
         ' title="Add set note">&nbsp</button><button class="my-button remove" ' +
-        'onclick="remove(' + short + ');" title="Delete set">&nbsp</button></div>' +
+        'onclick="remove(' + short + ');" title="Delete set">&nbsp</button>' +
         '<div id="' + short + '-notes"></div><br>';
     document.getElementById("exercise" + exerciseNo + "-sets").appendChild(newSetHTML);
     document.getElementById(short).setAttribute('data-set',
@@ -367,13 +367,13 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
     // create an element, its innerHTML and set its attributes
     let newNoteHTML = document.createElement('div');
     newNoteHTML.setAttribute('id', short + '-container');
-    newNoteHTML.innerHTML = '<div class="even"><label for="' + short + '">Note #' + (noteNo + 1) +
+    newNoteHTML.innerHTML = '<label for="' + short + '">Note #' + (noteNo + 1) +
         ': </label><span contenteditable="true" class="my-input" id="' + short + '"></span>' +
         '<select onchange="changeNoteType(this.value, \'' + short + '\');"' +
         ' name="' + short + '-type"><option value="0">Text</option><option value="1">' +
         'Audio</option><option value="2">Picture</option><option value="3">Video</option>' +
         '</select><button class="my-button remove" onclick="remove(' + short + ');" ' +
-        'title="Delete note">&nbsp</button></div>';
+        'title="Delete note">&nbsp</button>';
     appendHere.appendChild(newNoteHTML);
     document.getElementById(short).setAttribute('data-set', dataSetContent);
     // if new note - push it to note array and focus on element

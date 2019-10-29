@@ -379,6 +379,11 @@ button:active, input[type=submit]:active, .my-button:active {
 
 #workouts-list {
     margin: auto;
+    width: 90%;
+}
+
+#workouts-list .my-button {
+    width: 100%;
 }
 
 /* General text styling */
@@ -411,6 +416,10 @@ button:active, input[type=submit]:active, .my-button:active {
 /* Responsive elements */
 @media screen and (max-width: 280px) {
 
+    html body {
+        font-size: 50%;
+    }
+
     .percentage-input {
         width: 15vw;
     }
@@ -418,12 +427,20 @@ button:active, input[type=submit]:active, .my-button:active {
 
 @media screen and (min-width: 281px) and (max-width: 320px) {
 
+    html body {
+        font-size: 60%;
+    }
+
     .percentage-input {
         width: 12vw;
     }
 }
 
 @media screen and (min-width: 321px) and (max-width: 400px) {
+
+    html body {
+        font-size: 70%;
+    }
 
     .percentage-input {
         width: 9.5vw;

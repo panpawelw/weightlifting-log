@@ -196,7 +196,9 @@
                 <td>
                     <button class="my-button" th:data-id="${workout.id}"
                             onclick="loadWorkout(this.getAttribute('data-id'))">
-                        <th:block th:text="${workout.title}"/>
+                        <th:block
+                                th:text="${#strings.abbreviate
+                                (#strings.replace(workout.title, '&lt;br&gt;', ' '), 30)}"/>
                         <br>
                         <th:block
                                 th:text="${#dates.format(workout.created, 'dd-MM-yyyy HH:mm')}"/>
@@ -231,20 +233,19 @@
 
     <div>
         <label for="created">Created: </label>
-        <input type="text" name="created" id="created" maxlength="16" size="14" value=""
+        <input type="text" name="created" id="created" maxlength="16" size="12" value=""
                onchange="workout['created'] = this.value + ':00';"/>
     </div>
     <div class="show-on-edit">
         <label for="updated">Updated: </label>
-        <input type="text" name="updated" id="updated" maxlength="16" size="14" value=""
+        <input type="text" name="updated" id="updated" maxlength="16" size="12" value=""
                onchange="workout['updated'] = this.value + ':00';"/>
     </div>
     <br>
     <div>
         <div>
             <br><label for="title">Workout title: </label>
-            <input type="text" name="title" id="title" value=""
-                   onchange="workout['title'] = this.value;"/>
+            <span class="my-input" contenteditable="true" id="title" data-set="title"></span>
             <button class='my-button add-note' title="Add workout note"
                     onclick='addNote(undefined, 0, undefined);'>&nbsp
             </button>
