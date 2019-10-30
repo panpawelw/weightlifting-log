@@ -79,7 +79,7 @@ function split() {
             return {'flex-basis': gutterSize + 'px'}
         },
         sizes: [74, 24],
-        minSize: [150, 50],
+        minSize: [150, 80],
         gutterSize: 6,
         cursor: 'col-resize'
     });

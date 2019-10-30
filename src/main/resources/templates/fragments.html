@@ -167,7 +167,7 @@
 </div>
 
 <!--User panel-->
-<div th:fragment="user-panel" class="row no-gutters workout-tab-container" style="height: 95vh;">
+<div th:fragment="user-panel" class="row no-gutters workout-tab-container">
     <div id="workout-content-container" class="col">
         <!--/*@thymesVar id="userPanelPage" type="java"*/-->
         <div th:if="${!userPanelPage.isEmpty()}" th:replace="__${userPanelPage}__">
@@ -221,6 +221,13 @@
 
 <!-- user panel fragments - workout details -->
 <div th:fragment="user-panel-workout-details" class="workout-content">
+    <script>
+        window.addEventListener('load', function () {
+            console.log(document.getElementById('workout-content-container').offsetHeight);
+            document.getElementById('workout-selection-container').setAttribute("style",("height: " +
+                document.getElementsByClassName('workout-content')[0].offsetHeight) + "px");
+            });
+    </script>
     <div class="same-row">
         <button class="my-button" onclick="saveWorkout(workout);" type="button">
             Save</button>
