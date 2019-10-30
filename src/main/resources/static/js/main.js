@@ -70,7 +70,7 @@ function scrollToTop() {
 /** This function utilizes Split plugin to create two flexible columns with adjustable width.
  */
 function split() {
-    Split(["#workout-content-container", "#workout-selection-container"], {
+    let splitObj = Split(["#workout-content-container", "#workout-selection-container"], {
         elementStyle: function (dimension, size, gutterSize) {
             $(window).trigger('resize'); // Optional
             return {'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)'}
@@ -200,6 +200,10 @@ function displayWorkout() {
      innerHTML properties. Workout entries are stored in custom data attributes of said elements */
     document.getElementsByClassName('workout-content')[0]
         .addEventListener('input', function (event) {
+            // equalize column height in case it changed
+            document.getElementById('workout-selection-container').style.height =
+                document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
+            // store value in workout object entry
             const elementHoldingValue = event.target;
             if (elementHoldingValue.className === 'my-input') {
                 let workoutEntry = $(elementHoldingValue).data('set').split(',');
@@ -285,6 +289,9 @@ function addExercise(exerciseNo = undefined, title = undefined) {
     } else {
         document.getElementById(short).focus();
     }
+    // equalize column height
+    document.getElementById('workout-selection-container').style.height =
+        document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
 }
 
 /** Adds set to workout.
@@ -319,6 +326,9 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
     } else {
         document.getElementById(short).focus();
     }
+    // equalize column height
+    document.getElementById('workout-selection-container').style.height =
+        document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
 }
 
 /** Adds a note to workout, exercise or set - depending on parameters. It can be a fresh (empty)
@@ -389,6 +399,9 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
             document.getElementById(short).innerHTML = newNote.content;
         }
     }
+    // equalize column height
+    document.getElementById('workout-selection-container').style.height =
+        document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
 }
 
 /** Changes a note type when user chooses a different one using the select element.
@@ -432,6 +445,9 @@ function changeNoteType(selectFieldValue, fieldToReplaceID) {
     replacement.dataset.set = fieldToReplaceNode.dataset.set;
     replacement.setAttribute('id', fieldToReplaceID);
     fieldToReplaceNode.parentElement.replaceChild(replacement, fieldToReplaceNode);
+    // equalize column height
+    document.getElementById('workout-selection-container').style.height =
+        document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
 }
 
 /** Auxiliary function used to set corresponding entries in workout object when user changes the
@@ -483,6 +499,9 @@ function remove(element) {
     document.getElementById('notes').innerHTML = '';
     document.getElementById('exercises').innerHTML = '';
     displayWorkout();
+    // equalize column height
+    document.getElementById('workout-selection-container').style.height =
+        document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
 }
 
 /** Gets existing workout details in JSON format from REST controller.
