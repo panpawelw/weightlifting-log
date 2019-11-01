@@ -70,7 +70,7 @@ function scrollToTop() {
 /** This function utilizes Split plugin to create two flexible columns with adjustable width.
  */
 function split() {
-    let splitObj = Split(["#workout-content-container", "#workout-selection-container"], {
+    Split(["#workout-content-container", "#workout-selection-container"], {
         elementStyle: function (dimension, size, gutterSize) {
             $(window).trigger('resize'); // Optional
             return {'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)'}
@@ -383,7 +383,7 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
         ' name="' + short + '-type"><option value="0">Text</option><option value="1">' +
         'Audio</option><option value="2">Picture</option><option value="3">Video</option>' +
         '</select><button class="my-button remove" onclick="remove(' + short + ');" ' +
-        'title="Delete note">&nbsp</button>';
+        'title="Delete note">&nbsp</button><img id="preview" alt="preview">';
     appendHere.appendChild(newNoteHTML);
     document.getElementById(short).setAttribute('data-set', dataSetContent);
     // if new note - push it to note array and focus on element
@@ -473,8 +473,10 @@ function uploadFile(file) {
         if (currentEvent.readyState === FileReader.DONE) {
             files.push(reader.result);
         }
+        let preview = document.getElementById('preview');
+        preview.src = reader.result;
     };
-    reader.readAsBinaryString(file);
+    reader.readAsDataURL(file);
 }
 
 /** Removes element from workout and corresponding entry in workout object. Used to remove
