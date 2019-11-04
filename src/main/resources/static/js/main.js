@@ -342,7 +342,7 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
  */
 function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefined) {
     // is it a new note?
-    let itsANewNote = (noteNo === undefined);
+    const itsANewNote = (noteNo === undefined);
     // assume it's a workout note (to avoid code repetition)
     let newNote = {type: type, content: content};
     let noteListAlias = workout.notes;
@@ -362,7 +362,7 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
         short = "exercise" + exerciseNo + "note" + noteNo;
         dataSetContent = "exercises," + exerciseNo + ",notes," + noteNo + ",content";
     }
-    // same if it's a set note
+    // it's a set note - modify values
     if (exerciseNo !== undefined && setNo !== undefined) {
         noteListAlias = workout.exercises[exerciseNo].sets[setNo].notes;
         appendHere = document.getElementById(
@@ -374,7 +374,7 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
         dataSetContent = "exercises," + exerciseNo + ",sets," + setNo + ",notes," +
             noteNo + ",content";
     }
-    // create an element, its innerHTML and set its attributes
+    // create an element, innerHTML and set attributes
     let newNoteHTML = document.createElement('div');
     newNoteHTML.setAttribute('id', short + '-container');
     newNoteHTML.innerHTML = '<label for="' + short + '">Note #' + (noteNo + 1) +
@@ -383,7 +383,7 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
         ' name="' + short + '-type"><option value="0">Text</option><option value="1">' +
         'Audio</option><option value="2">Picture</option><option value="3">Video</option>' +
         '</select><button class="my-button remove" onclick="remove(' + short + ');" ' +
-        'title="Delete note">&nbsp</button><img id="preview" alt="preview">';
+        'title="Delete note">&nbsp</button>';
     appendHere.appendChild(newNoteHTML);
     document.getElementById(short).setAttribute('data-set', dataSetContent);
     // if new note - push it to note array and focus on element
@@ -393,8 +393,7 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
         // if not - display the note content (and change type if other than text note)
     } else {
         if (newNote.type !== 0) {
-            changeNoteType(newNote.type, short);
-            document.getElementById(short).value = newNote.content;
+            displayExistingMediaNote(short, newNote.content, newNote.type);
         } else {
             document.getElementById(short).innerHTML = newNote.content;
         }
@@ -406,17 +405,17 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
 
 /** Changes a note type when user chooses a different one using the select element.
  * @param {number} selectFieldValue - 0 for text, 1 for audio, 2 for picture, 3 for video
- * @param {string} fieldToReplaceID - id of note node
+ * @param {string} fieldToReplaceId - id of note node
  */
-function changeNoteType(selectFieldValue, fieldToReplaceID) {
+function changeNoteType(selectFieldValue, fieldToReplaceId) {
     // clear note content and set new note type in corresponding workout object entries
-    setNoteContentAndType(document.getElementById(fieldToReplaceID), '', selectFieldValue);
+    setNoteContentAndType(document.getElementById(fieldToReplaceId), '', selectFieldValue);
     // assume that new note is a media note (to avoid a lot of duplicate code below)
     let replacement = document.createElement('input');
     replacement.setAttribute('type', 'file');
     replacement.onchange = function () {
         setNoteContentAndType(this, this.files[0].name, selectFieldValue);
-        uploadFile(this.files[0]);
+        attachFile(this.id, this.files[0], this.files[0].name, selectFieldValue);
     };
     switch (selectFieldValue) {
         case '0':
@@ -440,10 +439,10 @@ function changeNoteType(selectFieldValue, fieldToReplaceID) {
             break;
     }
     // switch IDs of old and new elements, copy data and replace
-    document.getElementById(fieldToReplaceID).setAttribute('id', 'tempID');
+    document.getElementById(fieldToReplaceId).setAttribute('id', 'tempID');
     let fieldToReplaceNode = document.getElementById('tempID');
     replacement.dataset.set = fieldToReplaceNode.dataset.set;
-    replacement.setAttribute('id', fieldToReplaceID);
+    replacement.setAttribute('id', fieldToReplaceId);
     fieldToReplaceNode.parentElement.replaceChild(replacement, fieldToReplaceNode);
     // equalize column height
     document.getElementById('workout-selection-container').style.height =
@@ -463,20 +462,27 @@ function setNoteContentAndType(noteId, content, type) {
     storeInWorkout(workoutEntry, type);
 }
 
-/** Stores file attached to a media note in files array.
+/** Stores file attached to a media note in files array, removes input field, shows filename
+ *  and play button.
+ * @param {string} fileInputId - file input field Id
  * @param {Blob} file - file to upload
+ * @param {string} content - media note content (a filename)
+ * @param {number} noteType - type of note (text(0), audio(1), picture(2), video(3))
  */
-function uploadFile(file) {
+function attachFile(fileInputId, file, content, noteType) {
     let reader = new FileReader();
     reader.onloadend = function (event) {
         let currentEvent = event.target;
         if (currentEvent.readyState === FileReader.DONE) {
             files.push(reader.result);
         }
-        let preview = document.getElementById('preview');
-        preview.src = reader.result;
+        displayExistingMediaNote(fileInputId, content, noteType);
     };
     reader.readAsDataURL(file);
+}
+
+function displayExistingMediaNote(mediaNoteId, content, type) {
+    console.log(mediaNoteId + ' , ' + content + ' , ' + type);
 }
 
 /** Removes element from workout and corresponding entry in workout object. Used to remove
