@@ -20,7 +20,7 @@
         <input type="submit" value="Log in"/>
     </form>
     <br>
-    <button class="my-button" onclick="location.href = '/wl/register';" type="button">
+    <button class="my-btn" onclick="location.href = '/wl/register';" type="button">
         Register
     </button>
 </div>
@@ -72,7 +72,7 @@
             Male: <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/></p>
         <input type="hidden" th:field="*{role}"/>
         <input type="submit" value="Register new user">
-        <button class="my-button" onclick="location.href='/wl/login';" type="button">Cancel</button>
+        <button class="my-btn" onclick="location.href='/wl/login';" type="button">Cancel</button>
     </form>
 </div>
 
@@ -100,8 +100,8 @@
             Male: <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/></p>
         <input type="hidden" th:field="*{role}"/>
         <input type="submit" value="Update user details">
-        <button class="my-button" onclick="location.href='/wl/login';" type="button">Cancel</button>
-        <button class="my-button" onclick="location.href='/wl/user/changepassword';"
+        <button class="my-btn" onclick="location.href='/wl/login';" type="button">Cancel</button>
+        <button class="my-btn" onclick="location.href='/wl/user/changepassword';"
                 type="button">Change password
         </button>
     </form>
@@ -126,7 +126,7 @@
             <span th:if="${#fields.hasErrors('confirmNewPassword')}" class="alert"
                   th:errors="*{confirmNewPassword}"></span></p>
         <input type="submit" value="Change password">
-        <button class="my-button" onclick="location.href='/wl/user/update';" type="button">Cancel
+        <button class="my-btn" onclick="location.href='/wl/user/update';" type="button">Cancel
         </button>
     </form>
 </div>
@@ -134,19 +134,19 @@
 <!--User details registration successful-->
 <div th:fragment="register-user-success">
     <h2>Registration successful!</h2><br>
-    <button class="my-button" onclick="location.href='/wl/login';" type="button">OK</button>
+    <button class="my-btn" onclick="location.href='/wl/login';" type="button">OK</button>
 </div>
 
 <!--User details update successful-->
 <div th:fragment="update-user-success">
     <h2>User details updated!</h2><br>
-    <button class="my-button" onclick="location.href='/wl/user';" type="button">OK</button>
+    <button class="my-btn" onclick="location.href='/wl/user';" type="button">OK</button>
 </div>
 
 <!--Password change successful-->
 <div th:fragment="change-password-success">
     <h2>New password has been set!</h2><br>
-    <button class="my-button" onclick="window.location.pathname = 'wl/user/update';"
+    <button class="my-btn" onclick="window.location.pathname = 'wl/user/update';"
             type="button">OK
     </button>
 </div>
@@ -156,10 +156,10 @@
     <div class="controls">
         <!--/*@thymesVar id="adminName" type="java"*/-->
         <p class="same-row" th:text="'Hello ' + ${adminName} + '!'"></p>
-        <button class="same-row my-button" onclick="location.href='/wl/logout';"
+        <button class="same-row my-btn" onclick="location.href='/wl/logout';"
                 type="button">Log out
         </button>
-        <button class="same-row my-button" onclick="location.href='/wl/user';"
+        <button class="same-row my-btn" onclick="location.href='/wl/user';"
                 type="button">Back
         </button>
     </div>
@@ -178,14 +178,14 @@
         <div class="controls">
             <!--/*@thymesVar id="userName" type="java"*/-->
             <p class="same-row" th:text="'Hello ' + ${userName} + '!'"></p>
-            <button class="same-row my-button" onclick="location.href='/wl/logout';"
+            <button class="same-row my-btn" onclick="location.href='/wl/logout';"
                     type="button">Log out
             </button>
-            <button class="same-row my-button" onclick="location.href='/wl/user/update';"
+            <button class="same-row my-btn" onclick="location.href='/wl/user/update';"
                     type="button">Account
             </button>
             <!--/*@thymesVar id="adminRights" type="java"*/-->
-            <button th:if="${adminRights}" class="same-row my-button"
+            <button th:if="${adminRights}" class="same-row my-btn"
                     onclick="location.href='/wl/admin';">Admin panel
             </button>
         </div>
@@ -194,7 +194,7 @@
             <!--/*@thymesVar id="workouts" type="java"*/-->
             <tr th:each="workout: ${workouts}">
                 <td>
-                    <button class="my-button" th:data-id="${workout.id}"
+                    <button class="my-btn" th:data-id="${workout.id}"
                             onclick="loadWorkout(this.getAttribute('data-id'))">
                         <th:block
                                 th:text="${#strings.abbreviate
@@ -206,6 +206,7 @@
                 </td>
             </tr>
         </table>
+        <script>equalizeColumnHeight();</script>
     </div>
 
     <!-- for smooth column size adjustment -->
@@ -215,7 +216,7 @@
 <!-- user panel fragments - default -->
 <div th:fragment="user-panel-default" class="workout-content">
     <h3>Select existing workout from the panel to the right or...</h3>
-    <button class="my-button" onclick="sessionStorage.clear();location.href='/wl/workout/'"
+    <button class="my-btn" onclick="sessionStorage.clear();location.href='/wl/workout/'"
             type="button">Add new workout</button>
 </div>
 
@@ -228,11 +229,11 @@
             });
     </script>
     <div class="same-row">
-        <button class="my-button" onclick="saveWorkout(workout);" type="button">
+        <button class="my-btn" onclick="saveWorkout(workout);" type="button">
             Save</button>
-        <button class="my-button show-on-edit" onclick="deleteWorkout()" type="button">
+        <button class="my-btn show-on-edit" onclick="deleteWorkout()" type="button">
             Delete</button>
-        <button class="my-button" onclick="location.href='/wl/user';" type="button">Cancel</button>
+        <button class="my-btn" onclick="location.href='/wl/user';" type="button">Cancel</button>
     </div>
 
     <br><br>
@@ -252,7 +253,7 @@
         <div>
             <br><label for="title">Workout title: </label>
             <span class="my-input" contenteditable="true" id="title" data-set="title"></span>
-            <button class='my-button add-note' title="Add workout note"
+            <button class='my-btn add bn' title="Add workout note"
                     onclick='addNote(undefined, 0, undefined);'>&nbsp
             </button>
         </div>
@@ -260,16 +261,16 @@
         <br>
         <div id="exercises"></div>
         <br>
-        <button class="my-button" onclick="addExercise();">Add exercise</button>
+        <button class="my-btn" onclick="addExercise();">Add exercise</button>
     </div>
     <br><br>
 
     <div class="same-row">
-        <button class="my-button" onclick="saveWorkout(workout);" type="button">
+        <button class="my-btn" onclick="saveWorkout(workout);" type="button">
             Save</button>
-        <button class="my-button show-on-edit" onclick="deleteWorkout()" type="button">
+        <button class="my-btn show-on-edit" onclick="deleteWorkout()" type="button">
             Delete</button>
-        <button class="my-button" onclick="location.href='/wl/user';" type="button">Cancel</button>
+        <button class="my-btn" onclick="location.href='/wl/user';" type="button">Cancel</button>
     </div>
     <script>
         if (sessionStorage.getItem('workout')) {

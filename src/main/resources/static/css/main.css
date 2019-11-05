@@ -182,22 +182,26 @@ input[type=text], input[type=number], input[type=password], .my-input {
 }
 
 /* buttons */
-.add-note {
-    height: 2em;
-    width: 2em;
+.add {
     background: #FF9200 url("../images/add-note.png");
-    background-size: cover;
-    margin: 0 0.5em;
+}
 
-}.remove {
+.del {
+    background: #FF9200 url("../images/remove.png");
+}
+
+.play {
+    background: #FF9200;
+}
+
+.bn {
     height: 2em;
     width: 2em;
-    background: #FF9200 url("../images/remove.png");
     background-size: cover;
     margin: 0 0.5em;
 }
 
-button, input[type=submit], .my-button, select {
+button, input[type=submit], .my-btn, select {
     background-color: #FF9200;
     color: black;
     border: 2px solid #FFFFFF;

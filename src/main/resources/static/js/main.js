@@ -275,10 +275,10 @@ function addExercise(exerciseNo = undefined, title = undefined) {
     newExerciseHTML.setAttribute('id', short + '-container');
     newExerciseHTML.innerHTML = '<br><label for="' + short + '">Exercise #' +
         (exerciseNo + 1) + ': </label><span contenteditable="true" class="my-input" id="' + short +
-        '"></span><button class="my-button add-note" onclick="addNote(undefined, 0, undefined, ' +
-        exerciseNo + ');" title="Add exercise note">&nbsp</button><button class="my-button remove"' +
+        '"></span><button class="my-btn add bn" onclick="addNote(undefined, 0, undefined, ' +
+        exerciseNo + ');" title="Add exercise note">&nbsp</button><button class="my-btn del bn"' +
         ' onclick="remove(' + short + ');" title="Delete exercise">&nbsp</button></div><div id="' +
-        short + '-notes"></div><br><div id="' + short + '-sets"></div><button class="my-button" ' +
+        short + '-notes"></div><br><div id="' + short + '-sets"></div><button class="my-btn" ' +
         'onclick="addSet(' + exerciseNo + ');">Add set</button><br>';
     document.getElementById("exercises").appendChild(newExerciseHTML);
     document.getElementById(short).setAttribute('data-set',
@@ -287,11 +287,9 @@ function addExercise(exerciseNo = undefined, title = undefined) {
     if (title !== undefined) {
         document.getElementById(short).innerHTML = title;
     } else {
+        equalizeColumnHeight();
         document.getElementById(short).focus();
     }
-    // equalize column height
-    document.getElementById('workout-selection-container').style.height =
-        document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
 }
 
 /** Adds set to workout.
@@ -312,9 +310,9 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
     newSetHTML.setAttribute('id', short + '-container');
     newSetHTML.innerHTML = '<br><label for="' + short + '">Set #' +
         (setNo + 1) + ': </label><span contenteditable="true" class="my-input" ' +
-        'id="' + short + '"></span><button class="my-button add-note" ' +
+        'id="' + short + '"></span><button class="my-btn add bn" ' +
         'onclick="addNote(undefined, 0, undefined, ' + exerciseNo + ', ' + setNo + ');"' +
-        ' title="Add set note">&nbsp</button><button class="my-button remove" ' +
+        ' title="Add set note">&nbsp</button><button class="my-btn del bn" ' +
         'onclick="remove(' + short + ');" title="Delete set">&nbsp</button>' +
         '<div id="' + short + '-notes"></div><br>';
     document.getElementById("exercise" + exerciseNo + "-sets").appendChild(newSetHTML);
@@ -324,11 +322,9 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
     if (data !== undefined) {
         document.getElementById(short).innerHTML = data;
     } else {
+        equalizeColumnHeight();
         document.getElementById(short).focus();
     }
-    // equalize column height
-    document.getElementById('workout-selection-container').style.height =
-        document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
 }
 
 /** Adds a note to workout, exercise or set - depending on parameters. It can be a fresh (empty)
@@ -382,7 +378,7 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
         '<select onchange="changeNoteType(this.value, \'' + short + '\');"' +
         ' name="' + short + '-type"><option value="0">Text</option><option value="1">' +
         'Audio</option><option value="2">Picture</option><option value="3">Video</option>' +
-        '</select><button class="my-button remove" onclick="remove(' + short + ');" ' +
+        '</select><button class="my-btn del bn" onclick="remove(' + short + ');" ' +
         'title="Delete note">&nbsp</button>';
     appendHere.appendChild(newNoteHTML);
     document.getElementById(short).setAttribute('data-set', dataSetContent);
@@ -390,6 +386,7 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
     if (itsANewNote) {
         noteListAlias.push(newNote);
         document.getElementById(short).focus();
+        equalizeColumnHeight();
         // if not - display the note content (and change type if other than text note)
     } else {
         if (newNote.type !== 0) {
@@ -398,9 +395,6 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
             document.getElementById(short).innerHTML = newNote.content;
         }
     }
-    // equalize column height
-    document.getElementById('workout-selection-container').style.height =
-        document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
 }
 
 /** Changes a note type when user chooses a different one using the select element.
@@ -444,9 +438,7 @@ function changeNoteType(selectFieldValue, fieldToReplaceId) {
     replacement.dataset.set = fieldToReplaceNode.dataset.set;
     replacement.setAttribute('id', fieldToReplaceId);
     fieldToReplaceNode.parentElement.replaceChild(replacement, fieldToReplaceNode);
-    // equalize column height
-    document.getElementById('workout-selection-container').style.height =
-        document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
+    equalizeColumnHeight();
 }
 
 /** Auxiliary function used to set corresponding entries in workout object when user changes the
@@ -481,8 +473,17 @@ function attachFile(fileInputId, file, content, noteType) {
     reader.readAsDataURL(file);
 }
 
-function displayExistingMediaNote(mediaNoteId, content, type) {
-    console.log(mediaNoteId + ' , ' + content + ' , ' + type);
+function displayExistingMediaNote(noteId, content, type) {
+    const note = document.getElementById(noteId);
+    let data = note.dataset.set;
+    $(note).replaceWith('<span id="' + noteId + '" class="my-input" data-set="'
+        + data + '">' + content + '</span>');
+    $('#' + noteId).next().replaceWith('<button class="my-btn play bn"' +
+        ' onclick="play();">&nbsp</button>');
+}
+
+function play() {
+    alert('playing!');
 }
 
 /** Removes element from workout and corresponding entry in workout object. Used to remove
@@ -507,9 +508,11 @@ function remove(element) {
     document.getElementById('notes').innerHTML = '';
     document.getElementById('exercises').innerHTML = '';
     displayWorkout();
-    // equalize column height
-    document.getElementById('workout-selection-container').style.height =
-        document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
+}
+
+function equalizeColumnHeight() {
+document.getElementById('workout-selection-container').style.height =
+    document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
 }
 
 /** Gets existing workout details in JSON format from REST controller.
