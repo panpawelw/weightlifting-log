@@ -190,8 +190,16 @@ input[type=text], input[type=number], input[type=password], .my-input {
     background: #FF9200 url("../images/remove.png");
 }
 
-.play {
-    background: #FF9200;
+.audio {
+    background: #FF9200 url("../images/audio.png");
+}
+
+.image {
+    background: #FF9200 url("../images/image.png");
+}
+
+.clip {
+    background: #FF9200 url("../images/clip.png");
 }
 
 .bn {

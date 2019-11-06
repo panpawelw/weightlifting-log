@@ -474,12 +474,28 @@ function attachFile(fileInputId, file, content, noteType) {
 }
 
 function displayExistingMediaNote(noteId, content, type) {
-    const note = document.getElementById(noteId);
-    let data = note.dataset.set;
-    $(note).replaceWith('<span id="' + noteId + '" class="my-input" data-set="'
+    const oldNote = document.getElementById(noteId);
+    const data = oldNote.dataset.set;
+    $(oldNote).replaceWith('<span id="' + noteId + '" class="my-input" data-set="'
         + data + '">' + content + '</span>');
-    $('#' + noteId).next().replaceWith('<button class="my-btn play bn"' +
-        ' onclick="play();">&nbsp</button>');
+    const newNote = document.getElementById(noteId);
+    switch (type) {
+        case 1:
+        case "1":
+            $(newNote).next().replaceWith('<button class="my-btn audio bn"' +
+                ' title="play audio" onclick="play();">&nbsp</button>');
+            break;
+        case 2:
+        case "2":
+            $(newNote).next().replaceWith('<button class="my-btn image bn"' +
+                ' title="show picture" onclick="play();">&nbsp</button>');
+            break;
+        case 3:
+        case "3":
+            $(newNote).next().replaceWith('<button class="my-btn clip bn"' +
+                ' title="play video" onclick="play();">&nbsp</button>');
+            break;
+    }
 }
 
 function play() {
