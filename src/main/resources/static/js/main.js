@@ -473,6 +473,12 @@ function attachFile(fileInputId, file, content, noteType) {
     reader.readAsDataURL(file);
 }
 
+/** This displays a new span element with filename in place of file select element after user
+ * upload the media file. It also replaces note type select with media play button.
+ * @param {string } noteId - id of note element
+ * @param {string} content - note content (filename)
+ * @param {number} type - media note type -  audio(1), picture(2), video(3)
+ */
 function displayExistingMediaNote(noteId, content, type) {
     const oldNote = document.getElementById(noteId);
     const data = oldNote.dataset.set;
@@ -526,6 +532,9 @@ function remove(element) {
     displayWorkout();
 }
 
+/** Temporary solution for workout selection window getting too short when editing workout in
+ * the right pane
+ */
 function equalizeColumnHeight() {
 document.getElementById('workout-selection-container').style.height =
     document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
