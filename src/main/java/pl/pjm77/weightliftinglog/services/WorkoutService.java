@@ -9,6 +9,7 @@ import pl.pjm77.weightliftinglog.repositories.WorkoutRepository;
 
 import java.io.*;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WorkoutService {
@@ -25,8 +26,8 @@ public class WorkoutService {
     }
 
     public WorkoutDeserialized findWorkoutById(long id) {
-        WorkoutSerialized workoutSerialized = workoutRepository.getOne(id);
-        return deserializeWorkout(workoutSerialized);
+        Optional<WorkoutSerialized> optionalWorkoutSerialized = workoutRepository.findById(id);
+        return optionalWorkoutSerialized.map(this::deserializeWorkout).orElse(null);
     }
 
     public void saveWorkout(WorkoutDeserialized workoutDeserialized) {

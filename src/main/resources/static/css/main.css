@@ -45,7 +45,7 @@ html body {
 }
 
 /* no outline for selected input fields and buttons*/
-input:focus, button:focus, .my-button:focus, .my-input:focus, select:focus {
+input:focus, button:focus, .my-btn:focus, .my-input:focus, select:focus {
     outline: none;
 }
 
@@ -219,7 +219,7 @@ button, input[type=submit], .my-btn, select {
     font-weight: bold;
 }
 
-button:active, input[type=submit]:active, .my-button:active {
+button:active, input[type=submit]:active, .my-btn:active {
     box-shadow: 1px 1px 1px #472900;
     animation-duration: 0.2s;
 }
