@@ -21,23 +21,46 @@ public class WorkoutService {
         this.workoutRepository = workoutRepository;
     }
 
+    /**
+     * Loads a list of workouts by given user
+     * @param user - user object
+     * @return List of serialized workouts
+     */
     public List<WorkoutSerialized> findWorkoutsByUser(User user) {
         return workoutRepository.findAllByUserOrderByCreatedDesc(user);
     }
 
+    /**
+     * Finds a single workout with given id
+     * @param id - workout id
+     * @return deserialized workout or null if there is no workout with such id
+     */
     public WorkoutDeserialized findWorkoutById(long id) {
         Optional<WorkoutSerialized> optionalWorkoutSerialized = workoutRepository.findById(id);
         return optionalWorkoutSerialized.map(this::deserializeWorkout).orElse(null);
     }
 
+    /**
+     * Saves workout to database
+     * @param workoutDeserialized deserialized workout object
+     */
     public void saveWorkout(WorkoutDeserialized workoutDeserialized) {
         workoutRepository.saveAndFlush(serializeWorkout(workoutDeserialized));
     }
 
+    /**
+     * Deletes workout of given id
+     * @param id - id of workout to be deleted
+     */
     public void deleteWorkout(long id) {
         workoutRepository.deleteById(id);
     }
 
+    /**
+     * Serializes a deserialized workout object
+     * @param workoutDeserialized - workout object to be serialized
+     * @return serialized workout
+     */
     public WorkoutSerialized serializeWorkout
             (WorkoutDeserialized workoutDeserialized) {
         WorkoutSerialized workoutSerialized = new WorkoutSerialized();
@@ -65,6 +88,11 @@ public class WorkoutService {
         return workoutSerialized;
     }
 
+    /**
+     * Deserializes serialized workout
+     * @param workoutSerialized - serialized workout to be deserialized
+     * @return deserialized workout
+     */
     public WorkoutDeserialized deserializeWorkout
             (WorkoutSerialized workoutSerialized) {
         WorkoutDeserialized workoutDeserialized = new WorkoutDeserialized();

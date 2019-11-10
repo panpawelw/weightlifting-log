@@ -36,11 +36,21 @@ public class UserService {
         this.authenticationManager = authenticationManager;
     }
 
+    /**
+     * Finds user by username in database
+     * @param name - username
+     * @return user object or null if nothing found
+     */
     public User findUserByName(String name) {
         Optional<User> user = userRepository.findUserByName(name);
         return user.orElse(null);
     }
 
+    /**
+     * Saves user to database
+     * @param user - user object
+     * @throws DataIntegrityViolationException - when database integrity constraint is violated
+     */
     public void saveUser(User user) throws DataIntegrityViolationException {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -49,8 +59,8 @@ public class UserService {
     /**
      * Automatic user login
      * @param request - HttpServletRequest passed from controller
-     * @param username
-     * @param password
+     * @param username - username
+     * @param password - password
      */
     public void autoLogin(HttpServletRequest request, String username, String password) {
         UsernamePasswordAuthenticationToken token =

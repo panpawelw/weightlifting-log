@@ -21,6 +21,12 @@ public class SecureUserDetailsService implements UserDetailsService {
         this.secureUserRepository = secureUserRepository;
     }
 
+    /**
+     * Gets Spring Security UserDetails object of user with given name
+     * @param name - user name
+     * @return UserDetails object
+     * @throws UsernameNotFoundException - thrown when user with give name is not found in database
+     */
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
         Optional<User> user = secureUserRepository.findUserByName(name);
