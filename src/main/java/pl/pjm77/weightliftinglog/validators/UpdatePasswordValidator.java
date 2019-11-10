@@ -8,6 +8,9 @@ import pl.pjm77.weightliftinglog.models.User;
 
 import static pl.pjm77.weightliftinglog.services.UserService.passwordsDontMatch;
 
+/**
+ * Used when user updates his any of his existing details (except password).
+ */
 @Component
 public class UpdatePasswordValidator implements Validator {
 
@@ -16,6 +19,11 @@ public class UpdatePasswordValidator implements Validator {
         return User.class.equals(aClass);
     }
 
+    /**
+     * Checks if password is not empty, has minimum length and matches existing user password.
+     * @param o - user object
+     * @param errors - validation errors
+     */
     @Override
     public void validate(Object o, Errors errors) {
         User user = (User) o;

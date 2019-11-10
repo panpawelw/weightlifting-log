@@ -8,6 +8,9 @@ import pl.pjm77.weightliftinglog.models.ChangePassword;
 
 import static pl.pjm77.weightliftinglog.services.UserService.passwordsDontMatch;
 
+/**
+ * Used when user is changing his existing password.
+ */
 @Component
 public class ChangePasswordValidator implements Validator {
 
@@ -16,6 +19,13 @@ public class ChangePasswordValidator implements Validator {
         return ChangePassword.class.equals(aClass);
     }
 
+    /**
+     * Checks if any of the fields are empty and if all have required length. Also checks if old
+     * password matches old password confirmation field, if old password matches existing
+     * password and if new password matches new password confirmation field.
+     * @param o - user object
+     * @param errors - validation errors
+     */
     @Override
     public void validate(Object o, Errors errors) {
         ChangePassword changePassword = (ChangePassword) o;

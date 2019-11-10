@@ -6,6 +6,9 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import pl.pjm77.weightliftinglog.models.User;
 
+/**
+ * Used during registration process.
+ */
 @Component
 public class RegistrationPasswordValidator implements Validator {
 
@@ -14,6 +17,11 @@ public class RegistrationPasswordValidator implements Validator {
         return User.class.equals(aClass);
     }
 
+    /**
+     * Checks if password is not empty, has proper size and matches password confirmation.
+     * @param o - user object
+     * @param errors - validation errors
+     */
     @Override
     public void validate(Object o, Errors errors) {
         User user = (User) o;
