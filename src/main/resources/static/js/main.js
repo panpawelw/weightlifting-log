@@ -96,8 +96,8 @@ function split() {
  */
 function updateGS(fieldToUpdate, value, weightField, repsField, maxField) {
     document.getElementById(fieldToUpdate).value = value;
-    let weight = document.getElementById(weightField).value;
-    let reps = document.getElementById(repsField).value;
+    const weight = document.getElementById(weightField).value;
+    const reps = document.getElementById(repsField).value;
     document.getElementById(maxField).value = Math.round(weight * (1 + (reps / 30)) * 100) / 100;
 }
 
@@ -112,9 +112,9 @@ function update(field, value) {
 /** This function calculates the 1 rep max and percentages in 1 Rep Max tab.
  */
 function calculate1RM() {
-    let weight = document.getElementById('weight-text').value;
-    let reps = document.getElementById('reps-text').value;
-    let result = weight * (1 + (reps / 30));
+    const weight = document.getElementById('weight-text').value;
+    const reps = document.getElementById('reps-text').value;
+    const result = weight * (1 + (reps / 30));
     document.getElementById('result').value
         = result.toFixed(2);
 
@@ -130,27 +130,26 @@ function calculate1RM() {
  * @param {number}  percentage  the current value of percentage
  */
 function updatePercentageDescription(description, percentage) {
-    let descriptionText;
+    const toUpdate = document.getElementById(description);
     if (percentage < 21) {
-        descriptionText = "Upper body ballistic work, lower body plyometrics. Improves muscle " +
+        toUpdate.innerHTML = "Upper body ballistic work, lower body plyometrics. Improves muscle " +
             "hardness and contraction speed.";
     } else if (percentage < 41) {
-        descriptionText = "Lower body ballistic work. Improves muscle hardness, develops power " +
-            "and contraction speed.";
+        toUpdate.innerHTML = "Lower body ballistic work. Improves muscle hardness, develops" +
+            " power and contraction speed.";
     } else if (percentage < 61) {
-        descriptionText = "Explosiveness, speed and power. Great for muscle hardness. 60% can " +
+        toUpdate.innerHTML = "Explosiveness, speed and power. Great for muscle hardness. 60% can " +
             "be used for hypertrophy when done to failure.";
     } else if (percentage < 81) {
-        descriptionText = "Best range for muscle mass building, also good for explosiveness" +
+        toUpdate.innerHTML = "Best range for muscle mass building, also good for explosiveness" +
             " (~70%) and strength (~80%) in Olympic lifting.";
     } else if (percentage < 91) {
-        descriptionText = "Best for building muscle strength, use ~80% for easy recovery, ~90%" +
+        toUpdate.innerHTML = "Best for building muscle strength, use ~80% for easy recovery, ~90%" +
             " for quick strength peaking.";
     } else {
-        descriptionText = "Increases maximal strength via neural factors. Good for displaying" +
+        toUpdate.innerHTML = "Increases maximal strength via neural factors. Good for displaying" +
             " strength. Difficult to recover from.";
     }
-    document.getElementById(description).innerHTML = descriptionText;
 }
 
 /****************************************************************************
@@ -204,10 +203,9 @@ function displayWorkout() {
             document.getElementById('workout-selection-container').style.height =
                 document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
             // store value in workout object entry
-            const elementHoldingValue = event.target;
-            if (elementHoldingValue.className === 'my-input') {
-                let workoutEntry = $(elementHoldingValue).data('set').split(',');
-                storeInWorkout(workoutEntry, elementHoldingValue.innerHTML);
+            this.target = event.target;
+            if (this.target.className === 'my-input') {
+                storeInWorkout($(this.target).data('set').split(','), this.target.innerHTML);
             }
         });
     // Display existing workout notes
@@ -241,20 +239,14 @@ function storeInWorkout(entry, value) {
     // remove last <br> (these often get stuck in content editable elements)
     value = value.replace(/^\s*<br\s*\/?>|<br\s*\/?>\s*$/g, '');
     // store the text in workout object entry using bracket notation
-    switch (entry.length) {
-        case 1:
-            workout[entry[0]] = value;
-            break;
-        case 3:
-            workout[entry[0]][entry[1]][entry[2]] = value;
-            break;
-        case 5:
-            workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]] = value;
-            break;
-        case 7:
-            workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]][entry[6]]
-                = value;
-            break;
+    if(entry.length === 1) {
+        workout[entry[0]] = value;
+    } else if (entry.length === 3) {
+        workout[entry[0]][entry[1]][entry[2]] = value;
+    } else if (entry.length === 5) {
+        workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]] = value;
+    } else if (entry.length === 7) {
+        workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]][entry[6]] = value;
     }
 }
 
