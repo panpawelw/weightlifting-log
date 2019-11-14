@@ -239,14 +239,16 @@ function storeInWorkout(entry, value) {
     // remove last <br> (these often get stuck in content editable elements)
     value = value.replace(/^\s*<br\s*\/?>|<br\s*\/?>\s*$/g, '');
     // store the text in workout object entry using bracket notation
-    if(entry.length === 1) {
-        workout[entry[0]] = value;
-    } else if (entry.length === 3) {
-        workout[entry[0]][entry[1]][entry[2]] = value;
-    } else if (entry.length === 5) {
-        workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]] = value;
-    } else if (entry.length === 7) {
-        workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]][entry[6]] = value;
+    switch (entry.length) {
+        case 1:
+            workout[entry[0]] = value; break;
+        case 3:
+            workout[entry[0]][entry[1]][entry[2]] = value; break;
+        case 5:
+            workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]] = value; break;
+        case 7:
+            workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]][entry[6]]
+                = value; break;
     }
 }
 
@@ -263,11 +265,11 @@ function addExercise(exerciseNo = undefined, title = undefined) {
     }
     // create an element, it's innerHTML and set it's attributes
     const short = 'exercise' + exerciseNo;
-    let newExerciseHTML = document.createElement('div');
+    const newExerciseHTML = document.createElement('div');
     newExerciseHTML.setAttribute('id', short + '-container');
     newExerciseHTML.innerHTML = '<br><label for="' + short + '">Exercise #' +
         (exerciseNo + 1) + ': </label><span contenteditable="true" class="my-input" id="' + short +
-        '"></span><button class="my-btn add bn" onclick="addNote(undefined, 0, undefined, ' +
+        '"></span><button class="my-btn add bn" onclick="addNote(undefined, 0, \'\', ' +
         exerciseNo + ');" title="Add exercise note">&nbsp</button><button class="my-btn del bn"' +
         ' onclick="remove(' + short + ');" title="Delete exercise">&nbsp</button></div><div id="' +
         short + '-notes"></div><br><div id="' + short + '-sets"></div><button class="my-btn" ' +
@@ -298,12 +300,12 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
     }
     // create an element, its innerHTML and set its attributes
     const short = "exercise" + exerciseNo + "set" + setNo;
-    let newSetHTML = document.createElement('div');
+    const newSetHTML = document.createElement('div');
     newSetHTML.setAttribute('id', short + '-container');
     newSetHTML.innerHTML = '<br><label for="' + short + '">Set #' +
         (setNo + 1) + ': </label><span contenteditable="true" class="my-input" ' +
         'id="' + short + '"></span><button class="my-btn add bn" ' +
-        'onclick="addNote(undefined, 0, undefined, ' + exerciseNo + ', ' + setNo + ');"' +
+        'onclick="addNote(undefined, 0, \'\',' + exerciseNo + ', ' + setNo + ');"' +
         ' title="Add set note">&nbsp</button><button class="my-btn del bn" ' +
         'onclick="remove(' + short + ');" title="Delete set">&nbsp</button>' +
         '<div id="' + short + '-notes"></div><br>';
@@ -335,18 +337,14 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
     let newNote = {type: type, content: content};
     let noteListAlias = workout.notes;
     let appendHere = document.getElementById('notes');
-    if (itsANewNote) {
-        noteNo = workout.notes.length;
-    }
+    noteNo = itsANewNote ? workout.notes.length : noteNo;
     let short = "note" + noteNo;
     let dataSetContent = "notes," + noteNo + ",content";
     // if it's an exercise note - modify values
     if (exerciseNo !== undefined && setNo === undefined) {
         noteListAlias = workout.exercises[exerciseNo].notes;
         appendHere = document.getElementById("exercise" + exerciseNo + "-notes");
-        if (itsANewNote) {
-            noteNo = workout.exercises[exerciseNo].notes.length;
-        }
+        noteNo = itsANewNote ? workout.exercises[exerciseNo].notes.length : noteNo;
         short = "exercise" + exerciseNo + "note" + noteNo;
         dataSetContent = "exercises," + exerciseNo + ",notes," + noteNo + ",content";
     }
@@ -355,9 +353,7 @@ function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefine
         noteListAlias = workout.exercises[exerciseNo].sets[setNo].notes;
         appendHere = document.getElementById(
             "exercise" + exerciseNo + "set" + setNo + "-notes");
-        if (itsANewNote) {
-            noteNo = workout.exercises[exerciseNo].sets[setNo].notes.length;
-        }
+        noteNo = itsANewNote ? workout.exercises[exerciseNo].sets[setNo].notes.length : noteNo;
         short = "exercise" + exerciseNo + "set" + setNo + "note" + noteNo;
         dataSetContent = "exercises," + exerciseNo + ",sets," + setNo + ",notes," +
             noteNo + ",content";
@@ -422,11 +418,10 @@ function changeNoteType(selectFieldValue, fieldToReplaceId) {
         case '3':
             replacement.setAttribute
             ('accept', 'video/mp4, video/ogg, video/webm');
-            break;
     }
     // switch IDs of old and new elements, copy data and replace
     document.getElementById(fieldToReplaceId).setAttribute('id', 'tempID');
-    let fieldToReplaceNode = document.getElementById('tempID');
+    const fieldToReplaceNode = document.getElementById('tempID');
     replacement.dataset.set = fieldToReplaceNode.dataset.set;
     replacement.setAttribute('id', fieldToReplaceId);
     fieldToReplaceNode.parentElement.replaceChild(replacement, fieldToReplaceNode);
@@ -456,8 +451,8 @@ function setNoteContentAndType(noteId, content, type) {
 function attachFile(fileInputId, file, content, noteType) {
     let reader = new FileReader();
     reader.onloadend = function (event) {
-        let currentEvent = event.target;
-        if (currentEvent.readyState === FileReader.DONE) {
+        this.target = event.target;
+        if (this.target.readyState === FileReader.DONE) {
             files.push(reader.result);
         }
         displayExistingMediaNote(fileInputId, content, noteType);
@@ -510,14 +505,11 @@ function remove(element) {
     parent.parentElement.removeChild(parent);
     switch (entry.length) {
         case 3:
-            workout[entry[0]].splice(entry[1], 1);
-            break;
+            workout[entry[0]].splice(entry[1], 1); break;
         case 5:
-            workout[entry[0]][entry[1]][entry[2]].splice(entry[3], 1);
-            break;
+            workout[entry[0]][entry[1]][entry[2]].splice(entry[3], 1); break;
         case 7:
-            workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]].splice(entry[5], 1);
-            break;
+            workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]].splice(entry[5], 1); break;
     }
     document.getElementById('notes').innerHTML = '';
     document.getElementById('exercises').innerHTML = '';
@@ -536,7 +528,7 @@ document.getElementById('workout-selection-container').style.height =
  * @param {number} [workoutId] - id number of workout to be loaded from database */
 function loadWorkout(workoutId) {
     // Obtain CSRF token
-    let token = $("meta[name='_csrf']").attr("content");
+    const token = $("meta[name='_csrf']").attr("content");
     // Request workout object of given id in JSON format
     $.ajax({
         url: 'http://localhost:8080/wl/workout/' + workoutId,
@@ -557,7 +549,7 @@ function loadWorkout(workoutId) {
  * @param {object} [workout] - workout object to be persisted */
 function saveWorkout(workout) {
     // Obtain CSRF token
-    let token = $("meta[name='_csrf']").attr("content");
+    const token = $("meta[name='_csrf']").attr("content");
     // Send workout object in JSON format
     $.ajax({
         url: window.location.href,
@@ -577,7 +569,7 @@ function saveWorkout(workout) {
 /** Request deletion of the currently displayed workout from the database. */
 function deleteWorkout() {
     // Obtain CSRF token
-    let token = $("meta[name='_csrf']").attr("content");
+    const token = $("meta[name='_csrf']").attr("content");
     // Request workout of given id to be deleted from database
     $.ajax({
         url: 'http://localhost:8080/wl/workout/' + workout.id,
