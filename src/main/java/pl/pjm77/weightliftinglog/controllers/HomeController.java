@@ -1,6 +1,7 @@
 package pl.pjm77.weightliftinglog.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import pl.pjm77.weightliftinglog.models.*;
+import pl.pjm77.weightliftinglog.registration.event.OnRegistrationCompleteEvent;
 import pl.pjm77.weightliftinglog.validators.RegistrationPasswordValidator;
 import pl.pjm77.weightliftinglog.services.UserService;
 
@@ -22,12 +25,15 @@ public class HomeController {
 
     private final UserService userService;
     private final RegistrationPasswordValidator registrationPasswordValidator;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
     public HomeController(UserService userService,
-                          RegistrationPasswordValidator registrationPasswordValidator) {
+                          RegistrationPasswordValidator registrationPasswordValidator,
+                          ApplicationEventPublisher applicationEventPublisher) {
         this.userService = userService;
         this.registrationPasswordValidator = registrationPasswordValidator;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @InitBinder("user")
@@ -86,11 +92,13 @@ public class HomeController {
 
     @PostMapping("/register")
     public String registerPost(@Valid @ModelAttribute("user") User user,
-                               BindingResult bindingResult, Model model) {
+                               BindingResult bindingResult, Model model, WebRequest request) {
         model.addAttribute("page", "fragments.html :: register-user");
         if (!bindingResult.hasErrors()) {
             try {
                 userService.saveUser(user);
+                applicationEventPublisher.publishEvent(new OnRegistrationCompleteEvent(user,
+                        request.getContextPath(), request.getLocale()));
                 model.addAttribute("page", "fragments.html :: register-user-success");
             } catch (DataIntegrityViolationException e) {
                 model.addAttribute
