@@ -97,12 +97,17 @@ public class HomeController {
         if (!bindingResult.hasErrors()) {
             try {
                 userService.saveUser(user);
-                applicationEventPublisher.publishEvent(new OnRegistrationCompleteEvent(user,
-                        request.getContextPath(), request.getLocale()));
+                if (user.isRealEmail()) {
+                    applicationEventPublisher.publishEvent(new OnRegistrationCompleteEvent(user,
+                            request.getContextPath(), request.getLocale()));
+                    model.addAttribute("emailSent", "Confirmation email has been sent!");
+                }
                 model.addAttribute("page", "fragments.html :: register-user-success");
             } catch (DataIntegrityViolationException e) {
                 model.addAttribute
-                        ("emailExists", "    This email already exists in our database!");
+                        ("emailExists", "This email already exists in our database!");
+            } catch (Exception e) {
+                System.out.println("Email error!");
             }
         }
         return "home";
