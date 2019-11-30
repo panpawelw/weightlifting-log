@@ -97,7 +97,7 @@ public class HomeController {
         if (!bindingResult.hasErrors()) {
             try {
                 userService.saveUser(user);
-                if (user.isRealEmail()) {
+                if (user.isEmailReal()) {
                     applicationEventPublisher.publishEvent(new OnRegistrationCompleteEvent(user,
                             request.getContextPath(), request.getLocale()));
                     model.addAttribute("emailSent", "Confirmation email has been sent!");

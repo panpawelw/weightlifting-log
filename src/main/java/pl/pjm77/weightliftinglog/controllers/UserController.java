@@ -55,6 +55,7 @@ public class UserController {
     public String editUserDetails(Model model) {
         String userName = getLoggedInUserName();
         User user = userService.findUserByName(userName);
+        user.setPassword("");
         model.addAttribute("user", user);
         model.addAttribute("page", "fragments.html :: update-user");
         return "home";

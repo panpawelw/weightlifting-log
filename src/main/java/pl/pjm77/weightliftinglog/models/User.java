@@ -6,7 +6,6 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * User entity represents a user who logs his workouts.
@@ -18,7 +17,7 @@ import java.util.Objects;
  * confirmPassword - password confirmation, not stored in database, needed only when registering
  *                   a new user or modifying user data
  * email - user email, has to be unique
- * realEmail - boolean indicating that this is a real email and user wants to be sent a
+ * emailReal - boolean indicating that this is a real email and user wants to be sent a
  *             registration confirmation email
  * role - user's Spring Security role - either USER or ADMIN
  *
@@ -42,14 +41,14 @@ public class User implements Serializable {
     private String password;
 
     @Transient
-    private String confirmPassword;
+    transient private String confirmPassword;
 
     @Column(unique=true)
     @NotBlank(message = "This field is mandatory!")
     @Email(message = "Please enter a valid email!")
     private String email;
 
-    private boolean realEmail;
+    private boolean emailReal;
 
     private String firstName;
 
@@ -65,6 +64,8 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user")
     private List<WorkoutSerialized> workouts = new ArrayList<>();
 
+    private boolean enabled = true;
+
     public User() {
     }
 
@@ -73,13 +74,14 @@ public class User implements Serializable {
         this.name = user.getName();
         this.password = user.getPassword();
         this.email = user.getEmail();
-        this.realEmail = user.isRealEmail();
+        this.emailReal = user.isEmailReal();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.age = user.getAge();
         this.gender = user.getGender();
         this.role = user.getRole();
         this.workouts = user.getWorkouts();
+        this.enabled = user.isEnabled();
     }
 
     public Long getId() {
@@ -126,12 +128,12 @@ public class User implements Serializable {
         return firstName;
     }
 
-    public boolean isRealEmail() {
-        return realEmail;
+    public boolean isEmailReal() {
+        return emailReal;
     }
 
-    public void setRealEmail(boolean realEmail) {
-        this.realEmail = realEmail;
+    public void setEmailReal(boolean emailReal) {
+        this.emailReal = emailReal;
     }
 
     public void setFirstName(String firstName) {
@@ -178,6 +180,14 @@ public class User implements Serializable {
         this.workouts = workouts;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -186,39 +196,14 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", confirmPassword='" + confirmPassword + '\'' +
                 ", email='" + email + '\'' +
-                ", realEmail=" + realEmail +
+                ", emailReal=" + emailReal +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
                 ", gender=" + gender +
                 ", role='" + role + '\'' +
 //                ", workouts=" + workouts +
+                ", enabled=" + enabled +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return isRealEmail() == user.isRealEmail() &&
-                Objects.equals(getId(), user.getId()) &&
-                Objects.equals(getName(), user.getName()) &&
-                Objects.equals(getPassword(), user.getPassword()) &&
-                Objects.equals(getConfirmPassword(), user.getConfirmPassword()) &&
-                Objects.equals(getEmail(), user.getEmail()) &&
-                Objects.equals(getFirstName(), user.getFirstName()) &&
-                Objects.equals(getLastName(), user.getLastName()) &&
-                Objects.equals(getAge(), user.getAge()) &&
-                Objects.equals(getGender(), user.getGender()) &&
-                Objects.equals(getRole(), user.getRole()) &&
-                Objects.equals(getWorkouts(), user.getWorkouts());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects
-                .hash(getId(), getName(), getPassword(), getConfirmPassword(), getEmail(),
-                        isRealEmail(), getFirstName(), getLastName(), getAge(), getGender(), getRole(), getWorkouts());
     }
 }

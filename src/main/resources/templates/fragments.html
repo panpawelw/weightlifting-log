@@ -63,7 +63,7 @@
             <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span>
             <!--/*@thymesVar id="emailExists" type="java"*/-->
             <span class='alert' th:text="${emailExists}"></span></p>
-        <p><input type="checkbox" th:field="*{realEmail}" th:value="false"/>
+        <p><input type="checkbox" th:field="*{emailReal}" th:value="false"/>
             <span>This is a real email, please send me an activation message</span></p>
         <p>First name: <input type="text" th:field="*{firstName}"/></p>
         <p>Surname: <input type="text" th:field="*{lastName}"/></p>
@@ -82,17 +82,13 @@
     <!--/*@thymesVar id="user" type="java"*/-->
     <form th:action="@{/user/update}" th:object="${user}" method="post">
         <input type="hidden" th:field="*{id}"/>
-        <p>Username: <input type="text" th:field="*{name}" autofocus="autofocus"/>
+        <p>Username: <input type="text" th:field="*{name}"/>
             <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span></p>
-        <p>Password: <input type="password" th:field="*{password}"/>
+        <p>Password: <input type="password" th:field="*{password}" autofocus="autofocus"/>
             <span th:if="${#fields.hasErrors('password')}" class="alert"
                   th:errors="*{password}"></span>
         <p>Email: <input type="text" th:field="*{email}"/>
             <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span>
-            <!--/*@thymesVar id="emailExists" type="java"*/-->
-            <span class='alert' th:text="${emailExists}"></span></p>
-        <p><input type="checkbox" th:field="*{realEmail}" th:value="false"/>
-            <span>This is a real email, please send me a confirmation message</span></p>
         <p>First name: <input type="text" th:field="*{firstName}"/></p>
         <p>Surname: <input type="text" th:field="*{lastName}"/></p>
         <p>Age: <input class="centered" type="number" th:field="*{age}"/></p>
