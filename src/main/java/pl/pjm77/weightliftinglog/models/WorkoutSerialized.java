@@ -3,7 +3,6 @@ package pl.pjm77.weightliftinglog.models;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
-import java.sql.Clob;
 import java.sql.Timestamp;
 import java.util.Arrays;
 
