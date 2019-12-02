@@ -213,29 +213,33 @@
 
 <!-- user panel fragments - default -->
 <div th:fragment="user-panel-default" class="workout-content">
+    <script>
+        window.addEventListener('load', function () {
+            equalizeColumnHeight();
+        });
+    </script>
     <h3>Select existing workout from the panel to the right or...</h3>
-    <button class="my-btn" onclick="sessionStorage.clear();location.href='/wl/workout/'"
-            type="button">Add new workout</button>
+    <button onclick="sessionStorage.removeItem('workout');
+            preserveLogoState();
+            location.href='/wl/workout/'"
+            class="my-btn" type="button">Add new workout
+    </button>
 </div>
 
 <!-- user panel fragments - workout details -->
 <div th:fragment="user-panel-workout-details" class="workout-content">
-    <script>
-        window.addEventListener('load', function () {
-            document.getElementById('workout-selection-container').style.height =
-                document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
-            });
-    </script>
     <div class="same-row">
         <button class="my-btn" onclick="saveWorkout(workout);" type="button">
-            Save</button>
+            Save
+        </button>
         <button class="my-btn show-on-edit" onclick="deleteWorkout()" type="button">
-            Delete</button>
-        <button class="my-btn" onclick="location.href='/wl/user';" type="button">Cancel</button>
+            Delete
+        </button>
+        <button class="my-btn" onclick="preserveLogoState();location.href='/wl/user';"
+                type="button">Cancel
+        </button>
     </div>
-
     <br><br>
-
     <div>
         <label for="created">Created: </label>
         <input type="text" name="created" id="created" maxlength="16" size="12" value=""
@@ -265,18 +269,21 @@
 
     <div class="same-row">
         <button class="my-btn" onclick="saveWorkout(workout);" type="button">
-            Save</button>
+            Save
+        </button>
         <button class="my-btn show-on-edit" onclick="deleteWorkout()" type="button">
-            Delete</button>
-        <button class="my-btn" onclick="location.href='/wl/user';" type="button">Cancel</button>
+            Delete
+        </button>
+        <button class="my-btn" onclick="preserveLogoState();location.href='/wl/user';"
+                type="button">Cancel
+        </button>
     </div>
     <script>
         if (sessionStorage.getItem('workout')) {
             $('.show-on-add').hide();
             $('.show-on-edit').show();
             editWorkout();
-        }
-        else {
+        } else {
             $('.show-on-edit').hide();
             $('.show-on-add').show();
             document.getElementById('title').focus();

@@ -31,18 +31,18 @@ $(document).ready(function () {
 
                 navbar.classList.add('sticky');
                 filler1.classList.add('sticky');
-                $(logo).slideUp('fast').queue(false);
-                $(filler2).show('fast').queue(false);
-                $(filler1).show('fast').queue(false);
+                $(logo).slideUp(100).queue(false);
+                $(filler2).show(100).queue(false);
+                $(filler1).show(100).queue(false);
 
                 // Is the page scrolled up and is logo hidden? Show logo.
             } else if (pagePosition === 0 && logo.style.display === 'none') {
 
                 navbar.classList.remove('sticky');
                 filler1.classList.remove('sticky');
-                $(filler1).slideUp('fast').queue(false);
-                $(filler2).slideUp('fast').queue(false);
-                $(logo).show('fast').queue(false);
+                $(filler1).slideUp(100).queue(false);
+                $(filler2).slideUp(100).queue(false);
+                $(logo).show(100).queue(false);
             }
 
             /* If logo toggling is not allowed, but the page is scrolled
@@ -63,7 +63,7 @@ $(document).ready(function () {
 /* Auxiliary function for tab change event handlers */
 function scrollToTop() {
     OkToToggleLogo = false;
-    $('html').animate({scrollTop: 1}, 'fast');
+    $('html').animate({scrollTop: 1}, 100);
     OkToToggleLogo = true;
 }
 
@@ -229,6 +229,9 @@ function displayWorkout() {
             }
         }
     }
+    window.addEventListener('load', function () {
+        equalizeColumnHeight()
+    });
 }
 
 /** Stores given value in workout object entry.
@@ -241,14 +244,18 @@ function storeInWorkout(entry, value) {
     // store the text in workout object entry using bracket notation
     switch (entry.length) {
         case 1:
-            workout[entry[0]] = value; break;
+            workout[entry[0]] = value;
+            break;
         case 3:
-            workout[entry[0]][entry[1]][entry[2]] = value; break;
+            workout[entry[0]][entry[1]][entry[2]] = value;
+            break;
         case 5:
-            workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]] = value; break;
+            workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]] = value;
+            break;
         case 7:
             workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]][entry[6]]
-                = value; break;
+                = value;
+            break;
     }
 }
 
@@ -505,23 +512,48 @@ function remove(element) {
     parent.parentElement.removeChild(parent);
     switch (entry.length) {
         case 3:
-            workout[entry[0]].splice(entry[1], 1); break;
+            workout[entry[0]].splice(entry[1], 1);
+            break;
         case 5:
-            workout[entry[0]][entry[1]][entry[2]].splice(entry[3], 1); break;
+            workout[entry[0]][entry[1]][entry[2]].splice(entry[3], 1);
+            break;
         case 7:
-            workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]].splice(entry[5], 1); break;
+            workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]].splice(entry[5], 1);
+            break;
     }
     document.getElementById('notes').innerHTML = '';
     document.getElementById('exercises').innerHTML = '';
     displayWorkout();
 }
 
+function preserveLogoState() {
+    sessionStorage.setItem('logoVisibility',
+        document.getElementById('logo-container').style.display);
+}
+
+function restoreLogoState() {
+    let logoVisibility = sessionStorage.getItem('logoVisibility');
+    sessionStorage.removeItem('logoVisibility');
+    if (logoVisibility === 'block') {
+        console.log('Logo was visible!');
+    }else if(logoVisibility === 'none') {
+        document.getElementById('big-tabs').classList.add('sticky');
+        document.getElementById('filler-1').classList.add('sticky');
+        $(document.getElementById('logo-container')).slideUp('fast').queue(false);
+        $(document.getElementById('filler-2')).show('fast').queue(false);
+        $(document.getElementById('filler-1')).show('fast').queue(false);
+    } else {
+        console.log('First time load!');
+    }
+    scrollToTop();
+}
+
 /** Temporary solution for workout selection window getting too short when editing workout in
  * the right pane
  */
 function equalizeColumnHeight() {
-document.getElementById('workout-selection-container').style.height =
-    document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
+    document.getElementById('workout-selection-container').style.height =
+        document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
 }
 
 /** Gets existing workout details in JSON format from REST controller.
@@ -537,6 +569,7 @@ function loadWorkout(workoutId) {
         dataType: 'JSON',
         async: true,
     }).done(function (data) {
+        preserveLogoState();
         sessionStorage.setItem('workout', JSON.stringify(data));
         window.location.pathname = 'wl/workout/';
     })
@@ -559,6 +592,7 @@ function saveWorkout(workout) {
         data: JSON.stringify(workout),
         async: true,
     }).done(function () {
+        preserveLogoState();
         window.location.pathname = 'wl/user'
     })
         .fail(function () {
@@ -577,6 +611,7 @@ function deleteWorkout() {
         type: 'DELETE',
         async: true,
     }).done(function () {
+        preserveLogoState();
         window.location.pathname = 'wl/user'
     })
         .fail(function () {
