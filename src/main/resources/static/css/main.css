@@ -1,11 +1,19 @@
 /* general properties */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 html {
     overflow-y: scroll;
 }
+
 html, body, #main-container {
     height: 100.5vh;
     margin: 0;
 }
+
 html body {
     background: #454343 url("../images/background.png") repeat;
     color: #FF9200;

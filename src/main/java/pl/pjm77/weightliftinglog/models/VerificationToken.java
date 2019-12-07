@@ -1,9 +1,6 @@
 package pl.pjm77.weightliftinglog.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -18,6 +15,8 @@ public class VerificationToken {
 
     private String token;
 
+    @OneToOne
+    @JoinColumn
     private User user;
 
     private Date expiryDate;
