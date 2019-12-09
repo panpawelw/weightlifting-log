@@ -3,6 +3,7 @@ package pl.pjm77.weightliftinglog.models;
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 public class VerificationToken {
@@ -22,15 +23,12 @@ public class VerificationToken {
     private Date expiryDate;
 
     public VerificationToken() {
-    }
-
-    public VerificationToken(final String token) {
-        this.token = token;
+        this.token = UUID.randomUUID().toString();
         this.expiryDate = calculateExpiryDate(EXPIRATION);
     }
 
-    public VerificationToken(final String token, final User user) {
-        this.token = token;
+    public VerificationToken(final User user) {
+        this.token = UUID.randomUUID().toString();
         this.user = user;
         this.expiryDate = calculateExpiryDate(EXPIRATION);
     }
