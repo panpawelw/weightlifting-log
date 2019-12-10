@@ -20,8 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import static pl.pjm77.weightliftinglog.services.UserService.getLoggedInUserName;
-
 @Controller
 public class HomeController {
 
@@ -54,13 +52,6 @@ public class HomeController {
     public String loginGet(Model model) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
-            String username = getLoggedInUserName();
-            System.out.println(username);
-            User user = userService.findUserByName(username);
-            System.out.println(user.isEnabled());
-            if (!user.isEnabled()) {
-                return "redirect:/loginfailure";
-            }
             return "redirect:/user";
         } else {
             model.addAttribute("page", "fragments.html :: login");
@@ -70,19 +61,12 @@ public class HomeController {
 
     @PostMapping("/login")
     public String loginPost() {
-        String username = getLoggedInUserName();
-        System.out.println(username);
-        User user = userService.findUserByName(username);
-        System.out.println(user.isEnabled());
-        if (!user.isEnabled()) {
-            return "redirect:/loginfailure";
-        }
         return "redirect:/user";
     }
 
     @RequestMapping("/loginfailure")
     public String loginFailure(Model model) {
-        model.addAttribute("loginError", true);
+        model.addAttribute("loginError", "Wrong username or password!");
         model.addAttribute("page", "fragments.html :: login");
         return "home";
     }

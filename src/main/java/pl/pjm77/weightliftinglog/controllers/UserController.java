@@ -13,10 +13,9 @@ import pl.pjm77.weightliftinglog.services.WorkoutService;
 import pl.pjm77.weightliftinglog.validators.UpdatePasswordValidator;
 import pl.pjm77.weightliftinglog.services.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-
-import static pl.pjm77.weightliftinglog.services.UserService.checkLoggedInUserForAdminRights;
-import static pl.pjm77.weightliftinglog.services.UserService.getLoggedInUserName;
 
 @Controller
 public class UserController {
@@ -40,20 +39,26 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @RequestMapping("/user")
-    public String user(Model model) {
-        String username = getLoggedInUserName();
+    public String user(Model model, HttpServletRequest request, HttpServletResponse response) {
+        String username = UserService.getLoggedInUserName();
+        User user = userService.findUserByName(username);
+        if (!user.isEnabled()) {
+            userService.logoutUser(request, response);
+            model.addAttribute("loginError", "This account has not been activated!");
+            model.addAttribute("page", "fragments.html :: login");
+            return "home";
+        }
         model.addAttribute("userName", username);
-        model.addAttribute("adminRights", checkLoggedInUserForAdminRights());
+        model.addAttribute("adminRights", UserService.checkLoggedInUserForAdminRights());
         model.addAttribute("page", "fragments.html :: user-panel");
         model.addAttribute("userPanelPage", "fragments.html :: user-panel-default");
-        User user = userService.findUserByName(username);
         model.addAttribute("workouts", workoutService.findWorkoutsByUser(user));
         return "home";
     }
 
     @GetMapping("/user/update")
     public String editUserDetails(Model model) {
-        String userName = getLoggedInUserName();
+        String userName = UserService.getLoggedInUserName();
         User user = userService.findUserByName(userName);
         user.setPassword("");
         model.addAttribute("user", user);

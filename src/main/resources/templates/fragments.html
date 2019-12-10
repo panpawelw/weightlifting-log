@@ -10,7 +10,7 @@
 <div th:fragment="login">
     <h3 class="tab-title">Login page</h3><br>
     <!--/*@thymesVar id="loginError" type="java"*/-->
-    <p th:if="${loginError}" class="alert">Wrong username or password</p>
+    <p th:if="${loginError}" class="alert" th:text="${loginError}"></p>
     <form th:action="@{/login}" method="post">
         <label for="username">Username</label>:
         <input type="text" id="username" name="username" autofocus="autofocus"/> <br>
