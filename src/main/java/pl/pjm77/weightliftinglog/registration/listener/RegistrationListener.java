@@ -17,7 +17,8 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     private VerificationTokenService verificationTokenService;
 
     @Autowired
-    public RegistrationListener(EmailService emailService, VerificationTokenService verificationTokenService) {
+    public RegistrationListener(EmailService emailService,
+                                VerificationTokenService verificationTokenService) {
         this.emailService = emailService;
         this.verificationTokenService = verificationTokenService;
     }
@@ -25,12 +26,14 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     @Override
     public void onApplicationEvent(final OnRegistrationCompleteEvent event) {
         final User user = event.getUser();
+
         VerificationToken verificationToken = new VerificationToken(user);
-        verificationTokenService.saveToken();
+        verificationTokenService.saveToken(verificationToken);
         emailService.sendEmail(user.getEmail(), "Weightlifting Log registration" +
                 " confirmation", "You have registered an account on Weightlifting Log " +
-                "website. To verify your account please click the link below: " +
+                "website. To verify your account please click the link below withing 24 hours to " +
+                "confirm your account: \n\n" +
                 "http://localhost:8080/confirm-account?token=" + verificationToken.getToken() +
-                "Have a nice day!");
+                "\n\nHave a nice day!");
     }
 }

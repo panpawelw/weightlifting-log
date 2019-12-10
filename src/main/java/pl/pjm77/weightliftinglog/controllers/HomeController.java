@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import static pl.pjm77.weightliftinglog.services.UserService.getLoggedInUserName;
+
 @Controller
 public class HomeController {
 
@@ -52,6 +54,13 @@ public class HomeController {
     public String loginGet(Model model) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
+            String username = getLoggedInUserName();
+            System.out.println(username);
+            User user = userService.findUserByName(username);
+            System.out.println(user.isEnabled());
+            if (!user.isEnabled()) {
+                return "redirect:/loginfailure";
+            }
             return "redirect:/user";
         } else {
             model.addAttribute("page", "fragments.html :: login");
@@ -61,6 +70,13 @@ public class HomeController {
 
     @PostMapping("/login")
     public String loginPost() {
+        String username = getLoggedInUserName();
+        System.out.println(username);
+        User user = userService.findUserByName(username);
+        System.out.println(user.isEnabled());
+        if (!user.isEnabled()) {
+            return "redirect:/loginfailure";
+        }
         return "redirect:/user";
     }
 
@@ -96,11 +112,16 @@ public class HomeController {
         model.addAttribute("page", "fragments.html :: register-user");
         if (!bindingResult.hasErrors()) {
             try {
-                userService.saveUser(user);
                 if (user.isEmailReal()) {
+                    user.setEnabled(false);
+                    userService.saveUser(user);
                     applicationEventPublisher.publishEvent(new OnRegistrationCompleteEvent(user,
                             request.getContextPath(), request.getLocale()));
-                    model.addAttribute("emailSent", "Confirmation email has been sent!");
+                    model.addAttribute("emailSent",
+                            "Confirmation email has been sent to:<br><br>" + user.getEmail() +
+                                    "<br><br>Please activate your account within 24 hours!");
+                } else {
+                    userService.saveUser(user);
                 }
                 model.addAttribute("page", "fragments.html :: register-user-success");
             } catch (DataIntegrityViolationException e) {

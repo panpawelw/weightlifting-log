@@ -187,6 +187,7 @@ input[type=text], input[type=number], input[type=password], .my-input {
     border-radius: 23px;
     text-align: center;
     font-weight: bold;
+    padding: 0 2px 0 2px;
 }
 
 /* buttons */
@@ -225,6 +226,7 @@ button, input[type=submit], .my-btn, select {
     border-radius: 23px;
     text-align: center;
     font-weight: bold;
+    padding: 0 2px 0 2px;
 }
 
 button:active, input[type=submit]:active, .my-btn:active {
