@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import pl.pjm77.weightliftinglog.models.User;
+import pl.pjm77.weightliftinglog.services.VerificationTokenService;
 import pl.pjm77.weightliftinglog.services.WorkoutService;
 import pl.pjm77.weightliftinglog.validators.UpdatePasswordValidator;
 import pl.pjm77.weightliftinglog.services.UserService;
@@ -23,13 +24,16 @@ public class UserController {
     private final UserService userService;
     private final WorkoutService workoutService;
     private final UpdatePasswordValidator updatePasswordValidator;
+    private final VerificationTokenService verificationTokenService;
 
     @Autowired
     public UserController(UserService userService, WorkoutService workoutService,
-                          UpdatePasswordValidator updatePasswordValidator) {
+                          UpdatePasswordValidator updatePasswordValidator,
+                          VerificationTokenService verificationTokenService) {
         this.userService = userService;
         this.workoutService = workoutService;
         this.updatePasswordValidator = updatePasswordValidator;
+        this.verificationTokenService = verificationTokenService;
     }
 
     @InitBinder("user")
@@ -46,6 +50,7 @@ public class UserController {
             userService.logoutUser(request, response);
             model.addAttribute("loginError", "This account has not been activated!");
             model.addAttribute("page", "fragments.html :: login");
+            System.out.println(verificationTokenService.isTokenExpired(user));
             return "home";
         }
         model.addAttribute("userName", username);

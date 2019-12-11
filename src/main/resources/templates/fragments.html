@@ -131,7 +131,7 @@
 <div th:fragment="register-user-success">
     <h2>Registration successful!</h2><br>
     <!--/*@thymesVar id="emailSent" type="java"*/-->
-    <h5 th:text="${emailSent}"></h5>
+    <h5 th:utext="${emailSent}"></h5>
     <button class="my-btn" onclick="location.href='/wl/login';" type="button">OK</button>
 </div>
 

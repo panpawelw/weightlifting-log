@@ -103,7 +103,7 @@ public class HomeController {
                             request.getContextPath(), request.getLocale()));
                     model.addAttribute("emailSent",
                             "Confirmation email has been sent to:<br><br>" + user.getEmail() +
-                                    "<br><br>Please activate your account within 24 hours!");
+                                    "<br><br>Please activate your account within 24 hours!<br><br>");
                 } else {
                     userService.saveUser(user);
                 }
