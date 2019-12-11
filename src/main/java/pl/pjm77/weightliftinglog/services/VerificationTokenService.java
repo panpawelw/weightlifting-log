@@ -6,7 +6,6 @@ import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.models.VerificationToken;
 import pl.pjm77.weightliftinglog.repositories.VerificationTokenRepository;
 
-import java.util.Calendar;
 import java.util.Date;
 
 @Service
@@ -23,16 +22,14 @@ public class VerificationTokenService {
         verificationTokenRepository.save(verificationToken);
     }
 
-    public boolean isTokenExpired(User user) {
+    public String removeAccountIfTokenExpired(User user) {
         VerificationToken verificationToken = verificationTokenRepository.findByUser(user);
-        if(verificationToken != null) {
+        if (verificationToken != null) {
             if(verificationToken.getExpiryDate().compareTo(new Date()) < 0) {
-                System.out.println("Activation time expired!");
-                return true;
+                return "Activation time expired, user account removed!";
             }
-            return false;
+            return "This account requires activation!";
         }
-        System.out.println("No token found for this user!");
-        return false;
+        return "";
     }
 }

@@ -48,9 +48,8 @@ public class UserController {
         User user = userService.findUserByName(username);
         if (!user.isEnabled()) {
             userService.logoutUser(request, response);
-            model.addAttribute("loginError", "This account has not been activated!");
+            model.addAttribute("loginError", verificationTokenService.removeAccountIfTokenExpired(user));
             model.addAttribute("page", "fragments.html :: login");
-            System.out.println(verificationTokenService.isTokenExpired(user));
             return "home";
         }
         model.addAttribute("userName", username);
