@@ -27,6 +27,12 @@ public class VerificationTokenService {
         return verificationToken.orElse(null);
     }
 
+    public VerificationToken findByToken(String token) {
+        Optional<VerificationToken> verificationToken =
+                verificationTokenRepository.findByToken(token);
+        return verificationToken.orElse(null);
+    }
+
     public void saveToken(VerificationToken verificationToken) {
         verificationTokenRepository.save(verificationToken);
     }

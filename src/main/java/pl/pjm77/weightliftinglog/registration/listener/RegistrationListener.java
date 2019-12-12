@@ -33,7 +33,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
                 " confirmation", "You have registered an account on Weightlifting Log " +
                 "website. To verify your account please click the link below withing 24 hours to " +
                 "confirm your account: \n\n" +
-                "http://localhost:8080/confirm-account?token=" + verificationToken.getToken() +
+                "http://localhost:8080/wl/confirm-account?token=" + verificationToken.getToken() +
                 "\n\nHave a nice day!");
     }
 }

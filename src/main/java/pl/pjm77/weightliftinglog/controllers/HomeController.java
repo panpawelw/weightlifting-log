@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import pl.pjm77.weightliftinglog.models.*;
 import pl.pjm77.weightliftinglog.registration.event.OnRegistrationCompleteEvent;
+import pl.pjm77.weightliftinglog.services.VerificationTokenService;
 import pl.pjm77.weightliftinglog.validators.RegistrationPasswordValidator;
 import pl.pjm77.weightliftinglog.services.UserService;
 
@@ -26,14 +27,17 @@ public class HomeController {
     private final UserService userService;
     private final RegistrationPasswordValidator registrationPasswordValidator;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final VerificationTokenService verificationTokenService;
 
     @Autowired
     public HomeController(UserService userService,
                           RegistrationPasswordValidator registrationPasswordValidator,
-                          ApplicationEventPublisher applicationEventPublisher) {
+                          ApplicationEventPublisher applicationEventPublisher,
+                          VerificationTokenService verificationTokenService) {
         this.userService = userService;
         this.registrationPasswordValidator = registrationPasswordValidator;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.verificationTokenService = verificationTokenService;
     }
 
     @InitBinder("user")
@@ -114,6 +118,21 @@ public class HomeController {
             } catch (Exception e) {
                 System.out.println("Email error!");
             }
+        }
+        return "home";
+    }
+    @GetMapping("/confirm-account")
+    public String confirmAccount(@RequestParam("token")String tokenParam, Model model) {
+        VerificationToken verificationToken = verificationTokenService.findByToken(tokenParam);
+        if (verificationToken !=null) {
+            System.out.println(tokenParam);
+            User user = verificationToken.getUser();
+            user.setEnabled(true);
+            userService.saveUser(user);
+            verificationTokenService.deleteVerificationToken(verificationToken);
+            // display confirmation
+        } else {
+            // display error
         }
         return "home";
     }
