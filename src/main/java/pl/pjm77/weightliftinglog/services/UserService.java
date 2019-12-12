@@ -56,6 +56,10 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void deleteUserById(long id) {
+        userRepository.deleteById(id);
+    }
+
     /**
      * Automatic user login
      * @param request - HttpServletRequest passed from controller

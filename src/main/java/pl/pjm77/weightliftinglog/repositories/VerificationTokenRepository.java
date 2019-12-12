@@ -5,10 +5,11 @@ import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.models.VerificationToken;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Transactional
 public interface VerificationTokenRepository extends JpaRepository<VerificationToken, String> {
 
-    VerificationToken findByToken(String token);
-    VerificationToken findByUser(User user);
+    Optional<VerificationToken> findByToken(String token);
+    Optional<VerificationToken> findByUser(User user);
 }
