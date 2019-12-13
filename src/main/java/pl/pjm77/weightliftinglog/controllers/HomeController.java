@@ -125,14 +125,13 @@ public class HomeController {
     public String confirmAccount(@RequestParam("token")String tokenParam, Model model) {
         VerificationToken verificationToken = verificationTokenService.findByToken(tokenParam);
         if (verificationToken !=null) {
-            System.out.println(tokenParam);
             User user = verificationToken.getUser();
             user.setEnabled(true);
             userService.saveUser(user);
             verificationTokenService.deleteVerificationToken(verificationToken);
-            // display confirmation
+            model.addAttribute("page", "fragments.html :: activate-account-success");
         } else {
-            // display error
+            model.addAttribute("page", "fragments.html :: activate-account-failure");
         }
         return "home";
     }
