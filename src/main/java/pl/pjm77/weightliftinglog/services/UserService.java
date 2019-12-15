@@ -38,16 +38,6 @@ public class UserService {
     }
 
     /**
-     * Finds user by username in database
-     * @param name - username
-     * @return user object or null if nothing found
-     */
-    public User findUserByName(String name) {
-        Optional<User> user = userRepository.findUserByName(name);
-        return user.orElse(null);
-    }
-
-    /**
      * Finds user in database by email
      * @param email - username
      * @return user object or null if nothing found
@@ -106,7 +96,7 @@ public class UserService {
      * @param password - new password
      */
     public void changeCurrentUserPassword(String password) {
-        User user = findUserByName(getLoggedInUserName());
+        User user = findUserByEmail(getLoggedInUsersEmail());
         user.setPassword(password);
         saveUser(user);
     }

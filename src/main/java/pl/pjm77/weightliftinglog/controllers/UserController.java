@@ -44,17 +44,15 @@ public class UserController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @RequestMapping("/user")
     public String user(Model model, HttpServletRequest request, HttpServletResponse response) {
-        String username = UserService.getLoggedInUserName();
         String email = UserService.getLoggedInUsersEmail();
-        System.out.println("Email: " + email);
-        User user = userService.findUserByName(username);
+        User user = userService.findUserByEmail(email);
         if (!user.isEnabled()) {
             userService.logoutUser(request, response);
             model.addAttribute("loginError", verificationTokenService.removeAccountIfTokenExpired(user));
             model.addAttribute("page", "fragments.html :: login");
             return "home";
         }
-        model.addAttribute("userName", username);
+        model.addAttribute("userName", user.getName());
         model.addAttribute("adminRights", UserService.checkLoggedInUserForAdminRights());
         model.addAttribute("page", "fragments.html :: user-panel");
         model.addAttribute("userPanelPage", "fragments.html :: user-panel-default");
@@ -64,10 +62,8 @@ public class UserController {
 
     @GetMapping("/user/update")
     public String editUserDetails(Model model) {
-        String userName = UserService.getLoggedInUserName();
         String email = UserService.getLoggedInUsersEmail();
-        System.out.println(email);
-        User user = userService.findUserByName(userName);
+        User user = userService.findUserByEmail(email);
         user.setPassword("");
         model.addAttribute("user", user);
         model.addAttribute("page", "fragments.html :: update-user");

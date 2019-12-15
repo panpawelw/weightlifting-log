@@ -10,7 +10,6 @@ import pl.pjm77.weightliftinglog.services.UserService;
 import pl.pjm77.weightliftinglog.services.WorkoutService;
 
 import static pl.pjm77.weightliftinglog.services.UserService.checkLoggedInUserForAdminRights;
-import static pl.pjm77.weightliftinglog.services.UserService.getLoggedInUserName;
 
 @Controller
 @RequestMapping("/workout")
@@ -27,13 +26,12 @@ public class WorkoutController {
 
     @GetMapping("/")
     public String addWorkoutGet(Model model) {
-        String username =  getLoggedInUserName();
-        model.addAttribute("userName", username);
-        model.addAttribute("user", userService.findUserByName(UserService.getLoggedInUserName()));
+        User user =  userService.findUserByEmail(UserService.getLoggedInUsersEmail());
+        model.addAttribute("user", user.getEmail());
+        model.addAttribute("userName", user.getName());
         model.addAttribute("adminRights", checkLoggedInUserForAdminRights());
         model.addAttribute("page", "fragments.html :: user-panel");
         model.addAttribute("userPanelPage", "fragments.html :: user-panel-workout-details");
-        User user = userService.findUserByName(username);
         model.addAttribute("workouts", workoutService.findWorkoutsByUser(user));
         return "home";
     }
@@ -48,7 +46,7 @@ public class WorkoutController {
     @PostMapping("/")
     public void addWorkoutPost(@RequestBody WorkoutDeserialized workoutDeserialized) {
         workoutDeserialized.setUser
-                (userService.findUserByName(UserService.getLoggedInUserName()));
+                (userService.findUserByEmail(UserService.getLoggedInUsersEmail()));
         workoutService.saveWorkout(workoutDeserialized);
     }
 
