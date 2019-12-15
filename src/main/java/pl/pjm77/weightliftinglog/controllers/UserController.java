@@ -45,6 +45,8 @@ public class UserController {
     @RequestMapping("/user")
     public String user(Model model, HttpServletRequest request, HttpServletResponse response) {
         String username = UserService.getLoggedInUserName();
+        String email = UserService.getLoggedInUsersEmail();
+        System.out.println("Email: " + email);
         User user = userService.findUserByName(username);
         if (!user.isEnabled()) {
             userService.logoutUser(request, response);
@@ -63,6 +65,8 @@ public class UserController {
     @GetMapping("/user/update")
     public String editUserDetails(Model model) {
         String userName = UserService.getLoggedInUserName();
+        String email = UserService.getLoggedInUsersEmail();
+        System.out.println(email);
         User user = userService.findUserByName(userName);
         user.setPassword("");
         model.addAttribute("user", user);

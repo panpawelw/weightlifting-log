@@ -10,7 +10,9 @@ import java.util.List;
 
 public class SecureUserDetails extends User implements UserDetails {
 
-    public SecureUserDetails(final User user) {super(user);}
+    public SecureUserDetails(final User user) {
+        super(user);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -46,6 +48,10 @@ public class SecureUserDetails extends User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return super.isEnabled();
+    }
+
+    public String getEmail() {
+        return super.getEmail();
     }
 }

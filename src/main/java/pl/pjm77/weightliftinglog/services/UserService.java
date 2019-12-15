@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
+import pl.pjm77.weightliftinglog.models.SecureUserDetails;
 import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.repositories.UserRepository;
 
@@ -43,6 +44,16 @@ public class UserService {
      */
     public User findUserByName(String name) {
         Optional<User> user = userRepository.findUserByName(name);
+        return user.orElse(null);
+    }
+
+    /**
+     * Finds user in database by email
+     * @param email - username
+     * @return user object or null if nothing found
+     */
+    public User findUserByEmail(String email) {
+        Optional<User> user = userRepository.findUserByEmail(email);
         return user.orElse(null);
     }
 
@@ -123,6 +134,22 @@ public class UserService {
             userName = principal.toString();
         }
         return userName;
+    }
+
+    /**
+     * Provides the email of the user who is currently logged in, or a string
+     * representation of principal object if it's anything else than instance of UserDetail.
+     * @return string value with email of the user or string representation of principal object
+     */
+    public static String getLoggedInUsersEmail() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email;
+        if (principal instanceof UserDetails) {
+            email = ((SecureUserDetails) principal).getEmail();
+        } else {
+            email = principal.toString();
+        }
+        return email;
     }
 
     /**
