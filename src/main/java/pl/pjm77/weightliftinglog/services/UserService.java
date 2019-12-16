@@ -57,6 +57,15 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     * Saves user to database without modifying password
+     * @param user - user object
+     * @throws DataIntegrityViolationException - when database integrity constraint is violated
+     */
+    public void saveUserWithoutModifyingPassword(User user) throws DataIntegrityViolationException {
+        userRepository.save(user);
+    }
+
     public void deleteUserById(long id) {
         userRepository.deleteById(id);
     }

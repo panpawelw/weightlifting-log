@@ -127,7 +127,7 @@ public class HomeController {
         if (verificationToken !=null) {
             User user = verificationToken.getUser();
             user.setEnabled(true);
-            userService.saveUser(user);
+            userService.saveUserWithoutModifyingPassword(user);
             verificationTokenService.deleteVerificationToken(verificationToken);
             model.addAttribute("page", "fragments.html :: activate-account-success");
         } else {
