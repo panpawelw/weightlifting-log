@@ -5,6 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Set is the most basic training unit. It represents one set of particular
+ * exercise.
+ *
+ * data - contains data related to this particular set, like number of
+ *        repetitions performed, time it took, distance covered etc
+ * notes - list of notes related to this exercise
+ */
 public class Set implements Serializable {
 
     private String data;

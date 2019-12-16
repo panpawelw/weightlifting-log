@@ -66,6 +66,10 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     * Deletes user from database
+     * @param id - id of user to be deleted
+     */
     public void deleteUserById(long id) {
         userRepository.deleteById(id);
     }

@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Implementation of UserDetails class for Spring Security purposes
+ */
 public class SecureUserDetails extends User implements UserDetails {
 
     public SecureUserDetails(final User user) {
@@ -48,10 +51,6 @@ public class SecureUserDetails extends User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return super.isEnabled();
-    }
-
-    public String getEmail() {
-        return super.getEmail();
+        return true;
     }
 }
