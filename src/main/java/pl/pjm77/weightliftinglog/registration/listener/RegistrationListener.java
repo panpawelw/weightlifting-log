@@ -26,7 +26,6 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     @Override
     public void onApplicationEvent(final OnRegistrationCompleteEvent event) {
         final User user = event.getUser();
-
         VerificationToken verificationToken = new VerificationToken(user);
         verificationTokenService.saveToken(verificationToken);
         emailService.sendEmail(user.getEmail(), "Weightlifting Log registration" +

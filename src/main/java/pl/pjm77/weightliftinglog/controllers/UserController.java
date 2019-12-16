@@ -45,9 +45,8 @@ public class UserController {
     @RequestMapping("/user")
     public String user(Model model, HttpServletRequest request, HttpServletResponse response) {
         String email = UserService.getLoggedInUsersEmail();
-        System.out.println(email);
         User user = userService.findUserByEmail(email);
-        if (!user.isEnabled()) {
+        if (!user.isActivated()) {
             userService.logoutUser(request, response);
             model.addAttribute("loginError", verificationTokenService.removeAccountIfTokenExpired(user));
             model.addAttribute("page", "fragments.html :: login");
@@ -82,7 +81,6 @@ public class UserController {
                 userService.saveUser(user);
                 userService.logoutUser(request, response);
                 userService.autoLogin(request, user.getName(), password);
-                System.out.println(user.getEmail());
                 model.addAttribute("page", "fragments.html :: update-user-success");
             }catch(DataIntegrityViolationException e){
                 model.addAttribute

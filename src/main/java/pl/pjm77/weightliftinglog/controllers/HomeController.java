@@ -100,8 +100,7 @@ public class HomeController {
         model.addAttribute("page", "fragments.html :: register-user");
         if (!bindingResult.hasErrors()) {
             try {
-                if (user.isEmailReal()) {
-                    user.setEnabled(false);
+                if (!user.isActivated()) {
                     userService.saveUser(user);
                     applicationEventPublisher.publishEvent(new OnRegistrationCompleteEvent(user,
                             request.getContextPath(), request.getLocale()));
@@ -126,7 +125,7 @@ public class HomeController {
         VerificationToken verificationToken = verificationTokenService.findByToken(tokenParam);
         if (verificationToken !=null) {
             User user = verificationToken.getUser();
-            user.setEnabled(true);
+            user.setActivated(true);
             userService.saveUserWithoutModifyingPassword(user);
             verificationTokenService.deleteVerificationToken(verificationToken);
             model.addAttribute("page", "fragments.html :: activate-account-success");

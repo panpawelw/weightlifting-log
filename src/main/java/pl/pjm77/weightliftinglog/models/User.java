@@ -48,7 +48,7 @@ public class User implements Serializable {
     @Email(message = "Please enter a valid email!")
     private String email;
 
-    private boolean emailReal;
+    private boolean activated = true;
 
     private String firstName;
 
@@ -64,8 +64,6 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user")
     private List<WorkoutSerialized> workouts = new ArrayList<>();
 
-    private boolean enabled = true;
-
     public User() {
     }
 
@@ -74,14 +72,13 @@ public class User implements Serializable {
         this.name = user.getName();
         this.password = user.getPassword();
         this.email = user.getEmail();
-        this.emailReal = user.isEmailReal();
+        this.activated = user.isActivated();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.age = user.getAge();
         this.gender = user.getGender();
         this.role = user.getRole();
         this.workouts = user.getWorkouts();
-        this.enabled = user.isEnabled();
     }
 
     public Long getId() {
@@ -128,12 +125,12 @@ public class User implements Serializable {
         return firstName;
     }
 
-    public boolean isEmailReal() {
-        return emailReal;
+    public boolean isActivated() {
+        return activated;
     }
 
-    public void setEmailReal(boolean emailReal) {
-        this.emailReal = emailReal;
+    public void setActivated(boolean enabled) {
+        this.activated = enabled;
     }
 
     public void setFirstName(String firstName) {
@@ -180,13 +177,6 @@ public class User implements Serializable {
         this.workouts = workouts;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
 
     @Override
     public String toString() {
@@ -196,14 +186,13 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", confirmPassword='" + confirmPassword + '\'' +
                 ", email='" + email + '\'' +
-                ", emailReal=" + emailReal +
+                ", enabled=" + activated +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
                 ", gender=" + gender +
                 ", role='" + role + '\'' +
 //                ", workouts=" + workouts +
-                ", enabled=" + enabled +
                 '}';
     }
 }
