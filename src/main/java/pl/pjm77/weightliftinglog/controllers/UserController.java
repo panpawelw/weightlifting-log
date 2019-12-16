@@ -45,6 +45,7 @@ public class UserController {
     @RequestMapping("/user")
     public String user(Model model, HttpServletRequest request, HttpServletResponse response) {
         String email = UserService.getLoggedInUsersEmail();
+        System.out.println(email);
         User user = userService.findUserByEmail(email);
         if (!user.isEnabled()) {
             userService.logoutUser(request, response);
@@ -61,7 +62,7 @@ public class UserController {
     }
 
     @GetMapping("/user/update")
-    public String editUserDetails(Model model) {
+    public String editUserDetailsGet(Model model) {
         String email = UserService.getLoggedInUsersEmail();
         User user = userService.findUserByEmail(email);
         user.setPassword("");
@@ -71,12 +72,17 @@ public class UserController {
     }
 
     @PostMapping("/user/update")
-    public String registerPost(@Valid @ModelAttribute("user") User user,
-                               BindingResult bindingResult, Model model) {
+    public String editUserDetailsPost(@Valid @ModelAttribute("user") User user,
+                               BindingResult bindingResult, Model model,
+                               HttpServletRequest request, HttpServletResponse response) {
         model.addAttribute("page", "fragments.html :: update-user");
         if (!bindingResult.hasErrors()) {
             try {
+                String password = user.getPassword();
                 userService.saveUser(user);
+                userService.logoutUser(request, response);
+                userService.autoLogin(request, user.getName(), password);
+                System.out.println(user.getEmail());
                 model.addAttribute("page", "fragments.html :: update-user-success");
             }catch(DataIntegrityViolationException e){
                 model.addAttribute

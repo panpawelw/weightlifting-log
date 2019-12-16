@@ -51,7 +51,8 @@ public class ChangePasswordController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("page", "fragments.html :: change-password");
         } else {
-            String username = UserService.getLoggedInUserName();
+            String username =
+                    userService.findUserByEmail(UserService.getLoggedInUsersEmail()).getName();
             userService.changeCurrentUserPassword(changePassword.getNewPassword());
             userService.logoutUser(request, response);
             userService.autoLogin(request, username, changePassword.getNewPassword());

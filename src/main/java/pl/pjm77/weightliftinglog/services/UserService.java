@@ -54,7 +54,7 @@ public class UserService {
      */
     public void saveUser(User user) throws DataIntegrityViolationException {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        userRepository.saveAndFlush(user);
     }
 
     /**
