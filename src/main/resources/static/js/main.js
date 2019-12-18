@@ -67,6 +67,40 @@ function scrollToTop() {
     OkToToggleLogo = true;
 }
 
+/** This stores the state of logo in session storage so it can be preserved when page is reloaded.
+ */
+function preserveLogoState() {
+    sessionStorage.setItem('logoVisibility',
+        document.getElementById('logo-container').style.display);
+}
+
+/** This restores the state of logo visibility
+ */
+function restoreLogoState() {
+    let logoVisibility = sessionStorage.getItem('logoVisibility');
+    sessionStorage.removeItem('logoVisibility');
+    if (logoVisibility === 'block') {
+        console.log('Logo was visible!'); // Fix
+    }else if(logoVisibility === 'none') {
+        document.getElementById('big-tabs').classList.add('sticky');
+        document.getElementById('filler-1').classList.add('sticky');
+        $(document.getElementById('logo-container')).slideUp('fast').queue(false);
+        $(document.getElementById('filler-2')).show('fast').queue(false);
+        $(document.getElementById('filler-1')).show('fast').queue(false);
+    } else {
+        console.log('First time load!'); // Fix
+    }
+    scrollToTop();
+}
+
+/** Temporary solution for workout selection window getting too short when editing workout in
+ * the right pane.
+ */
+function equalizeColumnHeight() {
+    document.getElementById('workout-selection-container').style.height =
+        document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
+}
+
 /** This function utilizes Split plugin to create two flexible columns with adjustable width.
  */
 function split() {
@@ -448,25 +482,6 @@ function setNoteContentAndType(noteId, content, type) {
     storeInWorkout(workoutEntry, type);
 }
 
-/** Stores file attached to a media note in files array, removes input field, shows filename
- *  and play button.
- * @param {string} fileInputId - file input field Id
- * @param {Blob} file - file to upload
- * @param {string} content - media note content (a filename)
- * @param {number} noteType - type of note (text(0), audio(1), picture(2), video(3))
- */
-function attachFile(fileInputId, file, content, noteType) {
-    let reader = new FileReader();
-    reader.onloadend = function (event) {
-        this.target = event.target;
-        if (this.target.readyState === FileReader.DONE) {
-            files.push(reader.result);
-        }
-        displayExistingMediaNote(fileInputId, content, noteType);
-    };
-    reader.readAsDataURL(file);
-}
-
 /** This displays a new span element with filename in place of file select element after user
  * upload the media file. It also replaces note type select with media play button.
  * @param {string } noteId - id of note element
@@ -498,10 +513,6 @@ function displayExistingMediaNote(noteId, content, type) {
     }
 }
 
-function play() {
-    alert('playing!');
-}
-
 /** Removes element from workout and corresponding entry in workout object. Used to remove
  *  exercise, set or note of any kind from workout
  *  @param {Node} [element] - element to remove
@@ -526,34 +537,35 @@ function remove(element) {
     displayWorkout();
 }
 
-function preserveLogoState() {
-    sessionStorage.setItem('logoVisibility',
-        document.getElementById('logo-container').style.display);
+function play() {
+    alert('playing!');
 }
 
-function restoreLogoState() {
-    let logoVisibility = sessionStorage.getItem('logoVisibility');
-    sessionStorage.removeItem('logoVisibility');
-    if (logoVisibility === 'block') {
-        console.log('Logo was visible!');
-    }else if(logoVisibility === 'none') {
-        document.getElementById('big-tabs').classList.add('sticky');
-        document.getElementById('filler-1').classList.add('sticky');
-        $(document.getElementById('logo-container')).slideUp('fast').queue(false);
-        $(document.getElementById('filler-2')).show('fast').queue(false);
-        $(document.getElementById('filler-1')).show('fast').queue(false);
-    } else {
-        console.log('First time load!');
-    }
-    scrollToTop();
+/*****************************************************
+ * Functions and variables related to I/O operations *
+ *****************************************************/
+
+function uploadFileToAWS() {
+
 }
 
-/** Temporary solution for workout selection window getting too short when editing workout in
- * the right pane
+/** Stores file attached to a media note in files array, removes input field, shows filename
+ *  and play button.
+ * @param {string} fileInputId - file input field Id
+ * @param {Blob} file - file to upload
+ * @param {string} content - media note content (a filename)
+ * @param {number} noteType - type of note (text(0), audio(1), picture(2), video(3))
  */
-function equalizeColumnHeight() {
-    document.getElementById('workout-selection-container').style.height =
-        document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
+function attachFile(fileInputId, file, content, noteType) {
+    let reader = new FileReader();
+    reader.onloadend = function (event) {
+        this.target = event.target;
+        if (this.target.readyState === FileReader.DONE) {
+            files.push(reader.result);
+        }
+        displayExistingMediaNote(fileInputId, content, noteType);
+    };
+    reader.readAsDataURL(file);
 }
 
 /** Gets existing workout details in JSON format from REST controller.
