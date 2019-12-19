@@ -497,18 +497,39 @@ function displayExistingMediaNote(noteId, content, type) {
     switch (type) {
         case 1:
         case "1":
-            $(newNote).next().replaceWith('<button class="my-btn audio bn"' +
-                ' title="play audio" onclick="play();">&nbsp</button>');
+            $(newNote).next().replaceWith('<button class="my-btn audio bn" title="play audio" ' +
+                'data-toggle="modal" data-target="#' + noteId + '-modal">&nbsp</button>');
+            const aModal = document.createElement("div");
+            aModal.setAttribute('id', noteId + '-modal');
+            aModal.setAttribute('class', 'modal fade');
+            aModal.innerHTML = '<div class="modal-dialog"><div class="modal-content">Here' +
+                ' goes sound player!<button type="button" class="close" data-dismiss="modal"' +
+                '>&times;</button></div></div>';
+            newNote.parentElement.appendChild(aModal);
             break;
         case 2:
         case "2":
-            $(newNote).next().replaceWith('<button class="my-btn image bn"' +
-                ' title="show picture" onclick="play();">&nbsp</button>');
+            $(newNote).next().replaceWith('<button class="my-btn image bn" ' +
+                'title="display picture" data-toggle="modal" data-target="#' + noteId + '-modal">&nbsp</button>');
+            const pModal = document.createElement("div");
+            pModal.setAttribute('id', noteId + '-modal');
+            pModal.setAttribute('class', 'modal fade');
+            pModal.innerHTML = '<div class="modal-dialog"><div class="modal-content">Here' +
+                ' goes picture!<button type="button" class="close" data-dismiss="modal"' +
+                '>&times;</button></div></div>';
+            newNote.parentElement.appendChild(pModal);
             break;
         case 3:
         case "3":
             $(newNote).next().replaceWith('<button class="my-btn clip bn"' +
-                ' title="play video" onclick="play();">&nbsp</button>');
+                ' title="show clip" data-toggle="modal" data-target="#' + noteId + '-modal">&nbsp</button>');
+            const vModal = document.createElement("div");
+            vModal.setAttribute('id', noteId + '-modal');
+            vModal.setAttribute('class', 'modal fade');
+            vModal.innerHTML = '<div class="modal-dialog"><div class="modal-content">Here' +
+                ' goes video player!<button type="button" class="close" data-dismiss="modal"' +
+                '>&times;</button></div></div>';
+            newNote.parentElement.appendChild(vModal);
             break;
     }
 }
@@ -535,10 +556,6 @@ function remove(element) {
     document.getElementById('notes').innerHTML = '';
     document.getElementById('exercises').innerHTML = '';
     displayWorkout();
-}
-
-function play() {
-    alert('playing!');
 }
 
 /*****************************************************
