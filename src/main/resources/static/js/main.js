@@ -514,9 +514,10 @@ function displayExistingMediaNote(noteId, content, type) {
             const pModal = document.createElement("div");
             pModal.setAttribute('id', noteId + '-modal');
             pModal.setAttribute('class', 'modal fade');
-            pModal.innerHTML = '<div class="modal-dialog"><div class="modal-content">Here' +
-                ' goes picture!<button type="button" class="close" data-dismiss="modal"' +
-                '>&times;</button></div></div>';
+            pModal.innerHTML = '<div class="modal-dialog"><div class="modal-content">' +
+                '<button type="button" class="close" data-dismiss="modal"' +
+                '>&times;</button><img id="' + noteId + '-img" src="#" alt="image"' +
+                ' /></div></div>';
             newNote.parentElement.appendChild(pModal);
             break;
         case 3:
@@ -562,10 +563,6 @@ function remove(element) {
  * Functions and variables related to I/O operations *
  *****************************************************/
 
-function uploadFileToAWS() {
-
-}
-
 /** Stores file attached to a media note in files array, removes input field, shows filename
  *  and play button.
  * @param {string} fileInputId - file input field Id
@@ -577,10 +574,12 @@ function attachFile(fileInputId, file, content, noteType) {
     let reader = new FileReader();
     reader.onloadend = function (event) {
         this.target = event.target;
+        displayExistingMediaNote(fileInputId, content, noteType);
         if (this.target.readyState === FileReader.DONE) {
             files.push(reader.result);
+            console.log('#' + fileInputId + '-img');
+            $('#' + fileInputId + '-img').attr('src', reader.result);
         }
-        displayExistingMediaNote(fileInputId, content, noteType);
     };
     reader.readAsDataURL(file);
 }
