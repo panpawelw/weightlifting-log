@@ -81,7 +81,7 @@ function restoreLogoState() {
     sessionStorage.removeItem('logoVisibility');
     if (logoVisibility === 'block') {
         console.log('Logo was visible!'); // Fix
-    }else if(logoVisibility === 'none') {
+    } else if (logoVisibility === 'none') {
         document.getElementById('big-tabs').classList.add('sticky');
         document.getElementById('filler-1').classList.add('sticky');
         $(document.getElementById('logo-container')).slideUp('fast').queue(false);
@@ -128,7 +128,8 @@ function split() {
  *  @param {string} repsField   id of the element that stores the number of reps
  *  @param {string} maxField    id of the element that will be updated with calculation result
  */
-function updateGS(fieldToUpdate, value, weightField, repsField, maxField) {
+function updateGS(fieldToUpdate, value, weightField,
+                  repsField, maxField) {
     document.getElementById(fieldToUpdate).value = value;
     const weight = document.getElementById(weightField).value;
     const reps = document.getElementById(repsField).value;
@@ -371,7 +372,8 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
  * @param {number} [exerciseNo] - optional number of exercise note is assigned to
  * @param {number} [setNo] - optional number of set note is assigned to
  */
-function addNote(noteNo, type, content, exerciseNo = undefined, setNo = undefined) {
+function addNote(noteNo, type, content, exerciseNo = undefined,
+                 setNo = undefined) {
     // is it a new note?
     const itsANewNote = (noteNo === undefined);
     // assume it's a workout note (to avoid code repetition)
@@ -502,34 +504,38 @@ function displayExistingMediaNote(noteId, content, type) {
             const aModal = document.createElement("div");
             aModal.setAttribute('id', noteId + '-modal');
             aModal.setAttribute('class', 'modal fade');
-            aModal.innerHTML = '<div class="modal-dialog"><div class="modal-content">Here' +
-                ' goes sound player!<button type="button" class="close" data-dismiss="modal"' +
-                '>&times;</button></div></div>';
+            aModal.innerHTML = '<div class="modal-dialog"><div class="modal-content">' +
+                '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
+                '<audio controls><source id="' + noteId + '-media" src="#" type="audio/mpeg">' +
+                '</audio></div></div>';
             newNote.parentElement.appendChild(aModal);
             break;
         case 2:
         case "2":
             $(newNote).next().replaceWith('<button class="my-btn image bn" ' +
-                'title="display picture" data-toggle="modal" data-target="#' + noteId + '-modal">&nbsp</button>');
+                'title="display picture" data-toggle="modal" data-target="#' + noteId +
+                '-modal">&nbsp</button>');
             const pModal = document.createElement("div");
             pModal.setAttribute('id', noteId + '-modal');
             pModal.setAttribute('class', 'modal fade');
             pModal.innerHTML = '<div class="modal-dialog"><div class="modal-content">' +
                 '<button type="button" class="close" data-dismiss="modal"' +
-                '>&times;</button><img id="' + noteId + '-img" src="#" alt="image"' +
+                '>&times;</button><img id="' + noteId + '-media" src="#" alt="image"' +
                 ' /></div></div>';
             newNote.parentElement.appendChild(pModal);
             break;
         case 3:
         case "3":
             $(newNote).next().replaceWith('<button class="my-btn clip bn"' +
-                ' title="show clip" data-toggle="modal" data-target="#' + noteId + '-modal">&nbsp</button>');
+                ' title="show clip" data-toggle="modal" data-target="#' + noteId +
+                '-modal">&nbsp</button>');
             const vModal = document.createElement("div");
             vModal.setAttribute('id', noteId + '-modal');
             vModal.setAttribute('class', 'modal fade');
-            vModal.innerHTML = '<div class="modal-dialog"><div class="modal-content">Here' +
-                ' goes video player!<button type="button" class="close" data-dismiss="modal"' +
-                '>&times;</button></div></div>';
+            vModal.innerHTML = '<div class="modal-dialog"><div class="modal-content">' +
+                '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
+                '<video controls><source id="' + noteId + '-media" src="#" type="video/mp4">' +
+                '</video></div></div>';
             newNote.parentElement.appendChild(vModal);
             break;
     }
@@ -577,8 +583,7 @@ function attachFile(fileInputId, file, content, noteType) {
         displayExistingMediaNote(fileInputId, content, noteType);
         if (this.target.readyState === FileReader.DONE) {
             files.push(reader.result);
-            console.log('#' + fileInputId + '-img');
-            $('#' + fileInputId + '-img').attr('src', reader.result);
+            $('#' + fileInputId + '-media').attr('src', reader.result);
         }
     };
     reader.readAsDataURL(file);
