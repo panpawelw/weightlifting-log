@@ -47,6 +47,7 @@ public class WorkoutController {
     public void addWorkoutPost(@RequestBody WorkoutDeserialized workoutDeserialized) {
         workoutDeserialized.setUser
                 (userService.findUserByEmail(UserService.getLoggedInUsersEmail()));
+        System.out.println(workoutDeserialized.getFiles());
         workoutService.saveWorkout(workoutDeserialized);
     }
 

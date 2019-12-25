@@ -81,7 +81,7 @@ public class SerializationDeserializationTests {
         workout1Notes.add(workout1Note);
         User user1 = new User();
         WorkoutDeserialized workout1Deserialized = new WorkoutDeserialized(1L,"First workout title",
-                null,null, user1, workout1Exercises, workout1Notes);
+                null, null, user1, workout1Exercises, workout1Notes, null);
         WorkoutSerialized workout1Serialized =
                 workoutService.serializeWorkout(workout1Deserialized);
         WorkoutDeserialized workout2Deserialized =

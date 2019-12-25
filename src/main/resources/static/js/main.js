@@ -192,7 +192,6 @@ function updatePercentageDescription(description, percentage) {
  ****************************************************************************/
 
 let workout = null; // Global workout object variable
-let files = []; // Array for storing files attached to media notes (will eventually be removed)
 
 /** This initializes a creation of a new workout in the left panel.
  */
@@ -200,7 +199,7 @@ function addWorkout() {
     // Create an empty workout object
     workout = {
         id: 0, title: null, created: null, updated: null, user: null,
-        notes: [], exercises: []
+        notes: [], exercises: [], files: []
     };
     // Update "created" entry with current timestamp
     const created = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -541,7 +540,7 @@ function displayExistingMediaNote(noteId, content, type) {
     }
 }
 
-/** Removes element from workout and corresponding entry in workout object. Used to remove
+/** Removes element from workout and coresponding entry in workout object. Used to remove
  *  exercise, set or note of any kind from workout
  *  @param {Node} [element] - element to remove
  */
@@ -582,7 +581,7 @@ function attachFile(fileInputId, file, content, noteType) {
         this.target = event.target;
         displayExistingMediaNote(fileInputId, content, noteType);
         if (this.target.readyState === FileReader.DONE) {
-            files.push(reader.result);
+            workout.files.push([content],[reader.result]);
             $('#' + fileInputId + '-media').attr('src', reader.result);
         }
     };

@@ -27,11 +27,13 @@ public class WorkoutDeserialized implements Serializable {
     private User user;
     private List<Exercise> exercises = new ArrayList<>();
     private List<Note> notes = new ArrayList<>();
+    private List<String> files = new ArrayList<>();
 
     public WorkoutDeserialized() {}
 
     public WorkoutDeserialized(Long id, String title, Timestamp created, Timestamp updated,
-                               User user, List<Exercise> exercises, List<Note> notes) {
+                               User user, List<Exercise> exercises, List<Note> notes,
+                               List<String> files) {
         this.id = id;
         this.title = title;
         this.created = created;
@@ -39,6 +41,7 @@ public class WorkoutDeserialized implements Serializable {
         this.user = user;
         this.exercises = exercises;
         this.notes = notes;
+        this.files = files;
     }
 
     public Long getId() {
@@ -95,6 +98,14 @@ public class WorkoutDeserialized implements Serializable {
 
     public void setNotes(List<Note> notes) {
         this.notes = notes;
+    }
+
+    public List<String> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<String> files) {
+        this.files = files;
     }
 
     @Override
