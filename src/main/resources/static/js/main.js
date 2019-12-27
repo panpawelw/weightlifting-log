@@ -421,6 +421,7 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
     } else {
         if (newNote.type !== 0) {
             displayExistingMediaNote(short, newNote.content, newNote.type);
+            assignFileToExistingMediaNote(short, newNote.content);
         } else {
             document.getElementById(short).innerHTML = newNote.content;
         }
@@ -540,6 +541,14 @@ function displayExistingMediaNote(noteId, content, type) {
     }
 }
 
+function assignFileToExistingMediaNote(noteId, filename) {
+    workout.files.forEach(function (file) {
+        if (file.filename === filename) {
+            $('#' + noteId + '-media').attr('src', file.data);
+        }
+    });
+}
+
 /** Removes element from workout and coresponding entry in workout object. Used to remove
  *  exercise, set or note of any kind from workout
  *  @param {Node} [element] - element to remove
@@ -572,17 +581,18 @@ function remove(element) {
  *  and play button.
  * @param {string} fileInputId - file input field Id
  * @param {Blob} file - file to upload
- * @param {string} content - media note content (a filename)
+ * @param {string} filename - media note content (a filename)
  * @param {number} noteType - type of note (text(0), audio(1), picture(2), video(3))
  */
-function attachFile(fileInputId, file, content, noteType) {
+function attachFile(fileInputId, file, filename, noteType) {
     let reader = new FileReader();
     reader.onloadend = function (event) {
         this.target = event.target;
-        displayExistingMediaNote(fileInputId, content, noteType);
+        displayExistingMediaNote(fileInputId, filename, noteType);
         if (this.target.readyState === FileReader.DONE) {
-            workout.files.push([content],[reader.result]);
-            $('#' + fileInputId + '-media').attr('src', reader.result);
+            const data = reader.result;
+            workout.files.push({filename, data});
+            $('#' + fileInputId + '-media').attr('src', workout.files[workout.files.length -1].data);
         }
     };
     reader.readAsDataURL(file);
