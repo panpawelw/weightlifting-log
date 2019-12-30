@@ -549,7 +549,7 @@ function assignFileToExistingMediaNote(noteId, filename) {
     });
 }
 
-/** Removes element from workout and coresponding entry in workout object. Used to remove
+/** Removes element from workout and corresponding entry in workout object. Used to remove
  *  exercise, set or note of any kind from workout
  *  @param {Node} [element] - element to remove
  */
@@ -559,12 +559,28 @@ function remove(element) {
     parent.parentElement.removeChild(parent);
     switch (entry.length) {
         case 3:
+            if(workout[entry[0]][entry[1]].hasOwnProperty('type')) {
+                if(workout[entry[0]][entry[1]].type) {
+                    console.log('Media note!')
+                }
+            }
             workout[entry[0]].splice(entry[1], 1);
             break;
         case 5:
+            if(workout[entry[0]][entry[1]][entry[2]][entry[3]].hasOwnProperty('type')) {
+                if(workout[entry[0]][entry[1]][entry[2]][entry[3]].type>0) {
+                    console.log('Media note!')
+                }
+            }
             workout[entry[0]][entry[1]][entry[2]].splice(entry[3], 1);
             break;
         case 7:
+            if(workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]]
+                .hasOwnProperty('type')) {
+                if(workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]].type>0) {
+                    console.log('Media note!')
+                }
+            }
             workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]].splice(entry[5], 1);
             break;
     }
