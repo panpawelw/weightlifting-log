@@ -573,30 +573,30 @@ function remove(element) {
     const entry = $(element).data('set').split(',');
     const parent = element.parentElement;
     parent.parentElement.removeChild(parent);
+    let short = '';
+    // noinspection JSMismatchedCollectionQueryUpdate
+    let shorter = [];
+    // Set parameters depending on how many levels deep element is positioned
     switch (entry.length) {
         case 3:
-            if (workout[entry[0]][entry[1]].hasOwnProperty('type') &&
-                workout[entry[0]][entry[1]].type > 0) {
-                removeMediaFile(workout[entry[0]][entry[1]].content);
-            }
-            workout[entry[0]].splice(entry[1], 1);
+            short = workout[entry[0]][entry[1]];
+            shorter = workout[entry[0]];
             break;
         case 5:
-            if (workout[entry[0]][entry[1]][entry[2]][entry[3]].hasOwnProperty('type') &&
-                workout[entry[0]][entry[1]][entry[2]][entry[3]].type > 0) {
-                removeMediaFile(workout[entry[0]][entry[1]][entry[2]][entry[3]].content);
-            }
-            workout[entry[0]][entry[1]][entry[2]].splice(entry[3], 1);
+            short = workout[entry[0]][entry[1]][entry[2]][entry[3]];
+            shorter = workout[entry[0]][entry[1]][entry[2]];
             break;
         case 7:
-            if (workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]]
-                .hasOwnProperty('type') && workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]].type > 0) {
-                removeMediaFile(
-                    workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]].content);
-            }
-            workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]].splice(entry[5], 1);
+            short = workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]];
+            shorter = workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]];
             break;
     }
+    // If it's a media note - remove corresponding media file
+    if (short.hasOwnProperty('type') && short.type > 0) {
+        removeMediaFile(short.content);
+    }
+    // Remove element, clear workout screen and display workout again
+    shorter.splice(entry[entry.length - 1], 1);
     document.getElementById('notes').innerHTML = '';
     document.getElementById('exercises').innerHTML = '';
     displayWorkout();
