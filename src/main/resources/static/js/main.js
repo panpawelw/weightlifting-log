@@ -485,8 +485,9 @@ function setNoteContentAndType(noteId, content, type) {
 }
 
 /** This displays a new span element with filename in place of file select element after user
- * upload the media file. It also replaces note type select with media play button.
- * @param {string } noteId - id of note element
+ * upload the media file. It also replaces note type select with media play button and creates
+ * the modal element to be displayed when the button is clicked.
+ * @param {string} noteId - id of note element
  * @param {string} content - note content (filename)
  * @param {number} type - media note type -  audio(1), picture(2), video(3)
  */
@@ -541,6 +542,10 @@ function displayExistingMediaNote(noteId, content, type) {
     }
 }
 
+/** Assigns media file to a media note when workout is loaded from database.
+ * @param {String} noteId - id of the note element
+ * @param {String} filename - name of the file
+ */
 function assignFileToExistingMediaNote(noteId, filename) {
     workout.files.forEach(function (file) {
         if (file.filename === filename) {
@@ -549,10 +554,13 @@ function assignFileToExistingMediaNote(noteId, filename) {
     });
 }
 
+/** Deletes media file from workout object when a corresponding media note element has been deleted.
+ * @param {String} filename - name of the file
+ */
 function removeMediaFile(filename) {
     workout.files.forEach(function (file, index, object) {
         if (file.filename === filename) {
-            object.splice(index,1);
+            object.splice(index, 1);
         }
     });
 }
@@ -567,28 +575,24 @@ function remove(element) {
     parent.parentElement.removeChild(parent);
     switch (entry.length) {
         case 3:
-            if(workout[entry[0]][entry[1]].hasOwnProperty('type')) {
-                if(workout[entry[0]][entry[1]].type > 0) {
-                    removeMediaFile(workout[entry[0]][entry[1]].content);
-                }
+            if (workout[entry[0]][entry[1]].hasOwnProperty('type') &&
+                workout[entry[0]][entry[1]].type > 0) {
+                removeMediaFile(workout[entry[0]][entry[1]].content);
             }
             workout[entry[0]].splice(entry[1], 1);
             break;
         case 5:
-            if(workout[entry[0]][entry[1]][entry[2]][entry[3]].hasOwnProperty('type')) {
-                if(workout[entry[0]][entry[1]][entry[2]][entry[3]].type > 0) {
-                    removeMediaFile(workout[entry[0]][entry[1]][entry[2]][entry[3]].content);
-                }
+            if (workout[entry[0]][entry[1]][entry[2]][entry[3]].hasOwnProperty('type') &&
+                workout[entry[0]][entry[1]][entry[2]][entry[3]].type > 0) {
+                removeMediaFile(workout[entry[0]][entry[1]][entry[2]][entry[3]].content);
             }
             workout[entry[0]][entry[1]][entry[2]].splice(entry[3], 1);
             break;
         case 7:
-            if(workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]]
-                .hasOwnProperty('type')) {
-                if(workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]].type > 0) {
-                    removeMediaFile(
-                        workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]].content);
-                }
+            if (workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]]
+                .hasOwnProperty('type') && workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]].type > 0) {
+                removeMediaFile(
+                    workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]].content);
             }
             workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]].splice(entry[5], 1);
             break;
@@ -617,7 +621,7 @@ function attachFile(fileInputId, file, filename, noteType) {
         if (this.target.readyState === FileReader.DONE) {
             const data = reader.result;
             workout.files.push({filename, data});
-            $('#' + fileInputId + '-media').attr('src', workout.files[workout.files.length -1].data);
+            $('#' + fileInputId + '-media').attr('src', workout.files[workout.files.length - 1].data);
         }
     };
     reader.readAsDataURL(file);
