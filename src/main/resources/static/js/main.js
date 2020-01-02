@@ -500,15 +500,17 @@ function displayExistingMediaNote(noteId, content, type) {
     switch (type) {
         case 1:
         case "1":
-            $(newNote).next().replaceWith('<button class="my-btn audio bn" title="play audio" ' +
-                'data-toggle="modal" data-target="#' + noteId + '-modal">&nbsp</button>');
+            $(newNote).next().replaceWith('<button onclick="play(\'' + noteId + '\');"' +
+                ' class="my-btn audio bn" title="play audio" data-toggle="modal" ' +
+                ' data-target="#' + noteId + '-modal">&nbsp</button>');
             const aModal = document.createElement("div");
             aModal.setAttribute('id', noteId + '-modal');
-            aModal.setAttribute('class', 'modal fade');
+            aModal.setAttribute('class', 'modal fade close');
+            aModal.setAttribute('data-dismiss', 'modal');
             aModal.innerHTML = '<div class="modal-dialog"><div class="modal-content">' +
                 '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
-                '<audio controls><source id="' + noteId + '-media" src="#" type="audio/mpeg">' +
-                '</audio></div></div>';
+                '<audio controls id="' + noteId + '-autoplay"><source id="' + noteId + '-media"' +
+                ' src="#" type="audio/mpeg"></audio></div></div>';
             newNote.parentElement.appendChild(aModal);
             break;
         case 2:
@@ -527,19 +529,27 @@ function displayExistingMediaNote(noteId, content, type) {
             break;
         case 3:
         case "3":
-            $(newNote).next().replaceWith('<button class="my-btn clip bn"' +
-                ' title="show clip" data-toggle="modal" data-target="#' + noteId +
-                '-modal">&nbsp</button>');
+            $(newNote).next().replaceWith('<button onclick="play(\'' + noteId + '\');"' +
+                ' class="my-btn clip bn" title="show clip" data-toggle="modal" data-target="#' +
+                noteId + '-modal">&nbsp</button>');
             const vModal = document.createElement("div");
             vModal.setAttribute('id', noteId + '-modal');
             vModal.setAttribute('class', 'modal fade');
             vModal.innerHTML = '<div class="modal-dialog"><div class="modal-content">' +
                 '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
-                '<video controls><source id="' + noteId + '-media" src="#" type="video/mp4">' +
-                '</video></div></div>';
+                '<video controls id="' + noteId + '-autoplay"><source id="' + noteId + '-media"' +
+                ' src="#"' +
+                ' type="video/mp4"></video></div></div>';
             newNote.parentElement.appendChild(vModal);
             break;
     }
+}
+
+function play(noteId) {
+    document.getElementById(noteId + '-autoplay').play();
+    $("#" + noteId + "-modal").on('hidden.bs.modal', function(){
+        document.getElementById(noteId + '-autoplay').pause();
+    })
 }
 
 /** Assigns media file to a media note when workout is loaded from database.
