@@ -19,6 +19,10 @@ html body {
     color: #FF9200;
 }
 
+video, img {
+    max-height: 90vh;
+}
+
 #main-container {
     display: flex;
     flex-flow: column;

@@ -507,10 +507,10 @@ function displayExistingMediaNote(noteId, content, type) {
             aModal.setAttribute('id', noteId + '-modal');
             aModal.setAttribute('class', 'modal fade close');
             aModal.setAttribute('data-dismiss', 'modal');
-            aModal.innerHTML = '<div class="modal-dialog"><div class="modal-content">' +
-                '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
-                '<audio controls id="' + noteId + '-autoplay"><source id="' + noteId + '-media"' +
-                ' src="#" type="audio/mpeg"></audio></div></div>';
+            aModal.innerHTML = '<div class="modal-dialog modal-dialog-centered"><div' +
+                ' class="modal-content"><button type="button" class="close" data-dismiss="modal">' +
+                '&times;</button><audio controls id="' + noteId + '-autoplay"><source id="' +
+                noteId + '-media" src="#" type="audio/mpeg"></audio></div></div>';
             newNote.parentElement.appendChild(aModal);
             break;
         case 2:
@@ -521,8 +521,8 @@ function displayExistingMediaNote(noteId, content, type) {
             const pModal = document.createElement("div");
             pModal.setAttribute('id', noteId + '-modal');
             pModal.setAttribute('class', 'modal fade');
-            pModal.innerHTML = '<div class="modal-dialog"><div class="modal-content">' +
-                '<button type="button" class="close" data-dismiss="modal"' +
+            pModal.innerHTML = '<div class="modal-dialog modal-dialog-centered"><div' +
+                ' class="modal-content"><button type="button" class="close" data-dismiss="modal"' +
                 '>&times;</button><img id="' + noteId + '-media" src="#" alt="image"' +
                 ' /></div></div>';
             newNote.parentElement.appendChild(pModal);
@@ -535,11 +535,10 @@ function displayExistingMediaNote(noteId, content, type) {
             const vModal = document.createElement("div");
             vModal.setAttribute('id', noteId + '-modal');
             vModal.setAttribute('class', 'modal fade');
-            vModal.innerHTML = '<div class="modal-dialog"><div class="modal-content">' +
-                '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
-                '<video controls id="' + noteId + '-autoplay"><source id="' + noteId + '-media"' +
-                ' src="#"' +
-                ' type="video/mp4"></video></div></div>';
+            vModal.innerHTML = '<div class="modal-dialog modal-dialog-centered"><div' +
+                ' class="modal-content"><button type="button" class="close" data-dismiss="modal">' +
+                '&times;</button><video controls id="' + noteId + '-autoplay"><source id="' +
+                noteId + '-media" src="#" type="video/mp4"></video></div></div>';
             newNote.parentElement.appendChild(vModal);
             break;
     }
@@ -547,8 +546,10 @@ function displayExistingMediaNote(noteId, content, type) {
 
 function play(noteId) {
     document.getElementById(noteId + '-autoplay').play();
-    $("#" + noteId + "-modal").on('hidden.bs.modal', function(){
+    // pause and rewind media when closing modal
+    $("#" + noteId + "-modal").on('hide.bs.modal', function(){
         document.getElementById(noteId + '-autoplay').pause();
+        document.getElementById(noteId + '-autoplay').currentTime = 0;
     })
 }
 
