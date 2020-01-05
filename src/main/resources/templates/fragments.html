@@ -206,7 +206,7 @@
             <!--/*@thymesVar id="workouts" type="java"*/-->
             <tr th:each="workout: ${workouts}">
                 <td>
-                    <button class="my-btn" th:data-id="${workout.id}"
+                    <button class="my-btn workout" th:data-id="${workout.id}"
                             onclick="loadWorkout(this.getAttribute('data-id'))">
                         <th:block
                                 th:text="${#strings.abbreviate

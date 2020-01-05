@@ -90,14 +90,14 @@ input[type=range]::-webkit-slider-runnable-track {
     height: 12px;
     cursor: pointer;
     animation-duration: 0.2s;
-    box-shadow: 1px 1px 1px #472900;
+    box-shadow: 3px 3px 3px #472900;
     background: #FF9200;
     border-radius: 1px;
     border: 1px solid #FFFFFF;
 }
 
 input[type=range]::-webkit-slider-thumb {
-    box-shadow: 3px 3px 3px #472900;
+    box-shadow: 5px 5px 5px #472900;
     border: 2px solid #FFFFFF;
     height: 23px;
     width: 23px;
@@ -117,14 +117,14 @@ input[type=range]::-moz-range-track {
     height: 12px;
     cursor: pointer;
     animation-duration: 0.2s;
-    box-shadow: 1px 1px 1px #472900;
+    box-shadow: 3px 3px 3px #472900;
     background: #FF9200;
     border-radius: 1px;
     border: 1px solid #FFFFFF;
 }
 
 input[type=range]::-moz-range-thumb {
-    box-shadow: 3px 3px 3px #472900;
+    box-shadow: 5px 5px 5px #472900;
     border: 2px solid #FFFFFF;
     height: 23px;
     width: 23px;
@@ -147,19 +147,19 @@ input[type=range]::-ms-fill-lower {
     background: #FF9200;
     border: 1px solid #FFFFFF;
     border-radius: 2px;
-    box-shadow: 1px 1px 1px #472900;
+    box-shadow: 3px 3px 3px #472900;
 }
 
 input[type=range]::-ms-fill-upper {
     background: #FF9200;
     border: 1px solid #FFFFFF;
     border-radius: 2px;
-    box-shadow: 1px 1px 1px #472900;
+    box-shadow: 3px 3px 3px #472900;
 }
 
 input[type=range]::-ms-thumb {
     margin-top: 1px;
-    box-shadow: 3px 3px 3px #472900;
+    box-shadow: 5px 5px 5px #472900;
     border: 2px solid #FFFFFF;
     height: 23px;
     width: 23px;
@@ -187,7 +187,7 @@ input[type=range]:focus::-ms-fill-upper {
 input[type=text], input[type=number], input[type=password], .my-input {
     color: black;
     border: 2px solid #FF9200;
-    box-shadow: 3px 3px 3px #472900;
+    box-shadow: 5px 5px 5px #472900;
     border-radius: 23px;
     text-align: center;
     font-weight: bold;
@@ -226,7 +226,7 @@ button, input[type=submit], .my-btn, select {
     background-color: #FF9200;
     color: black;
     border: 2px solid #FFFFFF;
-    box-shadow: 3px 3px 3px #472900;
+    box-shadow: 5px 5px 5px #472900;
     border-radius: 23px;
     text-align: center;
     font-weight: bold;
@@ -236,6 +236,10 @@ button, input[type=submit], .my-btn, select {
 button:active, input[type=submit]:active, .my-btn:active {
     box-shadow: 1px 1px 1px #472900;
     animation-duration: 0.2s;
+}
+
+.workout {
+    padding: 0 10px 0 10px;
 }
 
 /* sticky navigation bar */
