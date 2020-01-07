@@ -17,11 +17,11 @@
         <label for="password">Password</label>:
         <input type="password" id="password" name="password"/> <br>
         <br>
-        <input type="submit" value="Log in"/>
+        <input type="submit" onclick="preserveLogoState();" value="Log in"/>
     </form>
     <br>
-    <button class="my-btn" onclick="location.href = '/wl/register';" type="button">
-        Register
+    <button class="my-btn" onclick="preserveLogoState();
+            location.href = '/wl/register';" type="button">Register
     </button>
 </div>
 
@@ -95,10 +95,12 @@
         <p>Female: <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
             Male: <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/></p>
         <input type="hidden" th:field="*{role}"/>
-        <input type="submit" value="Update user details">
-        <button class="my-btn" onclick="location.href='/wl/login';" type="button">Cancel</button>
-        <button class="my-btn" onclick="location.href='/wl/user/changepassword';"
-                type="button">Change password
+        <input type="submit" onclick="preserveLogoState();" value="Update user details">
+        <button class="my-btn" onclick="preserveLogoState();
+                location.href='/wl/login';" type="button">Cancel
+        </button>
+        <button class="my-btn" onclick="preserveLogoState();
+                location.href='/wl/user/changepassword';" type="button">Change password
         </button>
     </form>
 </div>
@@ -121,8 +123,9 @@
         <p>Confirm new password: <input type="password" th:field="*{confirmNewPassword}"/>
             <span th:if="${#fields.hasErrors('confirmNewPassword')}" class="alert"
                   th:errors="*{confirmNewPassword}"></span></p>
-        <input type="submit" value="Change password">
-        <button class="my-btn" onclick="location.href='/wl/user/update';" type="button">Cancel
+        <input type="submit" onclick="preserveLogoState();" value="Change password">
+        <button class="my-btn" type="button" onclick="preserveLogoState();
+                location.href='/wl/user/update';">Cancel
         </button>
     </form>
 </div>
@@ -193,8 +196,9 @@
             <button class="same-row my-btn" onclick="location.href='/wl/logout';"
                     type="button">Log out
             </button>
-            <button class="same-row my-btn" onclick="location.href='/wl/user/update';"
-                    type="button">Account
+            <button class="same-row my-btn" type="button"
+                    onclick="preserveLogoState();
+                    location.href='/wl/user/update';">Account
             </button>
             <!--/*@thymesVar id="adminRights" type="java"*/-->
             <button th:if="${adminRights}" class="same-row my-btn"

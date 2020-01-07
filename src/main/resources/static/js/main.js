@@ -63,8 +63,11 @@ $(document).ready(function () {
 /* Auxiliary function for tab change event handlers */
 function scrollToTop() {
     OkToToggleLogo = false;
-    $('html').animate({scrollTop: 1}, 100);
-    OkToToggleLogo = true;
+    $('html').animate({scrollTop: 1}, {
+        duration: 100, complete: function () {
+            OkToToggleLogo = true;
+        }
+    });
 }
 
 /** This stores the state of logo in session storage so it can be preserved when page is reloaded.
@@ -79,16 +82,12 @@ function preserveLogoState() {
 function restoreLogoState() {
     let logoVisibility = sessionStorage.getItem('logoVisibility');
     sessionStorage.removeItem('logoVisibility');
-    if (logoVisibility === 'block') {
-        console.log('Logo was visible!'); // Fix
-    } else if (logoVisibility === 'none') {
+    if (logoVisibility === 'none') {
         document.getElementById('big-tabs').classList.add('sticky');
         document.getElementById('filler-1').classList.add('sticky');
         $(document.getElementById('logo-container')).slideUp('fast').queue(false);
         $(document.getElementById('filler-2')).show('fast').queue(false);
         $(document.getElementById('filler-1')).show('fast').queue(false);
-    } else {
-        console.log('First time load!'); // Fix
     }
     scrollToTop();
 }
@@ -547,7 +546,7 @@ function displayExistingMediaNote(noteId, content, type) {
 function play(noteId) {
     document.getElementById(noteId + '-autoplay').play();
     // pause and rewind media when closing modal
-    $("#" + noteId + "-modal").on('hide.bs.modal', function(){
+    $("#" + noteId + "-modal").on('hide.bs.modal', function () {
         document.getElementById(noteId + '-autoplay').pause();
         document.getElementById(noteId + '-autoplay').currentTime = 0;
     })
