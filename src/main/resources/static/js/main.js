@@ -2,7 +2,7 @@
  * Functions and variables related to page navigation and layout *
  *****************************************************************/
 
-let OkToToggleLogo = true; // Global flag for logo visibility toggling
+let okToToggleLogo = true; // Global flag for logo visibility toggling
 
 $(document).ready(function () {
 
@@ -21,10 +21,10 @@ $(document).ready(function () {
     const filler2 = document.getElementById('filler-2');
 
     window.addEventListener('scroll', function () {
-        let pagePosition = $('html').scrollTop();
+        const pagePosition = $('html').scrollTop();
 
         // Is it OK to toggle logo visibility?
-        if (OkToToggleLogo) {
+        if (okToToggleLogo) {
 
             // Is the page scrolled down and is logo visible? Hide logo.
             if (pagePosition !== 0 && pagePosition !== 1 && logo.style.display !== 'none') {
@@ -48,7 +48,7 @@ $(document).ready(function () {
             /* If logo toggling is not allowed, but the page is scrolled
              all the way up, allow logo toggling next time. */
         } else if (pagePosition === 0) {
-            OkToToggleLogo = true;
+            okToToggleLogo = true;
         }
     });
 
@@ -60,12 +60,12 @@ $(document).ready(function () {
     });
 });
 
-/* Auxiliary function for tab change event handlers */
+/* Auxiliary function for tab change event handlers and logo state preservation*/
 function scrollToTop() {
-    OkToToggleLogo = false;
+    okToToggleLogo = false;
     $('html').animate({scrollTop: 1}, {
-        duration: 100, complete: function () {
-            OkToToggleLogo = true;
+        duration: 250, complete: function () {
+            okToToggleLogo = true;
         }
     });
 }
@@ -80,16 +80,21 @@ function preserveLogoState() {
 /** This restores the state of logo visibility
  */
 function restoreLogoState() {
+    okToToggleLogo = false;
+    document.getElementsByTagName('html')[0].scrollTop = 1;
+    setTimeout(
+        function() {
+            okToToggleLogo = true;
+        }, 333);
     let logoVisibility = sessionStorage.getItem('logoVisibility');
     sessionStorage.removeItem('logoVisibility');
     if (logoVisibility === 'none') {
         document.getElementById('big-tabs').classList.add('sticky');
         document.getElementById('filler-1').classList.add('sticky');
-        $(document.getElementById('logo-container')).slideUp('fast').queue(false);
-        $(document.getElementById('filler-2')).show('fast').queue(false);
-        $(document.getElementById('filler-1')).show('fast').queue(false);
+        $(document.getElementById('logo-container')).hide().queue(false);
+        $(document.getElementById('filler-2')).show().queue(false);
+        $(document.getElementById('filler-1')).show().queue(false);
     }
-    scrollToTop();
 }
 
 /** Temporary solution for workout selection window getting too short when editing workout in
