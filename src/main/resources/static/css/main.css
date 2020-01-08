@@ -24,6 +24,7 @@ video, img {
 }
 
 #main-container {
+    opacity: 0;
     display: flex;
     flex-flow: column;
 }
