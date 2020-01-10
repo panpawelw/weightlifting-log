@@ -54,21 +54,16 @@ $(document).ready(function () {
 
     /* These handlers are responsible for scrolling the document to the top
     when user is changing tabs, while not allowing the logo toggle action to be
-    triggered by the scrolling (only if the content is larger than screen). */
+    triggered by the scrolling. */
     $('#tab1handle, #tab2handle, #tab3handle, #tab4handle').bind('click', function () {
-        scrollToTop();
+        okToToggleLogo = false;
+        $('html').animate({scrollTop: 1}, {
+            duration: 250, complete: function () {
+                okToToggleLogo = true;
+            }
+        });
     });
 });
-
-/* Auxiliary function for tab change event handlers and logo state preservation*/
-function scrollToTop() {
-    okToToggleLogo = false;
-    $('html').animate({scrollTop: 1}, {
-        duration: 250, complete: function () {
-            okToToggleLogo = true;
-        }
-    });
-}
 
 /** This stores the state of logo in session storage so it can be preserved when page is reloaded.
  */
@@ -80,12 +75,15 @@ function preserveLogoState() {
 /** This restores the state of logo visibility
  */
 function restoreLogoState() {
+    // Prevent logo toggling and move screen content to the top
     okToToggleLogo = false;
     document.getElementsByTagName('html')[0].scrollTop = 1;
     setTimeout(
+        // Allow logo toggling again after a short delay
         function() {
             okToToggleLogo = true;
         }, 333);
+    // Hide logo if it was previously hidden
     let logoVisibility = sessionStorage.getItem('logoVisibility');
     sessionStorage.removeItem('logoVisibility');
     if (logoVisibility === 'none') {
@@ -548,6 +546,9 @@ function displayExistingMediaNote(noteId, content, type) {
     }
 }
 
+/** This turns on the autoplay in sound and video notes when modal is opened.
+ * @param {String} noteId - id of the note element
+ */
 function play(noteId) {
     document.getElementById(noteId + '-autoplay').play();
     // pause and rewind media when closing modal

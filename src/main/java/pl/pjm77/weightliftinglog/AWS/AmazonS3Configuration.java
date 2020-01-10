@@ -16,10 +16,10 @@ public class AmazonS3Configuration {
     @Value("${aws.access.key.secret}")
     private String awsKeySecret;
 
-    @Value("S{aws.region}")
+    @Value("${aws.region}")
     private String awsRegion;
 
-    @Value("${aws.s3.bucket")
+    @Value("${aws.s3.bucket}")
     private String awsS3Bucket;
 
     @Bean(name = "awsKeyId")
