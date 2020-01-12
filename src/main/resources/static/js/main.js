@@ -636,6 +636,7 @@ function attachFile(fileInputId, file, filename, noteType) {
         displayExistingMediaNote(fileInputId, filename, noteType);
         if (this.target.readyState === FileReader.DONE) {
             const data = reader.result;
+            console.log(data.length);
             workout.files.push({filename, data});
             $('#' + fileInputId + '-media').attr('src', workout.files[workout.files.length - 1].data);
         }
@@ -675,7 +676,7 @@ function saveWorkout(workout) {
         url: window.location.href,
         headers: {"X-CSRF-TOKEN": token},
         type: 'POST',
-        contentType: 'application/json',
+        contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(workout),
         async: true,
     }).done(function () {
