@@ -194,8 +194,7 @@ function updatePercentageDescription(description, percentage) {
  ****************************************************************************/
 
 let workout = null; // Global workout object variable
-let files = [];
-let testfiles = [];
+let files = []; // Global array for storing media files attached to workout
 
 /** This initializes a creation of a new workout in the left panel.
  */
@@ -203,7 +202,7 @@ function addWorkout() {
     // Create an empty workout object
     workout = {
         id: 0, title: null, created: null, updated: null, user: null,
-        notes: [], exercises: []
+        notes: [], exercises: [], filenames: []
     };
     // Update "created" entry with current timestamp
     const created = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -565,9 +564,9 @@ function play(noteId) {
  * @param {String} filename - name of the file
  */
 function assignFileToExistingMediaNote(noteId, filename) {
-    files.forEach(function (file) {
-        if (file.filename === filename) {
-            $('#' + noteId + '-media').attr('src', file.data);
+    workout.filenames.forEach(function (filename, index) {
+        if (filename === filename) {
+            $('#' + noteId + '-media').attr('src', URL.createObjectURL(files[index]));
         }
     });
 }
@@ -576,9 +575,10 @@ function assignFileToExistingMediaNote(noteId, filename) {
  * @param {String} filename - name of the file
  */
 function removeMediaFile(filename) {
-    files.forEach(function (file, index, object) {
-        if (file.filename === filename) {
+    workout.filenames.forEach(function (name, index, object) {
+        if (name === filename) {
             object.splice(index, 1);
+            files.splice(index, 1);
         }
     });
 }
@@ -614,7 +614,7 @@ function remove(element) {
         removeMediaFile(short.content);
     }
     // Remove element, clear workout screen and display workout again
-    shorter.splice(entry[entry.length - 1], 1);
+    shorter.splice(entry[entry.length - 2], 1);
     document.getElementById('notes').innerHTML = '';
     document.getElementById('exercises').innerHTML = '';
     displayWorkout();
@@ -627,23 +627,15 @@ function remove(element) {
 /** Stores file attached to a media note in files array, removes input field, shows filename
  *  and play button.
  * @param {string} fileInputId - file input field Id
- * @param {Blob} file - file to upload
- * @param {string} filename - media note content (a filename)
- * @param {number} noteType - type of note (text(0), audio(1), picture(2), video(3))
- */
-
-/** Stores file attached to a media note in files array, removes input field, shows filename
- *  and play button.
- * @param {string} fileInputId - file input field Id
  * @param {File} file - file to upload
  * @param {number} noteType - type of note (text(0), audio(1), picture(2), video(3))
  */
 function attachFile(fileInputId, file,noteType) {
     const filename = file.name;
     displayExistingMediaNote(fileInputId, filename, noteType);
-    files.push({filename, file});
-    testfiles.push(file);
-    $('#' + fileInputId + '-media').attr('src', URL.createObjectURL(files[files.length - 1].file));
+    workout.filenames.push(filename);
+    files.push(file);
+    $('#' + fileInputId + '-media').attr('src', URL.createObjectURL(files[files.length - 1]));
 }
 
 /** Gets existing workout details in JSON format from REST controller.
@@ -677,8 +669,7 @@ function saveWorkout(workout) {
     const formData = new FormData();
     formData.append('workout',
         new Blob([JSON.stringify(workout)], {type: 'application/json'}));
-    formData.append('files',
-        new Blob([testfiles[0]], {type: 'application/octet-stream'}));
+    files.forEach(element => formData.append('files', element));
     $.ajax({
         url: window.location.href,
         headers: {"X-CSRF-TOKEN": token},
@@ -697,28 +688,6 @@ function saveWorkout(workout) {
             alert('There\'s been a problem saving the workout data!')
         });
 }
-
-// /** Sends new workout object in JSON format to REST controller using POST AJAX call.
-//  * @param {object} [workout] - workout object to be persisted */
-// function saveWorkout(workout) {
-//     // Obtain CSRF token
-//     const token = $("meta[name='_csrf']").attr("content");
-//     // Send workout object in JSON format
-//     $.ajax({
-//         url: window.location.href,
-//         headers: {"X-CSRF-TOKEN": token},
-//         type: 'POST',
-//         contentType: 'application/json; charset=utf-8',
-//         data: JSON.stringify(workout),
-//         async: true,
-//     }).done(function () {
-//         preserveLogoState();
-//         window.location.pathname = 'wl/user'
-//     })
-//         .fail(function () {
-//             alert('There\'s been a problem saving the workout data!')
-//         });
-// }
 
 /** Request deletion of the currently displayed workout from the database. */
 function deleteWorkout() {
