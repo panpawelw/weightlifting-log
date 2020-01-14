@@ -44,8 +44,8 @@ public class WorkoutService {
      * Saves workout to database
      * @param workoutDeserialized deserialized workout object
      */
-    public void saveWorkout(WorkoutDeserialized workoutDeserialized) {
-        workoutRepository.saveAndFlush(serializeWorkout(workoutDeserialized));
+    public Long saveWorkout(WorkoutDeserialized workoutDeserialized) {
+        return workoutRepository.saveAndFlush(serializeWorkout(workoutDeserialized)).getId();
     }
 
     /**

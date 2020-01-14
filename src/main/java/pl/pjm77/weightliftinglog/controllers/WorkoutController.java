@@ -8,11 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.models.WorkoutDeserialized;
+import pl.pjm77.weightliftinglog.services.FileService;
 import pl.pjm77.weightliftinglog.services.UserService;
 import pl.pjm77.weightliftinglog.services.WorkoutService;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import static pl.pjm77.weightliftinglog.services.UserService.checkLoggedInUserForAdminRights;
@@ -23,11 +22,13 @@ public class WorkoutController {
 
     private final WorkoutService workoutService;
     private final UserService userService;
+    private final FileService fileService;
 
     @Autowired
-    public WorkoutController(WorkoutService workoutService, UserService userService) {
+    public WorkoutController(WorkoutService workoutService, UserService userService, FileService fileService) {
         this.workoutService = workoutService;
         this.userService = userService;
+        this.fileService = fileService;
     }
 
     @GetMapping("/")
@@ -52,10 +53,9 @@ public class WorkoutController {
     @PostMapping(value="/", consumes= MediaType.MULTIPART_FORM_DATA_VALUE)
     public void addWorkoutPost(@RequestPart("workout") WorkoutDeserialized workoutDeserialized,
                                @RequestPart("files") LinkedList<MultipartFile> files) {
-        System.out.println(files.size());
         workoutDeserialized.setUser
                 (userService.findUserByEmail(UserService.getLoggedInUsersEmail()));
-        workoutService.saveWorkout(workoutDeserialized);
+        fileService.storeAllFiles(workoutService.saveWorkout(workoutDeserialized), files);
     }
 
     @ResponseBody
