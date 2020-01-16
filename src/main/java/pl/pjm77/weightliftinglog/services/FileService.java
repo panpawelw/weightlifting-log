@@ -3,7 +3,6 @@ package pl.pjm77.weightliftinglog.services;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.pjm77.weightliftinglog.models.File;
-import pl.pjm77.weightliftinglog.models.WorkoutDeserialized;
 import pl.pjm77.weightliftinglog.repositories.FileRepository;
 
 import java.io.IOException;
@@ -26,7 +25,8 @@ public class FileService {
         List<File> files = new ArrayList<>();
         workoutFiles.forEach((file) -> {
             try {
-                files.add(new File(0L, workoutId, file.getOriginalFilename(), file.getBytes()));
+                files.add(new File(0L, workoutId, file.getName(), file.getOriginalFilename(),
+                        file.getContentType(), file.getBytes()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -35,7 +35,7 @@ public class FileService {
         fileRepository.flush();
     }
 
-    public List<File> getWorkoutFiles(Long workoutId) {
+    public ArrayList<File> getWorkoutFiles(Long workoutId) {
         return fileRepository.findAllByWorkoutId(workoutId);
     }
 }

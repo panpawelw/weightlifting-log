@@ -4,10 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import pl.pjm77.weightliftinglog.models.File;
 
 import javax.transaction.Transactional;
-import java.util.List;
+import java.util.ArrayList;
 
 @Transactional
 public interface FileRepository extends JpaRepository<File, Long> {
 
-    List<File> findAllByWorkoutId(Long workoutId);
+    ArrayList<File> findAllByWorkoutId(Long workoutId);
 }

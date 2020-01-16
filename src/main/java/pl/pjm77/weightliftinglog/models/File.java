@@ -14,16 +14,22 @@ public class File {
 
     private String filename;
 
+    private String originalFilename;
+
+    private String type;
     @Lob
     private byte[] content;
 
     public File() {
     }
 
-    public File(Long id, Long workoutId, String filename, byte[] content) {
+    public File(Long id, Long workoutId, String filename, String originalFilename,
+                String type, byte[] content) {
         this.id = id;
         this.workoutId = workoutId;
         this.filename = filename;
+        this.originalFilename = originalFilename;
+        this.type = type;
         this.content = content;
     }
 
@@ -45,6 +51,22 @@ public class File {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public String getOriginalFilename() {
+        return originalFilename;
+    }
+
+    public void setOriginalFilename(String originalFilename) {
+        this.originalFilename = originalFilename;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public byte[] getContent() {

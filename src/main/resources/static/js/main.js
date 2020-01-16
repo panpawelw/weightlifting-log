@@ -80,7 +80,7 @@ function restoreLogoState() {
     document.getElementsByTagName('html')[0].scrollTop = 1;
     setTimeout(
         // Allow logo toggling again after a short delay
-        function() {
+        function () {
             okToToggleLogo = true;
         }, 333);
     // Hide logo if it was previously hidden
@@ -217,6 +217,12 @@ function addWorkout() {
 function editWorkout() {
     // Get existing workout object from session storage and update "created" and "title" entries
     workout = JSON.parse(sessionStorage.getItem('workout'));
+    if (sessionStorage.getItem("files") !== null) {
+        const tempFiles = JSON.parse(sessionStorage.getItem('files'));
+        for(let x=0; x>=tempFiles.length; x++) {
+            files[x] = new File([tempFiles[x]], "file" + x);
+        }
+    }
     document.getElementById("created").value = workout['created'].slice(0, 16);
     document.getElementById("title").innerHTML = workout['title'];
     // Update the "updated" entry with current timestamp
@@ -630,7 +636,7 @@ function remove(element) {
  * @param {File} file - file to upload
  * @param {number} noteType - type of note (text(0), audio(1), picture(2), video(3))
  */
-function attachFile(fileInputId, file,noteType) {
+function attachFile(fileInputId, file, noteType) {
     const filename = file.name;
     displayExistingMediaNote(fileInputId, filename, noteType);
     workout.filenames.push(filename);
@@ -651,13 +657,24 @@ function loadWorkout(workoutId) {
         dataType: 'JSON',
         async: true,
     }).done(function (data) {
-        preserveLogoState();
         sessionStorage.setItem('workout', JSON.stringify(data));
-        window.location.pathname = 'wl/workout/';
-    })
-        .fail(function () {
-            alert('There\'s been a problem loading the workout data!')
+        $.ajax({
+            url: 'http://localhost:8080/wl/workout/files/' + workoutId,
+            headers: {"X-CSRF-TOKEN": token},
+            type: 'GET',
+            dataType: 'JSON',
+            async: true,
+        }).done(function (data) {
+            preserveLogoState();
+            sessionStorage.setItem('files', JSON.stringify(data));
+            window.location.pathname = 'wl/workout/';
+        }).fail(function () {
+            alert('There\'s been a problem loading workout media files!')
         });
+
+    }).fail(function () {
+            alert('There\'s been a problem loading the workout data!')
+      });
 }
 
 /** Sends new workout object in JSON format to REST controller using POST AJAX call.
@@ -676,7 +693,7 @@ function saveWorkout(workout) {
         type: 'POST',
         data: formData,
         enctype: 'multipart/form-data',
-        processData:false,
+        processData: false,
         contentType: false,
         cache: false,
         async: true,

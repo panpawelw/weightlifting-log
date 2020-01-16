@@ -6,13 +6,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pl.pjm77.weightliftinglog.models.File;
 import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.models.WorkoutDeserialized;
 import pl.pjm77.weightliftinglog.services.FileService;
 import pl.pjm77.weightliftinglog.services.UserService;
 import pl.pjm77.weightliftinglog.services.WorkoutService;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 import static pl.pjm77.weightliftinglog.services.UserService.checkLoggedInUserForAdminRights;
 
@@ -33,7 +37,7 @@ public class WorkoutController {
 
     @GetMapping("/")
     public String addWorkoutGet(Model model) {
-        User user =  userService.findUserByEmail(UserService.getLoggedInUsersEmail());
+        User user = userService.findUserByEmail(UserService.getLoggedInUsersEmail());
         model.addAttribute("user", user.getEmail());
         model.addAttribute("userName", user.getName());
         model.addAttribute("adminRights", checkLoggedInUserForAdminRights());
@@ -50,7 +54,19 @@ public class WorkoutController {
     }
 
     @ResponseBody
-    @PostMapping(value="/", consumes= MediaType.MULTIPART_FORM_DATA_VALUE)
+    @GetMapping("/files/{workoutId}")
+    public ArrayList<byte[]> getFilesByWorkoutId(@PathVariable long workoutId) {
+        ArrayList<File> filesFromDatabase = fileService.getWorkoutFiles(workoutId);
+        ArrayList<byte[]> filesToSend = new ArrayList<>();
+        filesFromDatabase.forEach((file) -> {
+            System.out.println(file.getFilename());
+            filesToSend.add(file.getContent());
+        });
+        return filesToSend;
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void addWorkoutPost(@RequestPart("workout") WorkoutDeserialized workoutDeserialized,
                                @RequestPart("files") LinkedList<MultipartFile> files) {
         workoutDeserialized.setUser
