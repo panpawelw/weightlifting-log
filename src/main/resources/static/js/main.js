@@ -194,7 +194,8 @@ function updatePercentageDescription(description, percentage) {
  ****************************************************************************/
 
 let workout = null; // Global workout object variable
-let files = []; // Global array for storing media files attached to workout
+let filesToRemove = []; // Global array for the list of files that will be removed when saving
+let filesToUpload = []; // Global array for storing new media files attached to workout
 
 /** This initializes a creation of a new workout in the left panel.
  */
@@ -217,12 +218,6 @@ function addWorkout() {
 function editWorkout() {
     // Get existing workout object from session storage and update "created" and "title" entries
     workout = JSON.parse(sessionStorage.getItem('workout'));
-    if (sessionStorage.getItem("files") !== null) {
-        const tempFiles = JSON.parse(sessionStorage.getItem('files'));
-        for(let x=0; x>=tempFiles.length; x++) {
-            files[x] = new File([tempFiles[x]], "file" + x);
-        }
-    }
     document.getElementById("created").value = workout['created'].slice(0, 16);
     document.getElementById("title").innerHTML = workout['title'];
     // Update the "updated" entry with current timestamp
@@ -572,7 +567,7 @@ function play(noteId) {
 function assignFileToExistingMediaNote(noteId, filename) {
     workout.filenames.forEach(function (filename, index) {
         if (filename === filename) {
-            $('#' + noteId + '-media').attr('src', URL.createObjectURL(files[index]));
+            $('#' + noteId + '-media').attr('src', URL.createObjectURL(filesToUpload[index]));
         }
     });
 }
@@ -584,7 +579,7 @@ function removeMediaFile(filename) {
     workout.filenames.forEach(function (name, index, object) {
         if (name === filename) {
             object.splice(index, 1);
-            files.splice(index, 1);
+            filesToUpload.splice(index, 1);
         }
     });
 }
@@ -640,8 +635,9 @@ function attachFile(fileInputId, file, noteType) {
     const filename = file.name;
     displayExistingMediaNote(fileInputId, filename, noteType);
     workout.filenames.push(filename);
-    files.push(file);
-    $('#' + fileInputId + '-media').attr('src', URL.createObjectURL(files[files.length - 1]));
+    filesToUpload.push(file);
+    $('#' + fileInputId + '-media')
+        .attr('src', URL.createObjectURL(filesToUpload[filesToUpload.length - 1]));
 }
 
 /** Gets existing workout details in JSON format from REST controller.
@@ -658,23 +654,11 @@ function loadWorkout(workoutId) {
         async: true,
     }).done(function (data) {
         sessionStorage.setItem('workout', JSON.stringify(data));
-        $.ajax({
-            url: 'http://localhost:8080/wl/workout/files/' + workoutId,
-            headers: {"X-CSRF-TOKEN": token},
-            type: 'GET',
-            dataType: 'JSON',
-            async: true,
-        }).done(function (data) {
-            preserveLogoState();
-            sessionStorage.setItem('files', JSON.stringify(data));
-            window.location.pathname = 'wl/workout/';
-        }).fail(function () {
-            alert('There\'s been a problem loading workout media files!')
-        });
-
+        preserveLogoState();
+        window.location.pathname = 'wl/workout/';
     }).fail(function () {
-            alert('There\'s been a problem loading the workout data!')
-      });
+        alert('There\'s been a problem loading the workout data!')
+    });
 }
 
 /** Sends new workout object in JSON format to REST controller using POST AJAX call.
@@ -686,7 +670,7 @@ function saveWorkout(workout) {
     const formData = new FormData();
     formData.append('workout',
         new Blob([JSON.stringify(workout)], {type: 'application/json'}));
-    files.forEach(element => formData.append('files', element));
+    filesToUpload.forEach(element => formData.append('filesToUpload', element));
     $.ajax({
         url: window.location.href,
         headers: {"X-CSRF-TOKEN": token},

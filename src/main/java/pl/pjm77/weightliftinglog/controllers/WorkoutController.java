@@ -14,9 +14,7 @@ import pl.pjm77.weightliftinglog.services.UserService;
 import pl.pjm77.weightliftinglog.services.WorkoutService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 import static pl.pjm77.weightliftinglog.services.UserService.checkLoggedInUserForAdminRights;
 
@@ -53,25 +51,23 @@ public class WorkoutController {
         return workoutService.findWorkoutById(workoutId);
     }
 
-    @ResponseBody
-    @GetMapping("/files/{workoutId}")
-    public ArrayList<byte[]> getFilesByWorkoutId(@PathVariable long workoutId) {
-        ArrayList<File> filesFromDatabase = fileService.getWorkoutFiles(workoutId);
-        ArrayList<byte[]> filesToSend = new ArrayList<>();
-        filesFromDatabase.forEach((file) -> {
-            System.out.println(file.getFilename());
-            filesToSend.add(file.getContent());
-        });
-        return filesToSend;
-    }
+//    @GetMapping(value = "/files/{workoutId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+//    public @ResponseBody ArrayList<byte[]> getFilesByWorkoutId(@PathVariable long workoutId) {
+//        ArrayList<File> filesFromDatabase = fileService.getWorkoutFiles(workoutId);
+//        ArrayList<byte[]> filesToSend = new ArrayList<>();
+//        filesFromDatabase.forEach((file) -> filesToSend.add(file.getContent()));
+//        return filesToSend;
+//    }
 
     @ResponseBody
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void addWorkoutPost(@RequestPart("workout") WorkoutDeserialized workoutDeserialized,
-                               @RequestPart("files") LinkedList<MultipartFile> files) {
+                               @RequestPart("filesToRemove") ArrayList<String> filesToRemove,
+                               @RequestPart("files") LinkedList<MultipartFile> filesToUpload) {
         workoutDeserialized.setUser
                 (userService.findUserByEmail(UserService.getLoggedInUsersEmail()));
-        fileService.storeAllFiles(workoutService.saveWorkout(workoutDeserialized), files);
+        filesToRemove.forEach(System.out::println);
+        fileService.storeAllFiles(workoutService.saveWorkout(workoutDeserialized), filesToUpload);
     }
 
     @ResponseBody

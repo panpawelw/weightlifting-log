@@ -25,7 +25,7 @@ public class FileService {
         List<File> files = new ArrayList<>();
         workoutFiles.forEach((file) -> {
             try {
-                files.add(new File(0L, workoutId, file.getName(), file.getOriginalFilename(),
+                files.add(new File(0L, workoutId, file.getOriginalFilename(),
                         file.getContentType(), file.getBytes()));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -35,7 +35,7 @@ public class FileService {
         fileRepository.flush();
     }
 
-    public ArrayList<File> getWorkoutFiles(Long workoutId) {
-        return fileRepository.findAllByWorkoutId(workoutId);
+    public File findFileByWorkoutIdAndFilename(Long workoutId, String filename) {
+        return fileRepository.findFileByWorkoutIdAndFilename(workoutId, filename);
     }
 }

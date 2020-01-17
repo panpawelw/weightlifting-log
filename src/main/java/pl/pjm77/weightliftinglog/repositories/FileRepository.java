@@ -10,4 +10,6 @@ import java.util.ArrayList;
 public interface FileRepository extends JpaRepository<File, Long> {
 
     ArrayList<File> findAllByWorkoutId(Long workoutId);
+
+    File findFileByWorkoutIdAndFilename(Long workoutId, String filename);
 }
