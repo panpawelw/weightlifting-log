@@ -576,10 +576,15 @@ function assignFileToExistingMediaNote(noteId, filename) {
  * @param {String} filename - name of the file
  */
 function removeMediaFile(filename) {
+    filesToUpload.forEach(function (name, index, object) {
+        if(object.name === filename) {
+            object.splice(index, 1);
+        }
+    });
     workout.filenames.forEach(function (name, index, object) {
         if (name === filename) {
             object.splice(index, 1);
-            filesToUpload.splice(index, 1);
+            filesToRemove.push(filename);
         }
     });
 }
@@ -634,7 +639,6 @@ function remove(element) {
 function attachFile(fileInputId, file, noteType) {
     const filename = file.name;
     displayExistingMediaNote(fileInputId, filename, noteType);
-    workout.filenames.push(filename);
     filesToUpload.push(file);
     $('#' + fileInputId + '-media')
         .attr('src', URL.createObjectURL(filesToUpload[filesToUpload.length - 1]));
@@ -670,6 +674,8 @@ function saveWorkout(workout) {
     const formData = new FormData();
     formData.append('workout',
         new Blob([JSON.stringify(workout)], {type: 'application/json'}));
+    formData.append('filesToRemove',
+        new Blob([JSON.stringify(filesToRemove)],{type: 'application/json'}));
     filesToUpload.forEach(element => formData.append('filesToUpload', element));
     $.ajax({
         url: window.location.href,

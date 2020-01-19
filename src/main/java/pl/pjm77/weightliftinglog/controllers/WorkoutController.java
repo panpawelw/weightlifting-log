@@ -63,7 +63,7 @@ public class WorkoutController {
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void addWorkoutPost(@RequestPart("workout") WorkoutDeserialized workoutDeserialized,
                                @RequestPart("filesToRemove") ArrayList<String> filesToRemove,
-                               @RequestPart("files") LinkedList<MultipartFile> filesToUpload) {
+                               @RequestPart("filesToUpload") LinkedList<MultipartFile> filesToUpload) {
         workoutDeserialized.setUser
                 (userService.findUserByEmail(UserService.getLoggedInUsersEmail()));
         filesToRemove.forEach(System.out::println);

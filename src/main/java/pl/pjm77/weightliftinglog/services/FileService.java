@@ -21,7 +21,6 @@ public class FileService {
 
     public void storeAllFiles(Long workoutId,
                               LinkedList<MultipartFile> workoutFiles) {
-        System.out.println("Storing files in database!");
         List<File> files = new ArrayList<>();
         workoutFiles.forEach((file) -> {
             try {
@@ -37,5 +36,9 @@ public class FileService {
 
     public File findFileByWorkoutIdAndFilename(Long workoutId, String filename) {
         return fileRepository.findFileByWorkoutIdAndFilename(workoutId, filename);
+    }
+
+    public void deleteFileByWorkoutIdAndFilename(Long workoutId, String filename) {
+        fileRepository.deleteByWorkoutIdAndFilename(workoutId, filename);
     }
 }
