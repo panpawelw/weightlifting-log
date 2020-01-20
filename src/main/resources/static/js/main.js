@@ -560,33 +560,33 @@ function play(noteId) {
     })
 }
 
-/** Assigns media file to a media note when workout is loaded from database.
+/** Assigns media file to a media note when workout is loaded from database. !!!
  * @param {String} noteId - id of the note element
  * @param {String} filename - name of the file
  */
 function assignFileToExistingMediaNote(noteId, filename) {
-    workout.filenames.forEach(function (filename, index) {
-        if (filename === filename) {
-            $('#' + noteId + '-media').attr('src', URL.createObjectURL(filesToUpload[index]));
+    for (let i = 0; i < filesToUpload.length; i++) {
+        if (filesToUpload[i].name === filename) {
+            $('#' + noteId + '-media').attr('src', URL.createObjectURL(filesToUpload[i]));
         }
-    });
+    }
 }
 
 /** Deletes media file from workout object when a corresponding media note element has been deleted.
  * @param {String} filename - name of the file
  */
 function removeMediaFile(filename) {
-    filesToUpload.forEach(function (name, index, object) {
-        if(object.name === filename) {
-            object.splice(index, 1);
+    for (let i = 0; i < filesToUpload.length; i++) {
+        if (filesToUpload[i].name === filename) {
+        console.log(filesToUpload[i].name);
+            filesToUpload.splice(index, 1);
         }
-    });
-    workout.filenames.forEach(function (name, index, object) {
-        if (name === filename) {
-            object.splice(index, 1);
-            filesToRemove.push(filename);
-        }
-    });
+    }
+    const indexToRemove = workout.filenames.indexOf(filename);
+    if(indexToRemove !== -1) {
+        workout.filenames.splice(indexToRemove, 1);
+        filesToRemove.push(filename);
+    }
 }
 
 /** Removes element from workout and corresponding entry in workout object. Used to remove
@@ -675,7 +675,7 @@ function saveWorkout(workout) {
     formData.append('workout',
         new Blob([JSON.stringify(workout)], {type: 'application/json'}));
     formData.append('filesToRemove',
-        new Blob([JSON.stringify(filesToRemove)],{type: 'application/json'}));
+        new Blob([JSON.stringify(filesToRemove)], {type: 'application/json'}));
     filesToUpload.forEach(element => formData.append('filesToUpload', element));
     $.ajax({
         url: window.location.href,
