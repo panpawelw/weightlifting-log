@@ -578,8 +578,7 @@ function assignFileToExistingMediaNote(noteId, filename) {
 function removeMediaFile(filename) {
     for (let i = 0; i < filesToUpload.length; i++) {
         if (filesToUpload[i].name === filename) {
-        console.log(filesToUpload[i].name);
-            filesToUpload.splice(index, 1);
+            filesToUpload.splice(i, 1);
         }
     }
     const indexToRemove = workout.filenames.indexOf(filename);

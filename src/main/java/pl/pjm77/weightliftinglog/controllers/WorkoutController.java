@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pl.pjm77.weightliftinglog.models.File;
 import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.models.WorkoutDeserialized;
 import pl.pjm77.weightliftinglog.services.FileService;
@@ -62,17 +61,25 @@ public class WorkoutController {
     @ResponseBody
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void addWorkoutPost(@RequestPart("workout") WorkoutDeserialized workoutDeserialized,
-                               @RequestPart("filesToRemove") ArrayList<String> filesToRemove,
-                               @RequestPart("filesToUpload") LinkedList<MultipartFile> filesToUpload) {
+                               @RequestPart(name = "filesToRemove", required = false)
+                                       ArrayList<String> filesToRemove,
+                               @RequestPart(name = "filesToUpload", required = false)
+                                       LinkedList<MultipartFile> filesToUpload) {
         workoutDeserialized.setUser
                 (userService.findUserByEmail(UserService.getLoggedInUsersEmail()));
-        filesToRemove.forEach(System.out::println);
-        fileService.storeAllFiles(workoutService.saveWorkout(workoutDeserialized), filesToUpload);
+        Long workoutId = workoutService.saveWorkout(workoutDeserialized);
+        filesToRemove.forEach((filename) -> fileService.deleteFileByWorkoutAndFilename(workoutId,
+                workoutDeserialized, filename));
+        if(!filesToUpload.isEmpty()) {
+            fileService.storeAllFiles(workoutId, workoutDeserialized, filesToUpload);
+        }
+        workoutService.saveWorkout(workoutDeserialized);
     }
 
     @ResponseBody
     @DeleteMapping("/{workoutId}")
     public void deleteWorkout(@PathVariable long workoutId) {
         workoutService.deleteWorkout(workoutId);
+        fileService.deleteAllByWorkoutId(workoutId);
     }
 }

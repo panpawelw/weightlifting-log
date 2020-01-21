@@ -3,6 +3,7 @@ package pl.pjm77.weightliftinglog.services;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.pjm77.weightliftinglog.models.File;
+import pl.pjm77.weightliftinglog.models.WorkoutDeserialized;
 import pl.pjm77.weightliftinglog.repositories.FileRepository;
 
 import java.io.IOException;
@@ -19,16 +20,20 @@ public class FileService {
         this.fileRepository = fileRepository;
     }
 
-    public void storeAllFiles(Long workoutId,
+    public void storeAllFiles(Long workoutId, WorkoutDeserialized workout,
                               LinkedList<MultipartFile> workoutFiles) {
         List<File> files = new ArrayList<>();
+        List<String> filenames = workout.getFilenames();
         workoutFiles.forEach((file) -> {
+            String filename = file.getOriginalFilename();
             try {
-                files.add(new File(0L, workoutId, file.getOriginalFilename(),
+                files.add(new File(0L, workoutId, filename,
                         file.getContentType(), file.getBytes()));
+                filenames.add(filename);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            workout.setFilenames(filenames);
         });
         fileRepository.saveAll(files);
         fileRepository.flush();
@@ -38,7 +43,15 @@ public class FileService {
         return fileRepository.findFileByWorkoutIdAndFilename(workoutId, filename);
     }
 
-    public void deleteFileByWorkoutIdAndFilename(Long workoutId, String filename) {
+    public void deleteFileByWorkoutAndFilename(Long workoutId, WorkoutDeserialized workout,
+                                               String filename) {
+        List<String> filenames = workout.getFilenames();
         fileRepository.deleteByWorkoutIdAndFilename(workoutId, filename);
+        filenames.remove(filename);
+        workout.setFilenames(filenames);
+    }
+
+    public void deleteAllByWorkoutId(long workoutId) {
+        fileRepository.deleteAllByWorkoutId(workoutId);
     }
 }

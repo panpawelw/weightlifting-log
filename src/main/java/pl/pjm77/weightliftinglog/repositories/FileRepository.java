@@ -14,4 +14,6 @@ public interface FileRepository extends JpaRepository<File, Long> {
     File findFileByWorkoutIdAndFilename(Long workoutId, String filename);
 
     void deleteByWorkoutIdAndFilename(Long workoutId, String filename);
+
+    void deleteAllByWorkoutId(Long workoutId);
 }
