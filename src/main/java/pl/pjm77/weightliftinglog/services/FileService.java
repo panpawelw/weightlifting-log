@@ -8,7 +8,6 @@ import pl.pjm77.weightliftinglog.repositories.FileRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -20,11 +19,23 @@ public class FileService {
         this.fileRepository = fileRepository;
     }
 
-    public void storeAllFiles(Long workoutId, WorkoutDeserialized workout,
-                              LinkedList<MultipartFile> workoutFiles) {
+    public void storeAllFiles(WorkoutDeserialized workoutDeserialized,
+                              MultipartFile[] workoutFiles) {
         List<File> files = new ArrayList<>();
-        List<String> filenames = workout.getFilenames();
-        workoutFiles.forEach((file) -> {
+        List<String> filenames = workoutDeserialized.getFilenames();
+        Long workoutId = workoutDeserialized.getId();
+//        workoutFiles.forEach((file) -> {
+//            String filename = file.getOriginalFilename();
+//            try {
+//                files.add(new File(0L, workoutId, filename,
+//                        file.getContentType(), file.getBytes()));
+//                filenames.add(filename);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            workoutDeserialized.setFilenames(filenames);
+//        });
+        for (MultipartFile file : workoutFiles) {
             String filename = file.getOriginalFilename();
             try {
                 files.add(new File(0L, workoutId, filename,
@@ -33,8 +44,8 @@ public class FileService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            workout.setFilenames(filenames);
-        });
+            workoutDeserialized.setFilenames(filenames);
+        }
         fileRepository.saveAll(files);
         fileRepository.flush();
     }
@@ -43,12 +54,12 @@ public class FileService {
         return fileRepository.findFileByWorkoutIdAndFilename(workoutId, filename);
     }
 
-    public void deleteFileByWorkoutAndFilename(Long workoutId, WorkoutDeserialized workout,
+    public void deleteFileByWorkoutAndFilename(WorkoutDeserialized workoutDeserialized,
                                                String filename) {
-        List<String> filenames = workout.getFilenames();
-        fileRepository.deleteByWorkoutIdAndFilename(workoutId, filename);
+        List<String> filenames = workoutDeserialized.getFilenames();
+        fileRepository.deleteByWorkoutIdAndFilename(workoutDeserialized.getId(), filename);
         filenames.remove(filename);
-        workout.setFilenames(filenames);
+        workoutDeserialized.setFilenames(filenames);
     }
 
     public void deleteAllByWorkoutId(long workoutId) {

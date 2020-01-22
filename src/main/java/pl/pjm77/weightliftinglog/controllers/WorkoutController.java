@@ -64,14 +64,16 @@ public class WorkoutController {
                                @RequestPart(name = "filesToRemove", required = false)
                                        ArrayList<String> filesToRemove,
                                @RequestPart(name = "filesToUpload", required = false)
-                                       LinkedList<MultipartFile> filesToUpload) {
+                                       MultipartFile[] filesToUpload) {
         workoutDeserialized.setUser
                 (userService.findUserByEmail(UserService.getLoggedInUsersEmail()));
-        Long workoutId = workoutService.saveWorkout(workoutDeserialized);
-        filesToRemove.forEach((filename) -> fileService.deleteFileByWorkoutAndFilename(workoutId,
-                workoutDeserialized, filename));
-        if(!filesToUpload.isEmpty()) {
-            fileService.storeAllFiles(workoutId, workoutDeserialized, filesToUpload);
+        workoutDeserialized.setId(workoutService.saveWorkout(workoutDeserialized));
+        if (!filesToRemove.isEmpty()) {
+            filesToRemove.forEach((filename) ->
+                    fileService.deleteFileByWorkoutAndFilename(workoutDeserialized, filename));
+        }
+        if (filesToUpload.length > 0) {
+            fileService.storeAllFiles(workoutDeserialized, filesToUpload);
         }
         workoutService.saveWorkout(workoutDeserialized);
     }
