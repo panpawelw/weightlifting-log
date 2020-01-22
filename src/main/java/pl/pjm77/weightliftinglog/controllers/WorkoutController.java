@@ -13,7 +13,6 @@ import pl.pjm77.weightliftinglog.services.UserService;
 import pl.pjm77.weightliftinglog.services.WorkoutService;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import static pl.pjm77.weightliftinglog.services.UserService.checkLoggedInUserForAdminRights;
 

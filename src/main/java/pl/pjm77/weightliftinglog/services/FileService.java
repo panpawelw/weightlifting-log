@@ -24,17 +24,6 @@ public class FileService {
         List<File> files = new ArrayList<>();
         List<String> filenames = workoutDeserialized.getFilenames();
         Long workoutId = workoutDeserialized.getId();
-//        workoutFiles.forEach((file) -> {
-//            String filename = file.getOriginalFilename();
-//            try {
-//                files.add(new File(0L, workoutId, filename,
-//                        file.getContentType(), file.getBytes()));
-//                filenames.add(filename);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            workoutDeserialized.setFilenames(filenames);
-//        });
         for (MultipartFile file : workoutFiles) {
             String filename = file.getOriginalFilename();
             try {

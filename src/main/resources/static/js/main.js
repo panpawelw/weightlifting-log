@@ -519,9 +519,9 @@ function displayExistingMediaNote(noteId, content, type) {
             break;
         case 2:
         case "2":
-            $(newNote).next().replaceWith('<button class="my-btn image bn" ' +
-                'title="display picture" data-toggle="modal" data-target="#' + noteId +
-                '-modal">&nbsp</button>');
+            $(newNote).next().replaceWith('<button onclick="play(\'' + noteId + '\');" ' +
+                'class="my-btn image bn" title="display picture" data-toggle="modal" ' +
+                'data-target="#' + noteId + '-modal">&nbsp</button>');
             const pModal = document.createElement("div");
             pModal.setAttribute('id', noteId + '-modal');
             pModal.setAttribute('class', 'modal fade');
@@ -548,16 +548,28 @@ function displayExistingMediaNote(noteId, content, type) {
     }
 }
 
-/** This turns on the autoplay in sound and video notes when modal is opened.
+/** Load media file if it's not already in memory.
  * @param {String} noteId - id of the note element
  */
 function play(noteId) {
+    if (document.getElementById(noteId + '-media').getAttribute('src') === '#') {
+        console.log('Action!');
+    } else if(document.getElementById(noteId + '-media').tagName !== 'img') {
+       console.log('Not an image!');
+       autoplayAndRewindIfSoundOrVideo(noteId);
+    }
+}
+
+/** Plays video or audio on modal open and rewind it on close.
+ * @param {String} noteId - id of the note element
+ */
+function autoplayAndRewindIfSoundOrVideo(noteId) {
     document.getElementById(noteId + '-autoplay').play();
     // pause and rewind media when closing modal
     $("#" + noteId + "-modal").on('hide.bs.modal', function () {
         document.getElementById(noteId + '-autoplay').pause();
         document.getElementById(noteId + '-autoplay').currentTime = 0;
-    })
+    });
 }
 
 /** Assigns media file to a media note when workout is loaded from database. !!!
@@ -582,7 +594,7 @@ function removeMediaFile(filename) {
         }
     }
     const indexToRemove = workout.filenames.indexOf(filename);
-    if(indexToRemove !== -1) {
+    if (indexToRemove !== -1) {
         workout.filenames.splice(indexToRemove, 1);
         filesToRemove.push(filename);
     }
