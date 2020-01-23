@@ -1,11 +1,14 @@
 package pl.pjm77.weightliftinglog.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pl.pjm77.weightliftinglog.models.File;
 import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.models.WorkoutDeserialized;
 import pl.pjm77.weightliftinglog.services.FileService;
@@ -31,6 +34,12 @@ public class WorkoutController {
         this.fileService = fileService;
     }
 
+    @ResponseBody
+    @GetMapping("/{workoutId}")
+    public WorkoutDeserialized getWorkoutById(@PathVariable long workoutId) {
+        return workoutService.findWorkoutById(workoutId);
+    }
+
     @GetMapping("/")
     public String addWorkoutGet(Model model) {
         User user = userService.findUserByEmail(UserService.getLoggedInUsersEmail());
@@ -42,20 +51,6 @@ public class WorkoutController {
         model.addAttribute("workouts", workoutService.findWorkoutsByUser(user));
         return "home";
     }
-
-    @ResponseBody
-    @GetMapping("/{workoutId}")
-    public WorkoutDeserialized getWorkoutById(@PathVariable long workoutId) {
-        return workoutService.findWorkoutById(workoutId);
-    }
-
-//    @GetMapping(value = "/files/{workoutId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-//    public @ResponseBody ArrayList<byte[]> getFilesByWorkoutId(@PathVariable long workoutId) {
-//        ArrayList<File> filesFromDatabase = fileService.getWorkoutFiles(workoutId);
-//        ArrayList<byte[]> filesToSend = new ArrayList<>();
-//        filesFromDatabase.forEach((file) -> filesToSend.add(file.getContent()));
-//        return filesToSend;
-//    }
 
     @ResponseBody
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -82,5 +77,19 @@ public class WorkoutController {
     public void deleteWorkout(@PathVariable long workoutId) {
         workoutService.deleteWorkout(workoutId);
         fileService.deleteAllByWorkoutId(workoutId);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/file/{workoutId}/{filename}", produces =
+            MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<byte[]> getFileByWorkoutId(@PathVariable Long workoutId,
+                                             @PathVariable String filename) {
+        File fileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId, filename);
+        byte[] fileContent = fileToSend.getContent();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment;filename=" + fileToSend.getFilename())
+                .header("customheader","customcontent")
+                .body(fileContent);
     }
 }

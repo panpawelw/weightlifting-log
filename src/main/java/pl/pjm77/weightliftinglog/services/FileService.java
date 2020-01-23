@@ -39,7 +39,7 @@ public class FileService {
         fileRepository.flush();
     }
 
-    public File findFileByWorkoutIdAndFilename(Long workoutId, String filename) {
+    public File getFileByWorkoutIdAndFilename(Long workoutId, String filename) {
         return fileRepository.findFileByWorkoutIdAndFilename(workoutId, filename);
     }
 

@@ -554,9 +554,26 @@ function displayExistingMediaNote(noteId, content, type) {
 function play(noteId) {
     if (document.getElementById(noteId + '-media').getAttribute('src') === '#') {
         console.log('Action!');
-    } else if(document.getElementById(noteId + '-media').tagName !== 'img') {
-       console.log('Not an image!');
-       autoplayAndRewindIfSoundOrVideo(noteId);
+        // Obtain CSRF token
+        const token = $("meta[name='_csrf']").attr("content");
+        const workoutId = workout.id;
+        const filename = document.getElementById(noteId).innerHTML;
+        console.log(workoutId, filename);
+        $.ajax({
+            url: 'http://localhost:8080/wl/workout/file/' + workoutId + '/' + filename,
+            headers: {"X-CSRF-TOKEN": token},
+            type: 'GET',
+            async: true,
+        }).done(function (data, status, xhr) {
+            console.log(xhr.getAllResponseHeaders());
+            // $('#' + noteId + '-media')
+                // .attr('src', URL.createObjectURL(data[0]));
+        }).fail(function () {
+            alert('There\'s been a problem loading this file!');
+        });
+    } else if (document.getElementById(noteId + '-media').tagName !== 'img') {
+        console.log('Not an image!');
+        autoplayAndRewindIfSoundOrVideo(noteId);
     }
 }
 
