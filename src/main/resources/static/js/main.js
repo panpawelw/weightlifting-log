@@ -95,7 +95,7 @@ function restoreLogoState() {
     }
 }
 
-/** Temporary solution for workout selection window getting too short when editing workout in
+/** Temporary workaround for workout selection window getting too short when editing workout in
  * the right pane.
  */
 function equalizeColumnHeight() {
@@ -194,7 +194,7 @@ function updatePercentageDescription(description, percentage) {
  ****************************************************************************/
 
 let workout = null; // Global workout object variable
-let filesToRemove = []; // Global array for the list of files that will be removed when saving
+let filesToRemove = []; // Global array for the list of files that will be removed on workout save
 let filesToUpload = []; // Global array for storing new media files attached to workout
 
 /** This initializes a creation of a new workout in the left panel.
@@ -273,8 +273,8 @@ function displayWorkout() {
 }
 
 /** Stores given value in workout object entry.
- * @param entry {string[]}  workout object entry name
- * @param value {string}    text to be stored in workout entry
+ * @param {string[]} entry - workout object entry name
+ * @param {string} value - text to be stored in workout entry
  */
 function storeInWorkout(entry, value) {
     // remove last <br> (these often get stuck in content editable elements)
@@ -548,43 +548,23 @@ function displayExistingMediaNote(noteId, content, type) {
     }
 }
 
-/** Load media file if it's not already in memory.
+/** Play audio, video or show picture
  * @param {String} noteId - id of the note element
  */
 function play(noteId) {
+    // if the note element has no source yet - load corresponding file
     if (document.getElementById(noteId + '-media').getAttribute('src') === '#') {
-        // Obtain CSRF token
-        const token = $("meta[name='_csrf']").attr("content");
-        const workoutId = workout.id;
-        const filename = document.getElementById(noteId).innerHTML;
-        $.ajax({
-            url: 'http://localhost:8080/wl/workout/file/' + workoutId + '/' + filename,
-            headers: {"X-CSRF-TOKEN": token},
-            type: 'GET',
-            cache: true,
-            async: true,
-        }).done(function (data, status, xhr) {
-            let base64source = 'data:' + xhr.getResponseHeader('type') + ';base64,' + data;
-            $('#' + noteId + '-media').attr('src', base64source);
-        }).fail(function () {
-            alert('There\'s been a problem loading this file!');
+        loadMediaFile(noteId);
+    }
+    // if it's an audio or video clip - make it play automatically
+    if (document.getElementById(noteId + '-media').tagName !== 'IMG') {
+        document.getElementById(noteId + '-media').play();
+        // pause and rewind media on modal close
+        $("#" + noteId + "-modal").on('hide.bs.modal', function () {
+            document.getElementById(noteId + '-media').pause();
+            document.getElementById(noteId + '-media').currentTime = 0;
         });
     }
-    if (document.getElementById(noteId + '-media').tagName !== 'IMG') {
-        autoplayAndRewindIfSoundOrVideo(noteId);
-    }
-}
-
-/** Plays video or audio on modal open and rewind it on close.
- * @param {String} noteId - id of the note element
- */
-function autoplayAndRewindIfSoundOrVideo(noteId) {
-    document.getElementById(noteId + '-media').play();
-    // pause and rewind media when closing modal
-    $("#" + noteId + "-modal").on('hide.bs.modal', function () {
-        document.getElementById(noteId + '-media').pause();
-        document.getElementById(noteId + '-media').currentTime = 0;
-    });
 }
 
 /** Assigns media file to a media note when workout is loaded from database. !!!
@@ -599,7 +579,7 @@ function assignFileToExistingMediaNote(noteId, filename) {
     }
 }
 
-/** Deletes media file from workout object when a corresponding media note element has been deleted.
+/** Puts the media file on files to remove list when a corresponding media note has been deleted.
  * @param {String} filename - name of the file
  */
 function removeMediaFile(filename) {
@@ -673,12 +653,10 @@ function attachFile(fileInputId, file, noteType) {
 /** Gets existing workout details in JSON format from REST controller.
  * @param {number} [workoutId] - id number of workout to be loaded from database */
 function loadWorkout(workoutId) {
-    // Obtain CSRF token
-    const token = $("meta[name='_csrf']").attr("content");
-    // Request workout object of given id in JSON format
+    const csrfToken = $("meta[name='_csrf']").attr("content");
     $.ajax({
         url: 'http://localhost:8080/wl/workout/' + workoutId,
-        headers: {"X-CSRF-TOKEN": token},
+        headers: {"X-CSRF-TOKEN": csrfToken},
         type: 'GET',
         dataType: 'JSON',
         async: true,
@@ -694,19 +672,16 @@ function loadWorkout(workoutId) {
 /** Sends new workout object in JSON format to REST controller using POST AJAX call.
  * @param {object} [workout] - workout object to be persisted */
 function saveWorkout(workout) {
-    // Obtain CSRF token
-    const token = $("meta[name='_csrf']").attr("content");
-    // Send workout object in JSON format
+    const csrfToken = $("meta[name='_csrf']").attr("content");
     const formData = new FormData();
     formData.append('workout',
         new Blob([JSON.stringify(workout)], {type: 'application/json'}));
     formData.append('filesToRemove',
         new Blob([JSON.stringify(filesToRemove)], {type: 'application/json'}));
-    // Attach files as raw data
     filesToUpload.forEach(element => formData.append('filesToUpload', element));
     $.ajax({
         url: window.location.href,
-        headers: {"X-CSRF-TOKEN": token},
+        headers: {"X-CSRF-TOKEN": csrfToken},
         type: 'POST',
         data: formData,
         enctype: 'multipart/form-data',
@@ -725,12 +700,10 @@ function saveWorkout(workout) {
 
 /** Request deletion of the currently displayed workout from the database. */
 function deleteWorkout() {
-    // Obtain CSRF token
-    const token = $("meta[name='_csrf']").attr("content");
-    // Request workout of given id to be deleted from database
+    const csrfToken = $("meta[name='_csrf']").attr("content");
     $.ajax({
         url: 'http://localhost:8080/wl/workout/' + workout.id,
-        headers: {"X-CSRF-TOKEN": token},
+        headers: {"X-CSRF-TOKEN": csrfToken},
         type: 'DELETE',
         async: true,
     }).done(function () {
@@ -740,4 +713,24 @@ function deleteWorkout() {
         .fail(function () {
             alert('There\'s been a problem deleting this workout!')
         });
+}
+
+/** Request a media file from controller.
+ * @param {String} noteId - id of the note element associated with this file.
+ */
+function loadMediaFile(noteId) {
+    const csrfToken = $("meta[name='_csrf']").attr("content");
+    const filename = document.getElementById(noteId).innerHTML;
+    $.ajax({
+        url: 'http://localhost:8080/wl/workout/file/' + workout.id + '/' + filename,
+        headers: {"X-CSRF-TOKEN": csrfToken},
+        type: 'GET',
+        async: true,
+    }).done(function (data, status, xhr) {
+        // create base64 string and set it as a source for note element
+        let base64source = 'data:' + xhr.getResponseHeader('type') + ';base64,' + data;
+        $('#' + noteId + '-media').attr('src', base64source);
+    }).fail(function () {
+        alert('There\'s been a problem loading this file!');
+    });
 }
