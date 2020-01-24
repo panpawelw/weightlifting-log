@@ -513,8 +513,8 @@ function displayExistingMediaNote(noteId, content, type) {
             aModal.setAttribute('data-dismiss', 'modal');
             aModal.innerHTML = '<div class="modal-dialog modal-dialog-centered"><div' +
                 ' class="modal-content"><button type="button" class="close" data-dismiss="modal">' +
-                '&times;</button><audio controls id="' + noteId + '-autoplay"><source id="' +
-                noteId + '-media" src="#" type="audio/mpeg"></audio></div></div>';
+                '&times;</button><audio autoplay controls id="' + noteId + '-media"' +
+                ' src="#"></audio></div></div>';
             newNote.parentElement.appendChild(aModal);
             break;
         case 2:
@@ -541,8 +541,8 @@ function displayExistingMediaNote(noteId, content, type) {
             vModal.setAttribute('class', 'modal fade');
             vModal.innerHTML = '<div class="modal-dialog modal-dialog-centered"><div' +
                 ' class="modal-content"><button type="button" class="close" data-dismiss="modal">' +
-                '&times;</button><video controls id="' + noteId + '-autoplay"><source id="' +
-                noteId + '-media" src="#" type="video/mp4"></video></div></div>';
+                '&times;</button><video autoplay controls id="' + noteId + '-media"' +
+                ' src="#"></video></div></div>';
             newNote.parentElement.appendChild(vModal);
             break;
     }
@@ -557,23 +557,20 @@ function play(noteId) {
         const token = $("meta[name='_csrf']").attr("content");
         const workoutId = workout.id;
         const filename = document.getElementById(noteId).innerHTML;
-        console.log(workoutId, filename);
         $.ajax({
             url: 'http://localhost:8080/wl/workout/file/' + workoutId + '/' + filename,
             headers: {"X-CSRF-TOKEN": token},
             type: 'GET',
+            cache: true,
             async: true,
         }).done(function (data, status, xhr) {
-            let temp = 'data: ' + xhr.getResponseHeader('type') + ';base64,';
-            let final = temp + data;
-            $('#' + noteId + '-media').attr('src', final);
+            let base64source = 'data:' + xhr.getResponseHeader('type') + ';base64,' + data;
+            $('#' + noteId + '-media').attr('src', base64source);
         }).fail(function () {
             alert('There\'s been a problem loading this file!');
         });
     }
-    console.log(document.getElementById(noteId + '-media').tagName);
     if (document.getElementById(noteId + '-media').tagName !== 'IMG') {
-        console.log('Not an image!');
         autoplayAndRewindIfSoundOrVideo(noteId);
     }
 }
@@ -582,11 +579,11 @@ function play(noteId) {
  * @param {String} noteId - id of the note element
  */
 function autoplayAndRewindIfSoundOrVideo(noteId) {
-    document.getElementById(noteId + '-autoplay').play();
+    document.getElementById(noteId + '-media').play();
     // pause and rewind media when closing modal
     $("#" + noteId + "-modal").on('hide.bs.modal', function () {
-        document.getElementById(noteId + '-autoplay').pause();
-        document.getElementById(noteId + '-autoplay').currentTime = 0;
+        document.getElementById(noteId + '-media').pause();
+        document.getElementById(noteId + '-media').currentTime = 0;
     });
 }
 
