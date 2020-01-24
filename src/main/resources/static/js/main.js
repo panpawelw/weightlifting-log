@@ -553,7 +553,6 @@ function displayExistingMediaNote(noteId, content, type) {
  */
 function play(noteId) {
     if (document.getElementById(noteId + '-media').getAttribute('src') === '#') {
-        console.log('Action!');
         // Obtain CSRF token
         const token = $("meta[name='_csrf']").attr("content");
         const workoutId = workout.id;
@@ -565,13 +564,15 @@ function play(noteId) {
             type: 'GET',
             async: true,
         }).done(function (data, status, xhr) {
-            console.log(xhr.getAllResponseHeaders());
-            // $('#' + noteId + '-media')
-                // .attr('src', URL.createObjectURL(data[0]));
+            let temp = 'data: ' + xhr.getResponseHeader('type') + ';base64,';
+            let final = temp + data;
+            $('#' + noteId + '-media').attr('src', final);
         }).fail(function () {
             alert('There\'s been a problem loading this file!');
         });
-    } else if (document.getElementById(noteId + '-media').tagName !== 'img') {
+    }
+    console.log(document.getElementById(noteId + '-media').tagName);
+    if (document.getElementById(noteId + '-media').tagName !== 'IMG') {
         console.log('Not an image!');
         autoplayAndRewindIfSoundOrVideo(noteId);
     }
@@ -704,6 +705,7 @@ function saveWorkout(workout) {
         new Blob([JSON.stringify(workout)], {type: 'application/json'}));
     formData.append('filesToRemove',
         new Blob([JSON.stringify(filesToRemove)], {type: 'application/json'}));
+    // Attach files as raw data
     filesToUpload.forEach(element => formData.append('filesToUpload', element));
     $.ajax({
         url: window.location.href,

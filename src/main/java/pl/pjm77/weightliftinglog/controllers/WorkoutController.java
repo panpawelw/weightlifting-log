@@ -16,6 +16,7 @@ import pl.pjm77.weightliftinglog.services.UserService;
 import pl.pjm77.weightliftinglog.services.WorkoutService;
 
 import java.util.ArrayList;
+import java.util.Base64;
 
 import static pl.pjm77.weightliftinglog.services.UserService.checkLoggedInUserForAdminRights;
 
@@ -89,7 +90,7 @@ public class WorkoutController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         "attachment;filename=" + fileToSend.getFilename())
-                .header("customheader","customcontent")
-                .body(fileContent);
+                .header("type",fileToSend.getType())
+                .body(Base64.getEncoder().encode(fileContent));
     }
 }
