@@ -513,7 +513,7 @@ function displayExistingMediaNote(noteId, content, type) {
             aModal.setAttribute('data-dismiss', 'modal');
             aModal.innerHTML = '<div class="modal-dialog modal-dialog-centered"><div' +
                 ' class="modal-content"><button type="button" class="close" data-dismiss="modal">' +
-                '&times;</button><audio autoplay controls id="' + noteId + '-media"' +
+                '&times;</button><audio controls id="' + noteId + '-media"' +
                 ' src="#"></audio></div></div>';
             newNote.parentElement.appendChild(aModal);
             break;
@@ -541,7 +541,7 @@ function displayExistingMediaNote(noteId, content, type) {
             vModal.setAttribute('class', 'modal fade');
             vModal.innerHTML = '<div class="modal-dialog modal-dialog-centered"><div' +
                 ' class="modal-content"><button type="button" class="close" data-dismiss="modal">' +
-                '&times;</button><video autoplay controls id="' + noteId + '-media"' +
+                '&times;</button><video controls id="' + noteId + '-media"' +
                 ' src="#"></video></div></div>';
             newNote.parentElement.appendChild(vModal);
             break;
@@ -644,10 +644,24 @@ function remove(element) {
  */
 function attachFile(fileInputId, file, noteType) {
     const filename = file.name;
-    displayExistingMediaNote(fileInputId, filename, noteType);
-    filesToUpload.push(file);
-    $('#' + fileInputId + '-media')
-        .attr('src', URL.createObjectURL(filesToUpload[filesToUpload.length - 1]));
+    let filenameExists = (workout.filenames.indexOf(filename) !== -1);
+    if(!filenameExists) {
+        for (let i = 0; i < filesToUpload.length; i++) {
+            if (filesToUpload[i].name === filename) {
+                filenameExists = true;
+                break;
+            }
+        }
+    }
+    if (!filenameExists) {
+        displayExistingMediaNote(fileInputId, filename, noteType);
+        filesToUpload.push(file);
+        $('#' + fileInputId + '-media')
+            .attr('src', URL.createObjectURL(filesToUpload[filesToUpload.length - 1]));
+    } else {
+        alert('Filename already exists!');
+        document.getElementById(fileInputId).value = null;
+    }
 }
 
 /** Gets existing workout details in JSON format from REST controller.
