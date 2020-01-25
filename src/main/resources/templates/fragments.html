@@ -266,34 +266,28 @@
                 type="button">Cancel
         </button>
     </div>
-    <br><br>
     <div>
-        <label for="created">Created: </label>
+        <label for="created">First created: </label>
         <input type="text" name="created" id="created" maxlength="16" size="12" value=""
                onchange="workout['created'] = this.value + ':00';"/>
     </div>
     <div class="show-on-edit">
-        <label for="updated">Updated: </label>
+        <label for="updated">Last updated: </label>
         <input type="text" name="updated" id="updated" maxlength="16" size="12" value=""
                onchange="workout['updated'] = this.value + ':00';"/>
     </div>
-    <br>
     <div>
         <div>
-            <br><label for="title">Workout title: </label>
+            <label for="title" class="label-largest">Workout title: </label><br>
             <span class="my-input" contenteditable="true" id="title" data-set="title"></span>
             <button class='my-btn add bn' title="Add workout note"
                     onclick='addNote(undefined, 0, "");'>&nbsp
             </button>
         </div>
         <div id="notes"></div>
-        <br>
         <div id="exercises"></div>
-        <br>
         <button class="my-btn" onclick="addExercise();">Add exercise</button>
     </div>
-    <br><br>
-
     <div class="same-row">
         <button class="my-btn" onclick="saveWorkout(workout);" type="button">
             Save

@@ -386,6 +386,7 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
     noteNo = itsANewNote ? workout.notes.length : noteNo;
     let short = "note" + noteNo;
     let dataSetContent = "notes," + noteNo + ",content";
+    let label = $("<span>General notes:</span>").attr({class: "label-large"});
     // if it's an exercise note - modify values
     if (exerciseNo !== undefined && setNo === undefined) {
         noteListAlias = workout.exercises[exerciseNo].notes;
@@ -393,6 +394,7 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
         noteNo = itsANewNote ? workout.exercises[exerciseNo].notes.length : noteNo;
         short = "exercise" + exerciseNo + "note" + noteNo;
         dataSetContent = "exercises," + exerciseNo + ",notes," + noteNo + ",content";
+        label = $("<span>Exercise notes:</span>").attr({class: "label-large"});
     }
     // it's a set note - modify values
     if (exerciseNo !== undefined && setNo !== undefined) {
@@ -403,6 +405,7 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
         short = "exercise" + exerciseNo + "set" + setNo + "note" + noteNo;
         dataSetContent = "exercises," + exerciseNo + ",sets," + setNo + ",notes," +
             noteNo + ",content";
+        label = $("<span>Set notes:</span>").attr({class: "label-large"});
     }
     // create an element, innerHTML and set attributes
     let newNoteHTML = document.createElement('div');
@@ -414,6 +417,9 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
         'Audio</option><option value="2">Picture</option><option value="3">Video</option>' +
         '</select><button class="my-btn del bn" onclick="remove(' + short + ');" ' +
         'title="Delete note">&nbsp</button>';
+    if(appendHere.innerHTML === '') {
+        $(appendHere).append(label);
+    }
     appendHere.appendChild(newNoteHTML);
     document.getElementById(short).setAttribute('data-set', dataSetContent);
     // if new note - push it to note array and focus on element
@@ -645,7 +651,7 @@ function remove(element) {
 function attachFile(fileInputId, file, noteType) {
     const filename = file.name;
     let filenameExists = (workout.filenames.indexOf(filename) !== -1);
-    if(!filenameExists) {
+    if (!filenameExists) {
         for (let i = 0; i < filesToUpload.length; i++) {
             if (filesToUpload[i].name === filename) {
                 filenameExists = true;

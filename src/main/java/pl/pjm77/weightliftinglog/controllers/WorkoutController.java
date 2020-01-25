@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.pjm77.weightliftinglog.models.File;
 import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.models.WorkoutDeserialized;
-import pl.pjm77.weightliftinglog.services.FileService;
+import pl.pjm77.weightliftinglog.services.DBFileService;
 import pl.pjm77.weightliftinglog.services.UserService;
 import pl.pjm77.weightliftinglog.services.WorkoutService;
 
@@ -26,10 +26,11 @@ public class WorkoutController {
 
     private final WorkoutService workoutService;
     private final UserService userService;
-    private final FileService fileService;
+    private final DBFileService fileService;
 
     @Autowired
-    public WorkoutController(WorkoutService workoutService, UserService userService, FileService fileService) {
+    public WorkoutController(WorkoutService workoutService, UserService userService,
+                             DBFileService fileService) {
         this.workoutService = workoutService;
         this.userService = userService;
         this.fileService = fileService;

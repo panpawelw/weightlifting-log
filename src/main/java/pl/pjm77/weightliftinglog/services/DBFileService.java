@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class FileService {
+public class DBFileService {
 
     private FileRepository fileRepository;
 
-    public FileService(FileRepository fileRepository) {
+    public DBFileService(FileRepository fileRepository) {
         this.fileRepository = fileRepository;
     }
 

@@ -381,6 +381,7 @@ button:active, input[type=submit]:active, .my-btn:active {
     height: auto;
     float: left;
 }
+/* End resizable columns */
 
 #workout-content-container {
     display: table;
@@ -391,6 +392,24 @@ button:active, input[type=submit]:active, .my-btn:active {
 .workout-content {
     display: table-cell;
     vertical-align: middle;
+}
+
+.workout-content > div {
+    padding: 0.5em 0 0.5em 0;
+}
+
+.label-large {
+    font-size: large;
+    font-weight: bold;
+}
+
+.label-largest {
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.workout-content > .same-row {
+    padding: 0.5em 0 0.5em 0;
 }
 
 #workout-selection-container {
