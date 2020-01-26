@@ -312,14 +312,21 @@ function addExercise(exerciseNo = undefined, title = undefined) {
     const short = 'exercise' + exerciseNo;
     const newExerciseHTML = document.createElement('div');
     newExerciseHTML.setAttribute('id', short + '-container');
-    newExerciseHTML.innerHTML = '<br><label for="' + short + '">Exercise #' +
-        (exerciseNo + 1) + ': </label><span contenteditable="true" class="my-input" id="' + short +
-        '"></span><button class="my-btn add bn" onclick="addNote(undefined, 0, \'\', ' +
-        exerciseNo + ');" title="Add exercise note">&nbsp</button><button class="my-btn del bn"' +
-        ' onclick="remove(' + short + ');" title="Delete exercise">&nbsp</button></div><div id="' +
-        short + '-notes"></div><br><div id="' + short + '-sets"></div><button class="my-btn" ' +
-        'onclick="addSet(' + exerciseNo + ');">Add set</button><br>';
-    document.getElementById("exercises").appendChild(newExerciseHTML);
+    newExerciseHTML.innerHTML =
+        '<label for="' + short + '">Exercise #' + (exerciseNo + 1) + ': </label>' +
+        '<span contenteditable="true" class="my-input" id="' + short + '"></span>' +
+        '<button class="my-btn add bn" onclick="addNote(undefined, 0, \'\', ' +
+            exerciseNo + ');" title="Add exercise note">&nbsp</button>' +
+        '<button class="my-btn del bn" onclick="remove(' + short + ');" ' +
+            'title="Delete exercise">&nbsp</button>' +
+        '<div id="' + short + '-notes"></div><div id="' + short + '-sets"></div>' +
+        '<button class="my-btn" onclick="addSet(' + exerciseNo + ');">Add set</button>';
+    const exercises = document.getElementById("exercises");
+    if(exercises.innerHTML === '') {
+        const label = '<span class="label-large">Exercises:</span>';
+        $(exercises).append(label);
+    }
+    exercises.appendChild(newExerciseHTML);
     document.getElementById(short).setAttribute('data-set',
         "exercises," + exerciseNo + ",title");
     // set content if displaying an existing exercise or focus on element if creating a new one
@@ -347,14 +354,19 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
     const short = "exercise" + exerciseNo + "set" + setNo;
     const newSetHTML = document.createElement('div');
     newSetHTML.setAttribute('id', short + '-container');
-    newSetHTML.innerHTML = '<br><label for="' + short + '">Set #' +
+    newSetHTML.innerHTML = '<label for="' + short + '">Set #' +
         (setNo + 1) + ': </label><span contenteditable="true" class="my-input" ' +
         'id="' + short + '"></span><button class="my-btn add bn" ' +
         'onclick="addNote(undefined, 0, \'\',' + exerciseNo + ', ' + setNo + ');"' +
         ' title="Add set note">&nbsp</button><button class="my-btn del bn" ' +
         'onclick="remove(' + short + ');" title="Delete set">&nbsp</button>' +
-        '<div id="' + short + '-notes"></div><br>';
-    document.getElementById("exercise" + exerciseNo + "-sets").appendChild(newSetHTML);
+        '<div id="' + short + '-notes"></div>';
+    const sets = document.getElementById("exercise" + exerciseNo + "-sets");
+    if(sets.innerHTML === '') {
+        const label = '<span class="label-large">Sets:</span>';
+        $(sets).append(label);
+    }
+    sets.appendChild(newSetHTML);
     document.getElementById(short).setAttribute('data-set',
         "exercises," + exerciseNo + ",sets," + setNo + ",data");
     // set content if displaying an existing set or focus on element if creating a new one
@@ -394,7 +406,7 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
         noteNo = itsANewNote ? workout.exercises[exerciseNo].notes.length : noteNo;
         short = "exercise" + exerciseNo + "note" + noteNo;
         dataSetContent = "exercises," + exerciseNo + ",notes," + noteNo + ",content";
-        label = $("<span>Exercise notes:</span>").attr({class: "label-large"});
+        label = '<span class="label-large">Exercise notes:</span>';
     }
     // it's a set note - modify values
     if (exerciseNo !== undefined && setNo !== undefined) {
@@ -405,7 +417,7 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
         short = "exercise" + exerciseNo + "set" + setNo + "note" + noteNo;
         dataSetContent = "exercises," + exerciseNo + ",sets," + setNo + ",notes," +
             noteNo + ",content";
-        label = $("<span>Set notes:</span>").attr({class: "label-large"});
+        label = '<span class="label-large">Set notes:</span>';
     }
     // create an element, innerHTML and set attributes
     let newNoteHTML = document.createElement('div');
@@ -507,49 +519,43 @@ function displayExistingMediaNote(noteId, content, type) {
     $(oldNote).replaceWith('<span id="' + noteId + '" class="my-input" data-set="'
         + data + '">' + content + '</span>');
     const newNote = document.getElementById(noteId);
+    let modal = document.createElement("div");
+    modal.setAttribute('id', noteId + '-modal');
+    modal.setAttribute('class', 'modal fade close');
+    modal.setAttribute('data-dismiss', 'modal');
     switch (type) {
         case 1:
         case "1":
             $(newNote).next().replaceWith('<button onclick="play(\'' + noteId + '\');"' +
                 ' class="my-btn audio bn" title="play audio" data-toggle="modal" ' +
                 ' data-target="#' + noteId + '-modal">&nbsp</button>');
-            const aModal = document.createElement("div");
-            aModal.setAttribute('id', noteId + '-modal');
-            aModal.setAttribute('class', 'modal fade close');
-            aModal.setAttribute('data-dismiss', 'modal');
-            aModal.innerHTML = '<div class="modal-dialog modal-dialog-centered"><div' +
+            modal.innerHTML = '<div class="modal-dialog modal-dialog-centered"><div' +
                 ' class="modal-content"><button type="button" class="close" data-dismiss="modal">' +
-                '&times;</button><audio controls id="' + noteId + '-media"' +
+                '&times;</button><audio autoplay controls id="' + noteId + '-media"' +
                 ' src="#"></audio></div></div>';
-            newNote.parentElement.appendChild(aModal);
+            newNote.parentElement.appendChild(modal);
             break;
         case 2:
         case "2":
             $(newNote).next().replaceWith('<button onclick="play(\'' + noteId + '\');" ' +
                 'class="my-btn image bn" title="display picture" data-toggle="modal" ' +
                 'data-target="#' + noteId + '-modal">&nbsp</button>');
-            const pModal = document.createElement("div");
-            pModal.setAttribute('id', noteId + '-modal');
-            pModal.setAttribute('class', 'modal fade');
-            pModal.innerHTML = '<div class="modal-dialog modal-dialog-centered"><div' +
+            modal.innerHTML = '<div class="modal-dialog modal-dialog-centered"><div' +
                 ' class="modal-content"><button type="button" class="close" data-dismiss="modal"' +
                 '>&times;</button><img id="' + noteId + '-media" src="#" alt="image"' +
                 ' /></div></div>';
-            newNote.parentElement.appendChild(pModal);
+            newNote.parentElement.appendChild(modal);
             break;
         case 3:
         case "3":
             $(newNote).next().replaceWith('<button onclick="play(\'' + noteId + '\');"' +
                 ' class="my-btn clip bn" title="show clip" data-toggle="modal" data-target="#' +
                 noteId + '-modal">&nbsp</button>');
-            const vModal = document.createElement("div");
-            vModal.setAttribute('id', noteId + '-modal');
-            vModal.setAttribute('class', 'modal fade');
-            vModal.innerHTML = '<div class="modal-dialog modal-dialog-centered"><div' +
+            modal.innerHTML = '<div class="modal-dialog modal-dialog-centered"><div' +
                 ' class="modal-content"><button type="button" class="close" data-dismiss="modal">' +
-                '&times;</button><video controls id="' + noteId + '-media"' +
+                '&times;</button><video autoplay controls id="' + noteId + '-media"' +
                 ' src="#"></video></div></div>';
-            newNote.parentElement.appendChild(vModal);
+            newNote.parentElement.appendChild(modal);
             break;
     }
 }
@@ -559,7 +565,8 @@ function displayExistingMediaNote(noteId, content, type) {
  */
 function play(noteId) {
     // if the note element has no source yet - load corresponding file
-    if (document.getElementById(noteId + '-media').getAttribute('src') === '#') {
+    if (document.getElementById(noteId + '-media')
+        .getAttribute('src') === '#') {
         loadMediaFile(noteId);
     }
     // if it's an audio or video clip - make it play automatically
