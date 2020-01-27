@@ -8,10 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pl.pjm77.weightliftinglog.models.File;
+import pl.pjm77.weightliftinglog.models.MediaFile;
 import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.models.WorkoutDeserialized;
 import pl.pjm77.weightliftinglog.services.DBFileService;
+import pl.pjm77.weightliftinglog.services.S3FileService;
 import pl.pjm77.weightliftinglog.services.UserService;
 import pl.pjm77.weightliftinglog.services.WorkoutService;
 
@@ -27,13 +28,15 @@ public class WorkoutController {
     private final WorkoutService workoutService;
     private final UserService userService;
     private final DBFileService fileService;
+    private final S3FileService s3FileService;
 
     @Autowired
     public WorkoutController(WorkoutService workoutService, UserService userService,
-                             DBFileService fileService) {
+                             DBFileService fileService, S3FileService s3FileService) {
         this.workoutService = workoutService;
         this.userService = userService;
         this.fileService = fileService;
+        this.s3FileService = s3FileService;
     }
 
     @ResponseBody
@@ -69,7 +72,7 @@ public class WorkoutController {
                     fileService.deleteFileByWorkoutAndFilename(workoutDeserialized, filename));
         }
         if (filesToUpload.length > 0) {
-            fileService.storeAllFiles(workoutDeserialized, filesToUpload);
+            s3FileService.StoreAllFiles(workoutDeserialized, filesToUpload);
         }
         workoutService.saveWorkout(workoutDeserialized);
     }
@@ -86,12 +89,12 @@ public class WorkoutController {
             MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> getFileByWorkoutId(@PathVariable Long workoutId,
                                              @PathVariable String filename) {
-        File fileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId, filename);
-        byte[] fileContent = fileToSend.getContent();
+        MediaFile mediaFileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId, filename);
+        byte[] fileContent = mediaFileToSend.getContent();
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment;filename=" + fileToSend.getFilename())
-                .header("type",fileToSend.getType())
+                        "attachment;filename=" + mediaFileToSend.getFilename())
+                .header("type", mediaFileToSend.getType())
                 .body(Base64.getEncoder().encode(fileContent));
     }
 }

@@ -1,8 +1,8 @@
 package pl.pjm77.weightliftinglog.AWS;
 
-import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,16 +22,13 @@ public class AmazonS3Configuration {
     private String awsRegion;
 
     @Bean
-    AWSStaticCredentialsProvider credentialsProvider() {
-        return new AWSStaticCredentialsProvider(new BasicAWSCredentials(awsKeyId, awsKeySecret));
-    }
-
-    @Bean
-    public AmazonS3 amazonS3Client(AWSCredentialsProvider credentialsProvider) {
+    public AmazonS3 amazonS3Client() {
+        BasicAWSCredentials credentialsProvider =
+                new BasicAWSCredentials(awsKeyId,awsKeySecret);
         return AmazonS3ClientBuilder
                 .standard()
-                .withCredentials(credentialsProvider)
-                .withRegion(awsRegion)
+                .withCredentials(new AWSStaticCredentialsProvider(credentialsProvider))
+                .withRegion(Regions.fromName(awsRegion))
                 .build();
     }
 }
