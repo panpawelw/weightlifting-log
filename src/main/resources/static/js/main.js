@@ -533,7 +533,6 @@ function displayExistingMediaNote(noteId, content, type) {
                 ' class="modal-content"><button type="button" class="close" data-dismiss="modal">' +
                 '&times;</button><audio autoplay controls id="' + noteId + '-media"' +
                 ' src="#"></audio></div></div>';
-            newNote.parentElement.appendChild(modal);
             break;
         case 2:
         case "2":
@@ -544,7 +543,6 @@ function displayExistingMediaNote(noteId, content, type) {
                 ' class="modal-content"><button type="button" class="close" data-dismiss="modal"' +
                 '>&times;</button><img id="' + noteId + '-media" src="#" alt="image"' +
                 ' /></div></div>';
-            newNote.parentElement.appendChild(modal);
             break;
         case 3:
         case "3":
@@ -555,9 +553,9 @@ function displayExistingMediaNote(noteId, content, type) {
                 ' class="modal-content"><button type="button" class="close" data-dismiss="modal">' +
                 '&times;</button><video autoplay controls id="' + noteId + '-media"' +
                 ' src="#"></video></div></div>';
-            newNote.parentElement.appendChild(modal);
             break;
     }
+    newNote.parentElement.appendChild(modal);
 }
 
 /** Play audio, video or show picture

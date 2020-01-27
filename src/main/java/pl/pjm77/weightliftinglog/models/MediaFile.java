@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "files")
-public class File {
+public class MediaFile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,10 +18,10 @@ public class File {
     @Lob
     private byte[] content;
 
-    public File() {
+    public MediaFile() {
     }
 
-    public File(Long id, Long workoutId, String filename, String type, byte[] content) {
+    public MediaFile(Long id, Long workoutId, String filename, String type, byte[] content) {
         this.id = id;
         this.workoutId = workoutId;
         this.filename = filename;

@@ -2,7 +2,7 @@ package pl.pjm77.weightliftinglog.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import pl.pjm77.weightliftinglog.models.File;
+import pl.pjm77.weightliftinglog.models.MediaFile;
 import pl.pjm77.weightliftinglog.models.WorkoutDeserialized;
 import pl.pjm77.weightliftinglog.repositories.FileRepository;
 
@@ -21,13 +21,13 @@ public class DBFileService {
 
     public void storeAllFiles(WorkoutDeserialized workoutDeserialized,
                               MultipartFile[] workoutFiles) {
-        List<File> files = new ArrayList<>();
+        List<MediaFile> mediaFiles = new ArrayList<>();
         List<String> filenames = workoutDeserialized.getFilenames();
         Long workoutId = workoutDeserialized.getId();
         for (MultipartFile file : workoutFiles) {
             String filename = file.getOriginalFilename();
             try {
-                files.add(new File(0L, workoutId, filename,
+                mediaFiles.add(new MediaFile(0L, workoutId, filename,
                         file.getContentType(), file.getBytes()));
                 filenames.add(filename);
             } catch (IOException e) {
@@ -35,11 +35,11 @@ public class DBFileService {
             }
             workoutDeserialized.setFilenames(filenames);
         }
-        fileRepository.saveAll(files);
+        fileRepository.saveAll(mediaFiles);
         fileRepository.flush();
     }
 
-    public File getFileByWorkoutIdAndFilename(Long workoutId, String filename) {
+    public MediaFile getFileByWorkoutIdAndFilename(Long workoutId, String filename) {
         return fileRepository.findFileByWorkoutIdAndFilename(workoutId, filename);
     }
 
