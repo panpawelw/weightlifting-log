@@ -69,7 +69,7 @@ public class WorkoutController {
         workoutDeserialized.setId(workoutService.saveWorkout(workoutDeserialized));
         if (!filesToRemove.isEmpty()) {
             filesToRemove.forEach((filename) ->
-                    fileService.deleteFileByWorkoutAndFilename(workoutDeserialized, filename));
+                    s3FileService.deleteFileByWorkoutAndFilename(workoutDeserialized, filename));
         }
         if (filesToUpload.length > 0) {
             s3FileService.StoreAllFiles(workoutDeserialized, filesToUpload);

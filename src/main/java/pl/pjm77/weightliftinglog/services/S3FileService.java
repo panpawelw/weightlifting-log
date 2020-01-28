@@ -6,11 +6,14 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.pjm77.weightliftinglog.AWS.AmazonS3Configuration;
+import pl.pjm77.weightliftinglog.models.MediaFile;
 import pl.pjm77.weightliftinglog.models.WorkoutDeserialized;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -26,19 +29,24 @@ public class S3FileService {
     public void StoreAllFiles(WorkoutDeserialized workoutDeserialized,
                               MultipartFile[] workoutFiles) {
         AmazonS3 amazonS3Client = amazonS3Configuration.amazonS3Client();
+        List<String> filenames = workoutDeserialized.getFilenames();
+        String filename;
         for (MultipartFile workoutFile : workoutFiles) {
-            try {
-//                File file = convertMultiPartFileToFile(workoutFile);
+                filename = workoutFile.getOriginalFilename();
+                System.out.println(filename);
                 ObjectMetadata objectMetadata = new ObjectMetadata();
                 objectMetadata.setContentType(workoutFile.getContentType());
                 objectMetadata.setContentLength(workoutFile.getSize());
-                amazonS3Client.putObject(bucketName, workoutFile.getOriginalFilename(),
+            try {
+                amazonS3Client.putObject(bucketName, filename,
                         workoutFile.getInputStream(), objectMetadata);
+                filenames.add(filename);
             } catch (AmazonClientException | IOException e) {
-                throw new RuntimeException(("Error while uploading file!"));
+                throw new RuntimeException("Error while uploading file!");
             }
+            workoutDeserialized.setFilenames(filenames);
         }
-//        return amazonS3Client.getUrl(bucketName, filename);
+        System.out.println(workoutDeserialized.getFilenames().toString());
     }
 
     public File getFileByWorkoutIdAndFilename(Long workoutId, String filename) {
@@ -47,16 +55,14 @@ public class S3FileService {
 
     public void deleteFileByWorkoutAndFilename(WorkoutDeserialized workoutDeserialized,
                                                String filename) {
+        AmazonS3 amazonS3Client = amazonS3Configuration.amazonS3Client();
+        try {
+            amazonS3Client.deleteObject(bucketName, filename);
+        } catch (AmazonClientException e) {
+            throw new RuntimeException("Error while deleting file!");
+        }
     }
 
     public void deleteAllByWorkoutId(long workoutId) {
-    }
-
-    private File convertMultiPartFileToFile(MultipartFile multipartFile) throws IOException {
-        File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-        FileOutputStream fos = new FileOutputStream(file);
-        fos.write(multipartFile.getBytes());
-        fos.close();
-        return file;
     }
 }
