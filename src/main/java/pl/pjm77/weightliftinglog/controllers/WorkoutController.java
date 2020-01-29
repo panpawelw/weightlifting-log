@@ -80,8 +80,8 @@ public class WorkoutController {
     @ResponseBody
     @DeleteMapping("/{workoutId}")
     public void deleteWorkout(@PathVariable long workoutId) {
+        s3FileService.deleteAllByWorkoutId(workoutId);
         workoutService.deleteWorkout(workoutId);
-        fileService.deleteAllByWorkoutId(workoutId);
     }
 
     @ResponseBody

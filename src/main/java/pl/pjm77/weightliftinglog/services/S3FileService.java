@@ -21,9 +21,11 @@ public class S3FileService {
 
     private final String bucketName = "weightliftinglogbucket";
     private final AmazonS3Configuration amazonS3Configuration;
+    private final WorkoutService workoutService;
 
-    public S3FileService(AmazonS3Configuration amazonS3Configuration) {
+    public S3FileService(AmazonS3Configuration amazonS3Configuration, WorkoutService workoutService) {
         this.amazonS3Configuration = amazonS3Configuration;
+        this.workoutService = workoutService;
     }
 
     public void StoreAllFiles(WorkoutDeserialized workoutDeserialized,
@@ -64,5 +66,14 @@ public class S3FileService {
     }
 
     public void deleteAllByWorkoutId(long workoutId) {
+        AmazonS3 amazonS3Client = amazonS3Configuration.amazonS3Client();
+        List<String> filesToDelete = workoutService.findWorkoutById(workoutId).getFilenames();
+        filesToDelete.forEach(filename-> {
+            try {
+                amazonS3Client.deleteObject(bucketName, filename);
+            } catch (AmazonClientException e) {
+                throw new RuntimeException("Error while deleting files!");
+            }
+        });
     }
 }
