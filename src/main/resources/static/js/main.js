@@ -316,13 +316,13 @@ function addExercise(exerciseNo = undefined, title = undefined) {
         '<label for="' + short + '">Exercise #' + (exerciseNo + 1) + ': </label>' +
         '<span contenteditable="true" class="my-input" id="' + short + '"></span>' +
         '<button class="my-btn add bn" onclick="addNote(undefined, 0, \'\', ' +
-            exerciseNo + ');" title="Add exercise note">&nbsp</button>' +
+        exerciseNo + ');" title="Add exercise note">&nbsp</button>' +
         '<button class="my-btn del bn" onclick="remove(' + short + ');" ' +
-            'title="Delete exercise">&nbsp</button>' +
+        'title="Delete exercise">&nbsp</button>' +
         '<div id="' + short + '-notes"></div><div id="' + short + '-sets"></div>' +
         '<button class="my-btn" onclick="addSet(' + exerciseNo + ');">Add set</button>';
     const exercises = document.getElementById("exercises");
-    if(exercises.innerHTML === '') {
+    if (exercises.innerHTML === '') {
         const label = '<span class="label-large">Exercises:</span>';
         $(exercises).append(label);
     }
@@ -354,15 +354,16 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
     const short = "exercise" + exerciseNo + "set" + setNo;
     const newSetHTML = document.createElement('div');
     newSetHTML.setAttribute('id', short + '-container');
-    newSetHTML.innerHTML = '<label for="' + short + '">Set #' +
-        (setNo + 1) + ': </label><span contenteditable="true" class="my-input" ' +
-        'id="' + short + '"></span><button class="my-btn add bn" ' +
-        'onclick="addNote(undefined, 0, \'\',' + exerciseNo + ', ' + setNo + ');"' +
-        ' title="Add set note">&nbsp</button><button class="my-btn del bn" ' +
-        'onclick="remove(' + short + ');" title="Delete set">&nbsp</button>' +
+    newSetHTML.innerHTML =
+        '<label for="' + short + '">Set #' + (setNo + 1) + ': </label>' +
+        '<span contenteditable="true" class="my-input" id="' + short + '"></span>' +
+        '<button class="my-btn add bn" onclick="addNote(undefined, 0, \'\',' + exerciseNo + ', ' +
+        setNo + ');" title="Add set note">&nbsp</button>' +
+        '<button class="my-btn del bn" onclick="remove(' + short + ');" ' +
+        'title="Delete set">&nbsp</button>' +
         '<div id="' + short + '-notes"></div>';
     const sets = document.getElementById("exercise" + exerciseNo + "-sets");
-    if(sets.innerHTML === '') {
+    if (sets.innerHTML === '') {
         const label = '<span class="label-large">Sets:</span>';
         $(sets).append(label);
     }
@@ -422,14 +423,15 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
     // create an element, innerHTML and set attributes
     let newNoteHTML = document.createElement('div');
     newNoteHTML.setAttribute('id', short + '-container');
-    newNoteHTML.innerHTML = '<label for="' + short + '">Note #' + (noteNo + 1) +
-        ': </label><span contenteditable="true" class="my-input" id="' + short + '"></span>' +
+    newNoteHTML.innerHTML =
+        '<label for="' + short + '">Note #' + (noteNo + 1) + ': </label>' +
+        '<span contenteditable="true" class="my-input" id="' + short + '"></span>' +
         '<select onchange="changeNoteType(this.value, \'' + short + '\');"' +
-        ' name="' + short + '-type"><option value="0">Text</option><option value="1">' +
-        'Audio</option><option value="2">Picture</option><option value="3">Video</option>' +
-        '</select><button class="my-btn del bn" onclick="remove(' + short + ');" ' +
+        ' name="' + short + '-type"><option value="0">Text</option><option value="1">Audio</option>' +
+        '<option value="2">Picture</option><option value="3">Video</option></select>' +
+        '<button class="my-btn del bn" onclick="remove(' + short + ');" ' +
         'title="Delete note">&nbsp</button>';
-    if(appendHere.innerHTML === '') {
+    if (appendHere.innerHTML === '') {
         $(appendHere).append(label);
     }
     appendHere.appendChild(newNoteHTML);
@@ -531,7 +533,7 @@ function displayExistingMediaNote(noteId, content, type) {
                 ' data-target="#' + noteId + '-modal">&nbsp</button>');
             modal.innerHTML = '<div class="modal-dialog modal-dialog-centered"><div' +
                 ' class="modal-content"><button type="button" class="close" data-dismiss="modal">' +
-                '&times;</button><audio autoplay controls id="' + noteId + '-media"' +
+                '&times;</button><audio controls id="' + noteId + '-media"' +
                 ' src="#"></audio></div></div>';
             break;
         case 2:
@@ -551,7 +553,7 @@ function displayExistingMediaNote(noteId, content, type) {
                 noteId + '-modal">&nbsp</button>');
             modal.innerHTML = '<div class="modal-dialog modal-dialog-centered"><div' +
                 ' class="modal-content"><button type="button" class="close" data-dismiss="modal">' +
-                '&times;</button><video autoplay controls id="' + noteId + '-media"' +
+                '&times;</button><video controls id="' + noteId + '-media"' +
                 ' src="#"></video></div></div>';
             break;
     }
@@ -562,18 +564,19 @@ function displayExistingMediaNote(noteId, content, type) {
  * @param {String} noteId - id of the note element
  */
 function play(noteId) {
+    const note = document.getElementById(noteId + '-media');
     // if the note element has no source yet - load corresponding file
-    if (document.getElementById(noteId + '-media')
-        .getAttribute('src') === '#') {
+    if (note.getAttribute('src') === '#') {
         loadMediaFile(noteId);
+        note.setAttribute("autoplay", "true");
     }
     // if it's an audio or video clip - make it play automatically
-    if (document.getElementById(noteId + '-media').tagName !== 'IMG') {
-        document.getElementById(noteId + '-media').play();
+    if (note.tagName !== 'IMG') {
+        note.play();
         // pause and rewind media on modal close
         $("#" + noteId + "-modal").on('hide.bs.modal', function () {
-            document.getElementById(noteId + '-media').pause();
-            document.getElementById(noteId + '-media').currentTime = 0;
+            note.pause();
+            note.currentTime = 0;
         });
     }
 }
