@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.pjm77.weightliftinglog.models.MediaFile;
 import pl.pjm77.weightliftinglog.models.User;
 import pl.pjm77.weightliftinglog.models.WorkoutDeserialized;
-import pl.pjm77.weightliftinglog.services.DBFileService;
 import pl.pjm77.weightliftinglog.services.S3FileService;
 import pl.pjm77.weightliftinglog.services.UserService;
 import pl.pjm77.weightliftinglog.services.WorkoutService;
@@ -27,15 +26,15 @@ public class WorkoutController {
 
     private final WorkoutService workoutService;
     private final UserService userService;
-    private final DBFileService fileService;
+//    private final DBFileService fileService;
     private final S3FileService s3FileService;
 
     @Autowired
     public WorkoutController(WorkoutService workoutService, UserService userService,
-                             DBFileService fileService, S3FileService s3FileService) {
+                             S3FileService s3FileService) {
         this.workoutService = workoutService;
         this.userService = userService;
-        this.fileService = fileService;
+//        this.fileService = fileService;
         this.s3FileService = s3FileService;
     }
 
@@ -89,7 +88,8 @@ public class WorkoutController {
             MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> getFileByWorkoutId(@PathVariable Long workoutId,
                                              @PathVariable String filename) {
-        MediaFile mediaFileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId, filename);
+        MediaFile mediaFileToSend = s3FileService.getFileByWorkoutIdAndFilename(workoutId,
+                filename);
         byte[] fileContent = mediaFileToSend.getContent();
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
