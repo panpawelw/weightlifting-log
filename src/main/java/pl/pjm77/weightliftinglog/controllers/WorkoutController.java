@@ -26,7 +26,6 @@ public class WorkoutController {
 
     private final WorkoutService workoutService;
     private final UserService userService;
-//    private final DBFileService fileService;
     private final S3FileService s3FileService;
 
     @Autowired
@@ -34,7 +33,6 @@ public class WorkoutController {
                              S3FileService s3FileService) {
         this.workoutService = workoutService;
         this.userService = userService;
-//        this.fileService = fileService;
         this.s3FileService = s3FileService;
     }
 

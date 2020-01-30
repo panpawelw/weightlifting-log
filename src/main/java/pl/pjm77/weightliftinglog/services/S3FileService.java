@@ -26,27 +26,25 @@ public class S3FileService {
         this.workoutService = workoutService;
     }
 
-    public void StoreAllFiles(WorkoutDeserialized workoutDeserialized,
-                              MultipartFile[] workoutFiles) {
+    public void StoreAllFiles(WorkoutDeserialized workout,
+                              MultipartFile[] files) {
         AmazonS3 amazonS3Client = amazonS3Configuration.amazonS3Client();
-        List<String> filenames = workoutDeserialized.getFilenames();
+        List<String> filenames = workout.getFilenames();
         String filename;
-        for (MultipartFile workoutFile : workoutFiles) {
-                filename = workoutFile.getOriginalFilename();
-                System.out.println(filename);
-                ObjectMetadata objectMetadata = new ObjectMetadata();
-                objectMetadata.setContentType(workoutFile.getContentType());
-                objectMetadata.setContentLength(workoutFile.getSize());
+        for (MultipartFile file : files) {
+            filename = file.getOriginalFilename();
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentType(file.getContentType());
+            objectMetadata.setContentLength(file.getSize());
             try {
-                amazonS3Client.putObject(bucketName, filename,
-                        workoutFile.getInputStream(), objectMetadata);
+                amazonS3Client.putObject(bucketName, workout.getId() + "\\" + filename,
+                        file.getInputStream(), objectMetadata);
                 filenames.add(filename);
             } catch (AmazonClientException | IOException e) {
                 throw new RuntimeException("Error while uploading file!");
             }
-            workoutDeserialized.setFilenames(filenames);
+            workout.setFilenames(filenames);
         }
-        System.out.println(workoutDeserialized.getFilenames().toString());
     }
 
     public MediaFile getFileByWorkoutIdAndFilename(Long workoutId, String filename) {
@@ -54,6 +52,7 @@ public class S3FileService {
         S3Object s3Object;
         ObjectMetadata objectMetadata;
         byte[] content;
+        filename = workoutId + "\\" + filename;
         try {
             s3Object = amazonS3Client.getObject(bucketName, filename);
             objectMetadata = s3Object.getObjectMetadata();
@@ -65,9 +64,9 @@ public class S3FileService {
                 content);
     }
 
-    public void deleteFileByWorkoutAndFilename(WorkoutDeserialized workoutDeserialized,
-                                               String filename) {
+    public void deleteFileByWorkoutAndFilename(WorkoutDeserialized workout, String filename) {
         AmazonS3 amazonS3Client = amazonS3Configuration.amazonS3Client();
+        filename = workout.getId() + "\\" + filename;
         try {
             amazonS3Client.deleteObject(bucketName, filename);
         } catch (AmazonClientException e) {
@@ -78,8 +77,9 @@ public class S3FileService {
     public void deleteAllByWorkoutId(long workoutId) {
         AmazonS3 amazonS3Client = amazonS3Configuration.amazonS3Client();
         List<String> filesToDelete = workoutService.findWorkoutById(workoutId).getFilenames();
-        filesToDelete.forEach(filename-> {
+        filesToDelete.forEach(filename -> {
             try {
+                filename = workoutId + "\\" + filename;
                 amazonS3Client.deleteObject(bucketName, filename);
             } catch (AmazonClientException e) {
                 throw new RuntimeException("Error while deleting files!");
