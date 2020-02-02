@@ -6,6 +6,7 @@ let okToToggleLogo = true; // Global flag for logo visibility toggling
 
 $(document).ready(function () {
 
+
     /** This event listener is responsible for hiding the logo container and
      * making the tab navigation bar stick to the top of the screen when user is
      * scrolling down the page and showing the logo container and unsticking the
@@ -614,36 +615,39 @@ function removeMediaFile(filename) {
  *  @param {Node} [element] - element to remove
  */
 function remove(element) {
-    const entry = $(element).data('set').split(',');
-    const parent = element.parentElement;
-    parent.parentElement.removeChild(parent);
-    let short = '';
-    // noinspection JSMismatchedCollectionQueryUpdate
-    let shorter = [];
-    // Set parameters depending on how many levels deep element is positioned
-    switch (entry.length) {
-        case 3:
-            short = workout[entry[0]][entry[1]];
-            shorter = workout[entry[0]];
-            break;
-        case 5:
-            short = workout[entry[0]][entry[1]][entry[2]][entry[3]];
-            shorter = workout[entry[0]][entry[1]][entry[2]];
-            break;
-        case 7:
-            short = workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]];
-            shorter = workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]];
-            break;
+    if (confirm("Are you sure?") === true) {
+        const entry = $(element).data('set').split(',');
+        const parent = element.parentElement;
+        parent.parentElement.removeChild(parent);
+        let short = '';
+        // noinspection JSMismatchedCollectionQueryUpdate
+        let shorter = [];
+        // Set parameters depending on how many levels deep element is positioned
+        switch (entry.length) {
+            case 3:
+                short = workout[entry[0]][entry[1]];
+                shorter = workout[entry[0]];
+                break;
+            case 5:
+                short = workout[entry[0]][entry[1]][entry[2]][entry[3]];
+                shorter = workout[entry[0]][entry[1]][entry[2]];
+                break;
+            case 7:
+                short = workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]];
+                shorter = workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]];
+                break;
+        }
+        // If it's a media note - remove corresponding media file
+        if (short.hasOwnProperty('type') && short.type > 0) {
+            removeMediaFile(short.content);
+        }
+        // Remove element, clear workout screen and display workout again
+        shorter.splice(entry[entry.length - 2], 1);
+        document.getElementById('notes').innerHTML = '';
+        document.getElementById('exercises').innerHTML = '';
+        displayWorkout();
+
     }
-    // If it's a media note - remove corresponding media file
-    if (short.hasOwnProperty('type') && short.type > 0) {
-        removeMediaFile(short.content);
-    }
-    // Remove element, clear workout screen and display workout again
-    shorter.splice(entry[entry.length - 2], 1);
-    document.getElementById('notes').innerHTML = '';
-    document.getElementById('exercises').innerHTML = '';
-    displayWorkout();
 }
 
 /*****************************************************
@@ -728,19 +732,21 @@ function saveWorkout(workout) {
 
 /** Request deletion of the currently displayed workout from the database. */
 function deleteWorkout() {
-    const csrfToken = $("meta[name='_csrf']").attr("content");
-    $.ajax({
-        url: 'http://localhost:8080/wl/workout/' + workout.id,
-        headers: {"X-CSRF-TOKEN": csrfToken},
-        type: 'DELETE',
-        async: true,
-    }).done(function () {
-        preserveLogoState();
-        window.location.pathname = 'wl/user'
-    })
-        .fail(function () {
-            alert('There\'s been a problem deleting this workout!')
-        });
+    if (confirm("Are you sure you want to delete this workout?") === true) {
+        const csrfToken = $("meta[name='_csrf']").attr("content");
+        $.ajax({
+            url: 'http://localhost:8080/wl/workout/' + workout.id,
+            headers: {"X-CSRF-TOKEN": csrfToken},
+            type: 'DELETE',
+            async: true,
+        }).done(function () {
+            preserveLogoState();
+            window.location.pathname = 'wl/user'
+        })
+            .fail(function () {
+                alert('There\'s been a problem deleting this workout!')
+            });
+    }
 }
 
 /** Request a media file from controller.
