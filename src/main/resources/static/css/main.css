@@ -398,22 +398,33 @@ button:active, input[type=submit]:active, .my-btn:active {
     padding: 0.5em 0 0.5em 0;
 }
 
-.label-large {
+.label-s {
+    font-size: small;
+    font-weight: lighter;
+}
+
+.label-m {
+    font-size: smaller;
+    font-weight: normal;
+}
+
+.label-l {
     font-size: medium;
     font-weight: bold;
 }
 
-.label-largest {
+.label-xl {
     font-size: larger;
     font-weight: bolder;
 }
 
-.workout-content > .same-row {
-    padding: 0.5em 0 0.5em 0;
-}
-
-#exercises {
-    margin: 1em 0 1em 0;
+.bordered {
+    border-style: solid;
+    border-radius: 12px;
+    box-shadow: 5px 5px 5px #472900;
+    width: 97.5%;
+    margin: 0.25em auto;
+    padding: 0.25em 0 0.25em 0;
 }
 
 #workout-selection-container {
@@ -448,6 +459,10 @@ button:active, input[type=submit]:active, .my-btn:active {
 
 .tab-title {
     font-weight: bold;
+}
+
+.note {
+    font-size: small;
 }
 
 /* Admin panel */

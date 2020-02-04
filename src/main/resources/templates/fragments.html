@@ -255,7 +255,7 @@
 
 <!-- user panel fragments - workout details -->
 <div th:fragment="user-panel-workout-details" class="workout-content">
-    <div class="same-row">
+    <div class="same-row bordered">
         <button class="my-btn" onclick="saveWorkout(workout);" type="button">
             Save
         </button>
@@ -266,29 +266,35 @@
                 type="button">Cancel
         </button>
     </div>
-    <div>
-        <label for="created">First created: </label>
-        <input type="text" name="created" id="created" maxlength="16" size="12" value=""
-               onchange="workout['created'] = this.value + ':00';"/>
-    </div>
-    <div class="show-on-edit">
-        <label for="updated">Last updated: </label>
-        <input type="text" name="updated" id="updated" maxlength="16" size="12" value=""
-               onchange="workout['updated'] = this.value + ':00';"/>
-    </div>
-    <div>
-        <div>
-            <label for="title" class="label-largest">Workout title: </label><br>
-            <span class="my-input" contenteditable="true" id="title" data-set="title"></span>
-            <button class='my-btn add bn' title="Add workout note"
-                    onclick='addNote(undefined, 0, "");'>&nbsp
-            </button>
+    <div class="bordered">
+        <div style="display: inline-block">
+            <label for="created">First created: </label>
+            <input type="text" name="created" id="created" maxlength="16" size="12" value=""
+                   onchange="workout['created'] = this.value + ':00';"/>
         </div>
-        <div id="notes"></div>
-        <div id="exercises"></div>
+        <div class="show-on-edit" style="display: inline-block">
+            <label for="updated">Last updated: </label>
+            <input type="text" name="updated" id="updated" maxlength="16" size="12" value=""
+                   onchange="workout['updated'] = this.value + ':00';"/>
+        </div>
+        <div>
+            <div>
+                <label for="title" class="label-xl">Workout title: </label><br>
+                <span class="my-input" contenteditable="true" id="title" data-set="title"></span>
+                <button class='my-btn add bn' title="Add workout note"
+                        onclick='addNote(undefined, 0, "");'>&nbsp;
+                </button>
+            </div>
+            <div id="notes"></div>
+        </div>
+    </div>
+    <div id="exercises" class="bordered" style="display: none;">
+        <span class="label-xl">Exercises:</span>
+    </div>
+    <div class="bordered">
         <button class="my-btn" onclick="addExercise();">Add exercise</button>
     </div>
-    <div class="same-row">
+    <div class="same-row bordered">
         <button class="my-btn" onclick="saveWorkout(workout);" type="button">
             Save
         </button>

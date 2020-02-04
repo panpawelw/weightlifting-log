@@ -313,9 +313,10 @@ function addExercise(exerciseNo = undefined, title = undefined) {
     const short = 'exercise' + exerciseNo;
     const newExerciseHTML = document.createElement('div');
     newExerciseHTML.setAttribute('id', short + '-container');
+    newExerciseHTML.setAttribute('class', 'bordered');
     newExerciseHTML.innerHTML =
-        '<label for="' + short + '">Exercise #' + (exerciseNo + 1) + ': </label>' +
-        '<span contenteditable="true" class="my-input" id="' + short + '"></span>' +
+        '<label class="label-l" for="' + short + '">Exercise #' + (exerciseNo + 1) + ': </label>' +
+        '<br><span contenteditable="true" class="my-input" id="' + short + '"></span>' +
         '<button class="my-btn add bn" onclick="addNote(undefined, 0, \'\', ' +
         exerciseNo + ');" title="Add exercise note">&nbsp</button>' +
         '<button class="my-btn del bn" onclick="remove(' + short + ');" ' +
@@ -323,9 +324,10 @@ function addExercise(exerciseNo = undefined, title = undefined) {
         '<div id="' + short + '-notes"></div><div id="' + short + '-sets"></div>' +
         '<button class="my-btn" onclick="addSet(' + exerciseNo + ');">Add set</button>';
     const exercises = document.getElementById("exercises");
-    if (exercises.innerHTML === '') {
-        const label = '<span class="label-large">Exercises:</span>';
-        $(exercises).append(label);
+    if (workout.exercises.length !== 0) {
+        document.getElementById('exercises').style.display = 'block';
+    } else {
+        document.getElementById('exercises').style.display = 'none';
     }
     exercises.appendChild(newExerciseHTML);
     document.getElementById(short).setAttribute('data-set',
@@ -355,8 +357,9 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
     const short = "exercise" + exerciseNo + "set" + setNo;
     const newSetHTML = document.createElement('div');
     newSetHTML.setAttribute('id', short + '-container');
+    newSetHTML.setAttribute('class', 'bordered');
     newSetHTML.innerHTML =
-        '<label for="' + short + '">Set #' + (setNo + 1) + ': </label>' +
+        '<label style="display: block;" for="' + short + '">Set #' + (setNo + 1) + ': </label>' +
         '<span contenteditable="true" class="my-input" id="' + short + '"></span>' +
         '<button class="my-btn add bn" onclick="addNote(undefined, 0, \'\',' + exerciseNo + ', ' +
         setNo + ');" title="Add set note">&nbsp</button>' +
@@ -365,7 +368,7 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
         '<div id="' + short + '-notes"></div>';
     const sets = document.getElementById("exercise" + exerciseNo + "-sets");
     if (sets.innerHTML === '') {
-        const label = '<span class="label-large">Sets:</span>';
+        const label = '<span class="label-l">Sets:</span>';
         $(sets).append(label);
     }
     sets.appendChild(newSetHTML);
@@ -400,7 +403,6 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
     noteNo = itsANewNote ? workout.notes.length : noteNo;
     let short = "note" + noteNo;
     let dataSetContent = "notes," + noteNo + ",content";
-    let label = $("<span>General notes:</span>").attr({class: "label-large"});
     // if it's an exercise note - modify values
     if (exerciseNo !== undefined && setNo === undefined) {
         noteListAlias = workout.exercises[exerciseNo].notes;
@@ -408,7 +410,6 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
         noteNo = itsANewNote ? workout.exercises[exerciseNo].notes.length : noteNo;
         short = "exercise" + exerciseNo + "note" + noteNo;
         dataSetContent = "exercises," + exerciseNo + ",notes," + noteNo + ",content";
-        label = '<span class="label-large">Exercise notes:</span>';
     }
     // it's a set note - modify values
     if (exerciseNo !== undefined && setNo !== undefined) {
@@ -419,22 +420,19 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
         short = "exercise" + exerciseNo + "set" + setNo + "note" + noteNo;
         dataSetContent = "exercises," + exerciseNo + ",sets," + setNo + ",notes," +
             noteNo + ",content";
-        label = '<span class="label-large">Set notes:</span>';
     }
     // create an element, innerHTML and set attributes
     let newNoteHTML = document.createElement('div');
     newNoteHTML.setAttribute('id', short + '-container');
+    newNoteHTML.setAttribute('class', 'note');
     newNoteHTML.innerHTML =
-        '<label for="' + short + '">Note #' + (noteNo + 1) + ': </label>' +
+        '<label for="' + short + '"></label>' +
         '<span contenteditable="true" class="my-input" id="' + short + '"></span>' +
         '<select onchange="changeNoteType(this.value, \'' + short + '\');"' +
         ' name="' + short + '-type"><option value="0">Text</option><option value="1">Audio</option>' +
         '<option value="2">Picture</option><option value="3">Video</option></select>' +
         '<button class="my-btn del bn" onclick="remove(' + short + ');" ' +
         'title="Delete note">&nbsp</button>';
-    if (appendHere.innerHTML === '') {
-        $(appendHere).append(label);
-    }
     appendHere.appendChild(newNoteHTML);
     document.getElementById(short).setAttribute('data-set', dataSetContent);
     // if new note - push it to note array and focus on element
@@ -644,7 +642,8 @@ function remove(element) {
         // Remove element, clear workout screen and display workout again
         shorter.splice(entry[entry.length - 2], 1);
         document.getElementById('notes').innerHTML = '';
-        document.getElementById('exercises').innerHTML = '';
+        document.getElementById('exercises').innerHTML = '<span class="label-xl">Exercises:</span>';
+        document.getElementById('exercises').style.display = 'none';
         displayWorkout();
 
     }
@@ -671,15 +670,15 @@ function attachFile(fileInputId, file, noteType) {
             }
         }
     }
-    if (!filenameExists) {
-        displayExistingMediaNote(fileInputId, filename, noteType);
-        filesToUpload.push(file);
-        $('#' + fileInputId + '-media')
-            .attr('src', URL.createObjectURL(filesToUpload[filesToUpload.length - 1]));
-    } else {
+    if (filenameExists) {
         alert('Filename already exists!');
         document.getElementById(fileInputId).value = null;
+        return;
     }
+    displayExistingMediaNote(fileInputId, filename, noteType);
+    filesToUpload.push(file);
+    $('#' + fileInputId + '-media')
+        .attr('src', URL.createObjectURL(filesToUpload[filesToUpload.length - 1]));
 }
 
 /** Gets existing workout details in JSON format from REST controller.
