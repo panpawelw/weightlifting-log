@@ -322,13 +322,9 @@ function addExercise(exerciseNo = undefined, title = undefined) {
         '<button class="my-btn del bn" onclick="remove(' + short + ');" ' +
         'title="Delete exercise">&nbsp</button>' +
         '<div id="' + short + '-notes"></div><div id="' + short + '-sets"></div>' +
-        '<button class="my-btn" onclick="addSet(' + exerciseNo + ');">Add set</button>';
+        '<div class="bordered"><button class="my-btn" onclick="addSet(' + exerciseNo + ');">Add' +
+        ' set</button></div>';
     const exercises = document.getElementById("exercises");
-    if (workout.exercises.length !== 0) {
-        document.getElementById('exercises').style.display = 'block';
-    } else {
-        document.getElementById('exercises').style.display = 'none';
-    }
     exercises.appendChild(newExerciseHTML);
     document.getElementById(short).setAttribute('data-set',
         "exercises," + exerciseNo + ",title");
@@ -359,7 +355,7 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
     newSetHTML.setAttribute('id', short + '-container');
     newSetHTML.setAttribute('class', 'bordered');
     newSetHTML.innerHTML =
-        '<label style="display: block;" for="' + short + '">Set #' + (setNo + 1) + ': </label>' +
+        '<label class="set-label" for="' + short + '">Set #' + (setNo + 1) + ': </label>' +
         '<span contenteditable="true" class="my-input" id="' + short + '"></span>' +
         '<button class="my-btn add bn" onclick="addNote(undefined, 0, \'\',' + exerciseNo + ', ' +
         setNo + ');" title="Add set note">&nbsp</button>' +
@@ -367,10 +363,6 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
         'title="Delete set">&nbsp</button>' +
         '<div id="' + short + '-notes"></div>';
     const sets = document.getElementById("exercise" + exerciseNo + "-sets");
-    if (sets.innerHTML === '') {
-        const label = '<span class="label-l">Sets:</span>';
-        $(sets).append(label);
-    }
     sets.appendChild(newSetHTML);
     document.getElementById(short).setAttribute('data-set',
         "exercises," + exerciseNo + ",sets," + setNo + ",data");
@@ -642,10 +634,8 @@ function remove(element) {
         // Remove element, clear workout screen and display workout again
         shorter.splice(entry[entry.length - 2], 1);
         document.getElementById('notes').innerHTML = '';
-        document.getElementById('exercises').innerHTML = '<span class="label-xl">Exercises:</span>';
-        document.getElementById('exercises').style.display = 'none';
+        document.getElementById('exercises').innerHTML = '';
         displayWorkout();
-
     }
 }
 
