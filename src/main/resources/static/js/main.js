@@ -244,7 +244,8 @@ function displayWorkout() {
             // store value in workout object entry
             this.target = event.target;
             if (this.target.className === 'my-input') {
-                storeInWorkout($(this.target).data('set').split(','), this.target.innerHTML);
+                storeInWorkout($(this.target).data('set').split(','),
+                    $("<textarea/>").html(this.target.innerHTML).text());
             }
         });
     // Display existing workout notes
