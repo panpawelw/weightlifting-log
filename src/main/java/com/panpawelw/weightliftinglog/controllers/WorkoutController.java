@@ -1,7 +1,8 @@
 package com.panpawelw.weightliftinglog.controllers;
 
-import com.panpawelw.weightliftinglog.services.S3FileService;
+import com.panpawelw.weightliftinglog.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +27,14 @@ public class WorkoutController {
 
     private final WorkoutService workoutService;
     private final UserService userService;
-    private final S3FileService s3FileService;
+    private final FileService fileService;
 
     @Autowired
     public WorkoutController(WorkoutService workoutService, UserService userService,
-                             S3FileService s3FileService) {
+                             @Qualifier("s3FileService") FileService fileService) {
         this.workoutService = workoutService;
         this.userService = userService;
-        this.s3FileService = s3FileService;
+        this.fileService = fileService;
     }
 
     @ResponseBody
@@ -66,10 +67,10 @@ public class WorkoutController {
         workoutDeserialized.setId(workoutService.saveWorkout(workoutDeserialized));
         if (!filesToRemove.isEmpty()) {
             filesToRemove.forEach((filename) ->
-                    s3FileService.deleteFileByWorkoutAndFilename(workoutDeserialized, filename));
+                    fileService.deleteFileByWorkoutAndFilename(workoutDeserialized, filename));
         }
         if (filesToUpload.length > 0) {
-            s3FileService.StoreAllFiles(workoutDeserialized, filesToUpload);
+            fileService.storeAllFiles(workoutDeserialized, filesToUpload);
         }
         workoutService.saveWorkout(workoutDeserialized);
     }
@@ -77,7 +78,7 @@ public class WorkoutController {
     @ResponseBody
     @DeleteMapping("/{workoutId}")
     public void deleteWorkout(@PathVariable long workoutId) {
-        s3FileService.deleteAllByWorkoutId(workoutId);
+        fileService.deleteAllByWorkoutId(workoutId);
         workoutService.deleteWorkout(workoutId);
     }
 
@@ -86,7 +87,7 @@ public class WorkoutController {
             MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> getFileByWorkoutId(@PathVariable Long workoutId,
                                              @PathVariable String filename) {
-        MediaFile mediaFileToSend = s3FileService.getFileByWorkoutIdAndFilename(workoutId,
+        MediaFile mediaFileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId,
                 filename);
         byte[] fileContent = mediaFileToSend.getContent();
         return ResponseEntity.ok()

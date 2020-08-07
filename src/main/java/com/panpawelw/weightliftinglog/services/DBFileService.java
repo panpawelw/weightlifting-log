@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class DBFileService {
+public class DBFileService implements FileService {
 
-    private FileRepository fileRepository;
+    private final FileRepository fileRepository;
 
     public DBFileService(FileRepository fileRepository) {
         this.fileRepository = fileRepository;

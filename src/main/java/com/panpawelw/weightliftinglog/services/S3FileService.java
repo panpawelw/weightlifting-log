@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class S3FileService {
+public class S3FileService implements FileService {
 
     private AmazonS3 amazonS3Client;
 
@@ -53,23 +53,23 @@ public class S3FileService {
         this.workoutService = workoutService;
     }
 
-    public void StoreAllFiles(WorkoutDeserialized workout,
-                              MultipartFile[] files) {
-        List<String> filenames = workout.getFilenames();
+    public void storeAllFiles(WorkoutDeserialized workoutDeserialized,
+                       MultipartFile[] workoutFiles) {
+        List<String> filenames = workoutDeserialized.getFilenames();
         String filename;
-        for (MultipartFile file : files) {
+        for (MultipartFile file : workoutFiles) {
             filename = file.getOriginalFilename();
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(file.getContentType());
             objectMetadata.setContentLength(file.getSize());
             try {
-                amazonS3Client.putObject(bucketName, workout.getId() + "\\" + filename,
-                        file.getInputStream(), objectMetadata);
+                amazonS3Client.putObject(bucketName, workoutDeserialized.getId() + "\\"
+                                + filename, file.getInputStream(), objectMetadata);
                 filenames.add(filename);
             } catch (AmazonClientException | IOException e) {
                 throw new RuntimeException("Error while uploading file!");
             }
-            workout.setFilenames(filenames);
+            workoutDeserialized.setFilenames(filenames);
         }
     }
 
