@@ -9,10 +9,16 @@ import com.panpawelw.weightliftinglog.services.UserService;
 @Controller
 public class AdminController {
 
+    private final UserService userService;
+
+    public AdminController(UserService userService) {
+        this.userService = userService;
+    }
+
     @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping("/admin")
     public String admin(Model model) {
-        String adminName = UserService.getLoggedInUserName();
+        String adminName = userService.getLoggedInUserName();
         model.addAttribute("adminName", adminName);
         model.addAttribute("page", "fragments.html :: admin-panel");
         return "home";

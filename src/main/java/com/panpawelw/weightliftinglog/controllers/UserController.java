@@ -44,7 +44,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @RequestMapping("/user")
     public String user(Model model, HttpServletRequest request, HttpServletResponse response) {
-        String email = UserService.getLoggedInUsersEmail();
+        String email = userService.getLoggedInUsersEmail();
         User user = userService.findUserByEmail(email);
         if (!user.isActivated()) {
             userService.logoutUser(request, response);
@@ -53,7 +53,7 @@ public class UserController {
             return "home";
         }
         model.addAttribute("userName", user.getName());
-        model.addAttribute("adminRights", UserService.checkLoggedInUserForAdminRights());
+        model.addAttribute("adminRights", userService.checkLoggedInUserForAdminRights());
         model.addAttribute("page", "fragments.html :: user-panel");
         model.addAttribute("userPanelPage", "fragments.html :: user-panel-default");
         model.addAttribute("workouts", workoutService.findWorkoutsByUser(user));
@@ -62,7 +62,7 @@ public class UserController {
 
     @GetMapping("/user/update")
     public String editUserDetailsGet(Model model) {
-        String email = UserService.getLoggedInUsersEmail();
+        String email = userService.getLoggedInUsersEmail();
         User user = userService.findUserByEmail(email);
         user.setPassword("");
         model.addAttribute("user", user);

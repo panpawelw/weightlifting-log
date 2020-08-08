@@ -119,7 +119,7 @@ public class UserService {
      * @param password password that is supposed to be checked
      * @return true for match, false for mismatch
      */
-    public static boolean passwordsDontMatch(String password) {
+    public boolean passwordsDontMatch(String password) {
         return !BCrypt.checkpw(password, getLoggedInUserPassword());
     }
 
@@ -128,7 +128,7 @@ public class UserService {
      * representation of principal object if it's anything else than instance of UserDetail.
      * @return string value with name of the user or string representation of principal object
      */
-    public static String getLoggedInUserName() {
+    public String getLoggedInUserName() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userName;
         if (principal instanceof UserDetails) {
@@ -144,7 +144,7 @@ public class UserService {
      * representation of principal object if it's anything else than instance of UserDetail.
      * @return string value with email of the user or string representation of principal object
      */
-    public static String getLoggedInUsersEmail() {
+    public String getLoggedInUsersEmail() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String email;
         if (principal instanceof UserDetails) {
@@ -159,7 +159,7 @@ public class UserService {
      * Check currently logged in user for admin rights
      * @return true if user has admin rights, false if not
      */
-    public static boolean checkLoggedInUserForAdminRights() {
+    public boolean checkLoggedInUserForAdminRights() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Collection<? extends GrantedAuthority> authorities;
         if (principal instanceof UserDetails) {

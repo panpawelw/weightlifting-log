@@ -1,18 +1,23 @@
 package com.panpawelw.weightliftinglog.validators;
 
+import com.panpawelw.weightliftinglog.services.UserService;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import com.panpawelw.weightliftinglog.models.ChangePassword;
 
-import static com.panpawelw.weightliftinglog.services.UserService.passwordsDontMatch;
-
 /**
  * Used when user is changing his existing password.
  */
 @Component
 public class ChangePasswordValidator implements Validator {
+
+    private final UserService userService;
+
+    public ChangePasswordValidator(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -57,7 +62,7 @@ public class ChangePasswordValidator implements Validator {
             errors.rejectValue("confirmNewPassword", "Diff.userForm.confirmPassword");
         }
 
-        if(passwordsDontMatch(changePassword.getOldPassword())) {
+        if(userService.passwordsDontMatch(changePassword.getOldPassword())) {
             errors.rejectValue("oldPassword", "Diff.userForm.wrongPassword");
         }
     }

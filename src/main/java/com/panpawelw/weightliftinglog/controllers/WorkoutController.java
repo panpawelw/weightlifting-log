@@ -19,8 +19,6 @@ import com.panpawelw.weightliftinglog.services.WorkoutService;
 import java.util.ArrayList;
 import java.util.Base64;
 
-import static com.panpawelw.weightliftinglog.services.UserService.checkLoggedInUserForAdminRights;
-
 @Controller
 @RequestMapping("/workout")
 public class WorkoutController {
@@ -45,10 +43,10 @@ public class WorkoutController {
 
     @GetMapping("/")
     public String addWorkoutGet(Model model) {
-        User user = userService.findUserByEmail(UserService.getLoggedInUsersEmail());
+        User user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
         model.addAttribute("user", user.getEmail());
         model.addAttribute("userName", user.getName());
-        model.addAttribute("adminRights", checkLoggedInUserForAdminRights());
+        model.addAttribute("adminRights", userService.checkLoggedInUserForAdminRights());
         model.addAttribute("page", "fragments.html :: user-panel");
         model.addAttribute("userPanelPage", "fragments.html :: user-panel-workout-details");
         model.addAttribute("workouts", workoutService.findWorkoutsByUser(user));
@@ -63,7 +61,7 @@ public class WorkoutController {
                                @RequestPart(name = "filesToUpload", required = false)
                                        MultipartFile[] filesToUpload) {
         workoutDeserialized.setUser
-                (userService.findUserByEmail(UserService.getLoggedInUsersEmail()));
+                (userService.findUserByEmail(userService.getLoggedInUsersEmail()));
         workoutDeserialized.setId(workoutService.saveWorkout(workoutDeserialized));
         if (!filesToRemove.isEmpty()) {
             filesToRemove.forEach((filename) ->
