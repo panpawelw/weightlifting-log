@@ -3,9 +3,11 @@
  *****************************************************************/
 
 let okToToggleLogo = true; // Global flag for logo visibility toggling
+let BASE_URL = undefined;
 
 $(document).ready(function () {
 
+    getBaseUrl();
 
     /** This event listener is responsible for hiding the logo container and
      * making the tab navigation bar stick to the top of the screen when user is
@@ -66,6 +68,15 @@ $(document).ready(function () {
     });
 });
 
+/** This stores the application context url and puts it in session storage
+ */
+function getBaseUrl() {
+    BASE_URL = sessionStorage.getItem('BASE_URL');
+    if (BASE_URL === undefined || BASE_URL === null) {
+        sessionStorage.setItem('BASE_URL', window.location.href);
+    }
+}
+
 /** This stores the state of logo in session storage so it can be preserved when page is reloaded.
  */
 function preserveLogoState() {
@@ -107,19 +118,23 @@ function equalizeColumnHeight() {
 /** This function utilizes Split plugin to create two flexible columns with adjustable width.
  */
 function split() {
-    Split(["#workout-content-container", "#workout-selection-container"], {
-        elementStyle: function (dimension, size, gutterSize) {
-            $(window).trigger('resize'); // Optional
-            return {'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)'}
-        },
-        gutterStyle: function (dimension, gutterSize) {
-            return {'flex-basis': gutterSize + 'px'}
-        },
-        sizes: [74, 24],
-        minSize: [150, 80],
-        gutterSize: 6,
-        cursor: 'col-resize'
-    });
+    Split(['#workout-content-container', '#workout-selection-container'], {
+        sizes: [25, 75],
+    })
+    // Split(["#workout-content-container", "#workout-selection-container"]);
+    //     , {
+    //     elementStyle: function (dimension, size, gutterSize) {
+    //         $(window).trigger('resize'); // Optional
+    //         return {'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)'}
+    //     },
+    //     gutterStyle: function (dimension, gutterSize) {
+    //         return {'flex-basis': gutterSize + 'px'}
+    //     },
+    //     sizes: [74, 24],
+    //     minSize: [150, 80],
+    //     gutterSize: 6,
+    //     cursor: 'col-resize'
+    // });
 }
 
 /** This function updates a single lift section in General Strength tab whenever there's an input
@@ -677,7 +692,7 @@ function attachFile(fileInputId, file, noteType) {
 function loadWorkout(workoutId) {
     const csrfToken = $("meta[name='_csrf']").attr("content");
     $.ajax({
-        url: 'http://localhost:8080/wl/workout/' + workoutId,
+        url: BASE_URL + 'workout/' + workoutId,
         headers: {"X-CSRF-TOKEN": csrfToken},
         type: 'GET',
         dataType: 'JSON',
@@ -685,7 +700,7 @@ function loadWorkout(workoutId) {
     }).done(function (data) {
         sessionStorage.setItem('workout', JSON.stringify(data));
         preserveLogoState();
-        window.location.pathname = 'wl/workout/';
+        window.location.href = BASE_URL + 'workout/';
     }).fail(function () {
         alert('There\'s been a problem loading the workout data!')
     });
@@ -713,7 +728,7 @@ function saveWorkout(workout) {
         async: true,
     }).done(function () {
         preserveLogoState();
-        window.location.pathname = 'wl/user'
+        window.location.href = BASE_URL + 'user';
     })
         .fail(function () {
             alert('There\'s been a problem saving the workout data!')
@@ -725,13 +740,13 @@ function deleteWorkout() {
     if (confirm("Are you sure you want to delete this workout?") === true) {
         const csrfToken = $("meta[name='_csrf']").attr("content");
         $.ajax({
-            url: 'http://localhost:8080/wl/workout/' + workout.id,
+            url: BASE_URL + 'workout/' + workout.id,
             headers: {"X-CSRF-TOKEN": csrfToken},
             type: 'DELETE',
             async: true,
         }).done(function () {
             preserveLogoState();
-            window.location.pathname = 'wl/user'
+            window.location.href = BASE_URL + 'user';
         })
             .fail(function () {
                 alert('There\'s been a problem deleting this workout!')
@@ -746,7 +761,7 @@ function loadMediaFile(noteId) {
     const csrfToken = $("meta[name='_csrf']").attr("content");
     const filename = document.getElementById(noteId).innerHTML;
     $.ajax({
-        url: 'http://localhost:8080/wl/workout/file/' + workout.id + '/' + filename,
+        url: BASE_URL + 'workout/file/' + workout.id + '/' + filename,
         headers: {"X-CSRF-TOKEN": csrfToken},
         type: 'GET',
         async: true,
