@@ -79,7 +79,7 @@ function getBaseUrl() {
 
 /** This stores the state of logo in session storage so it can be preserved when page is reloaded.
  */
-function preserveLogoState() {
+function storeLogoState() {
     sessionStorage.setItem('logoVisibility',
         document.getElementById('logo-container').style.display);
 }
@@ -699,7 +699,7 @@ function loadWorkout(workoutId) {
         async: true,
     }).done(function (data) {
         sessionStorage.setItem('workout', JSON.stringify(data));
-        preserveLogoState();
+        storeLogoState();
         window.location.href = BASE_URL + 'workout/';
     }).fail(function () {
         alert('There\'s been a problem loading the workout data!')
@@ -727,7 +727,7 @@ function saveWorkout(workout) {
         cache: false,
         async: true,
     }).done(function () {
-        preserveLogoState();
+        storeLogoState();
         window.location.href = BASE_URL + 'user';
     })
         .fail(function () {
@@ -745,7 +745,7 @@ function deleteWorkout() {
             type: 'DELETE',
             async: true,
         }).done(function () {
-            preserveLogoState();
+            storeLogoState();
             window.location.href = BASE_URL + 'user';
         })
             .fail(function () {

@@ -234,6 +234,11 @@ button, input[type=submit], .my-btn, select {
     padding: 0 2px 0 2px;
 }
 
+button:hover, input[type=submit]:hover, .my-btn:hover {
+    text-decoration: none;
+    color: white;
+}
+
 button:active, input[type=submit]:active, .my-btn:active {
     box-shadow: 1px 1px 1px #472900;
     animation-duration: 0.2s;
