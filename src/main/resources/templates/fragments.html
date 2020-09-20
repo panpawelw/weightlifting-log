@@ -1,5 +1,7 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="EN">
 <head>
     <meta charset="UTF-8">
     <title>Thymeleaf fragments</title>
@@ -9,7 +11,6 @@
 <!--Login-->
 <div th:fragment="login">
     <h3 class="tab-title">Login page</h3><br>
-    <!--/*@thymesVar id="loginError" type="java"*/-->
     <p class="alert" th:text="${loginError}"></p>
     <form th:action="@{/login}" method="post">
         <label for="username">Username</label>:
@@ -44,30 +45,45 @@
 <!--User registration form-->
 <div th:fragment="register-user">
     <h2>Please enter your details to register...</h2><br>
-    <!--/*@thymesVar id="user" type="java"*/-->
     <form th:action="@{/register}" th:object="${user}" method="post">
         <input type="hidden" th:field="*{id}"/>
-        <p>Username: <input type="text" th:field="*{name}" autofocus="autofocus"/>
-            <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span></p>
-        <p>Password: <input type="password" th:field="*{password}"/>
+        <p>
+            <label>Username: <input type="text" th:field="*{name}" autofocus="autofocus"/></label>
+            <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span>
+        </p>
+        <p>
+            <label>Password: <input type="password" th:field="*{password}"/></label>
             <span th:if="${#fields.hasErrors('password')}" class="alert"
                   th:errors="*{password}"></span>
-            <!--/*@thymesVar id="passwordsDontMatch" type="java"*/-->
-            <span class='alert' th:text="${passwordsDontMatch}"></span></p>
-        <p>Confirm password: <input type="password" th:field="*{confirmPassword}"/>
+            <span class='alert' th:text="${passwordsDontMatch}"></span>
+        </p>
+        <p>
+            <label>Confirm password:<input type="password" th:field="*{confirmPassword}"/></label>
             <span th:if="${#fields.hasErrors('confirmPassword')}" class="alert"
-                  th:errors="*{confirmPassword}"></span></p>
-        <p>Email: <input type="text" th:field="*{email}"/>
+                  th:errors="*{confirmPassword}"></span>
+        </p>
+        <p>
+            <label>Email: <input type="text" th:field="*{email}"/></label>
             <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span>
-            <!--/*@thymesVar id="emailExists" type="java"*/-->
-            <span class='alert' th:text="${emailExists}"></span></p>
-        <p><input type="checkbox" th:field="*{activated}" th:value="true"/>
-            <span>Email address for testing purposes, don't send the activation message</span></p>
-        <p>First name: <input type="text" th:field="*{firstName}"/></p>
-        <p>Surname: <input type="text" th:field="*{lastName}"/></p>
-        <p>Age: <input class="centered" type="number" th:field="*{age}"/></p>
-        <p>Female: <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
-            Male: <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/></p>
+            <span class='alert' th:text="${emailExists}"></span>
+        </p>
+        <p>
+            <label><input type="checkbox" th:field="*{activated}" th:value="true"/></label>
+            <span>Email address for testing purposes, don't send the activation message</span>
+        </p>
+        <p>
+            <label>First name: <input type="text" th:field="*{firstName}"/></label>
+        </p>
+        <p>
+            <label>Surname: <input type="text" th:field="*{lastName}"/></label>
+        </p>
+        <p>
+            <label>Age: <input class="centered" type="number" th:field="*{age}"/></label>
+        </p>
+        <p>
+            <label>Female: <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
+            Male: <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/></label>
+        </p>
         <input type="hidden" th:field="*{role}"/>
         <input type="submit" value="Register new user">
         <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">Cancel</a>
@@ -77,21 +93,34 @@
 <!--User details edition form-->
 <div th:fragment="update-user">
     <h2>Please edit your details...</h2><br>
-    <!--/*@thymesVar id="user" type="java"*/-->
     <form th:action="@{/user/update}" th:object="${user}" method="post">
         <input type="hidden" th:field="*{id}"/>
-        <p>Username: <input type="text" th:field="*{name}"/>
-            <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span></p>
-        <p>Password: <input type="password" th:field="*{password}" autofocus="autofocus"/>
+        <p>
+            <label>Username: <input type="text" th:field="*{name}"/></label>
+            <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span>
+        </p>
+        <p>
+            <label>Password:
+                <input type="password" th:field="*{password}" autofocus="autofocus"/>
+            </label>
             <span th:if="${#fields.hasErrors('password')}" class="alert"
                   th:errors="*{password}"></span>
-        <p>Email: <input type="text" th:field="*{email}"/>
+        </p>
+        <p>
+            <label>Email: <input type="text" th:field="*{email}"/></label>
             <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span>
-        <p>First name: <input type="text" th:field="*{firstName}"/></p>
-        <p>Surname: <input type="text" th:field="*{lastName}"/></p>
-        <p>Age: <input class="centered" type="number" th:field="*{age}"/></p>
-        <p>Female: <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
-            Male: <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/></p>
+        </p>
+        <p><label>First name: <input type="text" th:field="*{firstName}"/></label></p>
+        <p><label>Surname: <input type="text" th:field="*{lastName}"/></label></p>
+        <p><label>Age: <input class="centered" type="number" th:field="*{age}"/></label></p>
+        <p>
+            <label>Female:
+                <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
+            </label>
+            <label>Male:
+                <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/>
+            </label>
+        </p>
         <input type="hidden" th:field="*{role}"/>
         <input type="submit" onclick="storeLogoState();" value="Update user details">
         <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">Cancel</a>
@@ -102,22 +131,35 @@
 
 <!--Change user's password form-->
 <div th:fragment="change-password">
-    <h2>Please enter and confirm both current and new passwords...</h2><br>
-    <!--/*@thymesVar id="changePassword" type="java"*/-->
     <form th:action="@{/user/changepassword}" th:object="${changePassword}" method="post">
-        <p>Current password: <input type="password" th:field="*{oldPassword}"
-                                    autofocus="autofocus"/>
+        <p>
+            <label>Current password:
+                <input type="password" th:field="*{oldPassword}" autofocus="autofocus"/>
+            </label>
             <span th:if="${#fields.hasErrors('oldPassword')}" class="alert"
-                  th:errors="*{oldPassword}"></span></p>
-        <p>Confirm current password: <input type="password" th:field="*{confirmOldPassword}"/>
+                  th:errors="*{oldPassword}"></span>
+        </p>
+        <p>
+            <label>Confirm current password:
+                <input type="password" th:field="*{confirmOldPassword}"/>
+            </label>
             <span th:if="${#fields.hasErrors('confirmOldPassword')}" class="alert"
-                  th:errors="*{confirmOldPassword}"></span></p>
-        <p>New password: <input type="password" th:field="*{newPassword}"/>
+                  th:errors="*{confirmOldPassword}"></span>
+        </p>
+        <p>
+            <label>New password:
+                <input type="password" th:field="*{newPassword}"/>
+            </label>
             <span th:if="${#fields.hasErrors('newPassword')}" class="alert"
-                  th:errors="*{newPassword}"></span></p>
-        <p>Confirm new password: <input type="password" th:field="*{confirmNewPassword}"/>
+                  th:errors="*{newPassword}"></span>
+        </p>
+        <p>
+            <label>Confirm new password:
+                <input type="password" th:field="*{confirmNewPassword}"/>
+            </label>
             <span th:if="${#fields.hasErrors('confirmNewPassword')}" class="alert"
-                  th:errors="*{confirmNewPassword}"></span></p>
+                  th:errors="*{confirmNewPassword}"></span>
+        </p>
         <input type="submit" onclick="storeLogoState();" value="Change password">
         <a class="my-btn" th:href="@{/user/update}"
            onclick="storeLogoState();" type="button">Cancel</a>
@@ -127,7 +169,6 @@
 <!--User details registration successful-->
 <div th:fragment="register-user-success">
     <h2>Registration successful!</h2><br>
-    <!--/*@thymesVar id="emailSent" type="java"*/-->
     <h5 th:utext="${emailSent}"></h5>
     <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">OK</a>
 </div>
@@ -161,7 +202,6 @@
 <!--Admin panel-->
 <div th:fragment="admin-panel" id="admin-panel">
     <div class="controls">
-        <!--/*@thymesVar id="adminName" type="java"*/-->
         <p class="same-row" th:text="'Hello ' + ${adminName} + '!'"></p>
         <a class="my-btn same-row" th:href="@{/logout}"
            onclick="storeLogoState();" type="button">Log out</a>
@@ -174,14 +214,12 @@
 <!--User panel-->
 <div th:fragment="user-panel" class="row no-gutters workout-tab-container">
     <div id="workout-content-container" class="col">
-        <!--/*@thymesVar id="userPanelPage" type="java"*/-->
         <div th:if="${!userPanelPage.isEmpty()}" th:replace="__${userPanelPage}__">
             <p>If you see this message, something went wrong...</p>
         </div>
     </div>
     <div id="workout-selection-container" class="col">
         <div class="controls">
-            <!--/*@thymesVar id="userName" type="java"*/-->
             <p class="same-row" th:text="'Hello ' + ${userName} + '!'"></p>
             <a class="my-btn same-row" th:href="@{/logout}"
                onclick="storeLogoState();" type="button">Log out</a>
@@ -193,7 +231,6 @@
         </div>
         <br>
         <table id="workouts-list">
-            <!--/*@thymesVar id="workouts" type="java"*/-->
             <tr th:each="workout: ${workouts}">
                 <td>
                     <button class="my-btn workout" th:data-id="${workout.id}"

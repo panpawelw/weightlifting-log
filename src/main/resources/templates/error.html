@@ -1,5 +1,7 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="EN">
 <head>
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
     <meta charset="UTF-8">
@@ -10,8 +12,7 @@
     <div class="centered">
         <h2>Error!</h2>
         <p>You don't have the credentials to use this feature!</p>
-        <button class="my-button" onclick = "location.href = '/wl/login'" type="button">
-            Take me back</button>
+        <a class="my-button" th:href = "@{/wl/login}" type="button">Take me back</a>
     </div>
 </div>
 </body>
