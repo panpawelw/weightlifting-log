@@ -212,13 +212,15 @@
 </div>
 
 <!--User panel-->
-<div th:fragment="user-panel" class="row no-gutters workout-tab-container">
-    <div id="workout-content-container" class="col">
+<div th:fragment="user-panel" class="workout-tab-container">
+    <div id="workout-content-container">
         <div th:if="${!userPanelPage.isEmpty()}" th:replace="__${userPanelPage}__">
             <p>If you see this message, something went wrong...</p>
         </div>
     </div>
-    <div id="workout-selection-container" class="col">
+    <div class="splitter">
+    </div>
+    <div id="workout-selection-container">
         <div class="controls">
             <p class="same-row" th:text="'Hello ' + ${userName} + '!'"></p>
             <a class="my-btn same-row" th:href="@{/logout}"
@@ -248,8 +250,7 @@
         <script>equalizeColumnHeight();</script>
     </div>
 
-    <!-- for smooth column size adjustment -->
-    <script>split();</script>
+
 </div>
 
 <!-- user panel fragments - default -->

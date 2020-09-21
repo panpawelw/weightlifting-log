@@ -364,36 +364,56 @@ button:active, input[type=submit]:active, .my-btn:active {
 /* User panel */
 
 /* Resizable columns */
-.split {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+.workout-tab-container {
+    display: flex;
+    flex-direction: row;
     overflow-y: auto;
-    overflow-x: hidden;
+    /* avoid browser level touch actions */
+    /*xtouch-action: none;*/
 }
-.gutter {
-    background: #9c5900 no-repeat 50%;
-}
-.gutter.gutter-horizontal {
-    cursor: col-resize;
-    background-image:
-            url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
-}
-.gutter.gutter-vertical {
-    cursor: row-resize;
-    background-image:
-            url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII='); }
-.split.split-horizontal, .gutter.gutter-horizontal {
-    height: auto;
-    float: left;
-}
-/* End resizable columns */
 
 #workout-content-container {
+    flex: 0 0 auto;
+    /* only manually resize */
+    min-width: 49.5vw;
+    max-width: 87vw;
+    width: 74.5vw;
+    white-space: nowrap;
     display: table;
-    overflow-y: auto;
     height: 95vh;
 }
+
+.splitter {
+    flex: 0 0 auto;
+    width: 12px;
+    background: url("../images/background.png"), linear-gradient(#454343, #FF9200);
+    cursor: col-resize;
+    height: 95vh;
+    position: relative;
+}
+
+.splitter:after {
+    content: '';
+    top: 45%;
+    left: 0;
+    background: url(../images/vsizegrip.png) center center no-repeat;
+    position: absolute;
+    width: 12px;
+    height: 18px;
+}
+
+#workout-selection-container {
+    flex: 1 1 auto;
+    /* resizable */
+    overflow-y:auto;
+    height: 95vh;
+}
+
+/*#workout-content-container {*/
+/*    display: table;*/
+/*    overflow-y: auto;*/
+/*    height: 95vh;*/
+/*}*/
 
 .workout-content {
     display: table-cell;
@@ -443,12 +463,13 @@ button:active, input[type=submit]:active, .my-btn:active {
     padding: 0.25em 0 0.25em 0;
 }
 
-#workout-selection-container {
-    display: inline-block;
-    float: right;
-    overflow-y: auto;
-    height: 95vh;
-}
+/*#workout-selection-container {*/
+/*    display: inline-block;*/
+/*    float: right;*/
+/*    overflow-y: auto;*/
+/*    height: 95vh;*/
+/*    resize: horizontal;*/
+/*}*/
 
 .controls {
     top: 0;

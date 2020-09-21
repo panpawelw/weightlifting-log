@@ -9,6 +9,11 @@ $(document).ready(function () {
 
     getBaseUrl();
 
+    $("#workout-content-container").resizable({
+        handleSelector: ".splitter",
+        resizeHeight: false
+    });
+
     /** This event listener is responsible for hiding the logo container and
      * making the tab navigation bar stick to the top of the screen when user is
      * scrolling down the page and showing the logo container and unsticking the
@@ -117,25 +122,26 @@ function equalizeColumnHeight() {
 
 /** This function utilizes Split plugin to create two flexible columns with adjustable width.
  */
-function split() {
-    Split(['#workout-content-container', '#workout-selection-container'], {
-        sizes: [25, 75],
-    })
-    // Split(["#workout-content-container", "#workout-selection-container"]);
-    //     , {
-    //     elementStyle: function (dimension, size, gutterSize) {
-    //         $(window).trigger('resize'); // Optional
-    //         return {'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)'}
-    //     },
-    //     gutterStyle: function (dimension, gutterSize) {
-    //         return {'flex-basis': gutterSize + 'px'}
-    //     },
-    //     sizes: [74, 24],
-    //     minSize: [150, 80],
-    //     gutterSize: 6,
-    //     cursor: 'col-resize'
-    // });
-}
+// function splitte() {
+//     // Split(['#workout-content-container', '#workout-selection-container'], {
+//     //     sizes: [75, 25],
+//     //     gutterSize: 8,
+//     //     cursor: 'col-resize'
+//     // })
+//     Split(["#workout-content-container", "#workout-selection-container"], {
+//         elementStyle: function (dimension, size, gutterSize) {
+//             $(window).trigger('resize'); // Optional
+//             return {'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)'}
+//         },
+//         gutterStyle: function (dimension, gutterSize) {
+//             return {'flex-basis': gutterSize + 'px'}
+//         },
+//         sizes: [74, 24],
+//         minSize: [150, 80],
+//         gutterSize: 6,
+//         cursor: 'col-resize'
+//     });
+// }
 
 /** This function updates a single lift section in General Strength tab whenever there's an input
  *  from user by entering a value or moving the slider. The other input gets updated (slider or
