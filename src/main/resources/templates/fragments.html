@@ -167,9 +167,9 @@
 </div>
 
 <!--User details registration successful-->
-<div th:fragment="register-user-success">
-    <h2>Registration successful!</h2><br>
-    <h5 th:utext="${emailSent}"></h5>
+<div th:fragment="register-user-message">
+    <h2 th:utext="${header}">Registration successful!</h2><br>
+    <h5 th:utext="${message}"></h5>
     <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">OK</a>
 </div>
 

@@ -12,9 +12,9 @@ import com.panpawelw.weightliftinglog.services.VerificationTokenService;
 @Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
 
-    private EmailService emailService;
+    private final EmailService emailService;
 
-    private VerificationTokenService verificationTokenService;
+    private final VerificationTokenService verificationTokenService;
 
     @Autowired
     public RegistrationListener(EmailService emailService,
@@ -28,11 +28,10 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         final User user = event.getUser();
         VerificationToken verificationToken = new VerificationToken(user);
         verificationTokenService.saveToken(verificationToken);
-        emailService.sendEmail(user.getEmail(), "Weightlifting Log registration" +
-                " confirmation", "You have registered an account on Weightlifting Log " +
-                "website. To verify your account please click the link below withing 24 hours to " +
-                "confirm your account: \n\n" +
-                "http://localhost:8080/wl/confirm-account?token=" + verificationToken.getToken() +
-                "\n\nHave a nice day!");
+        emailService.sendEmail(user.getEmail(), "panpawelw@pm.me", "Weightlifting Log " +
+                "registration confirmation", "You have registered an account on Weightlifting" +
+                " Log website. To verify your account please click the link below withing 24 hours " +
+                "to confirm your account: \n\n http://localhost:8080/wl/confirm-account?token=" +
+                verificationToken.getToken() + "\n\nHave a nice day!");
     }
 }

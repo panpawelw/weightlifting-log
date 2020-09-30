@@ -105,18 +105,24 @@ public class HomeController {
                     userService.saveUser(user);
                     applicationEventPublisher.publishEvent(new OnRegistrationCompleteEvent(user,
                             request.getContextPath(), request.getLocale()));
-                    model.addAttribute("emailSent",
+                    model.addAttribute("header", "Registration successful!");
+                    model.addAttribute("message",
                             "Confirmation email has been sent to:<br><br>" + user.getEmail() +
                                     "<br><br>Please activate your account within 24 hours!<br><br>");
                 } else {
                     userService.saveUser(user);
                 }
-                model.addAttribute("page", "fragments.html :: register-user-success");
+                model.addAttribute("page", "fragments.html :: register-user-message");
             } catch (DataIntegrityViolationException e) {
                 model.addAttribute
                         ("emailExists", "This email already exists in our database!");
             } catch (Exception e) {
-                System.out.println("Email error!");
+                e.printStackTrace();
+                model.addAttribute("header", "Registration error!");
+                model.addAttribute("message", "There's been a problem sending activation " +
+                        "message to your email address. Please contact administrator to rectify " +
+                        "this problem.<br><br>");
+                model.addAttribute("page", "fragments.html :: register-user-message");
             }
         }
         return "home";
