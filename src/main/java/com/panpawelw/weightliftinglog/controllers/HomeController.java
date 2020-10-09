@@ -108,7 +108,9 @@ public class HomeController {
                     model.addAttribute("header", "Registration successful!");
                     model.addAttribute("message",
                             "Confirmation email has been sent to:<br><br>" + user.getEmail() +
-                                    "<br><br>Please activate your account within 24 hours!<br><br>");
+                                    "<br><br>Please activate your account within 24 " +
+                                    "hours!<br><br>" + "Don't forget to check your spam " +
+                                    "folder!<br><br>");
                 } else {
                     userService.saveUser(user);
                 }
