@@ -120,29 +120,6 @@ function equalizeColumnHeight() {
         document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
 }
 
-/** This function utilizes Split plugin to create two flexible columns with adjustable width.
- */
-// function splitte() {
-//     // Split(['#workout-content-container', '#workout-selection-container'], {
-//     //     sizes: [75, 25],
-//     //     gutterSize: 8,
-//     //     cursor: 'col-resize'
-//     // })
-//     Split(["#workout-content-container", "#workout-selection-container"], {
-//         elementStyle: function (dimension, size, gutterSize) {
-//             $(window).trigger('resize'); // Optional
-//             return {'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)'}
-//         },
-//         gutterStyle: function (dimension, gutterSize) {
-//             return {'flex-basis': gutterSize + 'px'}
-//         },
-//         sizes: [74, 24],
-//         minSize: [150, 80],
-//         gutterSize: 6,
-//         cursor: 'col-resize'
-//     });
-// }
-
 /** This function updates a single lift section in General Strength tab whenever there's an input
  *  from user by entering a value or moving the slider. The other input gets updated (slider or
  *  input field respectively) and new max is calculated based on weight and reps fields.
@@ -215,9 +192,10 @@ function updatePercentageDescription(description, percentage) {
  * Functions and variables related to workout data creation an manipulation *
  ****************************************************************************/
 
-let workout = null; // Global workout object variable
-let filesToRemove = []; // Global array for the list of files that will be removed on workout save
-let filesToUpload = []; // Global array for storing new media files attached to workout
+let workout = null;
+let originalWorkout = null;
+let filesToRemove = [];
+let filesToUpload = [];
 
 /** This initializes a creation of a new workout in the left panel.
  */
@@ -227,6 +205,7 @@ function addWorkout() {
         id: 0, title: null, created: null, updated: null, user: null,
         notes: [], exercises: [], filenames: []
     };
+    originalWorkout = {...workout};
     // Update "created" entry with current timestamp
     const created = new Date().toISOString().slice(0, 19).replace('T', ' ');
     workout['created'] = created;
@@ -240,6 +219,7 @@ function addWorkout() {
 function editWorkout() {
     // Get existing workout object from session storage and update "created" and "title" entries
     workout = JSON.parse(sessionStorage.getItem('workout'));
+    originalWorkout = {...workout};
     document.getElementById("created").value = workout['created'].slice(0, 16);
     document.getElementById("title").innerHTML = workout['title'];
     // Update the "updated" entry with current timestamp
@@ -758,6 +738,19 @@ function deleteWorkout() {
                 alert('There\'s been a problem deleting this workout!')
             });
     }
+}
+function cancelWorkout() {
+    console.log(workout);
+    console.log(originalWorkout);
+    if(JSON.stringify(workout) === JSON.stringify(originalWorkout)) {
+        storeLogoState();
+        return true;
+    }
+    if (confirm("You have unsaved changes!") === true) {
+        storeLogoState();
+        return true;
+    }
+    return false;
 }
 
 /** Request a media file from controller.
