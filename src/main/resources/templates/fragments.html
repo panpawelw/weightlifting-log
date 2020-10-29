@@ -270,7 +270,8 @@
     <div class="same-row bordered">
         <button class="my-btn" onclick="saveWorkout(workout);" type="button">Save</button>
         <button class="my-btn show-on-edit" onclick="deleteWorkout();" type="button">Delete</button>
-        <a class="my-btn" onclick="return cancelWorkout();" th:href="@{/user}" type="button">Cancel</a>
+        <a class="my-btn" onclick="return okToIgnoreChanges();"
+           th:href="@{/user}" type="button">Cancel</a>
     </div>
     <div class="bordered">
         <div style="display: inline-block">
@@ -301,7 +302,8 @@
     <div class="same-row bordered">
         <button class="my-btn" onclick="saveWorkout(workout);" type="button">Save</button>
         <button class="my-btn show-on-edit" onclick="deleteWorkout()" type="button">Delete</button>
-        <a class="my-btn" onclick="return cancelWorkout();" th:href="@{/user}" type="button">Cancel
+        <a class="my-btn" onclick="return okToIgnoreChanges();" th:href="@{/user}"
+           type="button">Cancel
         </a>
     </div>
     <script>

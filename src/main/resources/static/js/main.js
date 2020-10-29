@@ -676,6 +676,7 @@ function attachFile(fileInputId, file, noteType) {
 /** Gets existing workout details in JSON format from REST controller.
  * @param {number} [workoutId] - id number of workout to be loaded from database */
 function loadWorkout(workoutId) {
+    if(okToIgnoreChanges() === false) return false;
     const csrfToken = $("meta[name='_csrf']").attr("content");
     $.ajax({
         url: BASE_URL + 'workout/' + workoutId,
@@ -690,6 +691,17 @@ function loadWorkout(workoutId) {
     }).fail(function () {
         alert('There\'s been a problem loading the workout data!')
     });
+}
+
+/** Checks whether user wants to ignore unsaved changes if there are any
+ * @returns {boolean} true
+ */
+function okToIgnoreChanges() {
+    if(JSON.stringify(workout) !== JSON.stringify(originalWorkout)) {
+        if (confirm("You have unsaved changes!") === false) return false;
+    }
+    storeLogoState();
+    return true;
 }
 
 /** Sends new workout object in JSON format to REST controller using POST AJAX call.
@@ -738,19 +750,6 @@ function deleteWorkout() {
                 alert('There\'s been a problem deleting this workout!')
             });
     }
-}
-function cancelWorkout() {
-    console.log(workout);
-    console.log(originalWorkout);
-    if(JSON.stringify(workout) === JSON.stringify(originalWorkout)) {
-        storeLogoState();
-        return true;
-    }
-    if (confirm("You have unsaved changes!") === true) {
-        storeLogoState();
-        return true;
-    }
-    return false;
 }
 
 /** Request a media file from controller.
