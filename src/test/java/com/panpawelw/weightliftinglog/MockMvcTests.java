@@ -31,22 +31,23 @@ public class MockMvcTests {
 
     @Test
     public void testRegularUser() throws Exception {
-        this.mockMvc.perform(get("/wl")).andDo(print())
+        this.mockMvc.perform(get("/WeightliftingLog")).andDo(print())
                 .andExpect(status().isOk()).andExpect(content()
                 .string(containsString("everybody")));
     }
 
     @Test
     public void userAttemptsAdmin() throws Exception {
-        this.mockMvc.perform(get("/wl/admin")).andExpect(status().isUnauthorized());
+        this.mockMvc.perform(get("/WeightliftingLog/admin"))
+                .andExpect(status().isUnauthorized());
     }
 
     @Configuration
     public static class MyTestConfiguration extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests().antMatchers("wl/admin/**").hasRole("USER").and()
-                    .httpBasic();
+            http.authorizeRequests().antMatchers("/WeightliftingLog/admin/**")
+                    .hasRole("USER").and().httpBasic();
         }
     }
 
@@ -54,17 +55,17 @@ public class MockMvcTests {
     @TestConfiguration
     public static class TestController {
 
-        @RequestMapping(path = "/wl")
+        @RequestMapping(path = "/WeightliftingLog")
         public ResponseEntity<String> everybody() {
             return ResponseEntity.ok("everybody");
         }
 
-        @RequestMapping(path = "wl/user")
+        @RequestMapping(path = "/WeightliftingLog/user")
         public ResponseEntity<String> user() {
             return ResponseEntity.ok("user");
         }
 
-        @RequestMapping(path = "wl/admin")
+        @RequestMapping(path = "/WeightliftingLog/admin")
         public ResponseEntity<String> admin() {
             return ResponseEntity.ok("admin");
         }

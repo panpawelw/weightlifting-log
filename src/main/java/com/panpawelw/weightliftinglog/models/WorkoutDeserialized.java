@@ -124,20 +124,19 @@ public class WorkoutDeserialized implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof WorkoutDeserialized)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         WorkoutDeserialized that = (WorkoutDeserialized) o;
-        return Objects.equals(getId(), that.getId()) &&
-                Objects.equals(getTitle(), that.getTitle()) &&
-                Objects.equals(getCreated(), that.getCreated()) &&
-                Objects.equals(getUpdated(), that.getUpdated()) &&
-                Objects.equals(getUser(), that.getUser()) &&
-                Objects.equals(getExercises(), that.getExercises()) &&
-                Objects.equals(getNotes(), that.getNotes());
+        return Objects.equals(id, that.id) && Objects.equals(title, that.title) &&
+            Objects.equals(created, that.created) &&
+            Objects.equals(updated, that.updated) &&
+            Objects.equals(user, that.user) &&
+            Objects.equals(exercises, that.exercises) &&
+            Objects.equals(notes, that.notes) &&
+            Objects.equals(filenames, that.filenames);
     }
 
     @Override
     public int hashCode() {
-        return Objects
-                .hash(getId(), getTitle(), getCreated(), getUpdated(), getUser(), getExercises(), getNotes());
+        return Objects.hash(id, title, created, updated, user, exercises, notes, filenames);
     }
 }

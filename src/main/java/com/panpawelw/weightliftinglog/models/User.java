@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * User entity represents a user who logs his workouts.
@@ -194,5 +195,27 @@ public class User implements Serializable {
                 ", role='" + role + '\'' +
 //                ", workouts=" + workouts +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return activated == user.activated && Objects.equals(id, user.id) &&
+            Objects.equals(name, user.name) &&
+            Objects.equals(password, user.password) &&
+            Objects.equals(confirmPassword, user.confirmPassword) &&
+            Objects.equals(email, user.email) &&
+            Objects.equals(firstName, user.firstName) &&
+            Objects.equals(lastName, user.lastName) &&
+            Objects.equals(age, user.age) && Objects.equals(gender, user.gender) &&
+            Objects.equals(role, user.role) &&
+            Objects.equals(workouts, user.workouts);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, password, confirmPassword, email, activated, firstName, lastName, age, gender, role, workouts);
     }
 }

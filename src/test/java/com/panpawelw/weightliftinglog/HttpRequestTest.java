@@ -22,7 +22,7 @@ public class HttpRequestTest {
 
     @Test
     public void shouldReturnDefaultMessage() {
-        assertThat(this.testRestTemplate.getForObject("http://localhost:" + port + "/wl",
-                String.class)).contains("Weightlifting Log");
+        assertThat(this.testRestTemplate.getForObject("http://localhost:" + port +
+                        "/weightliftinglog/", String.class)).contains("Weightlifting Log");
     }
 }
