@@ -306,6 +306,18 @@
            type="button">Cancel
         </a>
     </div>
+    <template id="exercise-template">
+        <label class="label-l">Exercise #</label>
+        <br>
+        <span contenteditable="true" class="my-input"></span>
+        <button class="my-btn add bn" title="Add exercise note">&nbsp</button>
+        <button class="my-btn del bn" title="Delete exercise">&nbsp</button>
+        <div class="exercise-notes"></div>
+        <div class="exercise-sets"></div>
+        <div class="bordered">
+            <button class="my-btn add-set">Add set</button>
+        </div>
+    </template>
     <script>
         if (sessionStorage.getItem('workout')) {
             $('.show-on-add').hide();

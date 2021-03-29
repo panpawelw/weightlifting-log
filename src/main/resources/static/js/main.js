@@ -312,30 +312,33 @@ function addExercise(exerciseNo = undefined, title = undefined) {
         exerciseNo = workout.exercises.length - 1;
     }
     // create an element, it's innerHTML and set it's attributes
-    const short = 'exercise' + exerciseNo;
-    const newExerciseHTML = document.createElement('div');
-    newExerciseHTML.setAttribute('id', short + '-container');
-    newExerciseHTML.setAttribute('class', 'bordered');
-    newExerciseHTML.innerHTML =
-        '<label class="label-l" for="' + short + '">Exercise #' + (exerciseNo + 1) + ': </label>' +
-        '<br><span contenteditable="true" class="my-input" id="' + short + '"></span>' +
-        '<button class="my-btn add bn" onclick="addNote(undefined, 0, \'\', ' +
-        exerciseNo + ');" title="Add exercise note">&nbsp</button>' +
-        '<button class="my-btn del bn" onclick="remove(' + short + ');" ' +
-        'title="Delete exercise">&nbsp</button>' +
-        '<div id="' + short + '-notes"></div><div id="' + short + '-sets"></div>' +
-        '<div class="bordered"><button class="my-btn" onclick="addSet(' + exerciseNo + ');">Add' +
-        ' set</button></div>';
+    const id = 'exercise' + exerciseNo;
+    const newExercise = document.createElement('div');
+    newExercise.setAttribute('id', id + '-container');
+    newExercise.setAttribute('class', 'bordered');
+    const template = document.getElementById('exercise-template');
+    newExercise.appendChild(template.content.cloneNode(true));
+    newExercise.getElementsByTagName('span')[0].id = id;
+    newExercise.getElementsByTagName('label')[0].htmlFor = id;
+    newExercise.getElementsByTagName('label')[0].innerHTML = 'Exercise #' + (exerciseNo+1);
+    newExercise.getElementsByClassName('my-btn add bn')[0]
+        .setAttribute('onclick', 'addNote(undefined, 0, \'\', ' + exerciseNo + ');');
+    newExercise.getElementsByClassName('my-btn del bn')[0]
+        .setAttribute('onclick', 'remove(' + id + ');');
+    newExercise.getElementsByClassName('exercise-notes')[0].id = id + '-notes';
+    newExercise.getElementsByClassName('exercise-sets')[0].id = id + '-sets';
+    newExercise.getElementsByClassName('my-btn add-set')[0]
+        .setAttribute('onclick', 'addSet(' + exerciseNo + ');');
     const exercises = document.getElementById("exercises");
-    exercises.appendChild(newExerciseHTML);
-    document.getElementById(short).setAttribute('data-set',
+    exercises.appendChild(newExercise);
+    document.getElementById(id).setAttribute('data-set',
         "exercises," + exerciseNo + ",title");
     // set content if displaying an existing exercise or focus on element if creating a new one
     if (title !== undefined) {
-        document.getElementById(short).innerHTML = title;
+        document.getElementById(id).innerHTML = title;
     } else {
         equalizeColumnHeight();
-        document.getElementById(short).focus();
+        document.getElementById(id).focus();
     }
 }
 
