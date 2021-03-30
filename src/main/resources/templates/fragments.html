@@ -318,6 +318,13 @@
             <button class="my-btn add-set">Add set</button>
         </div>
     </template>
+    <template id="set-template">
+        <label class="set-label"></label>
+        <span contenteditable="true" class="my-input"></span>
+        <button class="my-btn add bn" title="Add set note">&nbsp</button>
+        <button class="my-btn del bn" title="Delete set">&nbsp</button>
+        <div class="set-notes"></div>
+    </template>
     <script>
         if (sessionStorage.getItem('workout')) {
             $('.show-on-add').hide();
