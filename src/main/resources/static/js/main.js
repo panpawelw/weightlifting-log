@@ -311,7 +311,7 @@ function addExercise(exerciseNo = undefined, title = undefined) {
         workout.exercises.push(newExercise);
         exerciseNo = workout.exercises.length - 1;
     }
-    // create an element, it's innerHTML and set it's attributes
+    // create an element and set it's attributes
     const id = 'exercise' + exerciseNo;
     const newExercise = document.createElement('div');
     newExercise.setAttribute('id', id + '-container');
@@ -354,29 +354,30 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
         workout.exercises[exerciseNo].sets.push(newSet);
         setNo = workout.exercises[exerciseNo].sets.length - 1;
     }
-    // create an element, its innerHTML and set its attributes
-    const short = "exercise" + exerciseNo + "set" + setNo;
-    const newSetHTML = document.createElement('div');
-    newSetHTML.setAttribute('id', short + '-container');
-    newSetHTML.setAttribute('class', 'bordered');
-    newSetHTML.innerHTML =
-        '<label class="set-label" for="' + short + '">Set #' + (setNo + 1) + ': </label>' +
-        '<span contenteditable="true" class="my-input" id="' + short + '"></span>' +
-        '<button class="my-btn add bn" onclick="addNote(undefined, 0, \'\',' + exerciseNo + ', ' +
-        setNo + ');" title="Add set note">&nbsp</button>' +
-        '<button class="my-btn del bn" onclick="remove(' + short + ');" ' +
-        'title="Delete set">&nbsp</button>' +
-        '<div id="' + short + '-notes"></div>';
+    // create an element and set it's attributes
+    const id = "exercise" + exerciseNo + "set" + setNo;
+    const newSet = document.createElement('div');
+    newSet.setAttribute('id', id + '-container');
+    newSet.setAttribute('class', 'bordered');
+    const template = document.getElementById('set-template');
+    newSet.appendChild(template.content.cloneNode(true));
+    newSet.getElementsByTagName('span')[0].id = id;
+    newSet.getElementsByTagName('label')[0].htmlFor = id;
+    newSet.getElementsByTagName('label')[0].innerHTML = 'Set #' + (setNo + 1);
+    newSet.getElementsByClassName('my-btn add bn')[0]
+        .setAttribute('onclick', 'addNote(undefined, 0, \'\', ' + exerciseNo + ', ' + setNo + ');');
+    newSet.getElementsByClassName('my-btn del bn')[0].setAttribute('onclick', 'remove(' + id + ');');
+    newSet.getElementsByClassName('set-notes')[0].id = id + '-notes';
     const sets = document.getElementById("exercise" + exerciseNo + "-sets");
-    sets.appendChild(newSetHTML);
-    document.getElementById(short).setAttribute('data-set',
+    sets.appendChild(newSet);
+    document.getElementById(id).setAttribute('data-set',
         "exercises," + exerciseNo + ",sets," + setNo + ",data");
     // set content if displaying an existing set or focus on element if creating a new one
     if (data !== undefined) {
-        document.getElementById(short).innerHTML = data;
+        document.getElementById(id).innerHTML = data;
     } else {
         equalizeColumnHeight();
-        document.getElementById(short).focus();
+        document.getElementById(id).focus();
     }
 }
 
