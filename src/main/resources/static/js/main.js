@@ -307,8 +307,7 @@ function storeInWorkout(entry, value) {
 function addExercise(exerciseNo = undefined, title = undefined) {
     // add workout object entry if it's a new exercise
     if (exerciseNo === undefined) {
-        let newExercise = {title: null, notes: [], sets: []};
-        workout.exercises.push(newExercise);
+        workout.exercises.push({title: null, notes: [], sets: []});
         exerciseNo = workout.exercises.length - 1;
     }
     // create an element and set it's attributes
@@ -349,8 +348,7 @@ function addExercise(exerciseNo = undefined, title = undefined) {
 function addSet(exerciseNo, setNo = undefined, data = undefined) {
     // add workout object entry if it's a new set
     if (setNo === undefined) {
-        let newSet = {data: null, notes: []};
-        workout.exercises[exerciseNo].sets.push(newSet);
+        workout.exercises[exerciseNo].sets.push({data: null, notes: []});
         setNo = workout.exercises[exerciseNo].sets.length - 1;
     }
     // create an element and set it's attributes
@@ -398,14 +396,14 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
     let noteListAlias = workout.notes;
     let appendHere = document.getElementById('notes');
     noteNo = itsANewNote ? workout.notes.length : noteNo;
-    let short = "note" + noteNo;
+    let id = "note" + noteNo;
     let dataSetContent = "notes," + noteNo + ",content";
     // if it's an exercise note - modify values
     if (exerciseNo !== undefined && setNo === undefined) {
         noteListAlias = workout.exercises[exerciseNo].notes;
         appendHere = document.getElementById("exercise" + exerciseNo + "-notes");
         noteNo = itsANewNote ? workout.exercises[exerciseNo].notes.length : noteNo;
-        short = "exercise" + exerciseNo + "note" + noteNo;
+        id = "exercise" + exerciseNo + "note" + noteNo;
         dataSetContent = "exercises," + exerciseNo + ",notes," + noteNo + ",content";
     }
     // it's a set note - modify values
@@ -414,36 +412,39 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
         appendHere = document.getElementById(
             "exercise" + exerciseNo + "set" + setNo + "-notes");
         noteNo = itsANewNote ? workout.exercises[exerciseNo].sets[setNo].notes.length : noteNo;
-        short = "exercise" + exerciseNo + "set" + setNo + "note" + noteNo;
+        id = "exercise" + exerciseNo + "set" + setNo + "note" + noteNo;
         dataSetContent = "exercises," + exerciseNo + ",sets," + setNo + ",notes," +
             noteNo + ",content";
     }
     // create an element, innerHTML and set attributes
     let newNoteHTML = document.createElement('div');
-    newNoteHTML.setAttribute('id', short + '-container');
+    newNoteHTML.setAttribute('id', id + '-container');
     newNoteHTML.setAttribute('class', 'note');
-    newNoteHTML.innerHTML =
-        '<label for="' + short + '"></label>' +
-        '<span contenteditable="true" class="my-input" id="' + short + '"></span>' +
-        '<select onchange="changeNoteType(this.value, \'' + short + '\');"' +
-        ' name="' + short + '-type"><option value="0">Text</option><option value="1">Audio</option>' +
-        '<option value="2">Picture</option><option value="3">Video</option></select>' +
-        '<button class="my-btn del bn" onclick="remove(' + short + ');" ' +
-        'title="Delete note">&nbsp</button>';
+    const template = document.getElementById('note-template');
+    newNoteHTML.appendChild(template.content.cloneNode(true));
+    newNoteHTML.getElementsByTagName('span')[0].id = id;
+    newNoteHTML.getElementsByTagName('label')[0].htmlFor = id;
+    newNoteHTML.getElementsByTagName('label')[0].innerHTML = 'Note #' + (noteNo + 1);
+    newNoteHTML.getElementsByTagName('select').name = id + '-type'
+    newNoteHTML.getElementsByTagName('select')[0].onchange =
+        function() { changeNoteType(this.value, document.getElementById(id)); };
+    newNoteHTML.getElementsByClassName('my-btn del bn')[0].onclick =
+        function() { remove(document.getElementById(id)); };
+
     appendHere.appendChild(newNoteHTML);
-    document.getElementById(short).setAttribute('data-set', dataSetContent);
+    document.getElementById(id).setAttribute('data-set', dataSetContent);
     // if new note - push it to note array and focus on element
     if (itsANewNote) {
         noteListAlias.push(newNote);
-        document.getElementById(short).focus();
+        document.getElementById(id).focus();
         equalizeColumnHeight();
         // if not - display the note content (and change type if other than text note)
     } else {
         if (newNote.type !== 0) {
-            displayExistingMediaNote(short, newNote.content, newNote.type);
-            assignFileToExistingMediaNote(short, newNote.content);
+            displayExistingMediaNote(id, newNote.content, newNote.type);
+            assignFileToExistingMediaNote(id, newNote.content);
         } else {
-            document.getElementById(short).innerHTML = newNote.content;
+            document.getElementById(id).innerHTML = newNote.content;
         }
     }
 }

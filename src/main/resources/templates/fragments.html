@@ -325,6 +325,17 @@
         <button class="my-btn del bn" title="Delete set">&nbsp</button>
         <div class="set-notes"></div>
     </template>
+    <template id="note-template">
+        <label for="note-type"></label>
+        <span contenteditable="true" class="my-input"></span>
+        <select id="note-type">
+            <option value="0">Text</option>
+            <option value="1">Audio</option>
+            <option value="2">Picture</option>
+            <option value="3">Video</option>
+        </select>
+        <button class="my-btn del bn" title="Delete note">&nbsp</button>
+    </template>
     <script>
         if (sessionStorage.getItem('workout')) {
             $('.show-on-add').hide();
