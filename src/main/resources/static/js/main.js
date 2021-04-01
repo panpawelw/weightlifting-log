@@ -321,16 +321,15 @@ function addExercise(exerciseNo = undefined, title = undefined) {
     newExercise.getElementsByTagName('span')[0].id = id;
     newExercise.getElementsByTagName('label')[0].htmlFor = id;
     newExercise.getElementsByTagName('label')[0].innerHTML = 'Exercise #' + (exerciseNo+1);
-    newExercise.getElementsByClassName('my-btn add bn')[0]
-        .setAttribute('onclick', 'addNote(undefined, 0, \'\', ' + exerciseNo + ');');
-    newExercise.getElementsByClassName('my-btn del bn')[0]
-        .setAttribute('onclick', 'remove(' + id + ');');
+    newExercise.getElementsByClassName('my-btn add bn')[0].onclick =
+        function() { addNote(undefined,0, '', exerciseNo); };
+    newExercise.getElementsByClassName('my-btn del bn')[0].onclick =
+        function() { remove(document.getElementById(id)); };
     newExercise.getElementsByClassName('exercise-notes')[0].id = id + '-notes';
     newExercise.getElementsByClassName('exercise-sets')[0].id = id + '-sets';
     newExercise.getElementsByClassName('my-btn add-set')[0]
         .setAttribute('onclick', 'addSet(' + exerciseNo + ');');
-    const exercises = document.getElementById("exercises");
-    exercises.appendChild(newExercise);
+    document.getElementById("exercises").appendChild(newExercise);
     document.getElementById(id).setAttribute('data-set',
         "exercises," + exerciseNo + ",title");
     // set content if displaying an existing exercise or focus on element if creating a new one
@@ -364,12 +363,12 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
     newSet.getElementsByTagName('span')[0].id = id;
     newSet.getElementsByTagName('label')[0].htmlFor = id;
     newSet.getElementsByTagName('label')[0].innerHTML = 'Set #' + (setNo + 1);
-    newSet.getElementsByClassName('my-btn add bn')[0]
-        .setAttribute('onclick', 'addNote(undefined, 0, \'\', ' + exerciseNo + ', ' + setNo + ');');
-    newSet.getElementsByClassName('my-btn del bn')[0].setAttribute('onclick', 'remove(' + id + ');');
+    newSet.getElementsByClassName('my-btn add bn')[0].onclick =
+        function() { addNote(undefined, 0, '', exerciseNo, setNo); };
+    newSet.getElementsByClassName('my-btn del bn')[0].onclick =
+        function() { remove(document.getElementById(id)); };
     newSet.getElementsByClassName('set-notes')[0].id = id + '-notes';
-    const sets = document.getElementById("exercise" + exerciseNo + "-sets");
-    sets.appendChild(newSet);
+    document.getElementById("exercise" + exerciseNo + "-sets").appendChild(newSet);
     document.getElementById(id).setAttribute('data-set',
         "exercises," + exerciseNo + ",sets," + setNo + ",data");
     // set content if displaying an existing set or focus on element if creating a new one
