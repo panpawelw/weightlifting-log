@@ -112,7 +112,10 @@ public class HomeController {
                                     "hours!<br><br>" + "Don't forget to check your spam " +
                                     "folder!<br><br>");
                 } else {
+                    model.addAttribute("header", "Registration successful!");
                     userService.saveUser(user);
+                    model.addAttribute("message",
+                        "Your user account has been registered and activated. Enjoy!<br><br>");
                 }
                 model.addAttribute("page", "fragments.html :: register-user-message");
             } catch (DataIntegrityViolationException e) {
