@@ -13,27 +13,27 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class SmokeTest {
 
-    @Autowired
-    private HomeController homeController;
+  @Autowired
+  private HomeController homeController;
 
-    @Autowired
-    private UserController userController;
+  @Autowired
+  private UserController userController;
 
-    @Autowired
-    private AdminController adminController;
+  @Autowired
+  private AdminController adminController;
 
-    @Autowired
-    private WorkoutController workoutController;
+  @Autowired
+  private WorkoutController workoutController;
 
-    @Autowired
-    private ChangePasswordController changePasswordController;
+  @Autowired
+  private ChangePasswordController changePasswordController;
 
-    @Test
-    public void contextLoads() {
-        assertThat(homeController).isNotNull();
-        assertThat(userController).isNotNull();
-        assertThat(adminController).isNotNull();
-        assertThat(workoutController).isNotNull();
-        assertThat(changePasswordController).isNotNull();
-    }
+  @Test
+  public void contextLoads() {
+    assertThat(homeController).isNotNull();
+    assertThat(userController).isNotNull();
+    assertThat(adminController).isNotNull();
+    assertThat(workoutController).isNotNull();
+    assertThat(changePasswordController).isNotNull();
+  }
 }

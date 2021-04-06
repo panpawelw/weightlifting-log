@@ -23,75 +23,75 @@ import java.util.Base64;
 @RequestMapping("/workout")
 public class WorkoutController {
 
-    private final WorkoutService workoutService;
-    private final UserService userService;
-    private final FileService fileService;
+  private final WorkoutService workoutService;
+  private final UserService userService;
+  private final FileService fileService;
 
-    @Autowired
-    public WorkoutController(WorkoutService workoutService, UserService userService,
-                             @Qualifier("s3FileService") FileService fileService) {
-        this.workoutService = workoutService;
-        this.userService = userService;
-        this.fileService = fileService;
-    }
+  @Autowired
+  public WorkoutController(WorkoutService workoutService, UserService userService,
+      @Qualifier("s3FileService") FileService fileService) {
+    this.workoutService = workoutService;
+    this.userService = userService;
+    this.fileService = fileService;
+  }
 
-    @ResponseBody
-    @GetMapping("/{workoutId}")
-    public WorkoutDeserialized getWorkoutById(@PathVariable long workoutId) {
-        return workoutService.findWorkoutById(workoutId);
-    }
+  @ResponseBody
+  @GetMapping("/{workoutId}")
+  public WorkoutDeserialized getWorkoutById(@PathVariable long workoutId) {
+    return workoutService.findWorkoutById(workoutId);
+  }
 
-    @GetMapping("/")
-    public String addWorkoutGet(Model model) {
-        User user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
-        model.addAttribute("user", user.getEmail());
-        model.addAttribute("userName", user.getName());
-        model.addAttribute("adminRights", userService.checkLoggedInUserForAdminRights());
-        model.addAttribute("page", "fragments.html :: user-panel");
-        model.addAttribute("userPanelPage", "fragments.html :: user-panel-workout-details");
-        model.addAttribute("workouts", workoutService.findWorkoutsByUser(user));
-        return "home";
-    }
+  @GetMapping("/")
+  public String addWorkoutGet(Model model) {
+    User user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
+    model.addAttribute("user", user.getEmail());
+    model.addAttribute("userName", user.getName());
+    model.addAttribute("adminRights", userService.checkLoggedInUserForAdminRights());
+    model.addAttribute("page", "fragments.html :: user-panel");
+    model.addAttribute("userPanelPage", "fragments.html :: user-panel-workout-details");
+    model.addAttribute("workouts", workoutService.findWorkoutsByUser(user));
+    return "home";
+  }
 
-    @ResponseBody
-    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void addWorkoutPost(@RequestPart("workout") WorkoutDeserialized workoutDeserialized,
-                               @RequestPart(name = "filesToRemove", required = false)
-                                       ArrayList<String> filesToRemove,
-                               @RequestPart(name = "filesToUpload", required = false)
-                                       MultipartFile[] filesToUpload) {
-        workoutDeserialized.setUser
-                (userService.findUserByEmail(userService.getLoggedInUsersEmail()));
-        workoutDeserialized.setId(workoutService.saveWorkout(workoutDeserialized));
-        if (!filesToRemove.isEmpty()) {
-            filesToRemove.forEach((filename) ->
-                    fileService.deleteFileByWorkoutAndFilename(workoutDeserialized, filename));
-        }
-        if (filesToUpload.length > 0) {
-            fileService.storeAllFiles(workoutDeserialized, filesToUpload);
-        }
-        workoutService.saveWorkout(workoutDeserialized);
+  @ResponseBody
+  @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public void addWorkoutPost(@RequestPart("workout") WorkoutDeserialized workoutDeserialized,
+      @RequestPart(name = "filesToRemove", required = false)
+          ArrayList<String> filesToRemove,
+      @RequestPart(name = "filesToUpload", required = false)
+          MultipartFile[] filesToUpload) {
+    workoutDeserialized.setUser
+        (userService.findUserByEmail(userService.getLoggedInUsersEmail()));
+    workoutDeserialized.setId(workoutService.saveWorkout(workoutDeserialized));
+    if (!filesToRemove.isEmpty()) {
+      filesToRemove.forEach((filename) ->
+          fileService.deleteFileByWorkoutAndFilename(workoutDeserialized, filename));
     }
+    if (filesToUpload.length > 0) {
+      fileService.storeAllFiles(workoutDeserialized, filesToUpload);
+    }
+    workoutService.saveWorkout(workoutDeserialized);
+  }
 
-    @ResponseBody
-    @DeleteMapping("/{workoutId}")
-    public void deleteWorkout(@PathVariable long workoutId) {
-        fileService.deleteAllByWorkoutId(workoutId);
-        workoutService.deleteWorkout(workoutId);
-    }
+  @ResponseBody
+  @DeleteMapping("/{workoutId}")
+  public void deleteWorkout(@PathVariable long workoutId) {
+    fileService.deleteAllByWorkoutId(workoutId);
+    workoutService.deleteWorkout(workoutId);
+  }
 
-    @ResponseBody
-    @GetMapping(value = "/file/{workoutId}/{filename}", produces =
-            MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<byte[]> getFileByWorkoutId(@PathVariable Long workoutId,
-                                             @PathVariable String filename) {
-        MediaFile mediaFileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId,
-                filename);
-        byte[] fileContent = mediaFileToSend.getContent();
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment;filename=" + mediaFileToSend.getFilename())
-                .header("type", mediaFileToSend.getType())
-                .body(Base64.getEncoder().encode(fileContent));
-    }
+  @ResponseBody
+  @GetMapping(value = "/file/{workoutId}/{filename}", produces =
+      MediaType.APPLICATION_OCTET_STREAM_VALUE)
+  public ResponseEntity<byte[]> getFileByWorkoutId(@PathVariable Long workoutId,
+      @PathVariable String filename) {
+    MediaFile mediaFileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId,
+        filename);
+    byte[] fileContent = mediaFileToSend.getContent();
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_DISPOSITION,
+            "attachment;filename=" + mediaFileToSend.getFilename())
+        .header("type", mediaFileToSend.getType())
+        .body(Base64.getEncoder().encode(fileContent));
+  }
 }

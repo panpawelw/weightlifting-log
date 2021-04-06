@@ -14,15 +14,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class HttpRequestTest {
 
-    @LocalServerPort
-    private int port;
+  @LocalServerPort
+  private int port;
 
-    @Autowired
-    private TestRestTemplate testRestTemplate;
+  @Autowired
+  private TestRestTemplate testRestTemplate;
 
-    @Test
-    public void shouldReturnDefaultMessage() {
-        assertThat(this.testRestTemplate.getForObject("http://localhost:" + port +
-                        "/weightliftinglog/", String.class)).contains("Weightlifting Log");
-    }
+  @Test
+  public void shouldReturnDefaultMessage() {
+    assertThat(this.testRestTemplate.getForObject("http://localhost:" + port +
+        "/weightliftinglog/", String.class)).contains("Weightlifting Log");
+  }
 }

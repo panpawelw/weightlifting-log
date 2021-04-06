@@ -11,12 +11,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 public class WeightliftingLogApplication extends SpringBootServletInitializer {
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(WeightliftingLogApplication.class);
-    }
+  @Override
+  protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+    return application.sources(WeightliftingLogApplication.class);
+  }
 
-    public static void main(String[] args) {
-        SpringApplication.run(WeightliftingLogApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(WeightliftingLogApplication.class, args);
+  }
 }

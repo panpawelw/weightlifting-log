@@ -10,5 +10,5 @@ import java.util.List;
 @Transactional
 public interface WorkoutRepository extends JpaRepository<WorkoutSerialized, Long> {
 
-    List<WorkoutSerialized> findAllByUserOrderByCreatedDesc(User user);
+  List<WorkoutSerialized> findAllByUserOrderByCreatedDesc(User user);
 }

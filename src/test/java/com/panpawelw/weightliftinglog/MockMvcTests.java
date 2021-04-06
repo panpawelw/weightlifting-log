@@ -26,48 +26,48 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class MockMvcTests {
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired
+  private MockMvc mockMvc;
 
-    @Test
-    public void testRegularUser() throws Exception {
-        this.mockMvc.perform(get("/WeightliftingLog")).andDo(print())
-                .andExpect(status().isOk()).andExpect(content()
-                .string(containsString("everybody")));
+  @Test
+  public void testRegularUser() throws Exception {
+    this.mockMvc.perform(get("/WeightliftingLog")).andDo(print())
+        .andExpect(status().isOk()).andExpect(content()
+        .string(containsString("everybody")));
+  }
+
+  @Test
+  public void userAttemptsAdmin() throws Exception {
+    this.mockMvc.perform(get("/WeightliftingLog/admin"))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Configuration
+  public static class MyTestConfiguration extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+      http.authorizeRequests().antMatchers("/WeightliftingLog/admin/**")
+          .hasRole("USER").and().httpBasic();
+    }
+  }
+
+  @Controller
+  @TestConfiguration
+  public static class TestController {
+
+    @RequestMapping(path = "/WeightliftingLog")
+    public ResponseEntity<String> everybody() {
+      return ResponseEntity.ok("everybody");
     }
 
-    @Test
-    public void userAttemptsAdmin() throws Exception {
-        this.mockMvc.perform(get("/WeightliftingLog/admin"))
-                .andExpect(status().isUnauthorized());
+    @RequestMapping(path = "/WeightliftingLog/user")
+    public ResponseEntity<String> user() {
+      return ResponseEntity.ok("user");
     }
 
-    @Configuration
-    public static class MyTestConfiguration extends WebSecurityConfigurerAdapter {
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests().antMatchers("/WeightliftingLog/admin/**")
-                    .hasRole("USER").and().httpBasic();
-        }
+    @RequestMapping(path = "/WeightliftingLog/admin")
+    public ResponseEntity<String> admin() {
+      return ResponseEntity.ok("admin");
     }
-
-    @Controller
-    @TestConfiguration
-    public static class TestController {
-
-        @RequestMapping(path = "/WeightliftingLog")
-        public ResponseEntity<String> everybody() {
-            return ResponseEntity.ok("everybody");
-        }
-
-        @RequestMapping(path = "/WeightliftingLog/user")
-        public ResponseEntity<String> user() {
-            return ResponseEntity.ok("user");
-        }
-
-        @RequestMapping(path = "/WeightliftingLog/admin")
-        public ResponseEntity<String> admin() {
-            return ResponseEntity.ok("admin");
-        }
-    }
+  }
 }

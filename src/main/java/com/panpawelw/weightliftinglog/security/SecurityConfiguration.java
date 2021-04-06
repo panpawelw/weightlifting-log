@@ -23,44 +23,44 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final SecureUserDetailsService secureUserDetailsService;
+  private final SecureUserDetailsService secureUserDetailsService;
 
-    @Autowired
-    public SecurityConfiguration(SecureUserDetailsService secureUserDetailsService) {
-        this.secureUserDetailsService = secureUserDetailsService;
-    }
+  @Autowired
+  public SecurityConfiguration(SecureUserDetailsService secureUserDetailsService) {
+    this.secureUserDetailsService = secureUserDetailsService;
+  }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(secureUserDetailsService).passwordEncoder(passwordEncoder());
-    }
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(secureUserDetailsService).passwordEncoder(passwordEncoder());
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .antMatchers("/register/**").permitAll()
-                .antMatchers("/user/**")
-                    .hasAnyRole("USER","ADMIN")
-                .antMatchers("/admin/**").hasRole("ADMIN").anyRequest().authenticated()
-                .and()
-                .formLogin().loginPage("/login").loginProcessingUrl("/login").successForwardUrl("/user").failureForwardUrl("/loginfailure")
-                .usernameParameter("username").passwordParameter("password")
-                .and()
-                .logout().logoutUrl("/logout");
-        http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-    }
+    http.authorizeRequests()
+        .antMatchers("/**").permitAll()
+        .antMatchers("/register/**").permitAll()
+        .antMatchers("/user/**")
+        .hasAnyRole("USER", "ADMIN")
+        .antMatchers("/admin/**").hasRole("ADMIN").anyRequest().authenticated()
+        .and()
+        .formLogin().loginPage("/login").loginProcessingUrl("/login").successForwardUrl("/user").failureForwardUrl("/loginfailure")
+        .usernameParameter("username").passwordParameter("password")
+        .and()
+        .logout().logoutUrl("/logout");
+    http.sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+  @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
 }

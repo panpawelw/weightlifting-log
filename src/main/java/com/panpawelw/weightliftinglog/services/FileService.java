@@ -6,10 +6,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
 
-    void storeAllFiles(WorkoutDeserialized workoutDeserialized,
-                              MultipartFile[] workoutFiles);
-    MediaFile getFileByWorkoutIdAndFilename(Long workoutId, String filename);
-    void deleteFileByWorkoutAndFilename
-            (WorkoutDeserialized workoutDeserialized, String filename);
-    void deleteAllByWorkoutId(long workoutId);
+  void storeAllFiles(WorkoutDeserialized workoutDeserialized,
+      MultipartFile[] workoutFiles);
+
+  MediaFile getFileByWorkoutIdAndFilename(Long workoutId, String filename);
+
+  void deleteFileByWorkoutAndFilename
+      (WorkoutDeserialized workoutDeserialized, String filename);
+
+  void deleteAllByWorkoutId(long workoutId);
 }

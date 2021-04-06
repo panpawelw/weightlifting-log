@@ -27,46 +27,46 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 public class LoginTests {
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired
+  private MockMvc mockMvc;
 
-    @Autowired
-    private WebApplicationContext webApplicationContext;
+  @Autowired
+  private WebApplicationContext webApplicationContext;
 
-    @Resource
-    private FilterChainProxy springSecurityFilterChain;
+  @Resource
+  private FilterChainProxy springSecurityFilterChain;
 
-    @Before
-    public void setUp() {
-        mockMvc = MockMvcBuilders
-                .webAppContextSetup(webApplicationContext)
-                .addFilter(springSecurityFilterChain)
-                .apply(springSecurity())
-                .build();
-    }
+  @Before
+  public void setUp() {
+    mockMvc = MockMvcBuilders
+        .webAppContextSetup(webApplicationContext)
+        .addFilter(springSecurityFilterChain)
+        .apply(springSecurity())
+        .build();
+  }
 
-    @Test
-    public void loginAvailableForAll() throws Exception {
-        this.mockMvc
-                .perform(get("/login").with(csrf()))
-                .andExpect(status().isOk());
-    }
+  @Test
+  public void loginAvailableForAll() throws Exception {
+    this.mockMvc
+        .perform(get("/login").with(csrf()))
+        .andExpect(status().isOk());
+  }
 
-    @Test
-    public void loginValidUser() throws Exception {
-        this.mockMvc
-                .perform(post("/login").with(csrf())
-                        .param("username", "user")
-                        .param("password", "user"))
-                .andExpect(authenticated());
-    }
+  @Test
+  public void loginValidUser() throws Exception {
+    this.mockMvc
+        .perform(post("/login").with(csrf())
+            .param("username", "user")
+            .param("password", "user"))
+        .andExpect(authenticated());
+  }
 
-    @Test
-    public void loginInvalidUser() throws Exception {
-        this.mockMvc
-                .perform(post("/login").with(csrf())
-                        .param("username", "whoever")
-                        .param("password", "whatever"))
-                .andExpect(unauthenticated());
-    }
+  @Test
+  public void loginInvalidUser() throws Exception {
+    this.mockMvc
+        .perform(post("/login").with(csrf())
+            .param("username", "whoever")
+            .param("password", "whatever"))
+        .andExpect(unauthenticated());
+  }
 }

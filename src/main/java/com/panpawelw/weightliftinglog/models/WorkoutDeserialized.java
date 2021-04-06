@@ -17,126 +17,127 @@ import java.util.Objects;
  */
 public class WorkoutDeserialized implements Serializable {
 
-    private Long id;
-    private String title;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Timestamp created;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Timestamp updated;
-    @JsonIgnore
-    private User user;
-    private List<Exercise> exercises = new ArrayList<>();
-    private List<Note> notes = new ArrayList<>();
-    private List<String> filenames = new ArrayList<>();
+  private Long id;
+  private String title;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private Timestamp created;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private Timestamp updated;
+  @JsonIgnore
+  private User user;
+  private List<Exercise> exercises = new ArrayList<>();
+  private List<Note> notes = new ArrayList<>();
+  private List<String> filenames = new ArrayList<>();
 
-    public WorkoutDeserialized() {}
+  public WorkoutDeserialized() {
+  }
 
-    public WorkoutDeserialized(Long id, String title, Timestamp created, Timestamp updated,
-                               User user, List<Exercise> exercises, List<Note> notes,
-                               List<String> filenames) {
-        this.id = id;
-        this.title = title;
-        this.created = created;
-        this.updated = updated;
-        this.user = user;
-        this.exercises = exercises;
-        this.notes = notes;
-        this.filenames = filenames;
-    }
+  public WorkoutDeserialized(Long id, String title, Timestamp created, Timestamp updated,
+      User user, List<Exercise> exercises, List<Note> notes,
+      List<String> filenames) {
+    this.id = id;
+    this.title = title;
+    this.created = created;
+    this.updated = updated;
+    this.user = user;
+    this.exercises = exercises;
+    this.notes = notes;
+    this.filenames = filenames;
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public String getTitle() {
-        return title;
-    }
+  public String getTitle() {
+    return title;
+  }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-    public Timestamp getCreated() {
-        return created;
-    }
+  public Timestamp getCreated() {
+    return created;
+  }
 
-    public void setCreated(Timestamp created) {
-        this.created = created;
-    }
+  public void setCreated(Timestamp created) {
+    this.created = created;
+  }
 
-    public Timestamp getUpdated() {
-        return updated;
-    }
+  public Timestamp getUpdated() {
+    return updated;
+  }
 
-    public void setUpdated(Timestamp updated) {
-        this.updated = updated;
-    }
+  public void setUpdated(Timestamp updated) {
+    this.updated = updated;
+  }
 
-    public User getUser() {
-        return user;
-    }
+  public User getUser() {
+    return user;
+  }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+  public void setUser(User user) {
+    this.user = user;
+  }
 
-    public List<Exercise> getExercises() {
-        return exercises;
-    }
+  public List<Exercise> getExercises() {
+    return exercises;
+  }
 
-    public void setExercises(List<Exercise> exercises) {
-        this.exercises = exercises;
-    }
+  public void setExercises(List<Exercise> exercises) {
+    this.exercises = exercises;
+  }
 
-    public List<Note> getNotes() {
-        return notes;
-    }
+  public List<Note> getNotes() {
+    return notes;
+  }
 
-    public void setNotes(List<Note> notes) {
-        this.notes = notes;
-    }
+  public void setNotes(List<Note> notes) {
+    this.notes = notes;
+  }
 
-    public List<String> getFilenames() {
-        return filenames;
-    }
+  public List<String> getFilenames() {
+    return filenames;
+  }
 
-    public void setFilenames(List<String> files) {
-        this.filenames = files;
-    }
+  public void setFilenames(List<String> files) {
+    this.filenames = files;
+  }
 
-    @Override
-    public String toString() {
-        return "WorkoutDeserialized{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", created=" + created +
-                ", updated=" + updated +
-                ", user=" + user +
-                ", exercises=" + exercises +
-                ", notes=" + notes +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "WorkoutDeserialized{" +
+        "id=" + id +
+        ", title='" + title + '\'' +
+        ", created=" + created +
+        ", updated=" + updated +
+        ", user=" + user +
+        ", exercises=" + exercises +
+        ", notes=" + notes +
+        '}';
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WorkoutDeserialized that = (WorkoutDeserialized) o;
-        return Objects.equals(id, that.id) && Objects.equals(title, that.title) &&
-            Objects.equals(created, that.created) &&
-            Objects.equals(updated, that.updated) &&
-            Objects.equals(user, that.user) &&
-            Objects.equals(exercises, that.exercises) &&
-            Objects.equals(notes, that.notes) &&
-            Objects.equals(filenames, that.filenames);
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    WorkoutDeserialized that = (WorkoutDeserialized) o;
+    return Objects.equals(id, that.id) && Objects.equals(title, that.title) &&
+        Objects.equals(created, that.created) &&
+        Objects.equals(updated, that.updated) &&
+        Objects.equals(user, that.user) &&
+        Objects.equals(exercises, that.exercises) &&
+        Objects.equals(notes, that.notes) &&
+        Objects.equals(filenames, that.filenames);
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, created, updated, user, exercises, notes, filenames);
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, title, created, updated, user, exercises, notes, filenames);
+  }
 }
