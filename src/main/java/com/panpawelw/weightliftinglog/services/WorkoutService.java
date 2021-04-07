@@ -66,8 +66,7 @@ public class WorkoutService {
    * @param workoutDeserialized - workout object to be serialized
    * @return serialized workout
    */
-  public WorkoutSerialized serializeWorkout
-  (WorkoutDeserialized workoutDeserialized) {
+  public WorkoutSerialized serializeWorkout (WorkoutDeserialized workoutDeserialized) {
     WorkoutSerialized workoutSerialized = new WorkoutSerialized();
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     ObjectOutput out;
@@ -99,8 +98,7 @@ public class WorkoutService {
    * @param workoutSerialized - serialized workout to be deserialized
    * @return deserialized workout
    */
-  public WorkoutDeserialized deserializeWorkout
-  (WorkoutSerialized workoutSerialized) {
+  public WorkoutDeserialized deserializeWorkout (WorkoutSerialized workoutSerialized) {
     WorkoutDeserialized workoutDeserialized = new WorkoutDeserialized();
     ByteArrayInputStream bis = new ByteArrayInputStream(workoutSerialized.getData());
     ObjectInput in = null;
