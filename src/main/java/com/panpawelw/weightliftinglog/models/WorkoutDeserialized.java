@@ -25,9 +25,9 @@ public class WorkoutDeserialized implements Serializable {
   private Timestamp updated;
   @JsonIgnore
   private User user;
-  private List<Exercise> exercises = new ArrayList<>();
-  private List<Note> notes = new ArrayList<>();
-  private List<String> filenames = new ArrayList<>();
+  private List<Exercise> exercises;
+  private List<Note> notes;
+  private List<String> filenames;
 
   public WorkoutDeserialized() {
   }

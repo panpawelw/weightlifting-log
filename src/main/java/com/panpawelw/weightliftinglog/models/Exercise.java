@@ -1,7 +1,6 @@
 package com.panpawelw.weightliftinglog.models;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,8 +15,8 @@ import java.util.Objects;
 public class Exercise implements Serializable {
 
   private String title;
-  private List<Set> sets = new ArrayList<>();
-  private List<Note> notes = new ArrayList<>();
+  private List<Set> sets;
+  private List<Note> notes;
 
   public Exercise() {
   }

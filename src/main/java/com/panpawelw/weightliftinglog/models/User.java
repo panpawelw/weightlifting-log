@@ -4,7 +4,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,7 +62,7 @@ public class User implements Serializable {
   private String role;
 
   @OneToMany(mappedBy = "user")
-  private List<WorkoutSerialized> workouts = new ArrayList<>();
+  private List<WorkoutSerialized> workouts;
 
   public User() {
   }
@@ -193,7 +192,6 @@ public class User implements Serializable {
         ", age=" + age +
         ", gender=" + gender +
         ", role='" + role + '\'' +
-//                ", workouts=" + workouts +
         '}';
   }
 
