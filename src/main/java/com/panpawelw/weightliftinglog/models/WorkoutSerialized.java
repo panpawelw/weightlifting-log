@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Objects;
 
 
 /**
@@ -101,5 +102,20 @@ public class WorkoutSerialized {
         ", data=" + Arrays.toString(data) +
         ", user=" + user +
         '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    WorkoutSerialized that = (WorkoutSerialized) o;
+    return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(created, that.created) && Objects.equals(updated, that.updated) && Arrays.equals(data, that.data) && Objects.equals(user, that.user);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = Objects.hash(id, title, created, updated, user);
+    result = 31 * result + Arrays.hashCode(data);
+    return result;
   }
 }

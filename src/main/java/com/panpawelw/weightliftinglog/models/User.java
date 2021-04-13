@@ -67,6 +67,23 @@ public class User implements Serializable {
   public User() {
   }
 
+  public User(Long id, String name, String password, String confirmPassword, String email,
+              boolean activated, String firstName, String lastName, Integer age, Boolean gender,
+              String role, List<WorkoutSerialized> workouts) {
+    this.id = id;
+    this.name = name;
+    this.password = password;
+    this.confirmPassword = confirmPassword;
+    this.email = email;
+    this.activated = activated;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.age = age;
+    this.gender = gender;
+    this.role = role;
+    this.workouts = workouts;
+  }
+
   public User(User user) {
     this.id = user.getId();
     this.name = user.getName();
