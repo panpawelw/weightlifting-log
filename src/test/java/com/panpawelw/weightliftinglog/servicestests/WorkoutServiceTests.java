@@ -20,22 +20,22 @@ public class WorkoutServiceTests {
   private final WorkoutService service = new WorkoutService(repository);
 
   @Test
-  public void findWorkoutsByUserTest() {
+  public void testFindWorkoutsByUser() {
 
   }
 
   @Test
-  public void findWorkoutById() {
+  public void testFindWorkoutById() {
 
   }
 
   @Test
-  public void saveWorkoutTest() {
+  public void testSaveWorkout() {
 
   }
 
   @Test
-  public void deleteWorkoutTest() {
+  public void testDeleteWorkout() {
 
   }
 
@@ -61,7 +61,7 @@ public class WorkoutServiceTests {
     assertEquals(createTestWorkout(), workoutDeserialized);
   }
 
-  public WorkoutDeserialized createTestWorkout() {
+  private WorkoutDeserialized createTestWorkout() {
     return new WorkoutDeserialized(1L, "Workout title", null, null, new User(),
         Arrays.asList(
             new Exercise("Exercise 1", Arrays.asList(

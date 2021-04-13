@@ -29,7 +29,7 @@ public class SmokeTest {
   private ChangePasswordController changePasswordController;
 
   @Test
-  public void contextLoads() {
+  public void testContextLoads() {
     assertThat(homeController).isNotNull();
     assertThat(userController).isNotNull();
     assertThat(adminController).isNotNull();

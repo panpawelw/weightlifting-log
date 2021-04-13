@@ -21,7 +21,7 @@ public class RegistrationAndPasswordValidatorTests {
   private MockMvc mockMvc;
 
   @Test
-  public void submitRegistrationPasswordNotValid() throws Exception {
+  public void testSubmitRegistrationPasswordNotValid() throws Exception {
     this.mockMvc.perform(post("/register").with(csrf())
         .param("id", "0")
         .param("name", "passwordConstraintTestUser")
@@ -40,7 +40,7 @@ public class RegistrationAndPasswordValidatorTests {
   }
 
   @Test
-  public void submitRegistrationPasswordsDontMatch() throws Exception {
+  public void testSubmitRegistrationPasswordsDontMatch() throws Exception {
     this.mockMvc.perform(post("/register").with(csrf())
         .param("id", "0")
         .param("name", "passwordConstraintTestUser")
@@ -59,7 +59,7 @@ public class RegistrationAndPasswordValidatorTests {
   }
 
   @Test
-  public void submitRegistrationSuccess() throws Exception {
+  public void testSubmitRegistrationSuccess() throws Exception {
     this.mockMvc.perform(post("/register").with(csrf())
         .param("id", "0")
         .param("name", "passwordConstraintTestUser")

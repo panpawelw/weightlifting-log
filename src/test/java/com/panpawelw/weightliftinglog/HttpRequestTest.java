@@ -21,7 +21,7 @@ public class HttpRequestTest {
   private TestRestTemplate testRestTemplate;
 
   @Test
-  public void shouldReturnDefaultMessage() {
+  public void testShouldReturnDefaultMessage() {
     assertThat(this.testRestTemplate.getForObject("http://localhost:" + port +
         "/weightliftinglog/", String.class)).contains("Weightlifting Log");
   }

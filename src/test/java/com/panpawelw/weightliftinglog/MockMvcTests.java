@@ -37,7 +37,7 @@ public class MockMvcTests {
   }
 
   @Test
-  public void userAttemptsAdmin() throws Exception {
+  public void testUserAttemptsAdmin() throws Exception {
     this.mockMvc.perform(get("/WeightliftingLog/admin"))
         .andExpect(status().isUnauthorized());
   }

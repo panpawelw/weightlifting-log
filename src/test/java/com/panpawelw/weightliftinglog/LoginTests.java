@@ -46,14 +46,14 @@ public class LoginTests {
   }
 
   @Test
-  public void loginAvailableForAll() throws Exception {
+  public void testLoginAvailableForAll() throws Exception {
     this.mockMvc
         .perform(get("/login").with(csrf()))
         .andExpect(status().isOk());
   }
 
   @Test
-  public void loginValidUser() throws Exception {
+  public void testLoginValidUser() throws Exception {
     this.mockMvc
         .perform(post("/login").with(csrf())
             .param("username", "user")
@@ -62,7 +62,7 @@ public class LoginTests {
   }
 
   @Test
-  public void loginInvalidUser() throws Exception {
+  public void testLoginInvalidUser() throws Exception {
     this.mockMvc
         .perform(post("/login").with(csrf())
             .param("username", "whoever")
