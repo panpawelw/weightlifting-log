@@ -35,7 +35,7 @@ public class VerificationTokenService {
   }
 
   public void saveToken(VerificationToken verificationToken) {
-    verificationTokenRepository.save(verificationToken);
+    verificationTokenRepository.saveAndFlush(verificationToken);
   }
 
   public void deleteVerificationToken(VerificationToken verificationToken) {
