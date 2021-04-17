@@ -17,8 +17,7 @@ import java.util.Objects;
  * confirmPassword - password confirmation, not stored in database, needed only when registering
  * a new user or modifying user data
  * email - user email, has to be unique
- * emailReal - boolean indicating that this is a real email and user wants to be sent a
- * registration confirmation email
+ * activated - boolean indicating that this account has been activated
  * role - user's Spring Security role - either USER or ADMIN
  * <p>
  * Non - mandatory fields:
@@ -82,6 +81,15 @@ public class User implements Serializable {
     this.gender = gender;
     this.role = role;
     this.workouts = workouts;
+  }
+
+  public User(Long id, String name, String password, String confirmPassword, String email, boolean activated) {
+    this.id = id;
+    this.name = name;
+    this.password = password;
+    this.confirmPassword = confirmPassword;
+    this.email = email;
+    this.activated = activated;
   }
 
   public User(User user) {
