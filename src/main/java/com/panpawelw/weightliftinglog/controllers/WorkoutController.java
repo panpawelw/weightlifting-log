@@ -68,7 +68,7 @@ public class WorkoutController {
           fileService.deleteFileByWorkoutAndFilename(workoutDeserialized, filename));
     }
     if (filesToUpload.length > 0) {
-      fileService.storeAllFiles(workoutDeserialized, filesToUpload);
+      fileService.storeAllFilesByWorkout(workoutDeserialized, filesToUpload);
     }
     workoutService.saveWorkout(workoutDeserialized);
   }
@@ -76,7 +76,7 @@ public class WorkoutController {
   @ResponseBody
   @DeleteMapping("/{workoutId}")
   public void deleteWorkout(@PathVariable long workoutId) {
-    fileService.deleteAllByWorkoutId(workoutId);
+    fileService.deleteAllFilesByWorkoutId(workoutId);
     workoutService.deleteWorkout(workoutId);
   }
 

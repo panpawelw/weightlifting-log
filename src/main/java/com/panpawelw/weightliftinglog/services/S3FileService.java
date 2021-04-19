@@ -22,8 +22,6 @@ import java.util.List;
 @Service
 public class S3FileService implements FileService {
 
-  private AmazonS3 amazonS3Client;
-
   @Value("${cloud.aws.credentials.accessKey}")
   private String awsKeyId;
 
@@ -47,14 +45,16 @@ public class S3FileService implements FileService {
         .build();
   }
 
+  private AmazonS3 amazonS3Client;
+
   private final WorkoutService workoutService;
 
   public S3FileService(WorkoutService workoutService) {
     this.workoutService = workoutService;
   }
 
-  public void storeAllFiles(WorkoutDeserialized workoutDeserialized,
-      MultipartFile[] workoutFiles) {
+  public void storeAllFilesByWorkout(WorkoutDeserialized workoutDeserialized,
+                                     MultipartFile[] workoutFiles) {
     List<String> filenames = workoutDeserialized.getFilenames();
     String filename;
     for (MultipartFile file : workoutFiles) {
@@ -67,7 +67,7 @@ public class S3FileService implements FileService {
             + filename, file.getInputStream(), objectMetadata);
         filenames.add(filename);
       } catch (AmazonClientException | IOException e) {
-        throw new RuntimeException("Error while uploading file!");
+        throw new RuntimeException("Error uploading file!");
       }
       workoutDeserialized.setFilenames(filenames);
     }
@@ -83,7 +83,7 @@ public class S3FileService implements FileService {
       objectMetadata = s3Object.getObjectMetadata();
       content = IOUtils.toByteArray(s3Object.getObjectContent());
     } catch (IOException | AmazonClientException e) {
-      throw new RuntimeException("Error while streaming file!");
+      throw new RuntimeException("Error streaming file!");
     }
     return new MediaFile(null, workoutId, s3Object.getKey(), objectMetadata.getContentType(),
         content);
@@ -94,18 +94,18 @@ public class S3FileService implements FileService {
     try {
       amazonS3Client.deleteObject(bucketName, filename);
     } catch (AmazonClientException e) {
-      throw new RuntimeException("Error while deleting file!");
+      throw new RuntimeException("Error deleting file!");
     }
   }
 
-  public void deleteAllByWorkoutId(long workoutId) {
+  public void deleteAllFilesByWorkoutId(long workoutId) {
     List<String> filesToDelete = workoutService.findWorkoutById(workoutId).getFilenames();
     filesToDelete.forEach(filename -> {
       try {
         filename = workoutId + "\\" + filename;
         amazonS3Client.deleteObject(bucketName, filename);
       } catch (AmazonClientException e) {
-        throw new RuntimeException("Error while deleting files!");
+        throw new RuntimeException("Error deleting files!");
       }
     });
   }

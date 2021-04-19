@@ -19,8 +19,8 @@ public class DBFileService implements FileService {
     this.fileRepository = fileRepository;
   }
 
-  public void storeAllFiles(WorkoutDeserialized workoutDeserialized,
-      MultipartFile[] workoutFiles) {
+  public void storeAllFilesByWorkout(WorkoutDeserialized workoutDeserialized,
+                                     MultipartFile[] workoutFiles) {
     List<MediaFile> mediaFiles = new ArrayList<>();
     List<String> filenames = workoutDeserialized.getFilenames();
     Long workoutId = workoutDeserialized.getId();
@@ -51,7 +51,7 @@ public class DBFileService implements FileService {
     workoutDeserialized.setFilenames(filenames);
   }
 
-  public void deleteAllByWorkoutId(long workoutId) {
+  public void deleteAllFilesByWorkoutId(long workoutId) {
     fileRepository.deleteAllByWorkoutId(workoutId);
   }
 }
