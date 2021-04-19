@@ -4,5 +4,10 @@
       "name": "cloud.aws.bucket.name",
       "type": "java.lang.String",
       "description": "Name of the AWS S3 bucket."
-  }
-] }
+    },
+    {
+      "name": "sendinblue.mail.apikey",
+      "type": "java.lang.String",
+      "description": "Sendinblue API key."
+    }
+  ] }
