@@ -38,7 +38,7 @@ public class SendinblueEmailService implements EmailService {
       SendSmtpEmail sendSmtpEmail = new SendSmtpEmail();
       sendSmtpEmail.setSender(sender);
       sendSmtpEmail.setTo(toList);
-      sendSmtpEmail.setTextContent(text);
+      sendSmtpEmail.setHtmlContent(text);
       sendSmtpEmail.setSubject(subject);
       CreateSmtpEmail response = api.sendTransacEmail(sendSmtpEmail);
       System.out.println(response.toString());

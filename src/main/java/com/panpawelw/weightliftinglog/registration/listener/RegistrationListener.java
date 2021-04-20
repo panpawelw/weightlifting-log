@@ -30,10 +30,13 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     VerificationToken verificationToken = new VerificationToken(user);
     verificationTokenService.saveToken(verificationToken);
     emailService.sendEmail(user.getEmail(), "support@panpawelw.com",
-        "Weightlifting Log registration confirmation", "You have registered an " +
-            "account on Weightlifting Log website. To verify your account please " +
-            "click the link below withing 24 hours to confirm your account: \n\n " +
-            "http://3.127.81.40:8080/Weightlifting_Log/confirm-account?token=" +
-            verificationToken.getToken() + "\n\nHave a nice day!");
+        "Weightlifting Log registration confirmation",
+        "<h3>Welcome to Weightlifiting Log!</h3>" +
+            "<p>You have registered an account on Weightlifting Log website. To verify your " +
+            "account please click the link below within the next 24 hours:</p>" +
+            "<a href=\"http://3.127.81.40:8080/Weightlifting_Log/confirm-account?token=\"" +
+            verificationToken.getToken() +
+            ">http://3.127.81.40:8080/Weightlifting_Log/confirm-account?token=" +
+            verificationToken.getToken() + "</a>" + "<p>Have a nice day!!!</p>");
   }
 }
