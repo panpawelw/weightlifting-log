@@ -1,561 +1,546 @@
 /* general properties */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html {
-    overflow-y: scroll;
+  overflow-y: scroll;
 }
 
 html, body, #main-container {
-    height: 100.5vh;
-    margin: 0;
+  height: 100.5vh;
+  margin: 0;
 }
 
 html body {
-    background: #454343 url("../images/background.png") repeat;
-    color: #FF9200;
+  background: #454343 url("../images/background.png") repeat;
+  color: #FF9200;
 }
 
 video, img {
-    max-height: 90vh;
+  max-height: 90vh;
 }
 
 #main-container {
-    opacity: 0;
-    display: flex;
-    flex-flow: column;
+  opacity: 0;
+  display: flex;
+  flex-flow: column;
 }
 
 #top-container {
 }
 
 #content-container {
-    margin: auto 0;
+  margin: auto 0;
 }
 
 /* scrollbar styling */
-::-webkit-scrollbar-track
-{
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.9);
-    border-radius: 10px;
-    background-color: #CCCCCC;
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.9);
+  border-radius: 10px;
+  background-color: #CCCCCC;
 }
 
 ::-webkit-scrollbar {
-    width: 8px;
-    background-color: #454343;
+  width: 8px;
+  background-color: #454343;
 }
 
 ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #FF9200;
-    background-image: -webkit-linear-gradient(90deg,
-    transparent, rgba(0, 0, 0, 0.4) 50%,transparent,transparent);
-    border: 1px solid #FFFFFF;
+  border-radius: 10px;
+  background-color: #FF9200;
+  background-image: -webkit-linear-gradient(90deg,
+  transparent, rgba(0, 0, 0, 0.4) 50%, transparent, transparent);
+  border: 1px solid #FFFFFF;
 }
 
 /* no outline for selected input fields and buttons*/
 input:focus, button:focus, .my-btn:focus, .my-input:focus, select:focus {
-    outline: none;
+  outline: none;
 }
 
 /* text centered in element */
 .centered {
-    text-align: center;
+  text-align: center;
 }
 
 /* elements even in one line */
 .even {
-    display: inline-flex;
-    align-items: center;
+  display: inline-flex;
+  align-items: center;
 }
 
 /* error messages */
 .alert {
-    color: red;
+  color: red;
 }
 
 /* sliders */
 input[type=range] {
-    height: 34px;
-    -webkit-appearance: none;
-    margin: 5px 0;
-    background: #454343 url("../images/background.png") repeat;
+  height: 34px;
+  -webkit-appearance: none;
+  margin: 5px 0;
+  background: #454343 url("../images/background.png") repeat;
 }
 
 input[type=range]::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 12px;
-    cursor: pointer;
-    animation-duration: 0.2s;
-    box-shadow: 3px 3px 3px #472900;
-    background: #FF9200;
-    border-radius: 1px;
-    border: 1px solid #FFFFFF;
+  width: 100%;
+  height: 12px;
+  cursor: pointer;
+  animation-duration: 0.2s;
+  box-shadow: 3px 3px 3px #472900;
+  background: #FF9200;
+  border-radius: 1px;
+  border: 1px solid #FFFFFF;
 }
 
 input[type=range]::-webkit-slider-thumb {
-    box-shadow: 5px 5px 5px #472900;
-    border: 2px solid #FFFFFF;
-    height: 23px;
-    width: 23px;
-    border-radius: 23px;
-    background: #FF9200;
-    cursor: pointer;
-    -webkit-appearance: none;
-    margin-top: -7px;
+  box-shadow: 5px 5px 5px #472900;
+  border: 2px solid #FFFFFF;
+  height: 23px;
+  width: 23px;
+  border-radius: 23px;
+  background: #FF9200;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -7px;
 }
 
 input[type=range]:focus::-webkit-slider-runnable-track {
-    background: #FF9200;
+  background: #FF9200;
 }
 
 input[type=range]::-moz-range-track {
-    width: 100%;
-    height: 12px;
-    cursor: pointer;
-    animation-duration: 0.2s;
-    box-shadow: 3px 3px 3px #472900;
-    background: #FF9200;
-    border-radius: 1px;
-    border: 1px solid #FFFFFF;
+  width: 100%;
+  height: 12px;
+  cursor: pointer;
+  animation-duration: 0.2s;
+  box-shadow: 3px 3px 3px #472900;
+  background: #FF9200;
+  border-radius: 1px;
+  border: 1px solid #FFFFFF;
 }
 
 input[type=range]::-moz-range-thumb {
-    box-shadow: 5px 5px 5px #472900;
-    border: 2px solid #FFFFFF;
-    height: 23px;
-    width: 23px;
-    border-radius: 23px;
-    background: #FF9200;
-    cursor: pointer;
+  box-shadow: 5px 5px 5px #472900;
+  border: 2px solid #FFFFFF;
+  height: 23px;
+  width: 23px;
+  border-radius: 23px;
+  background: #FF9200;
+  cursor: pointer;
 }
 
 input[type=range]::-ms-track {
-    width: 100%;
-    height: 12px;
-    cursor: pointer;
-    animation-duration: 0.2s;
-    background: transparent;
-    border-color: transparent;
-    color: transparent;
+  width: 100%;
+  height: 12px;
+  cursor: pointer;
+  animation-duration: 0.2s;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
 }
 
 input[type=range]::-ms-fill-lower {
-    background: #FF9200;
-    border: 1px solid #FFFFFF;
-    border-radius: 2px;
-    box-shadow: 3px 3px 3px #472900;
+  background: #FF9200;
+  border: 1px solid #FFFFFF;
+  border-radius: 2px;
+  box-shadow: 3px 3px 3px #472900;
 }
 
 input[type=range]::-ms-fill-upper {
-    background: #FF9200;
-    border: 1px solid #FFFFFF;
-    border-radius: 2px;
-    box-shadow: 3px 3px 3px #472900;
+  background: #FF9200;
+  border: 1px solid #FFFFFF;
+  border-radius: 2px;
+  box-shadow: 3px 3px 3px #472900;
 }
 
 input[type=range]::-ms-thumb {
-    margin-top: 1px;
-    box-shadow: 5px 5px 5px #472900;
-    border: 2px solid #FFFFFF;
-    height: 23px;
-    width: 23px;
-    border-radius: 23px;
-    background: #FF9200;
-    cursor: pointer;
+  margin-top: 1px;
+  box-shadow: 5px 5px 5px #472900;
+  border: 2px solid #FFFFFF;
+  height: 23px;
+  width: 23px;
+  border-radius: 23px;
+  background: #FF9200;
+  cursor: pointer;
 }
 
 input[type=range]:focus::-ms-fill-lower {
-    background: #FF9200;
+  background: #FF9200;
 }
 
 input[type=range]:focus::-ms-fill-upper {
-    background: #FF9200;
+  background: #FF9200;
 }
 
 /* text, number, password input fields */
 .my-input {
-    display: inline-block;
-    min-width: 20%;
-    max-width: 95%;
-    background-color: #FFFFFF;
+  display: inline-block;
+  min-width: 20%;
+  max-width: 95%;
+  background-color: #FFFFFF;
 }
 
 input[type=text], input[type=number], input[type=password], .my-input {
-    color: black;
-    border: 2px solid #FF9200;
-    box-shadow: 5px 5px 5px #472900;
-    border-radius: 23px;
-    text-align: center;
-    font-weight: bold;
-    padding: 0 2px 0 2px;
+  color: black;
+  border: 2px solid #FF9200;
+  box-shadow: 5px 5px 5px #472900;
+  border-radius: 23px;
+  text-align: center;
+  font-weight: bold;
+  padding: 0 2px 0 2px;
 }
 
 /* buttons */
 .add {
-    background: #FF9200 url("../images/add-note.png");
+  background: #FF9200 url("../images/add-note.png");
 }
 
 .del {
-    background: #FF9200 url("../images/remove.png");
+  background: #FF9200 url("../images/remove.png");
 }
 
 .audio {
-    background: #FF9200 url("../images/audio.png");
+  background: #FF9200 url("../images/audio.png");
 }
 
 .image {
-    background: #FF9200 url("../images/image.png");
+  background: #FF9200 url("../images/image.png");
 }
 
 .clip {
-    background: #FF9200 url("../images/clip.png");
+  background: #FF9200 url("../images/clip.png");
 }
 
 .bn {
-    height: 2em;
-    width: 2em;
-    background-size: cover;
-    margin: 0 0.5em;
+  height: 2em;
+  width: 2em;
+  background-size: cover;
+  margin: 0 0.5em;
 }
 
 button, input[type=submit], .my-btn, select {
-    background-color: #FF9200;
-    color: black;
-    border: 2px solid #FFFFFF;
-    box-shadow: 5px 5px 5px #472900;
-    border-radius: 23px;
-    text-align: center;
-    font-weight: bold;
-    padding: 0 2px 0 2px;
+  background-color: #FF9200;
+  color: black;
+  border: 2px solid #FFFFFF;
+  box-shadow: 5px 5px 5px #472900;
+  border-radius: 23px;
+  text-align: center;
+  font-weight: bold;
+  padding: 0 2px 0 2px;
 }
 
 button:hover, input[type=submit]:hover, .my-btn:hover {
-    text-decoration: none;
-    color: white;
+  text-decoration: none;
+  color: white;
 }
 
 button:active, input[type=submit]:active, .my-btn:active {
-    box-shadow: 1px 1px 1px #472900;
-    animation-duration: 0.2s;
+  box-shadow: 1px 1px 1px #472900;
+  animation-duration: 0.2s;
 }
 
 .workout {
-    padding: 0 10px 0 10px;
-    margin: 1px;
+  padding: 0 10px 0 10px;
+  margin: 1px;
 }
 
 /* sticky navigation bar */
 .sticky {
-    position: fixed;
-    top: 0;
-    width: 100%;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 /* Navigation tabs */
 
 .nav-tabs {
-    border-bottom: none !important;
+  border-bottom: none !important;
 }
 
 #big-tabs {
-    z-index: 2;
+  z-index: 2;
 }
 
 #big-tabs a {
-    border: 1px solid #454343;
-    border-radius: 12px 12px 0 0;
-    box-shadow: 0 -3px 6px -3px #472900;
-    color: black;
-    background-image: url("../images/background.png"), linear-gradient(#FF9200, #454343);
-    font-weight: bold;
-    margin-bottom: 0;
+  border: 1px solid #454343;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 -3px 6px -3px #472900;
+  color: black;
+  background-image: url("../images/background.png"), linear-gradient(#FF9200, #454343);
+  font-weight: bold;
+  margin-bottom: 0;
 }
 
 #big-tabs a.active {
-    color: black;
-    background: url("../images/background.png"), linear-gradient(#FFFFFF, #454343);
-    border: 1px solid #454343;
+  color: black;
+  background: url("../images/background.png"), linear-gradient(#FFFFFF, #454343);
+  border: 1px solid #454343;
 }
 
 #big-tabs a:hover {
-    color: black;
-    background: url("../images/background.png"), linear-gradient(#FFFFFF, #454343);
-    border: 1px solid #454343;
+  color: black;
+  background: url("../images/background.png"), linear-gradient(#FFFFFF, #454343);
+  border: 1px solid #454343;
 }
 
 #filler-1 {
-    height: 40px;
-    background: #454343 url("../images/background.png") repeat;
-    z-index: 1;
+  height: 40px;
+  background: #454343 url("../images/background.png") repeat;
+  z-index: 1;
 }
 
 #filler-2 {
-    height: 40px;
-    background: #454343 url("../images/background.png") repeat;
+  height: 40px;
+  background: #454343 url("../images/background.png") repeat;
 }
 
 /* Overall strength tab */
 .overall-strength {
-    width: 95vw;
-    overflow: auto;
-    overflow-y: hidden;
-    margin: auto auto 5vw;
+  width: 95vw;
+  overflow: auto;
+  overflow-y: hidden;
+  margin: auto auto 5vw;
 }
 
 .overall-strength-weight {
-    width: 100%;
+  width: 100%;
 }
 
 .overall-strength-reps {
-    width: 50%;
-    float: left;
+  width: 50%;
+  float: left;
 }
 
 .overall-strength-reps.slider {
-    width: 50vw;
+  width: 50vw;
 }
 
 .overall-strength-text-inputs {
-    width: 50%;
-    float: right;
+  width: 50%;
+  float: right;
 }
 
 .overall-strength-table {
-    width: 100%;
+  width: 100%;
 }
 
 .overall-strength-table td {
-    padding: 3px;
+  padding: 3px;
 }
 
 /* 1 Rep Max tab */
 .one-rep-max-inputs {
-    width: 95vw;
-    margin: auto;
+  width: 95vw;
+  margin: auto;
 }
 
-.one-rep-max-inputs #weight{
-    width: 95vw;
+.one-rep-max-inputs #weight {
+  width: 95vw;
 }
 
-.one-rep-max-inputs #reps{
-    width: 95vw;
+.one-rep-max-inputs #reps {
+  width: 95vw;
 }
 
 #percentages {
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #percentages td {
-    padding: 3px;
-    text-align: center;
+  padding: 3px;
+  text-align: center;
 }
 
 .percentage-input {
-    width: 5vw;
+  width: 5vw;
 }
 
 /* User panel */
 
 /* Resizable columns */
 .workout-tab-container {
-    display: flex;
-    flex-direction: row;
-    overflow-y: auto;
-    /* avoid browser level touch actions */
-    /*xtouch-action: none;*/
+  display: flex;
+  flex-direction: row;
+  overflow-y: auto;
+  /* avoid browser level touch actions */
+  /*xtouch-action: none;*/
 }
 
 #workout-content-container {
-    flex: 0 0 auto;
-    /* only manually resize */
-    min-width: 49.5vw;
-    max-width: 87vw;
-    width: 74.5vw;
-    white-space: nowrap;
-    display: table;
-    height: 95vh;
+  flex: 0 0 auto;
+  /* only manually resize */
+  min-width: 49.5vw;
+  max-width: 87vw;
+  width: 74.5vw;
+  white-space: nowrap;
+  display: table;
+  height: 95vh;
 }
 
 .splitter {
-    flex: 0 0 auto;
-    width: 12px;
-    background: url("../images/background.png"), linear-gradient(#454343, #FF9200);
-    cursor: col-resize;
-    height: 95vh;
-    position: relative;
+  flex: 0 0 auto;
+  width: 12px;
+  background: url("../images/background.png"), linear-gradient(#454343, #FF9200);
+  cursor: col-resize;
+  height: 95vh;
+  position: relative;
 }
 
 .splitter:after {
-    content: '';
-    top: 45%;
-    left: 0;
-    background: url(../images/vsizegrip.png) center center no-repeat;
-    position: absolute;
-    width: 12px;
-    height: 18px;
+  content: '';
+  top: 45%;
+  left: 0;
+  background: url(../images/vsizegrip.png) center center no-repeat;
+  position: absolute;
+  width: 12px;
+  height: 18px;
 }
 
 #workout-selection-container {
-    flex: 1 1 auto;
-    /* resizable */
-    overflow-y:auto;
-    height: 95vh;
+  flex: 1 1 auto;
+  /* resizable */
+  overflow-y: auto;
+  height: 95vh;
 }
 
-/*#workout-content-container {*/
-/*    display: table;*/
-/*    overflow-y: auto;*/
-/*    height: 95vh;*/
-/*}*/
-
 .workout-content {
-    display: table-cell;
-    vertical-align: middle;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .workout-content > div {
-    padding: 0.5em 0 0.5em 0;
+  padding: 0.5em 0 0.5em 0;
 }
 
 #exercises {
-    padding: 0;
+  padding: 0;
 }
 
 .label-s {
-    font-size: small;
-    font-weight: lighter;
+  font-size: small;
+  font-weight: lighter;
 }
 
 .label-m {
-    font-size: smaller;
-    font-weight: normal;
+  font-size: smaller;
+  font-weight: normal;
 }
 
 .label-l {
-    font-size: medium;
-    font-weight: bold;
+  font-size: medium;
+  font-weight: bold;
 }
 
 .label-xl {
-    font-size: larger;
-    font-weight: bolder;
+  font-size: larger;
+  font-weight: bolder;
 }
 
 .set-label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 0.25em;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.25em;
 }
 
 .bordered {
-    border-style: solid;
-    border-radius: 12px;
-    box-shadow: 5px 5px 5px #472900;
-    width: 97.5%;
-    margin: 0.25em auto;
-    padding: 0.25em 0 0.25em 0;
+  border-style: solid;
+  border-radius: 12px;
+  box-shadow: 5px 5px 5px #472900;
+  width: 97.5%;
+  margin: 0.25em auto;
+  padding: 0.25em 0 0.25em 0;
 }
 
-/*#workout-selection-container {*/
-/*    display: inline-block;*/
-/*    float: right;*/
-/*    overflow-y: auto;*/
-/*    height: 95vh;*/
-/*    resize: horizontal;*/
-/*}*/
-
 .controls {
-    top: 0;
-    right: 0;
-    margin-top: 1em;
-    margin-right: 0.5em;
-    text-align: center;
+  top: 0;
+  right: 0;
+  margin-top: 1em;
+  margin-right: 0.5em;
+  text-align: center;
 }
 
 #workouts-list {
-    margin: auto;
-    width: 90%;
+  margin: auto;
+  width: 90%;
 }
 
 #workouts-list .my-button {
-    width: 100%;
+  width: 100%;
 }
 
 /* General text styling */
 .bigger-label {
-    font-weight: bold;
-    font-size: large;
+  font-weight: bold;
+  font-size: large;
 }
 
 .tab-title {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .note {
-    font-size: small;
+  font-size: small;
 }
 
 /* Admin panel */
 #admin-panel {
-    height: 95vh;
+  height: 95vh;
 }
 
 /* Other */
 .same-row {
-    display: inline-block;
+  display: inline-block;
 }
 
 #error-container {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Responsive elements */
 @media screen and (max-width: 280px) {
 
-    html body {
-        font-size: 50%;
-    }
+  html body {
+    font-size: 50%;
+  }
 
-    .percentage-input {
-        width: 15vw;
-    }
+  .percentage-input {
+    width: 15vw;
+  }
 }
 
 @media screen and (min-width: 281px) and (max-width: 320px) {
 
-    html body {
-        font-size: 60%;
-    }
+  html body {
+    font-size: 60%;
+  }
 
-    .percentage-input {
-        width: 12vw;
-    }
+  .percentage-input {
+    width: 12vw;
+  }
 }
 
 @media screen and (min-width: 321px) and (max-width: 400px) {
 
-    html body {
-        font-size: 70%;
-    }
+  html body {
+    font-size: 70%;
+  }
 
-    .percentage-input {
-        width: 9.5vw;
-    }
+  .percentage-input {
+    width: 9.5vw;
+  }
 }
 
-@media screen and (min-width:401px) and (max-width: 600px) {
+@media screen and (min-width: 401px) and (max-width: 600px) {
 
-    .percentage-input {
-        width: 7vw;
-    }
+  .percentage-input {
+    width: 7vw;
+  }
 }

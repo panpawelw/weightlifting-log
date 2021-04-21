@@ -34,9 +34,9 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         "<h3>Welcome to Weightlifiting Log!</h3>" +
             "<p>You have registered an account on Weightlifting Log website. To verify your " +
             "account please click the link below within the next 24 hours:</p>" +
-            "<a href=\"http://3.127.81.40:8080/Weightlifting_Log/confirm-account?token=\"" +
+            "<a href=\"http://3.122.216.167:8080/weightliftinglog/confirm-account?token=\"" +
             verificationToken.getToken() +
-            ">http://3.127.81.40:8080/Weightlifting_Log/confirm-account?token=" +
+            ">http://3.122.216.167:8080/weightliftinglog/confirm-account?token=" +
             verificationToken.getToken() + "</a>" + "<p>Have a nice day!!!</p>");
   }
 }

@@ -3,17 +3,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org" lang="EN">
 <head>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
-    <meta charset="UTF-8">
-    <title>Weightlifting Log Error Panel</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+  <meta charset="UTF-8">
+  <title>Weightlifting Log Error Panel</title>
 </head>
 <body>
 <div id="error-container">
-    <div class="centered">
-        <h2>Error!</h2>
-        <p>You don't have the credentials to use this feature!</p>
-        <a class="my-btn" th:href = "@{/login}" type="button">Take me back</a>
-    </div>
+  <div class="centered">
+    <h2>Error!</h2>
+    <p>You don't have the credentials to use this feature!</p>
+    <a class="my-btn" th:href="@{/login}" type="button">Take me back</a>
+  </div>
 </div>
 </body>
 </html>

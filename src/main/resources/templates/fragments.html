@@ -3,351 +3,345 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org" lang="EN">
 <head>
-    <meta charset="UTF-8">
-    <title>Thymeleaf fragments</title>
+  <meta charset="UTF-8">
+  <title>Thymeleaf fragments</title>
 </head>
 <body>
 
 <!--Login-->
 <div th:fragment="login">
-    <h3 class="tab-title">Login page</h3><br>
-    <p class="alert" th:text="${loginError}"></p>
-    <form th:action="@{/login}" method="post">
-        <label for="username">Username</label>:
-        <input type="text" id="username" name="username" autofocus="autofocus"/> <br>
-        <label for="password">Password</label>:
-        <input type="password" id="password" name="password"/> <br>
-        <br>
-        <input type="submit" onclick="storeLogoState();" value="Log in"/>
-    </form>
+  <h3 class="tab-title">Login page</h3><br>
+  <p class="alert" th:text="${loginError}"></p>
+  <form th:action="@{/login}" method="post">
+    <label for="username">Username</label>:
+    <input type="text" id="username" name="username" autofocus="autofocus"/> <br>
+    <label for="password">Password</label>:
+    <input type="password" id="password" name="password"/> <br>
     <br>
-    <a th:href="@{/register}" type="button" class="my-btn" onclick="storeLogoState();">Register</a>
+    <input type="submit" onclick="storeLogoState();" value="Log in"/>
+  </form>
+  <br>
+  <a th:href="@{/register}" type="button" class="my-btn" onclick="storeLogoState();">Register</a>
 </div>
 
 <!--Display on successful logout-->
 <div th:fragment="logout-success">
-    <h3 class="tab-title">Logout page</h3><br>
-    <p class="alert">Logout successful!</p>
-    <form th:action="@{/login}" method="get">
-        <input type="submit" value="OK"/>
-    </form>
+  <h3 class="tab-title">Logout page</h3><br>
+  <p class="alert">Logout successful!</p>
+  <form th:action="@{/login}" method="get">
+    <input type="submit" value="OK"/>
+  </form>
 </div>
 
 <!--Display on unsuccessful logout-->
 <div th:fragment="logout-failure">
-    <h3 class="tab-title">Logout page</h3><br>
-    <p class="alert">Logout error, please try again!</p>
-    <form th:action="@{/user}" method="get">
-        <input type="submit" value="OK"/>
-    </form>
+  <h3 class="tab-title">Logout page</h3><br>
+  <p class="alert">Logout error, please try again!</p>
+  <form th:action="@{/user}" method="get">
+    <input type="submit" value="OK"/>
+  </form>
 </div>
 
 <!--User registration form-->
 <div th:fragment="register-user">
-    <h2>Please enter your details to register...</h2><br>
-    <form th:action="@{/register}" th:object="${user}" method="post">
-        <input type="hidden" th:field="*{id}"/>
-        <p>
-            <label>Username: <input type="text" th:field="*{name}" autofocus="autofocus"/></label>
-            <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span>
-        </p>
-        <p>
-            <label>Password: <input type="password" th:field="*{password}"/></label>
-            <span th:if="${#fields.hasErrors('password')}" class="alert"
-                  th:errors="*{password}"></span>
-            <span class='alert' th:text="${passwordsDontMatch}"></span>
-        </p>
-        <p>
-            <label>Confirm password:<input type="password" th:field="*{confirmPassword}"/></label>
-            <span th:if="${#fields.hasErrors('confirmPassword')}" class="alert"
-                  th:errors="*{confirmPassword}"></span>
-        </p>
-        <p>
-            <label>Email: <input type="text" th:field="*{email}"/></label>
-            <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span>
-            <span class='alert' th:text="${emailExists}"></span>
-        </p>
-        <p>
-            <label><input type="checkbox" th:field="*{activated}" th:value="true"/></label>
-            <span>Email address for testing purposes, don't send the activation message</span>
-        </p>
-        <p>
-            <label>First name: <input type="text" th:field="*{firstName}"/></label>
-        </p>
-        <p>
-            <label>Surname: <input type="text" th:field="*{lastName}"/></label>
-        </p>
-        <p>
-            <label>Age: <input class="centered" type="number" th:field="*{age}"/></label>
-        </p>
-        <p>
-            <label>Female: <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
-            Male: <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/></label>
-        </p>
-        <input type="hidden" th:field="*{role}"/>
-        <input type="submit" value="Register new user">
-        <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">Cancel</a>
-    </form>
+  <h2>Please enter your details to register...</h2><br>
+  <form th:action="@{/register}" th:object="${user}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <p>
+      <label>Username: <input type="text" th:field="*{name}" autofocus="autofocus"/></label>
+      <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span>
+    </p>
+    <p>
+      <label>Password: <input type="password" th:field="*{password}"/></label>
+      <span th:if="${#fields.hasErrors('password')}" class="alert"
+            th:errors="*{password}"></span>
+      <span class='alert' th:text="${passwordsDontMatch}"></span>
+    </p>
+    <p>
+      <label>Confirm password:<input type="password" th:field="*{confirmPassword}"/></label>
+      <span th:if="${#fields.hasErrors('confirmPassword')}" class="alert"
+            th:errors="*{confirmPassword}"></span>
+    </p>
+    <p>
+      <label>Email: <input type="text" th:field="*{email}"/></label>
+      <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span>
+      <span class='alert' th:text="${emailExists}"></span>
+    </p>
+    <p>
+      <label><input type="checkbox" th:field="*{activated}" th:value="true"/></label>
+      <span>Email address for testing purposes, don't send the activation message</span>
+    </p>
+    <p>
+      <label>First name: <input type="text" th:field="*{firstName}"/></label>
+    </p>
+    <p>
+      <label>Surname: <input type="text" th:field="*{lastName}"/></label>
+    </p>
+    <p>
+      <label>Age: <input class="centered" type="number" th:field="*{age}"/></label>
+    </p>
+    <p>
+      <label>Female: <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
+        Male: <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/></label>
+    </p>
+    <input type="hidden" th:field="*{role}"/>
+    <input type="submit" value="Register new user">
+    <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">Cancel</a>
+  </form>
 </div>
 
 <!--User details edition form-->
 <div th:fragment="update-user">
-    <h2>Please edit your details...</h2><br>
-    <form th:action="@{/user/update}" th:object="${user}" method="post">
-        <input type="hidden" th:field="*{id}"/>
-        <p>
-            <label>Username: <input type="text" th:field="*{name}"/></label>
-            <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span>
-        </p>
-        <p>
-            <label>Password:
-                <input type="password" th:field="*{password}" autofocus="autofocus"/>
-            </label>
-            <span th:if="${#fields.hasErrors('password')}" class="alert"
-                  th:errors="*{password}"></span>
-        </p>
-        <p>
-            <label>Email: <input type="text" th:field="*{email}"/></label>
-            <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span>
-        </p>
-        <p><label>First name: <input type="text" th:field="*{firstName}"/></label></p>
-        <p><label>Surname: <input type="text" th:field="*{lastName}"/></label></p>
-        <p><label>Age: <input class="centered" type="number" th:field="*{age}"/></label></p>
-        <p>
-            <label>Female:
-                <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
-            </label>
-            <label>Male:
-                <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/>
-            </label>
-        </p>
-        <input type="hidden" th:field="*{role}"/>
-        <input type="submit" onclick="storeLogoState();" value="Update user details">
-        <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">Cancel</a>
-        <a class="my-btn" th:href="@{/user/changepassword}"
-           onclick="storeLogoState();" type="button">Change password</a>
-    </form>
+  <h2>Please edit your details...</h2><br>
+  <form th:action="@{/user/update}" th:object="${user}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <p>
+      <label>Username: <input type="text" th:field="*{name}"/></label>
+      <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span>
+    </p>
+    <p>
+      <label>Password:
+        <input type="password" th:field="*{password}" autofocus="autofocus"/>
+      </label>
+      <span th:if="${#fields.hasErrors('password')}" class="alert"
+            th:errors="*{password}"></span>
+    </p>
+    <p>
+      <label>Email: <input type="text" th:field="*{email}"/></label>
+      <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span>
+    </p>
+    <p><label>First name: <input type="text" th:field="*{firstName}"/></label></p>
+    <p><label>Surname: <input type="text" th:field="*{lastName}"/></label></p>
+    <p><label>Age: <input class="centered" type="number" th:field="*{age}"/></label></p>
+    <p>
+      <label>Female:
+        <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
+      </label>
+      <label>Male:
+        <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/>
+      </label>
+    </p>
+    <input type="hidden" th:field="*{role}"/>
+    <input type="submit" onclick="storeLogoState();" value="Update user details">
+    <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">Cancel</a>
+    <a class="my-btn" th:href="@{/user/changepassword}"
+       onclick="storeLogoState();" type="button">Change password</a>
+  </form>
 </div>
 
 <!--Change user's password form-->
 <div th:fragment="change-password">
-    <form th:action="@{/user/changepassword}" th:object="${changePassword}" method="post">
-        <p>
-            <label>Current password:
-                <input type="password" th:field="*{oldPassword}" autofocus="autofocus"/>
-            </label>
-            <span th:if="${#fields.hasErrors('oldPassword')}" class="alert"
-                  th:errors="*{oldPassword}"></span>
-        </p>
-        <p>
-            <label>Confirm current password:
-                <input type="password" th:field="*{confirmOldPassword}"/>
-            </label>
-            <span th:if="${#fields.hasErrors('confirmOldPassword')}" class="alert"
-                  th:errors="*{confirmOldPassword}"></span>
-        </p>
-        <p>
-            <label>New password:
-                <input type="password" th:field="*{newPassword}"/>
-            </label>
-            <span th:if="${#fields.hasErrors('newPassword')}" class="alert"
-                  th:errors="*{newPassword}"></span>
-        </p>
-        <p>
-            <label>Confirm new password:
-                <input type="password" th:field="*{confirmNewPassword}"/>
-            </label>
-            <span th:if="${#fields.hasErrors('confirmNewPassword')}" class="alert"
-                  th:errors="*{confirmNewPassword}"></span>
-        </p>
-        <input type="submit" onclick="storeLogoState();" value="Change password">
-        <a class="my-btn" th:href="@{/user/update}"
-           onclick="storeLogoState();" type="button">Cancel</a>
-    </form>
+  <form th:action="@{/user/changepassword}" th:object="${changePassword}" method="post">
+    <p>
+      <label>Current password:
+        <input type="password" th:field="*{oldPassword}" autofocus="autofocus"/>
+      </label>
+      <span th:if="${#fields.hasErrors('oldPassword')}" class="alert"
+            th:errors="*{oldPassword}"></span>
+    </p>
+    <p>
+      <label>Confirm current password:
+        <input type="password" th:field="*{confirmOldPassword}"/>
+      </label>
+      <span th:if="${#fields.hasErrors('confirmOldPassword')}" class="alert"
+            th:errors="*{confirmOldPassword}"></span>
+    </p>
+    <p>
+      <label>New password:
+        <input type="password" th:field="*{newPassword}"/>
+      </label>
+      <span th:if="${#fields.hasErrors('newPassword')}" class="alert"
+            th:errors="*{newPassword}"></span>
+    </p>
+    <p>
+      <label>Confirm new password:
+        <input type="password" th:field="*{confirmNewPassword}"/>
+      </label>
+      <span th:if="${#fields.hasErrors('confirmNewPassword')}" class="alert"
+            th:errors="*{confirmNewPassword}"></span>
+    </p>
+    <input type="submit" onclick="storeLogoState();" value="Change password">
+    <a class="my-btn" th:href="@{/user/update}"
+       onclick="storeLogoState();" type="button">Cancel</a>
+  </form>
 </div>
 
 <!--User details registration successful-->
 <div th:fragment="register-user-message">
-    <h2 th:utext="${header}">Registration successful!</h2><br>
-    <h5 th:utext="${message}"></h5>
-    <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">OK</a>
+  <h2 th:utext="${header}">Registration successful!</h2><br>
+  <h5 th:utext="${message}"></h5>
+  <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">OK</a>
 </div>
 
 <div th:fragment="activate-account-success">
-    <h2>Account activation successful!</h2><br>
-    <h5>Your account has now been activated.</h5>
-    <br>
-    <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">OK</a>
+  <h2>Account activation successful!</h2><br>
+  <h5>Your account has now been activated.</h5>
+  <br>
+  <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">OK</a>
 </div>
 
 <div th:fragment="activate-account-failure">
-    <h2>There's been a problem activating your account!</h2><br>
-    <h5>Please contact admin or try again.</h5>
-    <br>
-    <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">OK</a>
+  <h2>There's been a problem activating your account!</h2><br>
+  <h5>Please contact admin or try again.</h5>
+  <br>
+  <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">OK</a>
 </div>
 
 <!--User details update successful-->
 <div th:fragment="update-user-success">
-    <h2>User details updated!</h2><br>
-    <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">OK</a>
+  <h2>User details updated!</h2><br>
+  <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">OK</a>
 </div>
 
 <!--Password change successful-->
 <div th:fragment="change-password-success">
-    <h2>New password has been set!</h2><br>
-    <a class="my-btn" th:href="@{/user/update}" onclick="storeLogoState();" type="button">OK</a>
+  <h2>New password has been set!</h2><br>
+  <a class="my-btn" th:href="@{/user/update}" onclick="storeLogoState();" type="button">OK</a>
 </div>
 
 <!--Admin panel-->
 <div th:fragment="admin-panel" id="admin-panel">
-    <div class="controls">
-        <p class="same-row" th:text="'Hello ' + ${adminName} + '!'"></p>
-        <a class="my-btn same-row" th:href="@{/logout}"
-           onclick="storeLogoState();" type="button">Log out</a>
-        <a class="my-btn same-row" th:href="@{/user}"
-           onclick="storeLogoState();" type="button">Back</a>
-    </div>
-    <h2>Welcome, Admin!</h2>
+  <div class="controls">
+    <p class="same-row" th:text="'Hello ' + ${adminName} + '!'"></p>
+    <a class="my-btn same-row" th:href="@{/logout}"
+       onclick="storeLogoState();" type="button">Log out</a>
+    <a class="my-btn same-row" th:href="@{/user}"
+       onclick="storeLogoState();" type="button">Back</a>
+  </div>
+  <h2>Welcome, Admin!</h2>
 </div>
 
 <!--User panel-->
 <div th:fragment="user-panel" class="workout-tab-container">
-    <div id="workout-content-container">
-        <div th:if="${!userPanelPage.isEmpty()}" th:replace="__${userPanelPage}__">
-            <p>If you see this message, something went wrong...</p>
-        </div>
+  <div id="workout-content-container">
+    <div th:if="${!userPanelPage.isEmpty()}" th:replace="__${userPanelPage}__">
+      <p>If you see this message, something went wrong...</p>
     </div>
-    <div class="splitter">
+  </div>
+  <div class="splitter">
+  </div>
+  <div id="workout-selection-container">
+    <div class="controls">
+      <p class="same-row" th:text="'Hello ' + ${userName} + '!'"></p>
+      <a class="my-btn same-row" th:href="@{/logout}"
+         onclick="storeLogoState();" type="button">Log out</a>
+      <a class="my-btn same-row" th:href="@{/user/update}"
+         onclick="storeLogoState();" type="button">Account</a>
+      <!--/*@thymesVar id="adminRights" type="java"*/-->
+      <a th:if="${adminRights}" th:href="@{/admin}" class="same-row my-btn"
+         onclick="storeLogoState();">Admin panel</a>
     </div>
-    <div id="workout-selection-container">
-        <div class="controls">
-            <p class="same-row" th:text="'Hello ' + ${userName} + '!'"></p>
-            <a class="my-btn same-row" th:href="@{/logout}"
-               onclick="storeLogoState();" type="button">Log out</a>
-            <a class="my-btn same-row" th:href="@{/user/update}"
-               onclick="storeLogoState();" type="button">Account</a>
-            <!--/*@thymesVar id="adminRights" type="java"*/-->
-            <a th:if="${adminRights}" th:href="@{/admin}" class="same-row my-btn"
-               onclick="storeLogoState();">Admin panel</a>
-        </div>
-        <br>
-        <table id="workouts-list">
-            <tr th:each="workout: ${workouts}">
-                <td>
-                    <button class="my-btn workout" th:data-id="${workout.id}"
-                            onclick="loadWorkout(this.getAttribute('data-id'))">
-                        <th:block
-                                th:text="${#strings.abbreviate
+    <br>
+    <table id="workouts-list">
+      <tr th:each="workout: ${workouts}">
+        <td>
+          <button class="my-btn workout" th:data-id="${workout.id}"
+                  onclick="loadWorkout(this.getAttribute('data-id'))">
+            <th:block
+                th:text="${#strings.abbreviate
                                 (#strings.replace(workout.title, '&lt;br&gt;', ' '), 30)}"/>
-                        <br>
-                        <th:block
-                                th:text="${#dates.format(workout.created, 'dd-MM-yyyy HH:mm')}"/>
-                    </button>
-                </td>
-            </tr>
-        </table>
-        <script>equalizeColumnHeight();</script>
-    </div>
+            <br>
+            <th:block
+                th:text="${#dates.format(workout.created, 'dd-MM-yyyy HH:mm')}"/>
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
 
 
 </div>
 
 <!-- user panel fragments - default -->
 <div th:fragment="user-panel-default" class="workout-content">
-    <script>
-        window.addEventListener('load', function () {
-            equalizeColumnHeight();
-        });
-    </script>
-    <h3>Select existing workout from the panel to the right or...</h3>
-    <a onclick="sessionStorage.removeItem('workout');storeLogoState();"
-       th:href="@{/workout/}" class="my-btn" type="button">Add new workout</a>
+  <h3>Select existing workout from the panel to the right or...</h3>
+  <a onclick="sessionStorage.removeItem('workout');storeLogoState();"
+     th:href="@{/workout/}" class="my-btn" type="button">Add new workout</a>
 </div>
 
 <!-- user panel fragments - workout details -->
 <div th:fragment="user-panel-workout-details" class="workout-content">
-    <div class="same-row bordered">
-        <button class="my-btn" onclick="saveWorkout(workout);" type="button">Save</button>
-        <button class="my-btn show-on-edit" onclick="deleteWorkout();" type="button">Delete</button>
-        <a class="my-btn" onclick="return okToIgnoreChanges();"
-           th:href="@{/user}" type="button">Cancel</a>
+  <div class="same-row bordered">
+    <button class="my-btn" onclick="saveWorkout(workout);" type="button">Save</button>
+    <button class="my-btn show-on-edit" onclick="deleteWorkout();" type="button">Delete</button>
+    <a class="my-btn" onclick="return okToIgnoreChanges();"
+       th:href="@{/user}" type="button">Cancel</a>
+  </div>
+  <div class="bordered">
+    <div style="display: inline-block">
+      <label for="created">First created: </label>
+      <input type="text" name="created" id="created" maxlength="16" size="12" value=""
+             onchange="workout['created'] = this.value + ':00';"/>
     </div>
+    <div class="show-on-edit" style="display: inline-block">
+      <label for="updated">Last updated: </label>
+      <input type="text" name="updated" id="updated" maxlength="16" size="12" value=""
+             onchange="workout['updated'] = this.value + ':00';"/>
+    </div>
+    <div>
+      <div>
+        <label for="title" class="label-xl">Workout title: </label><br>
+        <span class="my-input" contenteditable="true" id="title" data-set="title"></span>
+        <button class='my-btn add bn' title="Add workout note"
+                onclick='addNote(undefined, 0, "");'>&nbsp;
+        </button>
+      </div>
+      <div id="notes"></div>
+    </div>
+  </div>
+  <div id="exercises"></div>
+  <div class="bordered">
+    <button class="my-btn" onclick="addExercise();">Add exercise</button>
+  </div>
+  <div class="same-row bordered">
+    <button class="my-btn" onclick="saveWorkout(workout);" type="button">Save</button>
+    <button class="my-btn show-on-edit" onclick="deleteWorkout()" type="button">Delete</button>
+    <a class="my-btn" onclick="return okToIgnoreChanges();" th:href="@{/user}"
+       type="button">Cancel
+    </a>
+  </div>
+  <template id="exercise-template">
+    <label class="label-l">Exercise #</label>
+    <br>
+    <span contenteditable="true" class="my-input"></span>
+    <button class="my-btn add bn" title="Add exercise note">&nbsp</button>
+    <button class="my-btn del bn" title="Delete exercise">&nbsp</button>
+    <div class="exercise-notes"></div>
+    <div class="exercise-sets"></div>
     <div class="bordered">
-        <div style="display: inline-block">
-            <label for="created">First created: </label>
-            <input type="text" name="created" id="created" maxlength="16" size="12" value=""
-                   onchange="workout['created'] = this.value + ':00';"/>
-        </div>
-        <div class="show-on-edit" style="display: inline-block">
-            <label for="updated">Last updated: </label>
-            <input type="text" name="updated" id="updated" maxlength="16" size="12" value=""
-                   onchange="workout['updated'] = this.value + ':00';"/>
-        </div>
-        <div>
-            <div>
-                <label for="title" class="label-xl">Workout title: </label><br>
-                <span class="my-input" contenteditable="true" id="title" data-set="title"></span>
-                <button class='my-btn add bn' title="Add workout note"
-                        onclick='addNote(undefined, 0, "");'>&nbsp;
-                </button>
-            </div>
-            <div id="notes"></div>
-        </div>
+      <button class="my-btn add-set">Add set</button>
     </div>
-    <div id="exercises"></div>
-    <div class="bordered">
-        <button class="my-btn" onclick="addExercise();">Add exercise</button>
-    </div>
-    <div class="same-row bordered">
-        <button class="my-btn" onclick="saveWorkout(workout);" type="button">Save</button>
-        <button class="my-btn show-on-edit" onclick="deleteWorkout()" type="button">Delete</button>
-        <a class="my-btn" onclick="return okToIgnoreChanges();" th:href="@{/user}"
-           type="button">Cancel
-        </a>
-    </div>
-    <template id="exercise-template">
-        <label class="label-l">Exercise #</label>
-        <br>
-        <span contenteditable="true" class="my-input"></span>
-        <button class="my-btn add bn" title="Add exercise note">&nbsp</button>
-        <button class="my-btn del bn" title="Delete exercise">&nbsp</button>
-        <div class="exercise-notes"></div>
-        <div class="exercise-sets"></div>
-        <div class="bordered">
-            <button class="my-btn add-set">Add set</button>
-        </div>
-    </template>
-    <template id="set-template">
-        <label class="set-label"></label>
-        <span contenteditable="true" class="my-input"></span>
-        <button class="my-btn add bn" title="Add set note">&nbsp</button>
-        <button class="my-btn del bn" title="Delete set">&nbsp</button>
-        <div class="set-notes"></div>
-    </template>
-    <template id="note-template">
-        <label for="note-type"></label>
-        <span contenteditable="true" class="my-input"></span>
-        <select id="note-type">
-            <option value="0">Text</option>
-            <option value="1">Audio</option>
-            <option value="2">Picture</option>
-            <option value="3">Video</option>
-        </select>
-        <button class="my-btn del bn" title="Delete note">&nbsp</button>
-    </template>
-    <script>
-        if (sessionStorage.getItem('workout')) {
-            $('.show-on-add').hide();
-            $('.show-on-edit').show();
-            editWorkout();
-        } else {
-            $('.show-on-edit').hide();
-            $('.show-on-add').show();
-            document.getElementById('title').focus();
-            addWorkout();
-        }
-    </script>
+  </template>
+  <template id="set-template">
+    <label class="set-label"></label>
+    <span contenteditable="true" class="my-input"></span>
+    <button class="my-btn add bn" title="Add set note">&nbsp</button>
+    <button class="my-btn del bn" title="Delete set">&nbsp</button>
+    <div class="set-notes"></div>
+  </template>
+  <template id="note-template">
+    <label for="note-type"></label>
+    <span contenteditable="true" class="my-input"></span>
+    <select id="note-type">
+      <option value="0">Text</option>
+      <option value="1">Audio</option>
+      <option value="2">Picture</option>
+      <option value="3">Video</option>
+    </select>
+    <button class="my-btn del bn" title="Delete note">&nbsp</button>
+  </template>
+  <script>
+    if (sessionStorage.getItem('workout')) {
+      $('.show-on-add').hide();
+      $('.show-on-edit').show();
+      editWorkout();
+    } else {
+      $('.show-on-edit').hide();
+      $('.show-on-add').show();
+      document.getElementById('title').focus();
+      addWorkout();
+    }
+  </script>
 </div>
 </body>
 </html>
