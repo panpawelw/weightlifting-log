@@ -60,7 +60,7 @@ public class User implements Serializable {
   @NotBlank
   private String role;
 
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private List<WorkoutSerialized> workouts;
 
   public User() {

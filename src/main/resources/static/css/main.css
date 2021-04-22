@@ -215,13 +215,6 @@ input[type=text], input[type=number], input[type=password], .my-input {
   background: #FF9200 url("../images/clip.png");
 }
 
-.bn {
-  height: 2em;
-  width: 2em;
-  background-size: cover;
-  margin: 0 0.5em;
-}
-
 button, input[type=submit], .my-btn, select {
   background-color: #FF9200;
   color: black;
@@ -231,6 +224,15 @@ button, input[type=submit], .my-btn, select {
   text-align: center;
   font-weight: bold;
   padding: 0 2px 0 2px;
+  min-width: 3rem;
+}
+
+.bn {
+  height: 2em;
+  width: 2em;
+  background-size: cover;
+  margin: 0 0.5em;
+  min-width: 0;
 }
 
 button:hover, input[type=submit]:hover, .my-btn:hover {

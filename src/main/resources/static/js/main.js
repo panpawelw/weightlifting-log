@@ -214,10 +214,7 @@ function editWorkout() {
   originalWorkout = {...workout};
   document.getElementById("created").value = workout['created'].slice(0, 16);
   document.getElementById("title").innerHTML = workout['title'];
-  // Update the "updated" entry with current timestamp
-  const updated = new Date().toISOString().slice(0, 19).replace('T', ' ');
-  workout['updated'] = updated;
-  document.getElementById("updated").value = updated.slice(0, 16);
+  document.getElementById("updated").value = workout['updated'].slice(0, 16);
   // Continue with workout display and edition
   displayWorkout();
 }
@@ -712,6 +709,8 @@ function loadWorkout(workoutId) {
  */
 function okToIgnoreChanges() {
   if (JSON.stringify(workout) !== JSON.stringify(originalWorkout)) {
+    console.log(workout);
+    console.log(originalWorkout);
     if (confirm("You have unsaved changes!") === false) return false;
   }
   storeLogoState();
@@ -721,6 +720,10 @@ function okToIgnoreChanges() {
 /** Sends new workout object in JSON format to REST controller using POST AJAX call.
  * @param {object} [workout] - workout object to be persisted */
 function saveWorkout(workout) {
+  // Update the "updated" workout entry with current timestamp
+  const updated = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  workout['updated'] = updated;
+  // Save workout
   const csrfToken = $("meta[name='_csrf']").attr("content");
   const formData = new FormData();
   formData.append('workout',
