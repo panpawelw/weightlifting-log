@@ -109,4 +109,8 @@ public class S3FileService implements FileService {
       }
     });
   }
+
+  public void setAmazonS3Client(AmazonS3 client) {
+    this.amazonS3Client = client;
+  }
 }
