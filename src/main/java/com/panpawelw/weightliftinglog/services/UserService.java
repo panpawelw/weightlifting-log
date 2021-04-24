@@ -20,6 +20,7 @@ import com.panpawelw.weightliftinglog.models.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -76,6 +77,15 @@ public class UserService {
    */
   public void deleteUserById(long id) {
     userRepository.deleteById(id);
+  }
+
+  /**
+   * Finds all users in database by activated boolean
+   * @param activated - activated
+   * @return list of users
+   */
+  public List<User> findAllByActivated(boolean activated) {
+    return userRepository.findAllByActivated(activated);
   }
 
   /**
