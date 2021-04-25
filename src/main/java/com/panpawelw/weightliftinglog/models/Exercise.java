@@ -14,6 +14,7 @@ import java.util.Objects;
  */
 public class Exercise implements Serializable {
 
+  private static final long serialVersionUID = 6434853172785885208L;
   private String title;
   private List<Set> sets;
   private List<Note> notes;

@@ -12,6 +12,7 @@ import java.util.Objects;
  */
 public class Note implements Serializable {
 
+  private static final long serialVersionUID = 768543267179990291L;
   private int type;
   private String content;
 

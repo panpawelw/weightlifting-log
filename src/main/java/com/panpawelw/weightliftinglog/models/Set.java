@@ -14,6 +14,7 @@ import java.util.Objects;
  */
 public class Set implements Serializable {
 
+  private static final long serialVersionUID = 8179299543027411888L;
   private String data;
   private List<Note> notes;
 

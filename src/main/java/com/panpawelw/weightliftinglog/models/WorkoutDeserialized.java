@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,6 +16,7 @@ import java.util.Objects;
  */
 public class WorkoutDeserialized implements Serializable {
 
+  private static final long serialVersionUID = -2103026528799779736L;
   private Long id;
   private String title;
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

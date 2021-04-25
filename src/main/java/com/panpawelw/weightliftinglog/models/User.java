@@ -30,6 +30,7 @@ import java.util.Objects;
 @Table(name = "users")
 public class User implements Serializable {
 
+  private static final long serialVersionUID = 4180865572929845555L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
