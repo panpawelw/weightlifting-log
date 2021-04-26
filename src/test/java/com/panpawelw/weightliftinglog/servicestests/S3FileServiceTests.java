@@ -14,6 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -72,6 +73,15 @@ public class S3FileServiceTests {
 
   @Test
   public void testDeleteAllFilesByWorkoutId() {
+    WorkoutDeserialized testWorkout = new WorkoutDeserialized(1L, "Test title", null,
+        null, new User(), new ArrayList<>(), new ArrayList<>(),
+        Arrays.asList("audio_file.mp3", "photo.jpg", "video_clip.mp4"));
+    when(workoutService.findWorkoutById(1)).thenReturn(testWorkout);
+    ReflectionTestUtils.setField(service, "bucketName", "correctbucketname");
 
+    service.deleteAllFilesByWorkoutId(1);
+    verify(client).deleteObject("correctbucketname", "1\\audio_file.mp3");
+    verify(client).deleteObject("correctbucketname", "1\\photo.jpg");
+    verify(client).deleteObject("correctbucketname", "1\\video_clip.mp4");
   }
 }
