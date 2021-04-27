@@ -84,4 +84,24 @@ public class S3FileServiceTests {
     verify(client).deleteObject("correctbucketname", "1\\photo.jpg");
     verify(client).deleteObject("correctbucketname", "1\\video_clip.mp4");
   }
+
+  @Test
+  public void testDeleteAllFilesByWorkoutIdWithIncorrectParameters() {
+    WorkoutDeserialized testWorkout = new WorkoutDeserialized(1L, "Test title", null,
+        null, new User(), new ArrayList<>(), new ArrayList<>(),
+        Arrays.asList("audio_file.mp3", "photo.jpg", "incorrectfilename.mp4"));
+    when(workoutService.findWorkoutById(1)).thenReturn(testWorkout);
+    ReflectionTestUtils.setField(service, "bucketName", "correctbucketname");
+    doThrow(AmazonClientException.class)
+        .when(client).deleteObject("correctbucketname", "1\\incorrectfilename.mp4");
+
+    try {
+      service.deleteAllFilesByWorkoutId(1);
+    }catch (RuntimeException exception) {
+      assertEquals(exception.getMessage(), "Error deleting files!");
+    }
+    verify(client).deleteObject("correctbucketname", "1\\audio_file.mp3");
+    verify(client).deleteObject("correctbucketname", "1\\photo.jpg");
+    verify(client).deleteObject("correctbucketname", "1\\incorrectfilename.mp4");
+  }
 }
