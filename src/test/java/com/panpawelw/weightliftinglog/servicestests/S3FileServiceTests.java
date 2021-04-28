@@ -22,6 +22,10 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class S3FileServiceTests {
 
+  private static final WorkoutDeserialized TEST_WORKOUT = new WorkoutDeserialized(1L,
+      "Test title", null, null, new User(), new ArrayList<>(), new ArrayList<>(),
+      Arrays.asList("audio_file.mp3", "photo.jpg", "video_clip.mp4"));
+
   @Mock
   private AmazonS3 client;
 
@@ -34,6 +38,7 @@ public class S3FileServiceTests {
   public void setup() {
     this.service = new S3FileService(workoutService);
     service.setAmazonS3Client(client);
+    ReflectionTestUtils.setField(service, "bucketName", "correctbucketname");
   }
 
   @Test
@@ -48,23 +53,16 @@ public class S3FileServiceTests {
 
   @Test
   public void testDeleteFileByWorkoutAndFilename() {
-    WorkoutDeserialized testWorkout = new WorkoutDeserialized(1L, "Test title", null,
-        null, new User(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-    ReflectionTestUtils.setField(service, "bucketName", "correctbucketname");
-
-    service.deleteFileByWorkoutAndFilename(testWorkout, "correctfilename.mp3");
+    service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, "correctfilename.mp3");
     verify(client).deleteObject("correctbucketname", "1\\correctfilename.mp3");
   }
 
   @Test
   public void testDeleteFileByWorkoutAndFilenameWithIncorrectParameters() {
-    WorkoutDeserialized testWorkout = new WorkoutDeserialized(1L, "Test title", null,
-        null, new User(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-    ReflectionTestUtils.setField(service, "bucketName", "correctbucketname");
     doThrow(AmazonClientException.class)
         .when(client).deleteObject("correctbucketname", "1\\incorrectfilename.mp3");
     try {
-      service.deleteFileByWorkoutAndFilename(testWorkout, "incorrectfilename.mp3");
+      service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, "incorrectfilename.mp3");
     }catch (RuntimeException exception) {
       assertEquals(exception.getMessage(), "Error deleting file!");
     }
@@ -73,11 +71,7 @@ public class S3FileServiceTests {
 
   @Test
   public void testDeleteAllFilesByWorkoutId() {
-    WorkoutDeserialized testWorkout = new WorkoutDeserialized(1L, "Test title", null,
-        null, new User(), new ArrayList<>(), new ArrayList<>(),
-        Arrays.asList("audio_file.mp3", "photo.jpg", "video_clip.mp4"));
-    when(workoutService.findWorkoutById(1)).thenReturn(testWorkout);
-    ReflectionTestUtils.setField(service, "bucketName", "correctbucketname");
+    when(workoutService.findWorkoutById(1)).thenReturn(TEST_WORKOUT);
 
     service.deleteAllFilesByWorkoutId(1);
     verify(client).deleteObject("correctbucketname", "1\\audio_file.mp3");
@@ -87,13 +81,7 @@ public class S3FileServiceTests {
 
   @Test
   public void testDeleteAllFilesByWorkoutIdWithIncorrectParameters() {
-    WorkoutDeserialized testWorkout = new WorkoutDeserialized(1L, "Test title", null,
-        null, new User(), new ArrayList<>(), new ArrayList<>(),
-        Arrays.asList("audio_file.mp3", "photo.jpg", "incorrectfilename.mp4"));
-    when(workoutService.findWorkoutById(1)).thenReturn(testWorkout);
-    ReflectionTestUtils.setField(service, "bucketName", "correctbucketname");
-    doThrow(AmazonClientException.class)
-        .when(client).deleteObject("correctbucketname", "1\\incorrectfilename.mp4");
+    when(workoutService.findWorkoutById(1)).thenReturn(TEST_WORKOUT);
 
     try {
       service.deleteAllFilesByWorkoutId(1);
@@ -102,6 +90,6 @@ public class S3FileServiceTests {
     }
     verify(client).deleteObject("correctbucketname", "1\\audio_file.mp3");
     verify(client).deleteObject("correctbucketname", "1\\photo.jpg");
-    verify(client).deleteObject("correctbucketname", "1\\incorrectfilename.mp4");
+    verify(client).deleteObject("correctbucketname", "1\\video_clip.mp4");
   }
 }
