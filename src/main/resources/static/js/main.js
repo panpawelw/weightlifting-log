@@ -3,9 +3,9 @@
  *****************************************************************/
 
 let okToToggleLogo = true; // Global flag for logo visibility toggling
-let BASE_URL = undefined;
+let BASE_URL;
 
-$(document).ready(function () {
+$(function () {
 
   getBaseUrl();
 
@@ -63,7 +63,7 @@ $(document).ready(function () {
   /* These handlers are responsible for scrolling the document to the top
   when user is changing tabs, while not allowing the logo toggle action to be
   triggered by the scrolling. */
-  $('#tab1handle, #tab2handle, #tab3handle, #tab4handle').bind('click', function () {
+  $('#tab1handle, #tab2handle, #tab3handle, #tab4handle').on('click', function () {
     okToToggleLogo = false;
     $('html').animate({scrollTop: 1}, {
       duration: 250, complete: function () {
@@ -143,8 +143,7 @@ function calculate1RM() {
   const weight = document.getElementById('weight-text').value;
   const reps = document.getElementById('reps-text').value;
   const result = weight * (1 + (reps / 30));
-  document.getElementById('result').value
-    = result.toFixed(2);
+  document.getElementById('result').value = result.toFixed(2);
 
   for (let i = 1; i < 14; i++) {
     document.getElementById('percentage-' + i).value =
@@ -244,8 +243,8 @@ function displayWorkout() {
   const heightObserver = new ResizeObserver(entries => {
     for (let entry of entries) {
       const height = entry.target.offsetHeight + 'px';
-      document.getElementById('workout-selection-container').style.height,
-        document.getElementsByClassName('splitter')[0].style.height = height;
+      document.getElementById('workout-selection-container').style.height = height;
+      document.getElementsByClassName('splitter')[0].style.height = height;
     }
   });
   heightObserver.observe(document.getElementsByClassName('workout-content')[0]);
@@ -292,8 +291,7 @@ function storeInWorkout(entry, value) {
       workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]] = value;
       break;
     case 7:
-      workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]][entry[6]]
-        = value;
+      workout[entry[0]][entry[1]][entry[2]][entry[3]][entry[4]][entry[5]][entry[6]] = value;
       break;
   }
 }
@@ -334,10 +332,10 @@ function addExercise(exerciseNo = undefined, title = undefined) {
   document.getElementById(id).setAttribute('data-set',
     "exercises," + exerciseNo + ",title");
   // set content if displaying an existing exercise or focus on element if creating a new one
-  if (title !== undefined) {
-    document.getElementById(id).innerHTML = title;
-  } else {
+  if (title === undefined) {
     document.getElementById(id).focus();
+  } else {
+    document.getElementById(id).innerHTML = title;
   }
 }
 
@@ -375,10 +373,10 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
   document.getElementById(id).setAttribute('data-set',
     "exercises," + exerciseNo + ",sets," + setNo + ",data");
   // set content if displaying an existing set or focus on element if creating a new one
-  if (data !== undefined) {
-    document.getElementById(id).innerHTML = data;
-  } else {
+  if (data === undefined) {
     document.getElementById(id).focus();
+  } else {
+    document.getElementById(id).innerHTML = data;
   }
 }
 
@@ -429,10 +427,10 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
   newNoteHTML.getElementsByTagName('span')[0].id = id;
   newNoteHTML.getElementsByTagName('label')[0].htmlFor = id;
   newNoteHTML.getElementsByTagName('label')[0].innerHTML = 'Note #' + (noteNo + 1);
-  newNoteHTML.getElementsByTagName('select').name = id + '-type'
+  newNoteHTML.getElementsByTagName('select').name = id + '-type';
   newNoteHTML.getElementsByTagName('select')[0].onchange =
     function () {
-      changeNoteType(this.value, document.getElementById(id));
+      changeNoteType(this.value, id);
     };
   newNoteHTML.getElementsByClassName('my-btn del bn')[0].onclick =
     function () {
@@ -445,14 +443,13 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
   if (itsANewNote) {
     noteListAlias.push(newNote);
     document.getElementById(id).focus();
-    equalizeColumnHeight();
     // if not - display the note content (and change type if other than text note)
   } else {
-    if (newNote.type !== 0) {
+    if (newNote.type === 0) {
+      document.getElementById(id).innerHTML = newNote.content;
+    } else {
       displayExistingMediaNote(id, newNote.content, newNote.type);
       assignFileToExistingMediaNote(id, newNote.content);
-    } else {
-      document.getElementById(id).innerHTML = newNote.content;
     }
   }
 }
@@ -522,8 +519,8 @@ function setNoteContentAndType(noteId, content, type) {
 function displayExistingMediaNote(noteId, content, type) {
   const oldNote = document.getElementById(noteId);
   const data = oldNote.dataset.set;
-  $(oldNote).replaceWith('<span id="' + noteId + '" class="my-input" data-set="'
-    + data + '">' + content + '</span>');
+  $(oldNote).replaceWith('<span id="' + noteId + '" class="my-input" data-set="' +
+    data + '">' + content + '</span>');
   const newNote = document.getElementById(noteId);
   let modal = document.createElement("div");
   modal.setAttribute('id', noteId + '-modal');
@@ -687,7 +684,7 @@ function attachFile(fileInputId, file, noteType) {
 /** Gets existing workout details in JSON format from REST controller.
  * @param {number} [workoutId] - id number of workout to be loaded from database */
 function loadWorkout(workoutId) {
-  if (okToIgnoreChanges() === false) return false;
+  if (okToIgnoreChanges() === false) { return false; }
   const csrfToken = $("meta[name='_csrf']").attr("content");
   $.ajax({
     url: BASE_URL + 'workout/' + workoutId,
@@ -695,13 +692,14 @@ function loadWorkout(workoutId) {
     type: 'GET',
     dataType: 'JSON',
     async: true,
-  }).done(function (data) {
+  }).then(function (data) {
     sessionStorage.setItem('workout', JSON.stringify(data));
     storeLogoState();
     window.location.href = BASE_URL + 'workout/';
-  }).fail(function () {
-    alert('There\'s been a problem loading the workout data!')
+  }, function () {
+    alert('There\'s been a problem loading the workout data!');
   });
+  return true;
 }
 
 /** Checks whether user wants to ignore unsaved changes if there are any
@@ -711,7 +709,7 @@ function okToIgnoreChanges() {
   if (JSON.stringify(workout) !== JSON.stringify(originalWorkout)) {
     console.log(workout);
     console.log(originalWorkout);
-    if (confirm("You have unsaved changes!") === false) return false;
+    if (confirm("You have unsaved changes!") === false) { return false; }
   }
   storeLogoState();
   return true;
@@ -721,8 +719,7 @@ function okToIgnoreChanges() {
  * @param {object} [workout] - workout object to be persisted */
 function saveWorkout(workout) {
   // Update the "updated" workout entry with current timestamp
-  const updated = new Date().toISOString().slice(0, 19).replace('T', ' ');
-  workout['updated'] = updated;
+  workout['updated'] = new Date().toISOString().slice(0, 19).replace('T', ' ');
   // Save workout
   const csrfToken = $("meta[name='_csrf']").attr("content");
   const formData = new FormData();
@@ -741,13 +738,12 @@ function saveWorkout(workout) {
     contentType: false,
     cache: false,
     async: true,
-  }).done(function () {
+  }).then(function () {
     storeLogoState();
     window.location.href = BASE_URL + 'user';
-  })
-    .fail(function () {
-      alert('There\'s been a problem saving the workout data!')
-    });
+  }, function () {
+    alert('There\'s been a problem saving the workout data!');
+  });
 }
 
 /** Request deletion of the currently displayed workout from the database. */
@@ -759,13 +755,12 @@ function deleteWorkout() {
       headers: {"X-CSRF-TOKEN": csrfToken},
       type: 'DELETE',
       async: true,
-    }).done(function () {
+    }).then(function () {
       storeLogoState();
       window.location.href = BASE_URL + 'user';
-    })
-      .fail(function () {
-        alert('There\'s been a problem deleting this workout!')
-      });
+    }, function () {
+      alert('There\'s been a problem deleting this workout!');
+    });
   }
 }
 
@@ -780,11 +775,11 @@ function loadMediaFile(noteId) {
     headers: {"X-CSRF-TOKEN": csrfToken},
     type: 'GET',
     async: true,
-  }).done(function (data, status, xhr) {
+  }).then(function (data, status, xhr) {
     // create base64 string and set it as a source for note element
     let base64source = 'data:' + xhr.getResponseHeader('type') + ';base64,' + data;
     $('#' + noteId + '-media').attr('src', base64source);
-  }).fail(function () {
+  }, function () {
     alert('There\'s been a problem loading this file!');
   });
 }
