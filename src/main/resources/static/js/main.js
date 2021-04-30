@@ -157,26 +157,28 @@ function calculate1RM() {
  * @param {number}  percentage  the current value of percentage
  */
 function updatePercentageDescription(description, percentage) {
-  const toUpdate = document.getElementById(description);
-  if (percentage < 21) {
-    toUpdate.innerHTML = "Upper body ballistic work, lower body plyometrics. Improves muscle " +
-      "hardness and contraction speed.";
-  } else if (percentage < 41) {
-    toUpdate.innerHTML = "Lower body ballistic work. Improves muscle hardness, develops" +
-      " power and contraction speed.";
-  } else if (percentage < 61) {
-    toUpdate.innerHTML = "Explosiveness, speed and power. Great for muscle hardness. 60% can " +
-      "be used for hypertrophy when done to failure.";
-  } else if (percentage < 81) {
-    toUpdate.innerHTML = "Best range for muscle mass building, also good for explosiveness" +
-      " (~70%) and strength (~80%) in Olympic lifting.";
-  } else if (percentage < 91) {
-    toUpdate.innerHTML = "Best for building muscle strength, use ~80% for easy recovery, ~90%" +
-      " for quick strength peaking.";
-  } else {
-    toUpdate.innerHTML = "Increases maximal strength via neural factors. Good for displaying" +
-      " strength. Difficult to recover from.";
+  let labelNumber = 5;
+  const thresholds = [21, 41, 61, 81, 91];
+  const labels = [
+    "Upper body ballistic work, lower body plyometrics. Improves muscle hardness and contraction " +
+    "speed.",
+    "Lower body ballistic work. Improves muscle hardness, develops power and contraction speed.",
+    "Explosiveness, speed and power. Great for muscle hardness. 60% can be used for hypertrophy " +
+    "when done to failure.",
+    "Best range for muscle mass building, also good for explosiveness (~70%) and strength (~80%) " +
+    "in Olympic lifting.",
+    "Best for building muscle strength, use ~80% for easy recovery, ~90% for quick strength " +
+    "peaking.",
+    "Increases maximal strength via neural factors. Good for displaying " +
+    "strength. Difficult to recover from."];
+
+  for (let i = 0; i < 5; i++) {
+    if (percentage < thresholds[i]) {
+      labelNumber = i;
+      break;
+    }
   }
+  document.getElementById(description).innerHTML = labels[labelNumber];
 }
 
 /****************************************************************************
