@@ -198,7 +198,7 @@ function addWorkout() {
     id: 0, title: null, created: null, updated: null, user: null,
     notes: [], exercises: [], filenames: []
   };
-  originalWorkout = {...workout};
+  originalWorkout = Object.assign({}, workout);
   // Update "created" entry with current timestamp
   const created = new Date().toISOString().slice(0, 19).replace('T', ' ');
   workout['created'] = created;
@@ -212,7 +212,7 @@ function addWorkout() {
 function editWorkout() {
   // Get existing workout object from session storage and update "created" and "title" entries
   workout = JSON.parse(sessionStorage.getItem('workout'));
-  originalWorkout = {...workout};
+  originalWorkout = Object.assign({}, workout);
   document.getElementById("created").value = workout['created'].slice(0, 16);
   document.getElementById("title").innerHTML = workout['title'];
   document.getElementById("updated").value = workout['updated'].slice(0, 16);
