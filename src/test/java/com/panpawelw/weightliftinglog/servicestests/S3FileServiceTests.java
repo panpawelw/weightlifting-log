@@ -2,6 +2,10 @@ package com.panpawelw.weightliftinglog.servicestests;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.panpawelw.weightliftinglog.models.MediaFile;
 import com.panpawelw.weightliftinglog.models.User;
 import com.panpawelw.weightliftinglog.models.WorkoutDeserialized;
 import com.panpawelw.weightliftinglog.services.S3FileService;
@@ -13,6 +17,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -47,8 +53,19 @@ public class S3FileServiceTests {
   }
 
   @Test
-  public void testGetFileByWorkoutAndFilename() {
-
+  public void testGetFileByWorkoutIdAndFilename() {
+    MediaFile testFile = new MediaFile(null, 3L, "testfile.mp3", "audio",
+        new byte[] {69, 121, 101 , 45, 62, 118, 101, 114, (byte) 196, (byte) 195, 61, 101, 98});
+    InputStream testFileInputStream = new ByteArrayInputStream(testFile.getContent());
+    S3Object s3Object = mock(S3Object.class);
+    ObjectMetadata objectMetadata = mock(ObjectMetadata.class);
+    when(client.getObject("correctbucketname", "3\\testfile.mp3")).thenReturn(s3Object);
+    when(s3Object.getObjectMetadata()).thenReturn(objectMetadata);
+    when(s3Object.getObjectContent()).thenReturn(
+        new S3ObjectInputStream(testFileInputStream, null));
+    when(s3Object.getKey()).thenReturn("testfile.mp3");
+    when(objectMetadata.getContentType()).thenReturn("audio");
+    assertEquals(testFile, service.getFileByWorkoutIdAndFilename(3L, "testfile.mp3"));
   }
 
   @Test
