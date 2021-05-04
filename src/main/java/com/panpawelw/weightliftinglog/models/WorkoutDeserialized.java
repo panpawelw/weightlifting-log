@@ -119,6 +119,7 @@ public class WorkoutDeserialized implements Serializable {
         ", user=" + user +
         ", exercises=" + exercises +
         ", notes=" + notes +
+        ", filenames=" + filenames +
         '}';
   }
 

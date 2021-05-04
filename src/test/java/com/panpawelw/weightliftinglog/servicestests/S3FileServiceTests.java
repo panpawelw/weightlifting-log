@@ -15,7 +15,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,7 +33,7 @@ public class S3FileServiceTests {
 
   private static final WorkoutDeserialized TEST_WORKOUT = new WorkoutDeserialized(1L,
       "Test title", null, null, new User(), new ArrayList<>(), new ArrayList<>(),
-      Arrays.asList("audio_file.mp3", "photo.jpg", "video_clip.mp4"));
+      new ArrayList<>(Arrays.asList("audio_file.mp3", "photo.jpg", "video_clip.mp4")));
 
   @Mock
   private AmazonS3 client;
@@ -49,13 +52,34 @@ public class S3FileServiceTests {
 
   @Test
   public void testStoreAllFilesByWorkout() {
+    MultipartFile[] testWorkoutFiles = new MultipartFile[]{
+        new MockMultipartFile("testaudio.mp3", "testaudio.mp3",
+            "audio/mpeg", new byte[]{1, 2, 3}),
+        new MockMultipartFile("testimage.bmp", "testimage.bmp",
+            "image/bmp", new byte[]{1, 2, 3}),
+        new MockMultipartFile("testvideo.mp4", "testvideo.mp4",
+            "video/mp4", new byte[]{1, 2, 3}),
+    };
 
+    service.storeAllFilesByWorkout(TEST_WORKOUT, testWorkoutFiles);
+
+    String filename;
+    for(MultipartFile file : testWorkoutFiles) {
+      filename = file.getOriginalFilename();
+      ObjectMetadata objectMetadata = new ObjectMetadata();
+      objectMetadata.setContentType(file.getContentType());
+      objectMetadata.setContentLength(file.getSize());
+      verify(client).putObject(eq("correctbucketname"), eq(TEST_WORKOUT.getId() + "\\"
+          + filename), any(InputStream.class), any(ObjectMetadata.class));
+    }
+    assertTrue(TEST_WORKOUT.getFilenames().containsAll(new ArrayList<>(
+        Arrays.asList("testaudio.mp3", "testimage.bmp", "testvideo.mp4"))));
   }
 
   @Test
   public void testGetFileByWorkoutIdAndFilename() {
-    MediaFile testFile = new MediaFile(null, 3L, "testfile.mp3", "audio",
-        new byte[] {69, 121, 101 , 45, 62, 118, 101, 114, (byte) 196, (byte) 195, 61, 101, 98});
+    MediaFile testFile = new MediaFile(null, 3L, "testfile.mp3", "audio/mpeg",
+        new byte[]{69, 121, 101, 45, 62, 118, 101, 114, (byte) 196, (byte) 195, 61, 101, 98});
     InputStream testFileInputStream = new ByteArrayInputStream(testFile.getContent());
     S3Object s3Object = mock(S3Object.class);
     ObjectMetadata objectMetadata = mock(ObjectMetadata.class);
@@ -64,7 +88,7 @@ public class S3FileServiceTests {
     when(s3Object.getObjectContent()).thenReturn(
         new S3ObjectInputStream(testFileInputStream, null));
     when(s3Object.getKey()).thenReturn("testfile.mp3");
-    when(objectMetadata.getContentType()).thenReturn("audio");
+    when(objectMetadata.getContentType()).thenReturn("audio/mpeg");
     assertEquals(testFile, service.getFileByWorkoutIdAndFilename(3L, "testfile.mp3"));
   }
 
@@ -80,7 +104,7 @@ public class S3FileServiceTests {
         .when(client).deleteObject("correctbucketname", "1\\incorrectfilename.mp3");
     try {
       service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, "incorrectfilename.mp3");
-    }catch (RuntimeException exception) {
+    } catch (RuntimeException exception) {
       assertEquals(exception.getMessage(), "Error deleting file!");
     }
     verify(client).deleteObject("correctbucketname", "1\\incorrectfilename.mp3");
@@ -102,7 +126,7 @@ public class S3FileServiceTests {
 
     try {
       service.deleteAllFilesByWorkoutId(1);
-    }catch (RuntimeException exception) {
+    } catch (RuntimeException exception) {
       assertEquals(exception.getMessage(), "Error deleting files!");
     }
     verify(client).deleteObject("correctbucketname", "1\\audio_file.mp3");

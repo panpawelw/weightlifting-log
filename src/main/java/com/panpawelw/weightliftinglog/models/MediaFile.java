@@ -73,7 +73,9 @@ public class MediaFile {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     MediaFile mediaFile = (MediaFile) o;
-    return Objects.equals(id, mediaFile.id) && Objects.equals(workoutId, mediaFile.workoutId) && Objects.equals(filename, mediaFile.filename) && Objects.equals(type, mediaFile.type) && Arrays.equals(content, mediaFile.content);
+    return Objects.equals(id, mediaFile.id) && Objects.equals(workoutId, mediaFile.workoutId)
+        && Objects.equals(filename, mediaFile.filename) && Objects.equals(type, mediaFile.type)
+        && Arrays.equals(content, mediaFile.content);
   }
 
   @Override
