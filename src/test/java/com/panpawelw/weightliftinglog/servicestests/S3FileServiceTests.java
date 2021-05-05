@@ -35,6 +35,15 @@ public class S3FileServiceTests {
       "Test title", null, null, new User(), new ArrayList<>(), new ArrayList<>(),
       new ArrayList<>(Arrays.asList("audio_file.mp3", "photo.jpg", "video_clip.mp4")));
 
+  private static final MultipartFile[] TEST_WORKOUT_FILES = new MultipartFile[]{
+      new MockMultipartFile("testaudio.mp3", "testaudio.mp3",
+          "audio/mpeg", new byte[]{110, (byte) 160, 7, 47, 49, 24, 41, 113, 103, 123}),
+      new MockMultipartFile("testimage.bmp", "testimage.bmp",
+          "image/bmp", new byte[]{41, 91, 115, 16, 22, 118, 122, 49,  28, 97}),
+      new MockMultipartFile("testvideo.mp4", "testvideo.mp4",
+          "video/mp4", new byte[]{113, 17, 78, 6, 89, 24, 23, (byte) 199, 83, 22}),
+  };
+
   @Mock
   private AmazonS3 client;
 
@@ -52,19 +61,9 @@ public class S3FileServiceTests {
 
   @Test
   public void testStoreAllFilesByWorkout() {
-    MultipartFile[] testWorkoutFiles = new MultipartFile[]{
-        new MockMultipartFile("testaudio.mp3", "testaudio.mp3",
-            "audio/mpeg", new byte[]{1, 2, 3}),
-        new MockMultipartFile("testimage.bmp", "testimage.bmp",
-            "image/bmp", new byte[]{1, 2, 3}),
-        new MockMultipartFile("testvideo.mp4", "testvideo.mp4",
-            "video/mp4", new byte[]{1, 2, 3}),
-    };
-
-    service.storeAllFilesByWorkout(TEST_WORKOUT, testWorkoutFiles);
-
+    service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
     String filename;
-    for(MultipartFile file : testWorkoutFiles) {
+    for(MultipartFile file : TEST_WORKOUT_FILES) {
       filename = file.getOriginalFilename();
       ObjectMetadata objectMetadata = new ObjectMetadata();
       objectMetadata.setContentType(file.getContentType());
@@ -74,6 +73,19 @@ public class S3FileServiceTests {
     }
     assertTrue(TEST_WORKOUT.getFilenames().containsAll(new ArrayList<>(
         Arrays.asList("testaudio.mp3", "testimage.bmp", "testvideo.mp4"))));
+  }
+
+  @Test
+  public void testStoreAllFilesByWorkoutWithIncorrectParameters() {
+    doThrow(AmazonClientException.class).when(client).putObject(eq("correctbucketname"),
+        eq("1\\testaudio.mp3"), any(InputStream.class), any(ObjectMetadata.class));
+
+    try {
+      service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
+    }catch(RuntimeException exception) {
+      assertEquals(exception.getMessage(), "Error uploading file!");
+    }
+    verify(client).putObject(eq("correctbucketname"), eq("1\\testaudio.mp3"), any(), any());
   }
 
   @Test
@@ -89,7 +101,21 @@ public class S3FileServiceTests {
         new S3ObjectInputStream(testFileInputStream, null));
     when(s3Object.getKey()).thenReturn("testfile.mp3");
     when(objectMetadata.getContentType()).thenReturn("audio/mpeg");
+
     assertEquals(testFile, service.getFileByWorkoutIdAndFilename(3L, "testfile.mp3"));
+  }
+
+  @Test
+  public void testGetFileByWorkoutIdAndFilenameWithIncorrectParameters() {
+    doThrow(AmazonClientException.class)
+        .when(client).getObject("correctbucketname", "1\\incorrectfilename.mp3");
+
+    try {
+      service.getFileByWorkoutIdAndFilename(1L, "incorrectfilename.mp3");
+    } catch (RuntimeException exception) {
+      assertEquals(exception.getMessage(), "Error streaming file!");
+    }
+    verify(client).getObject("correctbucketname", "1\\incorrectfilename.mp3");
   }
 
   @Test
@@ -102,6 +128,7 @@ public class S3FileServiceTests {
   public void testDeleteFileByWorkoutAndFilenameWithIncorrectParameters() {
     doThrow(AmazonClientException.class)
         .when(client).deleteObject("correctbucketname", "1\\incorrectfilename.mp3");
+
     try {
       service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, "incorrectfilename.mp3");
     } catch (RuntimeException exception) {
