@@ -62,14 +62,9 @@ public class S3FileServiceTests {
   @Test
   public void testStoreAllFilesByWorkout() {
     service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
-    String filename;
     for(MultipartFile file : TEST_WORKOUT_FILES) {
-      filename = file.getOriginalFilename();
-      ObjectMetadata objectMetadata = new ObjectMetadata();
-      objectMetadata.setContentType(file.getContentType());
-      objectMetadata.setContentLength(file.getSize());
       verify(client).putObject(eq("correctbucketname"), eq(TEST_WORKOUT.getId() + "\\"
-          + filename), any(InputStream.class), any(ObjectMetadata.class));
+          + file.getOriginalFilename()), any(InputStream.class), any(ObjectMetadata.class));
     }
     assertTrue(TEST_WORKOUT.getFilenames().containsAll(new ArrayList<>(
         Arrays.asList("testaudio.mp3", "testimage.bmp", "testvideo.mp4"))));
