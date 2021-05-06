@@ -79,6 +79,7 @@ public class VerificationTokenServiceTests {
   public void testRemoveAccountIfTokenExpiredWhenTokenNotExpired() {
     when(repository.findByUser(TEST_USER))
         .thenReturn(java.util.Optional.of(TEST_VERIFICATION_TOKEN));
+
     assertEquals(service.removeAccountIfTokenExpired(TEST_USER),
         "This account requires activation!");
     verify(repository).findByUser(TEST_USER);
@@ -90,6 +91,7 @@ public class VerificationTokenServiceTests {
     expiredVerificationToken.setExpiryDate(new Date(System.currentTimeMillis() - 1000));
     when(repository.findByUser(TEST_USER))
         .thenReturn(java.util.Optional.of(expiredVerificationToken));
+
     assertEquals(service.removeAccountIfTokenExpired(TEST_USER),
         "Activation time expired, user account removed!");
     verify(repository).findByUser(TEST_USER);
@@ -97,8 +99,8 @@ public class VerificationTokenServiceTests {
 
   @Test
   public void testRemoveAccountIfTokenExpiredWhenTokenDoesNotExist() {
-    when(repository.findByUser(any()))
-        .thenReturn(Optional.empty());
+    when(repository.findByUser(any())).thenReturn(Optional.empty());
+
     assertEquals(service.removeAccountIfTokenExpired(TEST_USER),
         "");
   }
