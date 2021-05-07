@@ -2,10 +2,12 @@ package com.panpawelw.weightliftinglog.services;
 
 import org.springframework.beans.factory.annotation.Value;
 import sendinblue.ApiClient;
+import sendinblue.ApiException;
 import sendinblue.Configuration;
 import sendinblue.auth.ApiKeyAuth;
 import sibApi.TransactionalEmailsApi;
 import sibModel.*;
+
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class SendinblueEmailService implements EmailService {
 
+  private final TransactionalEmailsApi api;
+
+  private final SendSmtpEmailSender sender;
+
+  private final SendSmtpEmailTo sendTo;
+
+  private final SendSmtpEmail email;
+
   @Autowired
-  public SendinblueEmailService() {}
+  public SendinblueEmailService(TransactionalEmailsApi api, SendSmtpEmailSender sender,
+      SendSmtpEmailTo sendTo, SendSmtpEmail email) {
+    this.api = api;
+    this.sender = sender;
+    this.sendTo = sendTo;
+    this.email = email;
+  }
 
   @Value("${sendinblue.mail.apikey}")
   private String sendinblueApiKey;
@@ -26,24 +42,18 @@ public class SendinblueEmailService implements EmailService {
     // Configure API key authorization: api-key
     ApiKeyAuth apiKey = (ApiKeyAuth) defaultClient.getAuthentication("api-key");
     apiKey.setApiKey(sendinblueApiKey);
-
+    sender.setEmail(from);
+    List<SendSmtpEmailTo> toList = new ArrayList<>();
+    sendTo.setEmail(to);
+    toList.add(sendTo);
+    email.setSender(sender);
+    email.setTo(toList);
+    email.setHtmlContent(text);
+    email.setSubject(subject);
     try {
-      TransactionalEmailsApi api = new TransactionalEmailsApi();
-      SendSmtpEmailSender sender = new SendSmtpEmailSender();
-      sender.setEmail(from);
-      List<SendSmtpEmailTo> toList = new ArrayList<>();
-      SendSmtpEmailTo sendTo = new SendSmtpEmailTo();
-      sendTo.setEmail(to);
-      toList.add(sendTo);
-      SendSmtpEmail sendSmtpEmail = new SendSmtpEmail();
-      sendSmtpEmail.setSender(sender);
-      sendSmtpEmail.setTo(toList);
-      sendSmtpEmail.setHtmlContent(text);
-      sendSmtpEmail.setSubject(subject);
-      CreateSmtpEmail response = api.sendTransacEmail(sendSmtpEmail);
-      System.out.println(response.toString());
-    } catch (Exception e) {
-      System.out.println("Exception occurred:- " + e.getMessage());
+      api.sendTransacEmail(email);
+    } catch (ApiException e) {
+      throw new RuntimeException("Error sending activation message!");
     }
   }
 }
