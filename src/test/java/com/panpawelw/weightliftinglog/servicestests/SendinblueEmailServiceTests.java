@@ -10,7 +10,7 @@ import sendinblue.ApiException;
 import sibApi.TransactionalEmailsApi;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SendinblueEmailServiceTests {
@@ -32,7 +32,11 @@ public class SendinblueEmailServiceTests {
     verify(api).sendTransacEmail(any());
   }
 
-  @Test
-  public void testSendEmailThrowsException() {
+  @Test(expected = RuntimeException.class)
+  public void testSendEmailThrowsException() throws ApiException{
+    doThrow(ApiException.class).when(api).sendTransacEmail(any());
+    service.sendEmail("test@to.com", "test@from.com",
+        "Test subject", "Test message");
+    verify(api).sendTransacEmail(any());
   }
 }

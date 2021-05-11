@@ -9,8 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import sibApi.TransactionalEmailsApi;
 import sibModel.SendSmtpEmail;
-import sibModel.SendSmtpEmailSender;
-import sibModel.SendSmtpEmailTo;
 
 @SpringBootApplication
 @EnableJpaRepositories
@@ -30,16 +28,6 @@ public class WeightliftingLogApplication extends SpringBootServletInitializer {
   @Bean
   public TransactionalEmailsApi transactionalEmailsApi() {
     return new TransactionalEmailsApi();
-  }
-
-  @Bean
-  public SendSmtpEmailSender sendSmtpEmailSender() {
-    return new SendSmtpEmailSender();
-  }
-
-  @Bean
-  public SendSmtpEmailTo sendSmtpEmailTo() {
-    return new SendSmtpEmailTo();
   }
 
   @Bean
