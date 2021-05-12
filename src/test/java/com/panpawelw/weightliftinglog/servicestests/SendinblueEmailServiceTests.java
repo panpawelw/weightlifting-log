@@ -9,6 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import sendinblue.ApiException;
 import sibApi.TransactionalEmailsApi;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -32,11 +33,16 @@ public class SendinblueEmailServiceTests {
     verify(api).sendTransacEmail(any());
   }
 
-  @Test(expected = RuntimeException.class)
-  public void testSendEmailThrowsException() throws ApiException{
+  @Test
+  public void testSendEmailThrowsException() throws ApiException {
     doThrow(ApiException.class).when(api).sendTransacEmail(any());
-    service.sendEmail("test@to.com", "test@from.com",
-        "Test subject", "Test message");
+
+    try {
+      service.sendEmail("test@to.com", "test@from.com",
+          "Test subject", "Test message");
+    } catch (RuntimeException e) {
+      assertEquals(e.getMessage(), "Error sending activation message!");
+    }
     verify(api).sendTransacEmail(any());
   }
 }

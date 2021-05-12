@@ -13,6 +13,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -57,12 +58,17 @@ public class AWSEmailServiceTests {
     verify(sender).send(message);
   }
 
-  @Test(expected = RuntimeException.class)
+  @Test
   public void testSendEmailThrowsMessagingException() throws MessagingException {
     when(sender.createMimeMessage()).thenReturn(message);
-    doThrow(MessagingException.class).when(helper).setTo(anyString());
+    doThrow(MessagingException.class).when(helper).setTo(eq("test@to.com"));
 
-    service.sendEmail("test@to.com", "test@from.com",
-        "Test subject", "Test message");
+    try {
+      service.sendEmail("test@to.com", "test@from.com",
+          "Test subject", "Test message");
+    } catch (RuntimeException e) {
+      assertEquals(e.getMessage(), "Error sending activation message!");
+    }
+    verify(sender).createMimeMessage();
   }
 }
