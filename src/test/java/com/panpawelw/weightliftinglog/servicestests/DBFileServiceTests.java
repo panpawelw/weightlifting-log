@@ -19,8 +19,7 @@ import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DBFileServiceTests {
@@ -58,9 +57,10 @@ public class DBFileServiceTests {
         Arrays.asList("testaudio.mp3", "testimage.bmp", "testvideo.mp4"))));
   }
 
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testStoreAllFilesByWorkoutWithIncorrectParameters() {
-
+    doThrow(IllegalArgumentException.class).when(repository).saveAll(any());
+    service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
   }
 
   @Test
@@ -80,7 +80,8 @@ public class DBFileServiceTests {
 
   @Test
   public void testDeleteFileByWorkoutAndFilename() {
-
+    service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, "testaudio.mp3");
+    verify(repository).deleteByWorkoutIdAndFilename(TEST_WORKOUT.getId(), "testaudio.mp3");
   }
 
   @Test
