@@ -10,7 +10,7 @@ public interface FileRepository extends JpaRepository<MediaFile, Long> {
 
   MediaFile findFileByWorkoutIdAndFilename(Long workoutId, String filename);
 
-  void deleteByWorkoutIdAndFilename(Long workoutId, String filename);
+  long deleteByWorkoutIdAndFilename(Long workoutId, String filename);
 
   void deleteAllByWorkoutId(Long workoutId);
 }

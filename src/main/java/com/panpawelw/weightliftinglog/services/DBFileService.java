@@ -45,10 +45,9 @@ public class DBFileService implements FileService {
 
   public void deleteFileByWorkoutAndFilename(WorkoutDeserialized workoutDeserialized,
       String filename) {
-    List<String> filenames = workoutDeserialized.getFilenames();
-    fileRepository.deleteByWorkoutIdAndFilename(workoutDeserialized.getId(), filename);
-    filenames.remove(filename);
-    workoutDeserialized.setFilenames(filenames);
+    if(fileRepository.deleteByWorkoutIdAndFilename(workoutDeserialized.getId(), filename) == 0) {
+      System.out.println("No files were deleted!");
+    }
   }
 
   public void deleteAllFilesByWorkoutId(long workoutId) {
