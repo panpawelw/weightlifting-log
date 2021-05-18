@@ -12,5 +12,5 @@ public interface FileRepository extends JpaRepository<MediaFile, Long> {
 
   long deleteByWorkoutIdAndFilename(Long workoutId, String filename);
 
-  void deleteAllByWorkoutId(Long workoutId);
+  long deleteAllByWorkoutId(Long workoutId);
 }

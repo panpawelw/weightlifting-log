@@ -51,6 +51,8 @@ public class DBFileService implements FileService {
   }
 
   public void deleteAllFilesByWorkoutId(long workoutId) {
-    fileRepository.deleteAllByWorkoutId(workoutId);
+    if(fileRepository.deleteAllByWorkoutId(workoutId) == 0) {
+      System.out.println("No files were deleted!");
+    }
   }
 }
