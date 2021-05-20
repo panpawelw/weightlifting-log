@@ -1,5 +1,6 @@
 package com.panpawelw.weightliftinglog.controllers;
 
+import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import com.panpawelw.weightliftinglog.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,7 +30,7 @@ public class WorkoutController {
 
   @Autowired
   public WorkoutController(WorkoutService workoutService, UserService userService,
-      @Qualifier("s3FileService") FileService fileService) {
+      @Qualifier("DBFileService") FileService fileService) {
     this.workoutService = workoutService;
     this.userService = userService;
     this.fileService = fileService;
@@ -38,7 +39,11 @@ public class WorkoutController {
   @ResponseBody
   @GetMapping("/{workoutId}")
   public WorkoutDeserialized getWorkoutById(@PathVariable long workoutId) {
-    return workoutService.findWorkoutById(workoutId);
+    WorkoutDeserialized result = workoutService.findWorkoutById(workoutId);
+    if (result == null) {
+      throw new ApiRequestException("This workout does not exist in the database");
+    }
+    return result;
   }
 
   @GetMapping("/")
@@ -70,14 +75,20 @@ public class WorkoutController {
     if (filesToUpload.length > 0) {
       fileService.storeAllFilesByWorkout(workoutDeserialized, filesToUpload);
     }
-    workoutService.saveWorkout(workoutDeserialized);
+    if (workoutService.saveWorkout(workoutDeserialized) == null) {
+      throw new ApiRequestException("There was a problem saving workout to the database!");
+    }
   }
 
   @ResponseBody
   @DeleteMapping("/{workoutId}")
   public void deleteWorkout(@PathVariable long workoutId) {
-    fileService.deleteAllFilesByWorkoutId(workoutId);
-    workoutService.deleteWorkout(workoutId);
+    if(!workoutService.findWorkoutById(workoutId).getFilenames().isEmpty()) {
+      fileService.deleteAllFilesByWorkoutId(workoutId);
+    }
+    if(workoutService.deleteWorkout(workoutId) != 1) {
+      throw new ApiRequestException("There was a problem deleting workout from the database!");
+    }
   }
 
   @ResponseBody

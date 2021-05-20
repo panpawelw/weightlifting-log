@@ -698,8 +698,8 @@ function loadWorkout(workoutId) {
     sessionStorage.setItem('workout', JSON.stringify(data));
     storeLogoState();
     window.location.href = BASE_URL + 'workout/';
-  }, function () {
-    alert('There\'s been a problem loading the workout data!');
+  }, function (xhr) {
+    alert(JSON.parse(xhr.responseText).message);
   });
   return true;
 }
@@ -743,8 +743,8 @@ function saveWorkout(workout) {
   }).then(function () {
     storeLogoState();
     window.location.href = BASE_URL + 'user';
-  }, function () {
-    alert('There\'s been a problem saving the workout data!');
+  }, function (xhr) {
+    alert(JSON.parse(xhr.responseText).message);
   });
 }
 
@@ -760,13 +760,13 @@ function deleteWorkout() {
     }).then(function () {
       storeLogoState();
       window.location.href = BASE_URL + 'user';
-    }, function () {
-      alert('There\'s been a problem deleting this workout!');
+    }, function (xhr) {
+      alert(JSON.parse(xhr.responseText).message);
     });
   }
 }
 
-/** Request a media file from controller.
+/** Request a media file from the controller.
  * @param {String} noteId - id of the note element associated with this file.
  */
 function loadMediaFile(noteId) {

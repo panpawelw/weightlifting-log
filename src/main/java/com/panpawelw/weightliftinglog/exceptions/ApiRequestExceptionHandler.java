@@ -14,7 +14,7 @@ public class ApiRequestExceptionHandler {
   @ExceptionHandler(value = {ApiRequestException.class})
   public ResponseEntity<Object> handleApiRequestException(ApiRequestException e) {
     ApiRequestExceptionObject apiRequestExceptionObject = new ApiRequestExceptionObject(
-        e.getMessage(), e, HttpStatus.BAD_REQUEST, ZonedDateTime.now(ZoneId.of("Europe/Warsaw")));
-    return new ResponseEntity<>(apiRequestExceptionObject, HttpStatus.BAD_REQUEST);
+        e.getMessage(), e, HttpStatus.NOT_FOUND, ZonedDateTime.now(ZoneId.of("Europe/Warsaw")));
+    return new ResponseEntity<>(apiRequestExceptionObject, HttpStatus.NOT_FOUND);
   }
 }
