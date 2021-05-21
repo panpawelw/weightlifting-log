@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import com.panpawelw.weightliftinglog.models.MediaFile;
 import com.panpawelw.weightliftinglog.models.User;
 import com.panpawelw.weightliftinglog.models.WorkoutDeserialized;
@@ -107,7 +108,7 @@ public class S3FileServiceTests {
 
     try {
       service.getFileByWorkoutIdAndFilename(1L, "incorrectfilename.mp3");
-    } catch (RuntimeException exception) {
+    } catch (ApiRequestException exception) {
       assertEquals(exception.getMessage(), "Error streaming file!");
     }
     verify(client).getObject("correctbucketname", "1\\incorrectfilename.mp3");
@@ -126,7 +127,7 @@ public class S3FileServiceTests {
 
     try {
       service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, "incorrectfilename.mp3");
-    } catch (RuntimeException exception) {
+    } catch (ApiRequestException exception) {
       assertEquals(exception.getMessage(), "Error deleting file!");
     }
     verify(client).deleteObject("correctbucketname", "1\\incorrectfilename.mp3");
@@ -148,7 +149,7 @@ public class S3FileServiceTests {
 
     try {
       service.deleteAllFilesByWorkoutId(1);
-    } catch (RuntimeException exception) {
+    } catch( ApiRequestException exception) {
       assertEquals(exception.getMessage(), "Error deleting files!");
     }
     verify(client).deleteObject("correctbucketname", "1\\audio_file.mp3");

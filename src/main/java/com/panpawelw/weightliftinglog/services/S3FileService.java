@@ -9,6 +9,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.util.IOUtils;
+import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -67,7 +68,7 @@ public class S3FileService implements FileService {
             + filename, file.getInputStream(), objectMetadata);
         filenames.add(filename);
       } catch (AmazonClientException | IOException e) {
-        throw new RuntimeException("Error uploading file!");
+        throw new ApiRequestException("Error uploading file!");
       }
       workoutDeserialized.setFilenames(filenames);
     }
@@ -83,7 +84,7 @@ public class S3FileService implements FileService {
       objectMetadata = s3Object.getObjectMetadata();
       content = IOUtils.toByteArray(s3Object.getObjectContent());
     } catch (IOException | AmazonClientException e) {
-      throw new RuntimeException("Error streaming file!");
+      throw new ApiRequestException("Error streaming file!");
     }
     return new MediaFile(null, workoutId, s3Object.getKey(), objectMetadata.getContentType(),
         content);
@@ -94,7 +95,7 @@ public class S3FileService implements FileService {
     try {
       amazonS3Client.deleteObject(bucketName, filename);
     } catch (AmazonClientException e) {
-      throw new RuntimeException("Error deleting file!");
+      throw new ApiRequestException("Error deleting file!");
     }
   }
 
@@ -105,7 +106,7 @@ public class S3FileService implements FileService {
         filename = workoutId + "\\" + filename;
         amazonS3Client.deleteObject(bucketName, filename);
       } catch (AmazonClientException e) {
-        throw new RuntimeException("Error deleting files!");
+        throw new ApiRequestException("Error deleting files!");
       }
     });
   }
