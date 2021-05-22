@@ -30,7 +30,7 @@ public class WorkoutController {
 
   @Autowired
   public WorkoutController(WorkoutService workoutService, UserService userService,
-      @Qualifier("DBFileService") FileService fileService) {
+      @Qualifier("s3FileService") FileService fileService) {
     this.workoutService = workoutService;
     this.userService = userService;
     this.fileService = fileService;

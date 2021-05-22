@@ -1,6 +1,6 @@
 package com.panpawelw.weightliftinglog.servicestests;
 
-import com.panpawelw.weightliftinglog.services.SendinblueEmailService;
+import com.panpawelw.weightliftinglog.services.EmailService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,16 +14,16 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SendinblueEmailServiceTests {
+public class EmailServiceTests {
 
   @Mock
   private TransactionalEmailsApi api;
 
-  private SendinblueEmailService service;
+  private EmailService service;
 
   @Before
   public void setup() {
-    service = new SendinblueEmailService(api);
+    service = new EmailService(api);
   }
 
   @Test

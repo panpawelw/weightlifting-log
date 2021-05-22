@@ -18,7 +18,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
   private final VerificationTokenService verificationTokenService;
 
   @Autowired
-  public RegistrationListener(@Qualifier("sendinblueEmailService") EmailService emailService,
+  public RegistrationListener(EmailService emailService,
                               VerificationTokenService verificationTokenService) {
     this.emailService = emailService;
     this.verificationTokenService = verificationTokenService;

@@ -1,5 +1,6 @@
 package com.panpawelw.weightliftinglog.services;
 
+import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import com.panpawelw.weightliftinglog.repositories.FileRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,7 +47,7 @@ public class DBFileService implements FileService {
   public void deleteFileByWorkoutAndFilename(WorkoutDeserialized workoutDeserialized,
       String filename) {
     if(fileRepository.deleteByWorkoutIdAndFilename(workoutDeserialized.getId(), filename) == 0) {
-      System.out.println("No files were deleted!");
+      throw new ApiRequestException("There was a problem deleting " + filename + "!");
     }
   }
 
