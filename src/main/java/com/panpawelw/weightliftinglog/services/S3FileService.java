@@ -68,7 +68,7 @@ public class S3FileService implements FileService {
             + filename, file.getInputStream(), objectMetadata);
         filenames.add(filename);
       } catch (AmazonClientException | IOException e) {
-        throw new ApiRequestException("Error uploading file!");
+        throw new ApiRequestException("Error uploading files!");
       }
       workoutDeserialized.setFilenames(filenames);
     }
@@ -95,7 +95,7 @@ public class S3FileService implements FileService {
     try {
       amazonS3Client.deleteObject(bucketName, filename);
     } catch (AmazonClientException e) {
-      throw new ApiRequestException("Error deleting file!");
+      throw new ApiRequestException("Error deleting " + filename + "!");
     }
   }
 

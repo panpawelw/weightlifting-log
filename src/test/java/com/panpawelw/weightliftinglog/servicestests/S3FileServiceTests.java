@@ -149,7 +149,7 @@ public class S3FileServiceTests {
 
     try {
       service.deleteAllFilesByWorkoutId(1);
-    } catch( ApiRequestException exception) {
+    } catch(ApiRequestException exception) {
       assertEquals(exception.getMessage(), "Error deleting files!");
     }
     verify(client).deleteObject("correctbucketname", "1\\audio_file.mp3");

@@ -36,24 +36,30 @@ public class DBFileService implements FileService {
       }
       workoutDeserialized.setFilenames(filenames);
     }
-    fileRepository.saveAll(mediaFiles);
+    if (fileRepository.saveAll(mediaFiles).isEmpty()) {
+      throw new ApiRequestException("Error uploading files!");
+    }
     fileRepository.flush();
   }
 
   public MediaFile getFileByWorkoutIdAndFilename(Long workoutId, String filename) {
-    return fileRepository.findFileByWorkoutIdAndFilename(workoutId, filename);
+    MediaFile result = fileRepository.findFileByWorkoutIdAndFilename(workoutId, filename);
+    if (result == null) {
+      throw new ApiRequestException("Error streaming file!");
+    }
+    return result;
   }
 
   public void deleteFileByWorkoutAndFilename(WorkoutDeserialized workoutDeserialized,
       String filename) {
     if(fileRepository.deleteByWorkoutIdAndFilename(workoutDeserialized.getId(), filename) == 0) {
-      throw new ApiRequestException("There was a problem deleting " + filename + "!");
+      throw new ApiRequestException("Error deleting " + filename + "!");
     }
   }
 
   public void deleteAllFilesByWorkoutId(long workoutId) {
     if(fileRepository.deleteAllByWorkoutId(workoutId) == 0) {
-      System.out.println("No files were deleted!");
+      throw new ApiRequestException("Error deleting files!");
     }
   }
 }
