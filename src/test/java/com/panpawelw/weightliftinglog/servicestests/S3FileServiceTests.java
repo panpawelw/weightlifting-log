@@ -79,7 +79,7 @@ public class S3FileServiceTests {
     try {
       service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
     }catch(RuntimeException exception) {
-      assertEquals(exception.getMessage(), "Error uploading file!");
+      assertEquals("Error uploading files!", exception.getMessage());
     }
     verify(client).putObject(eq("correctbucketname"), eq("1\\testaudio.mp3"), any(), any());
   }
@@ -122,13 +122,15 @@ public class S3FileServiceTests {
 
   @Test
   public void testDeleteFileByWorkoutAndFilenameWithIncorrectParameters() {
+    final String filename = "incorrectfilename.mp3";
     doThrow(AmazonClientException.class)
-        .when(client).deleteObject("correctbucketname", "1\\incorrectfilename.mp3");
+        .when(client).deleteObject("correctbucketname", "1\\" + filename);
 
     try {
-      service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, "incorrectfilename.mp3");
+      service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, filename);
     } catch (ApiRequestException exception) {
-      assertEquals(exception.getMessage(), "Error deleting file!");
+      assertEquals("Error deleting " + TEST_WORKOUT.getId() + "\\" + filename + "!",
+          exception.getMessage());
     }
     verify(client).deleteObject("correctbucketname", "1\\incorrectfilename.mp3");
   }
