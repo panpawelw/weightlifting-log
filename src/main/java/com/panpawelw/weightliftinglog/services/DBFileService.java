@@ -36,7 +36,9 @@ public class DBFileService implements FileService {
       }
       workoutDeserialized.setFilenames(filenames);
     }
-    if (fileRepository.saveAll(mediaFiles).isEmpty()) {
+    try {
+      fileRepository.saveAll(mediaFiles);
+    } catch (IllegalArgumentException e) {
       throw new ApiRequestException("Error uploading files!");
     }
     fileRepository.flush();

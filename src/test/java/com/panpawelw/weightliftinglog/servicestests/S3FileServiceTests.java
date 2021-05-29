@@ -78,7 +78,7 @@ public class S3FileServiceTests {
 
     try {
       service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
-    }catch(RuntimeException exception) {
+    }catch(ApiRequestException exception) {
       assertEquals("Error uploading files!", exception.getMessage());
     }
     verify(client).putObject(eq("correctbucketname"), eq("1\\testaudio.mp3"), any(), any());

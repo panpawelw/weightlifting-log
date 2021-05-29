@@ -1,5 +1,6 @@
 package com.panpawelw.weightliftinglog.servicestests;
 
+import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import com.panpawelw.weightliftinglog.models.MediaFile;
 import com.panpawelw.weightliftinglog.models.User;
 import com.panpawelw.weightliftinglog.models.WorkoutDeserialized;
@@ -57,10 +58,15 @@ public class DBFileServiceTests {
         Arrays.asList("testaudio.mp3", "testimage.bmp", "testvideo.mp4"))));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testStoreAllFilesByWorkoutWithIncorrectParameters() {
     doThrow(IllegalArgumentException.class).when(repository).saveAll(any());
-    service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
+    try {
+      service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
+    } catch (ApiRequestException e) {
+      assertEquals("Error uploading files!", e.getMessage());
+    }
+
   }
 
   @Test
@@ -75,12 +81,22 @@ public class DBFileServiceTests {
 
   @Test
   public void testGetFileByWorkoutIdAndFilenameWithIncorrectParameters() {
-
+    try {
+      service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
+    }catch(ApiRequestException e) {
+      assertEquals("Error streaming file!", e.getMessage());
+    }
   }
 
   @Test
   public void testDeleteFileByWorkoutAndFilename() {
-    service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, "testaudio.mp3");
+    final String filename = "testaudio.mp3";
+    when(repository.deleteByWorkoutIdAndFilename(TEST_WORKOUT.getId(), filename)).thenReturn(0L);
+    try {
+      service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, filename);
+    } catch (ApiRequestException e) {
+      assertEquals("Error deleting " + filename + "!", e.getMessage());
+    }
     verify(repository).deleteByWorkoutIdAndFilename(TEST_WORKOUT.getId(), "testaudio.mp3");
   }
 
@@ -91,6 +107,7 @@ public class DBFileServiceTests {
 
   @Test
   public void testDeleteAllFilesByWorkoutId() {
+    when(repository.deleteAllByWorkoutId(1L)).thenReturn(3L);
     service.deleteAllFilesByWorkoutId(1);
     verify(repository).deleteAllByWorkoutId(1L);
   }
