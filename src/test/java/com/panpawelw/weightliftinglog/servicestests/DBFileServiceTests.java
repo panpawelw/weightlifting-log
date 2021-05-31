@@ -59,7 +59,7 @@ public class DBFileServiceTests {
   }
 
   @Test
-  public void testStoreAllFilesByWorkoutWithIncorrectParameters() {
+  public void testStoreAllFilesByWorkoutThrowsException() {
     doThrow(IllegalArgumentException.class).when(repository).saveAll(any());
     try {
       service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
@@ -80,7 +80,7 @@ public class DBFileServiceTests {
   }
 
   @Test
-  public void testGetFileByWorkoutIdAndFilenameWithIncorrectParameters() {
+  public void testGetFileByWorkoutIdAndFilenameThrowsException() {
     try {
       service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
     }catch(ApiRequestException e) {
@@ -101,18 +101,25 @@ public class DBFileServiceTests {
   }
 
   @Test
-  public void testDeleteFileByWorkoutAndFilenameWithIncorrectParameters() {
+  public void testDeleteFileByWorkoutAndFilenameThrowsException() {
 
   }
 
   @Test
   public void testDeleteAllFilesByWorkoutId() {
     when(repository.deleteAllByWorkoutId(1L)).thenReturn(3L);
-    service.deleteAllFilesByWorkoutId(1);
+    service.deleteAllFilesByWorkoutId(1L);
     verify(repository).deleteAllByWorkoutId(1L);
   }
 
   @Test
-  public void testDeleteAllFilesByWorkoutIdWithIncorrectParameters() {
+  public void testDeleteAllFilesByWorkoutIdThrowsException() {
+    when(repository.deleteAllByWorkoutId(1L)).thenReturn(0L);
+    try {
+      service.deleteAllFilesByWorkoutId(1L);
+    } catch (ApiRequestException e) {
+      assertEquals(e.getMessage(), "Error deleting files!");
+    }
+    verify(repository).deleteAllByWorkoutId(1L);
   }
 }
