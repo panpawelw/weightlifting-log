@@ -90,6 +90,14 @@ public class DBFileServiceTests {
 
   @Test
   public void testDeleteFileByWorkoutAndFilename() {
+    when(repository.deleteByWorkoutIdAndFilename(TEST_WORKOUT.getId(),
+        "testaudio.mp3")).thenReturn(1L);
+      service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, "testaudio.mp3");
+    verify(repository).deleteByWorkoutIdAndFilename(TEST_WORKOUT.getId(), "testaudio.mp3");
+  }
+
+  @Test
+  public void testDeleteFileByWorkoutAndFilenameThrowsException() {
     final String filename = "testaudio.mp3";
     when(repository.deleteByWorkoutIdAndFilename(TEST_WORKOUT.getId(), filename)).thenReturn(0L);
     try {
@@ -98,11 +106,6 @@ public class DBFileServiceTests {
       assertEquals("Error deleting " + filename + "!", e.getMessage());
     }
     verify(repository).deleteByWorkoutIdAndFilename(TEST_WORKOUT.getId(), "testaudio.mp3");
-  }
-
-  @Test
-  public void testDeleteFileByWorkoutAndFilenameThrowsException() {
-
   }
 
   @Test
