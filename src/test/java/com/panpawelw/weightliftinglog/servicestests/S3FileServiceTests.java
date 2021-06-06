@@ -72,7 +72,7 @@ public class S3FileServiceTests {
   }
 
   @Test
-  public void testStoreAllFilesByWorkoutWithIncorrectParameters() {
+  public void testStoreAllFilesByWorkoutThrowsException() {
     doThrow(AmazonClientException.class).when(client).putObject(eq("correctbucketname"),
         eq("1\\testaudio.mp3"), any(InputStream.class), any(ObjectMetadata.class));
 
@@ -102,7 +102,7 @@ public class S3FileServiceTests {
   }
 
   @Test
-  public void testGetFileByWorkoutIdAndFilenameWithIncorrectParameters() {
+  public void testGetFileByWorkoutIdAndFilenameThrowsException() {
     doThrow(AmazonClientException.class)
         .when(client).getObject("correctbucketname", "1\\incorrectfilename.mp3");
 
@@ -121,7 +121,7 @@ public class S3FileServiceTests {
   }
 
   @Test
-  public void testDeleteFileByWorkoutAndFilenameWithIncorrectParameters() {
+  public void testDeleteFileByWorkoutAndFilenameThrowsException() {
     final String filename = "incorrectfilename.mp3";
     doThrow(AmazonClientException.class)
         .when(client).deleteObject("correctbucketname", "1\\" + filename);
@@ -146,7 +146,7 @@ public class S3FileServiceTests {
   }
 
   @Test
-  public void testDeleteAllFilesByWorkoutIdWithIncorrectParameters() {
+  public void testDeleteAllFilesByWorkoutIdThrowsException() {
     when(workoutService.findWorkoutById(1)).thenReturn(TEST_WORKOUT);
 
     try {
