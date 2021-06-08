@@ -16,13 +16,14 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTests {
 
   private static final User TEST_USER = new User(1L, "Test name",
-      "Test password","Test password",
+      "Test password", "Test password",
       "Test@email.com", true, "Test first name",
       "Test last name", 20, true, "USER", new ArrayList<>());
 
@@ -54,5 +55,13 @@ public class UserServiceTests {
     when(repository.findUserByEmail(TEST_USER.getEmail()))
         .thenReturn(Optional.empty());
     assertNull(service.findUserByEmail(TEST_USER.getEmail()));
+  }
+
+  @Test
+  public void testSaveUser() {
+    when(encoder.encode(TEST_USER.getPassword())).thenReturn(TEST_USER.getPassword());
+    when(repository.saveAndFlush(TEST_USER)).thenReturn(TEST_USER);
+    service.saveUser(TEST_USER);
+    verify(repository).saveAndFlush(TEST_USER);
   }
 }
