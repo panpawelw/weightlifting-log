@@ -64,4 +64,10 @@ public class UserServiceTests {
     service.saveUser(TEST_USER);
     verify(repository).saveAndFlush(TEST_USER);
   }
+
+  @Test
+  public void testDeleteUser() {
+    service.deleteUserById(1);
+    verify(repository).deleteById(1L);
+  }
 }
