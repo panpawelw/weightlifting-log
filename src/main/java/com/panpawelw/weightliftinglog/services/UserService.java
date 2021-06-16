@@ -1,9 +1,9 @@
 package com.panpawelw.weightliftinglog.services;
 
+import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import com.panpawelw.weightliftinglog.repositories.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -53,9 +53,8 @@ public class UserService {
    * Saves user to database
    *
    * @param user - user object
-   * @throws DataIntegrityViolationException - when database integrity constraint is violated
    */
-  public void saveUser(User user) throws DataIntegrityViolationException {
+  public void saveUser(User user) {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     userRepository.saveAndFlush(user);
   }
@@ -64,9 +63,8 @@ public class UserService {
    * Saves user to database without modifying password
    *
    * @param user - user object
-   * @throws DataIntegrityViolationException - when database integrity constraint is violated
    */
-  public void saveUserWithoutModifyingPassword(User user) throws DataIntegrityViolationException {
+  public void saveUserWithoutModifyingPassword(User user) {
     userRepository.save(user);
   }
 
@@ -76,7 +74,9 @@ public class UserService {
    * @param id - id of user to be deleted
    */
   public void deleteUserById(long id) {
-    userRepository.deleteById(id);
+    if(userRepository.deleteById(id) == 0) {
+      throw new ApiRequestException("Error deleting user!");
+    }
   }
 
   /**
