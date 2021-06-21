@@ -47,6 +47,7 @@ public class UserServiceTests {
   public void testFindUserByEmail() {
     when(repository.findUserByEmail(TEST_USER.getEmail()))
         .thenReturn(java.util.Optional.of(TEST_USER));
+
     assertEquals(TEST_USER, service.findUserByEmail(TEST_USER.getEmail()));
   }
 
@@ -54,6 +55,7 @@ public class UserServiceTests {
   public void testFindUserByEmailReturnsNull() {
     when(repository.findUserByEmail(TEST_USER.getEmail()))
         .thenReturn(Optional.empty());
+
     assertNull(service.findUserByEmail(TEST_USER.getEmail()));
   }
 
@@ -61,6 +63,7 @@ public class UserServiceTests {
   public void testSaveUser() {
     when(encoder.encode(TEST_USER.getPassword())).thenReturn(TEST_USER.getPassword());
     when(repository.saveAndFlush(TEST_USER)).thenReturn(TEST_USER);
+
     service.saveUser(TEST_USER);
     verify(repository).saveAndFlush(TEST_USER);
   }
@@ -68,6 +71,7 @@ public class UserServiceTests {
   @Test
   public void testDeleteUser() {
     service.deleteUserById(1);
+
     verify(repository).deleteById(1L);
   }
 }

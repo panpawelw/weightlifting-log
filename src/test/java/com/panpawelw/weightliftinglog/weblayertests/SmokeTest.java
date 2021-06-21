@@ -1,4 +1,4 @@
-package com.panpawelw.weightliftinglog;
+package com.panpawelw.weightliftinglog.weblayertests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,7 +29,7 @@ public class SmokeTest {
   private ChangePasswordController changePasswordController;
 
   @Test
-  public void testContextLoads() {
+  public void contextLoads() {
     assertThat(homeController).isNotNull();
     assertThat(userController).isNotNull();
     assertThat(adminController).isNotNull();
