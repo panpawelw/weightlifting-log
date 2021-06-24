@@ -69,7 +69,16 @@ public class UserServiceTests {
   }
 
   @Test
+  public void testSaveUserWithoutModifyingPassword() {
+    when(repository.saveAndFlush(TEST_USER)).thenReturn(TEST_USER);
+
+    service.saveUserWithoutModifyingPassword(TEST_USER);
+    verify(repository).saveAndFlush(TEST_USER);
+  }
+
+  @Test
   public void testDeleteUser() {
+    when(repository.deleteById(1)).thenReturn(1L);
     service.deleteUserById(1);
 
     verify(repository).deleteById(1L);

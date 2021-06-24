@@ -65,7 +65,7 @@ public class UserService {
    * @param user - user object
    */
   public void saveUserWithoutModifyingPassword(User user) {
-    userRepository.save(user);
+    userRepository.saveAndFlush(user);
   }
 
   /**
