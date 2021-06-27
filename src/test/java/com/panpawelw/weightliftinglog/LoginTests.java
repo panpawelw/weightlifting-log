@@ -56,8 +56,8 @@ public class LoginTests {
   public void testLoginValidUser() throws Exception {
     this.mockMvc
         .perform(post("/login").with(csrf())
-            .param("username", "user")
-            .param("password", "user"))
+            .param("username", "test")
+            .param("password", "test"))
         .andExpect(authenticated());
   }
 
