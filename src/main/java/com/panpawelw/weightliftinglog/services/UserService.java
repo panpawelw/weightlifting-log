@@ -54,9 +54,15 @@ public class UserService {
    *
    * @param user - user object
    */
-  public void saveUser(User user) {
+  public Long saveUser(User user) {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
-    userRepository.saveAndFlush(user);
+    Long result;
+    try {
+      result = userRepository.saveAndFlush(user).getId();
+    } catch (RuntimeException e) {
+      throw new ApiRequestException("Error saving user!");
+    }
+    return result;
   }
 
   /**
@@ -64,8 +70,14 @@ public class UserService {
    *
    * @param user - user object
    */
-  public void saveUserWithoutModifyingPassword(User user) {
-    userRepository.saveAndFlush(user);
+  public Long saveUserWithoutModifyingPassword(User user) {
+    Long result;
+    try {
+      result = userRepository.saveAndFlush(user).getId();
+    } catch (RuntimeException e) {
+      throw new ApiRequestException("Error saving user!");
+    }
+    return result;
   }
 
   /**
