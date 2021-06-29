@@ -12,6 +12,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -82,5 +84,12 @@ public class UserServiceTests {
     service.deleteUserById(1);
 
     verify(repository).deleteById(1L);
+  }
+
+  @Test
+  public void testFindAllByActivated() {
+    List<User> testList = Arrays.asList(new User(), new User(), new User());
+    when(repository.findAllByActivated(true)).thenReturn(testList);
+    assertEquals(service.findAllByActivated(true), testList);
   }
 }
