@@ -18,8 +18,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTests {
@@ -79,7 +78,7 @@ public class UserServiceTests {
   }
 
   @Test
-  public void testDeleteUser() {
+  public void testDeleteUserById() {
     when(repository.deleteById(1)).thenReturn(1L);
     service.deleteUserById(1);
 
@@ -91,5 +90,17 @@ public class UserServiceTests {
     List<User> testList = Arrays.asList(new User(), new User(), new User());
     when(repository.findAllByActivated(true)).thenReturn(testList);
     assertEquals(service.findAllByActivated(true), testList);
+  }
+
+  @Test
+  public void testChangeCurrentUsersPassword() {
+    UserService spyService = spy(service);
+    doReturn(TEST_USER.getEmail()).when(spyService).getLoggedInUsersEmail();
+    when(repository.findUserByEmail(anyString())).thenReturn(Optional.of(TEST_USER));
+    when(encoder.encode("Another test password")).thenReturn("Another test password");
+    when(repository.saveAndFlush(TEST_USER)).thenReturn(TEST_USER);
+
+    spyService.changeCurrentUserPassword("Another test password");
+    assertEquals(TEST_USER.getPassword(), "Another test password");
   }
 }
