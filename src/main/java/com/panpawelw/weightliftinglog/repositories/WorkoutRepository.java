@@ -10,6 +10,6 @@ import java.util.List;
 @Transactional
 public interface WorkoutRepository extends JpaRepository<WorkoutSerialized, Long> {
 
-  long deleteById(long id);
+  Long deleteById(long id);
   List<WorkoutSerialized> findAllByUserOrderByCreatedDesc(User user);
 }

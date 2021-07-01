@@ -30,7 +30,7 @@ public class WorkoutController {
 
   @Autowired
   public WorkoutController(WorkoutService workoutService, UserService userService,
-      @Qualifier("s3FileService") FileService fileService) {
+                           @Qualifier("s3FileService") FileService fileService) {
     this.workoutService = workoutService;
     this.userService = userService;
     this.fileService = fileService;
@@ -39,9 +39,14 @@ public class WorkoutController {
   @ResponseBody
   @GetMapping("/{workoutId}")
   public WorkoutDeserialized getWorkoutById(@PathVariable long workoutId) {
-    WorkoutDeserialized result = workoutService.findWorkoutById(workoutId);
-    if (result == null) {
-      throw new ApiRequestException("This workout does not exist in the database");
+    WorkoutDeserialized result;
+    try {
+      result = workoutService.findWorkoutById(workoutId);
+      if (result == null) {
+        throw new Exception();
+      }
+    } catch (Exception e) {
+      throw new ApiRequestException("There's been a problem retrieving workout from the database!");
     }
     return result;
   }
@@ -61,33 +66,43 @@ public class WorkoutController {
   @ResponseBody
   @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public void addWorkoutPost(@RequestPart("workout") WorkoutDeserialized workoutDeserialized,
-      @RequestPart(name = "filesToRemove", required = false)
-          ArrayList<String> filesToRemove,
-      @RequestPart(name = "filesToUpload", required = false)
-          MultipartFile[] filesToUpload) {
-    workoutDeserialized.setUser
-        (userService.findUserByEmail(userService.getLoggedInUsersEmail()));
-    workoutDeserialized.setId(workoutService.saveWorkout(workoutDeserialized));
-    if (!filesToRemove.isEmpty()) {
-      filesToRemove.forEach((filename) ->
-          fileService.deleteFileByWorkoutAndFilename(workoutDeserialized, filename));
-    }
-    if (filesToUpload.length > 0) {
-      fileService.storeAllFilesByWorkout(workoutDeserialized, filesToUpload);
-    }
-    if (workoutService.saveWorkout(workoutDeserialized) == null) {
-      throw new ApiRequestException("There was a problem saving workout to the database!");
+                             @RequestPart(name = "filesToRemove", required = false)
+                                 ArrayList<String> filesToRemove,
+                             @RequestPart(name = "filesToUpload", required = false)
+                                 MultipartFile[] filesToUpload) {
+    try {
+      workoutDeserialized.setUser
+          (userService.findUserByEmail(userService.getLoggedInUsersEmail()));
+      workoutDeserialized.setId(workoutService.saveWorkout(workoutDeserialized));
+      if (!filesToRemove.isEmpty()) {
+        filesToRemove.forEach((filename) ->
+            fileService.deleteFileByWorkoutAndFilename(workoutDeserialized, filename));
+      }
+      if (filesToUpload.length > 0) {
+        fileService.storeAllFilesByWorkout(workoutDeserialized, filesToUpload);
+      }
+      if (workoutService.saveWorkout(workoutDeserialized) == null) {
+        throw new Exception();
+      }
+    } catch (Exception e) {
+      throw new ApiRequestException("There's been a problem saving workout to the database!");
     }
   }
 
   @ResponseBody
   @DeleteMapping("/{workoutId}")
   public void deleteWorkout(@PathVariable long workoutId) {
-    if(!workoutService.findWorkoutById(workoutId).getFilenames().isEmpty()) {
+    if (!workoutService.findWorkoutById(workoutId).getFilenames().isEmpty()) {
       fileService.deleteAllFilesByWorkoutId(workoutId);
     }
-    if(workoutService.deleteWorkout(workoutId) != 1) {
-      throw new ApiRequestException("There was a problem deleting workout from the database!");
+    Long result;
+    try {
+      result = workoutService.deleteWorkout(workoutId);
+      if (result != 1) {
+        throw new Exception();
+      }
+    }catch (Exception e) {
+      throw new ApiRequestException("There's been a problem deleting workout from the database!");
     }
   }
 
@@ -95,9 +110,17 @@ public class WorkoutController {
   @GetMapping(value = "/file/{workoutId}/{filename}", produces =
       MediaType.APPLICATION_OCTET_STREAM_VALUE)
   public ResponseEntity<byte[]> getFileByWorkoutId(@PathVariable Long workoutId,
-      @PathVariable String filename) {
-    MediaFile mediaFileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId,
-        filename);
+                                                   @PathVariable String filename) {
+    MediaFile mediaFileToSend;
+    try {
+      mediaFileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId,
+          filename);
+      if (mediaFileToSend == null) {
+        throw new Exception();
+      }
+    } catch (Exception e ) {
+      throw new ApiRequestException("There's been a problem streaming this file!");
+    }
     byte[] fileContent = mediaFileToSend.getContent();
     return ResponseEntity.ok()
         .header(HttpHeaders.CONTENT_DISPOSITION,

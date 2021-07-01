@@ -56,7 +56,7 @@ public class WorkoutService {
    *
    * @param id - id of workout to be deleted
    */
-  public long deleteWorkout(long id) {
+  public Long deleteWorkout(long id) {
     return workoutRepository.deleteById(id);
   }
 
