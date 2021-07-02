@@ -1,6 +1,5 @@
 package com.panpawelw.weightliftinglog.services;
 
-import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
@@ -9,7 +8,6 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.util.IOUtils;
-import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,59 +53,40 @@ public class S3FileService implements FileService {
   }
 
   public void storeAllFilesByWorkout(WorkoutDeserialized workoutDeserialized,
-                                     MultipartFile[] workoutFiles) {
+                                     MultipartFile[] workoutFiles) throws IOException {
     List<String> filenames = workoutDeserialized.getFilenames();
-    String filename;
     for (MultipartFile file : workoutFiles) {
-      filename = file.getOriginalFilename();
+      String filename = file.getOriginalFilename();
       ObjectMetadata objectMetadata = new ObjectMetadata();
       objectMetadata.setContentType(file.getContentType());
       objectMetadata.setContentLength(file.getSize());
-      try {
-        amazonS3Client.putObject(bucketName, workoutDeserialized.getId() + "\\"
-            + filename, file.getInputStream(), objectMetadata);
-        filenames.add(filename);
-      } catch (AmazonClientException | IOException e) {
-        throw new ApiRequestException("Error uploading files!");
-      }
+      amazonS3Client.putObject(bucketName, workoutDeserialized.getId() + "\\"
+          + filename, file.getInputStream(), objectMetadata);
+      filenames.add(filename);
       workoutDeserialized.setFilenames(filenames);
     }
   }
 
-  public MediaFile getFileByWorkoutIdAndFilename(Long workoutId, String filename) {
+  public MediaFile getFileByWorkoutIdAndFilename(Long workoutId, String filename) throws IOException {
     S3Object s3Object;
     ObjectMetadata objectMetadata;
-    byte[] content;
     filename = workoutId + "\\" + filename;
-    try {
-      s3Object = amazonS3Client.getObject(bucketName, filename);
-      objectMetadata = s3Object.getObjectMetadata();
-      content = IOUtils.toByteArray(s3Object.getObjectContent());
-    } catch (IOException | AmazonClientException e) {
-      throw new ApiRequestException("Error streaming file!");
-    }
+    s3Object = amazonS3Client.getObject(bucketName, filename);
+    objectMetadata = s3Object.getObjectMetadata();
     return new MediaFile(null, workoutId, s3Object.getKey(), objectMetadata.getContentType(),
-        content);
+        IOUtils.toByteArray(s3Object.getObjectContent()));
   }
 
   public void deleteFileByWorkoutAndFilename(WorkoutDeserialized workout, String filename) {
     filename = workout.getId() + "\\" + filename;
-    try {
-      amazonS3Client.deleteObject(bucketName, filename);
-    } catch (AmazonClientException e) {
-      throw new ApiRequestException("Error deleting " + filename + "!");
-    }
+    amazonS3Client.deleteObject(bucketName, filename);
   }
 
   public void deleteAllFilesByWorkoutId(long workoutId) {
     List<String> filesToDelete = workoutService.findWorkoutById(workoutId).getFilenames();
     filesToDelete.forEach(filename -> {
-      try {
-        filename = workoutId + "\\" + filename;
-        amazonS3Client.deleteObject(bucketName, filename);
-      } catch (AmazonClientException e) {
-        throw new ApiRequestException("Error deleting files!");
-      }
+      filename = workoutId + "\\" + filename;
+      amazonS3Client.deleteObject(bucketName, filename);
     });
   }
 
