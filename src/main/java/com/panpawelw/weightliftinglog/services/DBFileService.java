@@ -1,6 +1,5 @@
 package com.panpawelw.weightliftinglog.services;
 
-import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import com.panpawelw.weightliftinglog.repositories.FileRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,47 +20,31 @@ public class DBFileService implements FileService {
   }
 
   public void storeAllFilesByWorkout(WorkoutDeserialized workoutDeserialized,
-                                     MultipartFile[] workoutFiles) {
+                                     MultipartFile[] workoutFiles) throws IOException {
     List<MediaFile> mediaFiles = new ArrayList<>();
     List<String> filenames = workoutDeserialized.getFilenames();
     Long workoutId = workoutDeserialized.getId();
     for (MultipartFile file : workoutFiles) {
       String filename = file.getOriginalFilename();
-      try {
-        mediaFiles.add(new MediaFile(0L, workoutId, filename,
-            file.getContentType(), file.getBytes()));
-        filenames.add(filename);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      mediaFiles.add(new MediaFile(0L, workoutId, filename,
+          file.getContentType(), file.getBytes()));
+      filenames.add(filename);
       workoutDeserialized.setFilenames(filenames);
     }
-    try {
-      fileRepository.saveAll(mediaFiles);
-    } catch (IllegalArgumentException e) {
-      throw new ApiRequestException("Error uploading files!");
-    }
+    fileRepository.saveAll(mediaFiles);
     fileRepository.flush();
   }
 
   public MediaFile getFileByWorkoutIdAndFilename(Long workoutId, String filename) {
-    MediaFile result = fileRepository.findFileByWorkoutIdAndFilename(workoutId, filename);
-    if (result == null) {
-      throw new ApiRequestException("Error streaming file!");
-    }
-    return result;
+    return fileRepository.findFileByWorkoutIdAndFilename(workoutId, filename);
   }
 
   public void deleteFileByWorkoutAndFilename(WorkoutDeserialized workoutDeserialized,
-      String filename) {
-    if(fileRepository.deleteByWorkoutIdAndFilename(workoutDeserialized.getId(), filename) == 0) {
-      throw new ApiRequestException("Error deleting " + filename + "!");
-    }
+                                             String filename) {
+    fileRepository.deleteByWorkoutIdAndFilename(workoutDeserialized.getId(), filename);
   }
 
   public void deleteAllFilesByWorkoutId(long workoutId) {
-    if(fileRepository.deleteAllByWorkoutId(workoutId) == 0) {
-      throw new ApiRequestException("Error deleting files!");
-    }
+    fileRepository.deleteAllByWorkoutId(workoutId);
   }
 }
