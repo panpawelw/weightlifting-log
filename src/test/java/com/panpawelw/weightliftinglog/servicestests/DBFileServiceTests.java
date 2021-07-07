@@ -1,6 +1,5 @@
 package com.panpawelw.weightliftinglog.servicestests;
 
-import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import com.panpawelw.weightliftinglog.models.MediaFile;
 import com.panpawelw.weightliftinglog.models.User;
 import com.panpawelw.weightliftinglog.models.WorkoutDeserialized;
@@ -14,6 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -49,7 +49,7 @@ public class DBFileServiceTests {
   }
 
   @Test
-  public void testStoreAllFilesByWorkout() {
+  public void testStoreAllFilesByWorkout() throws IOException {
     service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
 
     verify(repository).saveAll(any());
@@ -58,18 +58,7 @@ public class DBFileServiceTests {
         Arrays.asList("testaudio.mp3", "testimage.bmp", "testvideo.mp4"))));
   }
 
-  @Test
-  public void testStoreAllFilesByWorkoutThrowsException() {
-    doThrow(IllegalArgumentException.class).when(repository).saveAll(any());
-    try {
-      service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
-    } catch (ApiRequestException e) {
-      assertEquals("Error uploading files!", e.getMessage());
-    }
-
-  }
-
-  @Test
+    @Test
   public void testGetFileByWorkoutIdAndFilename() {
     MediaFile testFile = new MediaFile(null, 3L, "audio_file.mp3", "audio/mpeg",
         new byte[]{69, 121, 101, 45, 62, 118, 101, 114, (byte) 196, (byte) 195, 61, 101, 98});
@@ -80,49 +69,19 @@ public class DBFileServiceTests {
   }
 
   @Test
-  public void testGetFileByWorkoutIdAndFilenameThrowsException() {
-    try {
-      service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
-    }catch(ApiRequestException e) {
-      assertEquals("Error streaming file!", e.getMessage());
-    }
-  }
-
-  @Test
   public void testDeleteFileByWorkoutAndFilename() {
     when(repository.deleteByWorkoutIdAndFilename(TEST_WORKOUT.getId(),
         "testaudio.mp3")).thenReturn(1L);
       service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, "testaudio.mp3");
-    verify(repository).deleteByWorkoutIdAndFilename(TEST_WORKOUT.getId(), "testaudio.mp3");
-  }
 
-  @Test
-  public void testDeleteFileByWorkoutAndFilenameThrowsException() {
-    final String filename = "testaudio.mp3";
-    when(repository.deleteByWorkoutIdAndFilename(TEST_WORKOUT.getId(), filename)).thenReturn(0L);
-    try {
-      service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, filename);
-    } catch (ApiRequestException e) {
-      assertEquals("Error deleting " + filename + "!", e.getMessage());
-    }
     verify(repository).deleteByWorkoutIdAndFilename(TEST_WORKOUT.getId(), "testaudio.mp3");
   }
 
   @Test
   public void testDeleteAllFilesByWorkoutId() {
     when(repository.deleteAllByWorkoutId(1L)).thenReturn(3L);
-    service.deleteAllFilesByWorkoutId(1L);
-    verify(repository).deleteAllByWorkoutId(1L);
-  }
 
-  @Test
-  public void testDeleteAllFilesByWorkoutIdThrowsException() {
-    when(repository.deleteAllByWorkoutId(1L)).thenReturn(0L);
-    try {
-      service.deleteAllFilesByWorkoutId(1L);
-    } catch (ApiRequestException e) {
-      assertEquals(e.getMessage(), "Error deleting files!");
-    }
+    service.deleteAllFilesByWorkoutId(1L);
     verify(repository).deleteAllByWorkoutId(1L);
   }
 }
