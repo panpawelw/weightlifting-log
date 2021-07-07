@@ -33,7 +33,7 @@ public class DBFileServiceTests {
       new MockMultipartFile("testaudio.mp3", "testaudio.mp3",
           "audio/mpeg", new byte[]{110, (byte) 160, 7, 47, 49, 24, 41, 113, 103, 123}),
       new MockMultipartFile("testimage.bmp", "testimage.bmp",
-          "image/bmp", new byte[]{41, 91, 115, 16, 22, 118, 122, 49,  28, 97}),
+          "image/bmp", new byte[]{41, 91, 115, 16, 22, 118, 122, 49, 28, 97}),
       new MockMultipartFile("testvideo.mp4", "testvideo.mp4",
           "video/mp4", new byte[]{113, 17, 78, 6, 89, 24, 23, (byte) 199, 83, 22}),
   };
@@ -58,7 +58,7 @@ public class DBFileServiceTests {
         Arrays.asList("testaudio.mp3", "testimage.bmp", "testvideo.mp4"))));
   }
 
-    @Test
+  @Test
   public void testGetFileByWorkoutIdAndFilename() {
     MediaFile testFile = new MediaFile(null, 3L, "audio_file.mp3", "audio/mpeg",
         new byte[]{69, 121, 101, 45, 62, 118, 101, 114, (byte) 196, (byte) 195, 61, 101, 98});
@@ -72,8 +72,8 @@ public class DBFileServiceTests {
   public void testDeleteFileByWorkoutAndFilename() {
     when(repository.deleteByWorkoutIdAndFilename(TEST_WORKOUT.getId(),
         "testaudio.mp3")).thenReturn(1L);
-      service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, "testaudio.mp3");
 
+    service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, "testaudio.mp3");
     verify(repository).deleteByWorkoutIdAndFilename(TEST_WORKOUT.getId(), "testaudio.mp3");
   }
 

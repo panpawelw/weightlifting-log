@@ -1,11 +1,9 @@
 package com.panpawelw.weightliftinglog.servicestests;
 
-import com.amazonaws.AmazonClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import com.panpawelw.weightliftinglog.models.MediaFile;
 import com.panpawelw.weightliftinglog.models.User;
 import com.panpawelw.weightliftinglog.models.WorkoutDeserialized;
@@ -21,6 +19,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,7 +60,7 @@ public class S3FileServiceTests {
   }
 
   @Test
-  public void testStoreAllFilesByWorkout() {
+  public void testStoreAllFilesByWorkout() throws IOException {
     service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
     for(MultipartFile file : TEST_WORKOUT_FILES) {
       verify(client).putObject(eq("correctbucketname"), eq(TEST_WORKOUT.getId() + "\\"
@@ -72,20 +71,7 @@ public class S3FileServiceTests {
   }
 
   @Test
-  public void testStoreAllFilesByWorkoutThrowsException() {
-    doThrow(AmazonClientException.class).when(client).putObject(eq("correctbucketname"),
-        eq("1\\testaudio.mp3"), any(InputStream.class), any(ObjectMetadata.class));
-
-    try {
-      service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
-    }catch(ApiRequestException exception) {
-      assertEquals("Error uploading files!", exception.getMessage());
-    }
-    verify(client).putObject(eq("correctbucketname"), eq("1\\testaudio.mp3"), any(), any());
-  }
-
-  @Test
-  public void testGetFileByWorkoutIdAndFilename() {
+  public void testGetFileByWorkoutIdAndFilename() throws IOException {
     MediaFile testFile = new MediaFile(null, 3L, "testfile.mp3", "audio/mpeg",
         new byte[]{69, 121, 101, 45, 62, 118, 101, 114, (byte) 196, (byte) 195, 61, 101, 98});
     InputStream testFileInputStream = new ByteArrayInputStream(testFile.getContent());
@@ -102,37 +88,9 @@ public class S3FileServiceTests {
   }
 
   @Test
-  public void testGetFileByWorkoutIdAndFilenameThrowsException() {
-    doThrow(AmazonClientException.class)
-        .when(client).getObject("correctbucketname", "1\\incorrectfilename.mp3");
-
-    try {
-      service.getFileByWorkoutIdAndFilename(1L, "incorrectfilename.mp3");
-    } catch (ApiRequestException exception) {
-      assertEquals(exception.getMessage(), "Error streaming file!");
-    }
-    verify(client).getObject("correctbucketname", "1\\incorrectfilename.mp3");
-  }
-
-  @Test
   public void testDeleteFileByWorkoutAndFilename() {
     service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, "correctfilename.mp3");
     verify(client).deleteObject("correctbucketname", "1\\correctfilename.mp3");
-  }
-
-  @Test
-  public void testDeleteFileByWorkoutAndFilenameThrowsException() {
-    final String filename = "incorrectfilename.mp3";
-    doThrow(AmazonClientException.class)
-        .when(client).deleteObject("correctbucketname", "1\\" + filename);
-
-    try {
-      service.deleteFileByWorkoutAndFilename(TEST_WORKOUT, filename);
-    } catch (ApiRequestException exception) {
-      assertEquals("Error deleting " + TEST_WORKOUT.getId() + "\\" + filename + "!",
-          exception.getMessage());
-    }
-    verify(client).deleteObject("correctbucketname", "1\\incorrectfilename.mp3");
   }
 
   @Test
@@ -140,20 +98,6 @@ public class S3FileServiceTests {
     when(workoutService.findWorkoutById(1)).thenReturn(TEST_WORKOUT);
 
     service.deleteAllFilesByWorkoutId(1);
-    verify(client).deleteObject("correctbucketname", "1\\audio_file.mp3");
-    verify(client).deleteObject("correctbucketname", "1\\photo.jpg");
-    verify(client).deleteObject("correctbucketname", "1\\video_clip.mp4");
-  }
-
-  @Test
-  public void testDeleteAllFilesByWorkoutIdThrowsException() {
-    when(workoutService.findWorkoutById(1)).thenReturn(TEST_WORKOUT);
-
-    try {
-      service.deleteAllFilesByWorkoutId(1);
-    } catch(ApiRequestException exception) {
-      assertEquals(exception.getMessage(), "Error deleting files!");
-    }
     verify(client).deleteObject("correctbucketname", "1\\audio_file.mp3");
     verify(client).deleteObject("correctbucketname", "1\\photo.jpg");
     verify(client).deleteObject("correctbucketname", "1\\video_clip.mp4");
