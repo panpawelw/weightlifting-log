@@ -1,6 +1,5 @@
 package com.panpawelw.weightliftinglog.services;
 
-import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import com.panpawelw.weightliftinglog.repositories.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,13 +55,7 @@ public class UserService {
    */
   public Long saveUser(User user) {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
-    Long result;
-    try {
-      result = userRepository.saveAndFlush(user).getId();
-    } catch (RuntimeException e) {
-      throw new ApiRequestException("Error saving user!");
-    }
-    return result;
+  return userRepository.saveAndFlush(user).getId();
   }
 
   /**
@@ -71,13 +64,7 @@ public class UserService {
    * @param user - user object
    */
   public Long saveUserWithoutModifyingPassword(User user) {
-    Long result;
-    try {
-      result = userRepository.saveAndFlush(user).getId();
-    } catch (RuntimeException e) {
-      throw new ApiRequestException("Error saving user!");
-    }
-    return result;
+    return userRepository.saveAndFlush(user).getId();
   }
 
   /**
@@ -85,10 +72,8 @@ public class UserService {
    *
    * @param id - id of user to be deleted
    */
-  public void deleteUserById(long id) {
-    if(userRepository.deleteById(id) == 0) {
-      throw new ApiRequestException("Error deleting user!");
-    }
+  public Long deleteUserById(long id) {
+    return userRepository.deleteById(id);
   }
 
   /**
