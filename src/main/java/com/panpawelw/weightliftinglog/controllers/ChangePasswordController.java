@@ -1,5 +1,6 @@
 package com.panpawelw.weightliftinglog.controllers;
 
+import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,9 +52,14 @@ public class ChangePasswordController {
     if (bindingResult.hasErrors()) {
       model.addAttribute("page", "fragments.html :: change-password");
     } else {
-      String username = userService.findUserByEmail
-          (userService.getLoggedInUsersEmail()).getName();
-      userService.changeCurrentUserPassword(changePassword.getNewPassword());
+      String username;
+      try {
+        username = userService.findUserByEmail
+            (userService.getLoggedInUsersEmail()).getName();
+        userService.changeCurrentUserPassword(changePassword.getNewPassword());
+      } catch (Exception e) {
+        throw new ApiRequestException("There's been a database problem!");
+      }
       userService.logoutUser(request, response);
       userService.autoLogin(request, username, changePassword.getNewPassword());
       model.addAttribute("page", "fragments.html :: change-password-success");

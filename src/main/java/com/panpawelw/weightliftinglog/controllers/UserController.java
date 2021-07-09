@@ -1,5 +1,6 @@
 package com.panpawelw.weightliftinglog.controllers;
 
+import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,8 +29,8 @@ public class UserController {
 
   @Autowired
   public UserController(UserService userService, WorkoutService workoutService,
-      UpdatePasswordValidator updatePasswordValidator,
-      VerificationTokenService verificationTokenService) {
+                        UpdatePasswordValidator updatePasswordValidator,
+                        VerificationTokenService verificationTokenService) {
     this.userService = userService;
     this.workoutService = workoutService;
     this.updatePasswordValidator = updatePasswordValidator;
@@ -44,8 +45,10 @@ public class UserController {
   @PreAuthorize("hasAnyRole('USER','ADMIN')")
   @RequestMapping("/user")
   public String user(Model model, HttpServletRequest request, HttpServletResponse response) {
-    String email = userService.getLoggedInUsersEmail();
-    User user = userService.findUserByEmail(email);
+    User user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
+    if (user == null) {
+      throw new ApiRequestException("There's been a problem retrieving user data from the database!");
+    }
     if (!user.isActivated()) {
       userService.logoutUser(request, response);
       model.addAttribute("loginError", verificationTokenService.removeAccountIfTokenExpired(user));
@@ -62,8 +65,10 @@ public class UserController {
 
   @GetMapping("/user/update")
   public String editUserDetailsGet(Model model) {
-    String email = userService.getLoggedInUsersEmail();
-    User user = userService.findUserByEmail(email);
+    User user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
+    if (user == null) {
+      throw new ApiRequestException("There's been a problem retrieving user data from the database!");
+    }
     user.setPassword("");
     model.addAttribute("user", user);
     model.addAttribute("page", "fragments.html :: update-user");
@@ -72,8 +77,8 @@ public class UserController {
 
   @PostMapping("/user/update")
   public String editUserDetailsPost(@Valid @ModelAttribute("user") User user,
-      BindingResult bindingResult, Model model,
-      HttpServletRequest request, HttpServletResponse response) {
+                                    BindingResult bindingResult, Model model,
+                                    HttpServletRequest request, HttpServletResponse response) {
     model.addAttribute("page", "fragments.html :: update-user");
     if (!bindingResult.hasErrors()) {
       try {
@@ -85,6 +90,8 @@ public class UserController {
       } catch (DataIntegrityViolationException e) {
         model.addAttribute
             ("emailExists", "    This email already exists in our database!");
+      } catch (Exception e) {
+        throw new ApiRequestException("There's been a problem saving user data to the database!");
       }
     }
     return "home";

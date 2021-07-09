@@ -54,6 +54,9 @@ public class WorkoutController {
   @GetMapping("/")
   public String addWorkoutGet(Model model) {
     User user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
+    if (user == null) {
+      throw new ApiRequestException("There's been a problem retrieving user data from the database!");
+    }
     model.addAttribute("user", user.getEmail());
     model.addAttribute("userName", user.getName());
     model.addAttribute("adminRights", userService.checkLoggedInUserForAdminRights());
@@ -101,7 +104,7 @@ public class WorkoutController {
       if (result != 1) {
         throw new Exception();
       }
-    }catch (Exception e) {
+    } catch (Exception e) {
       throw new ApiRequestException("There's been a problem deleting workout from the database!");
     }
   }
@@ -118,7 +121,7 @@ public class WorkoutController {
       if (mediaFileToSend == null) {
         throw new Exception();
       }
-    } catch (Exception e ) {
+    } catch (Exception e) {
       throw new ApiRequestException("There's been a problem streaming this file!");
     }
     byte[] fileContent = mediaFileToSend.getContent();
