@@ -7,6 +7,12 @@
   <title>Thymeleaf fragments</title>
 </head>
 <body>
+<!--Show message -->
+<div th:fragment="show-message">
+  <h2 th:utext="${header}">Error!</h2><br>
+  <h5 th:utext="${message}"></h5>
+  <a class="my-btn" th:href="${address}" onclick="storeLogoState();" type="button">OK</a>
+</div>
 
 <!--Login-->
 <div th:fragment="login">
