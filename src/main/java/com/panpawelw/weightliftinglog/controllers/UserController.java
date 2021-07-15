@@ -1,6 +1,7 @@
 package com.panpawelw.weightliftinglog.controllers;
 
-import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
+import static com.panpawelw.weightliftinglog.misc.Message.prepMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,7 +48,8 @@ public class UserController {
   public String user(Model model, HttpServletRequest request, HttpServletResponse response) {
     User user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
     if (user == null) {
-      throw new ApiRequestException("There's been a problem retrieving user data from the database!");
+      prepMessage(model,"Error!", "Can't retrieve user!", "OK", "/weightliftinglog");
+      return "home";
     }
     if (!user.isActivated()) {
       userService.logoutUser(request, response);
@@ -67,7 +69,8 @@ public class UserController {
   public String editUserDetailsGet(Model model) {
     User user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
     if (user == null) {
-      throw new ApiRequestException("There's been a problem retrieving user data from the database!");
+      prepMessage(model,"Error!", "Can't retrieve user!", "OK", "/weightliftinglog/user");
+      return "home";
     }
     user.setPassword("");
     model.addAttribute("user", user);
@@ -91,7 +94,8 @@ public class UserController {
         model.addAttribute
             ("emailExists", "    This email already exists in our database!");
       } catch (Exception e) {
-        throw new ApiRequestException("There's been a problem saving user data to the database!");
+        prepMessage(model,"Error!", "Can't save user!", "OK", "/weightliftinglog/user");
+        return "home";
       }
     }
     return "home";
