@@ -47,9 +47,9 @@ public class ChangePasswordController {
 
   @PostMapping("/user/changepassword")
   public String changePasswordPost(
-      @Valid @ModelAttribute("changePassword") ChangePassword changePassword,
-      BindingResult bindingResult, Model model, HttpServletRequest request,
-      HttpServletResponse response) {
+      @Valid @ModelAttribute("changePassword") ChangePassword changePassword, Model model,
+      BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+
     if (bindingResult.hasErrors()) {
       model.addAttribute("page", "fragments.html :: change-password");
     } else {

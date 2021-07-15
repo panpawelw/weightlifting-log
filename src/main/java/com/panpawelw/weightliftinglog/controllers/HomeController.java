@@ -3,6 +3,7 @@ package com.panpawelw.weightliftinglog.controllers;
 import com.panpawelw.weightliftinglog.models.User;
 import com.panpawelw.weightliftinglog.models.VerificationToken;
 import com.panpawelw.weightliftinglog.registration.event.OnRegistrationCompleteEvent;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -21,6 +22,8 @@ import com.panpawelw.weightliftinglog.services.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
+import static com.panpawelw.weightliftinglog.misc.Message.prepMessage;
 
 @Controller
 public class HomeController {
@@ -121,8 +124,11 @@ public class HomeController {
       } catch (DataIntegrityViolationException e) {
         model.addAttribute
             ("emailExists", "This email already exists in our database!");
+      } catch (HibernateException e) {
+        prepMessage(model, "Error!", "There's been a database error!",
+            "OK", "/weightliftinglog/login");
+        return "home";
       } catch (Exception e) {
-        e.printStackTrace();
         model.addAttribute("header", "Registration error!");
         model.addAttribute("message", "There's been a problem sending activation " +
             "message to your email address. Please contact administrator to rectify " +
@@ -139,8 +145,14 @@ public class HomeController {
     if (verificationToken != null) {
       User user = verificationToken.getUser();
       user.setActivated(true);
+      try {
       userService.saveUserWithoutModifyingPassword(user);
       verificationTokenService.deleteVerificationToken(verificationToken);
+      } catch (Exception e) {
+        prepMessage(model, "Error!", "There's been a database error!",
+            "OK", "/weightliftinglog/login");
+        return "home";
+      }
       model.addAttribute("page", "fragments.html :: activate-account-success");
     } else {
       model.addAttribute("page", "fragments.html :: activate-account-failure");

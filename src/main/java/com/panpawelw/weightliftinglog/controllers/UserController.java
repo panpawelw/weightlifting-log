@@ -48,7 +48,8 @@ public class UserController {
   public String user(Model model, HttpServletRequest request, HttpServletResponse response) {
     User user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
     if (user == null) {
-      prepMessage(model, "Error!", "Can't retrieve user!", "OK", "/weightliftinglog");
+      prepMessage(model, "Error!", "Can't retrieve user!",
+          "OK", "/weightliftinglog");
       return "home";
     }
     if (!user.isActivated()) {
@@ -69,7 +70,8 @@ public class UserController {
   public String editUserDetailsGet(Model model) {
     User user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
     if (user == null) {
-      prepMessage(model, "Error!", "Can't retrieve user!", "OK", "/weightliftinglog/user");
+      prepMessage(model, "Error!", "Can't retrieve user!",
+          "OK", "/weightliftinglog/user");
       return "home";
     }
     user.setPassword("");
@@ -94,7 +96,8 @@ public class UserController {
         model.addAttribute
             ("emailExists", "    This email already exists in our database!");
       } catch (Exception e) {
-        prepMessage(model, "Error!", "Can't save user!", "OK", "/weightliftinglog/user");
+        prepMessage(model, "Error!", "Can't save user!",
+            "OK", "/weightliftinglog/user");
         return "home";
       }
     }
