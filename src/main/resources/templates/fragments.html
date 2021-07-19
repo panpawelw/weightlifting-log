@@ -7,6 +7,7 @@
   <title>Thymeleaf fragments</title>
 </head>
 <body>
+
 <!--Show message -->
 <div th:fragment="show-message">
   <h2 th:utext="${header}"></h2><br>
@@ -29,24 +30,6 @@
   </form>
   <br>
   <a th:href="@{/register}" type="button" class="my-btn" onclick="storeLogoState();">Register</a>
-</div>
-
-<!--Display on successful logout-->
-<div th:fragment="logout-success">
-  <h3 class="tab-title">Logout page</h3><br>
-  <p class="alert">Logout successful!</p>
-  <form th:action="@{/login}" method="get">
-    <input type="submit" value="OK"/>
-  </form>
-</div>
-
-<!--Display on unsuccessful logout-->
-<div th:fragment="logout-failure">
-  <h3 class="tab-title">Logout page</h3><br>
-  <p class="alert">Logout error, please try again!</p>
-  <form th:action="@{/user}" method="get">
-    <input type="submit" value="OK"/>
-  </form>
 </div>
 
 <!--User registration form-->

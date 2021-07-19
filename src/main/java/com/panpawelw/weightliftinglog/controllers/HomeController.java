@@ -82,9 +82,11 @@ public class HomeController {
   @RequestMapping("/logout")
   public String logout(Model model, HttpServletRequest request, HttpServletResponse response) {
     if (userService.logoutUser(request, response) == null) {
-      model.addAttribute("page", "fragments.html :: logout-success");
+      prepMessage(model, "Logout successful",
+          "Till next time!", "OK", "login");
     } else {
-      model.addAttribute("page", "fragments.html :: logout-failure");
+      prepMessage(model, "Logout failure",
+          "Please try again!", "OK", "user");
     }
     return "home";
   }
