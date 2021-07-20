@@ -35,9 +35,9 @@ public class HomeController {
 
   @Autowired
   public HomeController(UserService userService,
-      RegistrationPasswordValidator registrationPasswordValidator,
-      ApplicationEventPublisher applicationEventPublisher,
-      VerificationTokenService verificationTokenService) {
+                        RegistrationPasswordValidator registrationPasswordValidator,
+                        ApplicationEventPublisher applicationEventPublisher,
+                        VerificationTokenService verificationTokenService) {
     this.userService = userService;
     this.registrationPasswordValidator = registrationPasswordValidator;
     this.applicationEventPublisher = applicationEventPublisher;
@@ -102,7 +102,7 @@ public class HomeController {
 
   @PostMapping("/register")
   public String registerPost(@Valid @ModelAttribute("user") User user,
-      BindingResult bindingResult, Model model, WebRequest request) {
+                             BindingResult bindingResult, Model model, WebRequest request) {
     model.addAttribute("page", "fragments.html :: register-user");
     if (!bindingResult.hasErrors()) {
       try {
@@ -128,7 +128,7 @@ public class HomeController {
             ("emailExists", "This email already exists in our database!");
       } catch (HibernateException e) {
         prepMessage(model, "Error!", "There's been a database error!",
-            "OK", "/weightliftinglog/login");
+            "OK", "login");
         return "home";
       } catch (Exception e) {
         model.addAttribute("header", "Registration error!");
@@ -148,16 +148,18 @@ public class HomeController {
       User user = verificationToken.getUser();
       user.setActivated(true);
       try {
-      userService.saveUserWithoutModifyingPassword(user);
-      verificationTokenService.deleteVerificationToken(verificationToken);
+        userService.saveUserWithoutModifyingPassword(user);
+        verificationTokenService.deleteVerificationToken(verificationToken);
       } catch (Exception e) {
         prepMessage(model, "Error!", "There's been a database error!",
-            "OK", "/weightliftinglog/login");
+            "OK", "login");
         return "home";
       }
-      model.addAttribute("page", "fragments.html :: activate-account-success");
+      prepMessage(model, "Account activation successful!",
+          "Your account has now been activated.", "OK", "login");
     } else {
-      model.addAttribute("page", "fragments.html :: activate-account-failure");
+      prepMessage(model, "There's been a problem activating your account!",
+          "Please contact admin or try again.", "OK", "login");
     }
     return "home";
   }
