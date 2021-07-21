@@ -82,10 +82,10 @@ public class HomeController {
   @RequestMapping("/logout")
   public String logout(Model model, HttpServletRequest request, HttpServletResponse response) {
     if (userService.logoutUser(request, response) == null) {
-      prepMessage(model, "Logout successful",
+      prepMessage(model, "Logout successful!",
           "Till next time!", "OK", "login");
     } else {
-      prepMessage(model, "Logout failure",
+      prepMessage(model, "Logout failure!",
           "Please try again!", "OK", "user");
     }
     return "home";
@@ -106,23 +106,19 @@ public class HomeController {
     model.addAttribute("page", "fragments.html :: register-user");
     if (!bindingResult.hasErrors()) {
       try {
+        userService.saveUser(user);
         if (!user.isActivated()) {
-          userService.saveUser(user);
           applicationEventPublisher.publishEvent(new OnRegistrationCompleteEvent(user,
               request.getContextPath(), request.getLocale()));
-          model.addAttribute("header", "Registration successful!");
-          model.addAttribute("message",
+          prepMessage(model, "Registration successful!",
               "Confirmation email has been sent to:<br><br>" + user.getEmail() +
-                  "<br><br>Please activate your account within 24 " +
-                  "hours!<br><br>" + "Don't forget to check your spam " +
-                  "folder!<br><br>");
+                  "<br><br>Please activate your account within 24 hours!<br><br>" +
+                  "Don't forget to check your spam folder!", "OK", "login");
         } else {
-          model.addAttribute("header", "Registration successful!");
-          userService.saveUser(user);
-          model.addAttribute("message",
-              "Your user account has been registered and activated. Enjoy!<br><br>");
+          prepMessage(model, "Registration successful!",
+              "Your user account has been registered and activated. Enjoy!",
+              "OK", "login");
         }
-        model.addAttribute("page", "fragments.html :: register-user-message");
       } catch (DataIntegrityViolationException e) {
         model.addAttribute
             ("emailExists", "This email already exists in our database!");
@@ -131,11 +127,9 @@ public class HomeController {
             "OK", "login");
         return "home";
       } catch (Exception e) {
-        model.addAttribute("header", "Registration error!");
-        model.addAttribute("message", "There's been a problem sending activation " +
-            "message to your email address. Please contact administrator to rectify " +
-            "this problem.<br><br>");
-        model.addAttribute("page", "fragments.html :: register-user-message");
+        prepMessage(model, "Registration error!",
+            "There's been a problem sending activation message to your email address. Please " +
+                "contact administrator to rectify this problem.", "OK", "login");
       }
     }
     return "home";

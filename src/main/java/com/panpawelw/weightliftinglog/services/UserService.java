@@ -1,6 +1,7 @@
 package com.panpawelw.weightliftinglog.services;
 
 import com.panpawelw.weightliftinglog.repositories.UserRepository;
+import org.hibernate.HibernateException;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
