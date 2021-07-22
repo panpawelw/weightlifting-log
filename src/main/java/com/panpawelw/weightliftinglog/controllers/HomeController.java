@@ -82,11 +82,9 @@ public class HomeController {
   @RequestMapping("/logout")
   public String logout(Model model, HttpServletRequest request, HttpServletResponse response) {
     if (userService.logoutUser(request, response) == null) {
-      prepMessage(model, "Logout successful!",
-          "Till next time!", "OK", "login");
+      prepMessage(model,  "login", "Logout successful!", "Till next time!");
     } else {
-      prepMessage(model, "Logout failure!",
-          "Please try again!", "OK", "user");
+      prepMessage(model, "user", "Logout failure!", "Please try again!");
     }
     return "home";
   }
@@ -110,26 +108,24 @@ public class HomeController {
         if (!user.isActivated()) {
           applicationEventPublisher.publishEvent(new OnRegistrationCompleteEvent(user,
               request.getContextPath(), request.getLocale()));
-          prepMessage(model, "Registration successful!",
+          prepMessage(model, "login", "Registration successful!",
               "Confirmation email has been sent to:<br><br>" + user.getEmail() +
                   "<br><br>Please activate your account within 24 hours!<br><br>" +
-                  "Don't forget to check your spam folder!", "OK", "login");
+                  "Don't forget to check your spam folder!");
         } else {
-          prepMessage(model, "Registration successful!",
-              "Your user account has been registered and activated. Enjoy!",
-              "OK", "login");
+          prepMessage(model, "login", "Registration successful!",
+              "Your user account has been registered and activated. Enjoy!");
         }
       } catch (DataIntegrityViolationException e) {
         model.addAttribute
             ("emailExists", "This email already exists in our database!");
       } catch (HibernateException e) {
-        prepMessage(model, "Error!", "There's been a database error!",
-            "OK", "login");
+        prepMessage(model, "login", "Error!", "There's been a database error!");
         return "home";
       } catch (Exception e) {
-        prepMessage(model, "Registration error!",
+        prepMessage(model, "login", "Registration error!",
             "There's been a problem sending activation message to your email address. Please " +
-                "contact administrator to rectify this problem.", "OK", "login");
+                "contact administrator to rectify this problem.");
       }
     }
     return "home";
@@ -145,15 +141,14 @@ public class HomeController {
         userService.saveUserWithoutModifyingPassword(user);
         verificationTokenService.deleteVerificationToken(verificationToken);
       } catch (Exception e) {
-        prepMessage(model, "Error!", "There's been a database error!",
-            "OK", "login");
+        prepMessage(model, "login", "Error!", "There's been a database error!");
         return "home";
       }
-      prepMessage(model, "Account activation successful!",
-          "Your account has now been activated.", "OK", "login");
+      prepMessage(model, "login", "Account activation successful!",
+          "Your account has now been activated.");
     } else {
-      prepMessage(model, "There's been a problem activating your account!",
-          "Please contact admin or try again.", "OK", "login");
+      prepMessage(model, "login", "There's been a problem activating your account!",
+          "Please contact admin or try again.");
     }
     return "home";
   }

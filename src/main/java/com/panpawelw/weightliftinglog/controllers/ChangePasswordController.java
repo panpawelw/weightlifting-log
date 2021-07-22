@@ -59,8 +59,7 @@ public class ChangePasswordController {
             (userService.getLoggedInUsersEmail()).getName();
         userService.changeCurrentUserPassword(changePassword.getNewPassword());
       } catch (Exception e) {
-        prepMessage(model, "Error!", "There's been a database error!",
-            "OK", "");
+        prepMessage(model, "", "Error!", "There's been a database error!");
         return "home";
       }
       userService.logoutUser(request, response);
