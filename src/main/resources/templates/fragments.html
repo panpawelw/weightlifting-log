@@ -156,25 +156,6 @@
   </form>
 </div>
 
-<!--User details registration successful-->
-<div th:fragment="register-user-message">
-  <h2 th:utext="${header}">Registration successful!</h2><br>
-  <h5 th:utext="${message}"></h5>
-  <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">OK</a>
-</div>
-
-<!--User details update successful-->
-<div th:fragment="update-user-success">
-  <h2>User details updated!</h2><br>
-  <a class="my-btn" th:href="@{/login}" onclick="storeLogoState();" type="button">OK</a>
-</div>
-
-<!--Password change successful-->
-<div th:fragment="change-password-success">
-  <h2>New password has been set!</h2><br>
-  <a class="my-btn" th:href="@{/user/update}" onclick="storeLogoState();" type="button">OK</a>
-</div>
-
 <!--Admin panel-->
 <div th:fragment="admin-panel" id="admin-panel">
   <div class="controls">

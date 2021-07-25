@@ -64,7 +64,7 @@ public class ChangePasswordController {
       }
       userService.logoutUser(request, response);
       userService.autoLogin(request, username, changePassword.getNewPassword());
-      model.addAttribute("page", "fragments.html :: change-password-success");
+      prepMessage(model, "user/update", "Success!", "New password has been set!");
     }
     return "home";
   }

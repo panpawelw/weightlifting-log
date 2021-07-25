@@ -89,7 +89,7 @@ public class UserController {
         userService.saveUser(user);
         userService.logoutUser(request, response);
         userService.autoLogin(request, user.getName(), password);
-        model.addAttribute("page", "fragments.html :: update-user-success");
+        prepMessage(model, "login", "Success!", "User details have been updated!");
       } catch (DataIntegrityViolationException e) {
         model.addAttribute
             ("emailExists", "    This email already exists in our database!");
