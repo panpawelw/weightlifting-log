@@ -27,7 +27,10 @@ import java.util.Objects;
  * gender - user's gender, can remain null
  */
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+    @UniqueConstraint(name="user_unique_name_idx", columnNames = "name"),
+    @UniqueConstraint(name="user_unique_email_idx", columnNames = "email")
+})
 public class User implements Serializable {
 
   private static final long serialVersionUID = 4180865572929845555L;
@@ -35,7 +38,6 @@ public class User implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(unique = true)
   @NotBlank(message = "This field is mandatory!")
   private String name;
 
@@ -44,7 +46,6 @@ public class User implements Serializable {
   @Transient
   transient private String confirmPassword;
 
-  @Column(unique = true)
   @NotBlank(message = "This field is mandatory!")
   @Email(message = "Please enter a valid email!")
   private String email;
