@@ -117,8 +117,14 @@ public class HomeController {
               "Your user account has been registered and activated. Enjoy!");
         }
       } catch (DataIntegrityViolationException e) {
-        model.addAttribute
-            ("emailExists", "This email already exists in our database!");
+        if(e.getMostSpecificCause().getMessage().contains("user_unique_name_idx")) {
+          bindingResult.rejectValue("name", "error.name",
+              "This username has already been taken!");
+        }
+        if(e.getMostSpecificCause().getMessage().contains("user_unique_email_idx")) {
+          bindingResult.rejectValue("email", "error.email",
+              "This email already exists in our database!");
+        }
       } catch (HibernateException e) {
         prepMessage(model, "login", "Error!", "There's been a database error!");
         return "home";

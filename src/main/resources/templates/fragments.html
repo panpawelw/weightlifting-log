@@ -55,7 +55,6 @@
     <p>
       <label>Email: <input type="text" th:field="*{email}"/></label>
       <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span>
-      <span class='alert' th:text="${emailExists}"></span>
     </p>
     <p>
       <label><input type="checkbox" th:field="*{activated}" th:value="true"/></label>
