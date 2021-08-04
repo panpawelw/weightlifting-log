@@ -43,14 +43,11 @@
     </p>
     <p>
       <label>Password: <input type="password" th:field="*{password}"/></label>
-      <span th:if="${#fields.hasErrors('password')}" class="alert"
-            th:errors="*{password}"></span>
-      <span class='alert' th:text="${passwordsDontMatch}"></span>
+      <span th:if="${#fields.hasErrors('password')}" class="alert" th:errors="*{password}"></span>
     </p>
     <p>
-      <label>Confirm password:<input type="password" th:field="*{confirmPassword}"/></label>
-      <span th:if="${#fields.hasErrors('confirmPassword')}" class="alert"
-            th:errors="*{confirmPassword}"></span>
+      <label>Confirm password: <input type="password" th:field="*{confirmPassword}"/></label>
+      <span th:if="${#fields.hasErrors('confirmPassword')}" class="alert" th:errors="*{confirmPassword}"></span>
     </p>
     <p>
       <label>Email: <input type="text" th:field="*{email}"/></label>
@@ -92,8 +89,7 @@
       <label>Password:
         <input type="password" th:field="*{password}" autofocus="autofocus"/>
       </label>
-      <span th:if="${#fields.hasErrors('password')}" class="alert"
-            th:errors="*{password}"></span>
+      <span th:if="${#fields.hasErrors('password')}" class="alert" th:errors="*{password}"></span>
     </p>
     <p>
       <label>Email: <input type="text" th:field="*{email}"/></label>

@@ -89,13 +89,18 @@ public class UserController {
         userService.saveUser(user);
         userService.logoutUser(request, response);
         userService.autoLogin(request, user.getName(), password);
-        prepMessage(model, "login", "Success!", "User details have been updated!");
+        prepMessage(model, "user", "Success!", "User details have been updated!");
       } catch (DataIntegrityViolationException e) {
-        model.addAttribute
-            ("emailExists", "    This email already exists in our database!");
+        if(e.getMostSpecificCause().getMessage().contains("user_unique_name_idx")) {
+          bindingResult.rejectValue("name", "error.name",
+              "This username has already been taken!");
+        }
+        if(e.getMostSpecificCause().getMessage().contains("user_unique_email_idx")) {
+          bindingResult.rejectValue("email", "error.email",
+              "This email already exists in our database!");
+        }
       } catch (Exception e) {
-        prepMessage(model, "/weightliftinglog/user", "Error!", "Can't save user!");
-        return "home";
+        prepMessage(model, "", "Error!", "Can't save user!");
       }
     }
     return "home";
