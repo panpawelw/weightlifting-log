@@ -36,22 +36,23 @@
 <div th:fragment="register-user">
   <h2>Please enter your details to register...</h2><br>
   <form th:action="@{/register}" th:object="${user}" method="post">
+    <p th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></p>
+    <p th:if="${#fields.hasErrors('password')}" class="alert" th:errors="*{password}"></p>
+    <p th:if="${#fields.hasErrors('confirmPassword')}" class="alert" th:errors="*{confirmPassword}"></p>
+    <p th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></p>
+    <br>
     <input type="hidden" th:field="*{id}"/>
     <p>
       <label>Username: <input type="text" th:field="*{name}" autofocus="autofocus"/></label>
-      <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span>
     </p>
     <p>
       <label>Password: <input type="password" th:field="*{password}"/></label>
-      <span th:if="${#fields.hasErrors('password')}" class="alert" th:errors="*{password}"></span>
     </p>
     <p>
       <label>Confirm password: <input type="password" th:field="*{confirmPassword}"/></label>
-      <span th:if="${#fields.hasErrors('confirmPassword')}" class="alert" th:errors="*{confirmPassword}"></span>
     </p>
     <p>
       <label>Email: <input type="text" th:field="*{email}"/></label>
-      <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span>
     </p>
     <p>
       <label><input type="checkbox" th:field="*{activated}" th:value="true"/></label>
