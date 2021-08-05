@@ -47,8 +47,9 @@ public class ChangePasswordController {
 
   @PostMapping("/user/changepassword")
   public String changePasswordPost(
-      @Valid @ModelAttribute("changePassword") ChangePassword changePassword, Model model,
-      BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+      @Valid @ModelAttribute("changePassword") ChangePassword changePassword,
+      BindingResult bindingResult, Model model, HttpServletRequest request,
+      HttpServletResponse response) {
 
     if (bindingResult.hasErrors()) {
       model.addAttribute("page", "fragments.html :: change-password");
@@ -64,7 +65,8 @@ public class ChangePasswordController {
       }
       userService.logoutUser(request, response);
       userService.autoLogin(request, username, changePassword.getNewPassword());
-      prepMessage(model, "user/update", "Success!", "New password has been set!");
+      prepMessage(model, "/weightliftinglog/user/update",
+          "Success!", "New password has been set!");
     }
     return "home";
   }

@@ -89,7 +89,7 @@ public class UserController {
         userService.saveUser(user);
         userService.logoutUser(request, response);
         userService.autoLogin(request, user.getName(), password);
-        prepMessage(model, "user", "Success!", "User details have been updated!");
+        prepMessage(model, "/weightliftinglog/user", "Success!", "User details have been updated!");
       } catch (DataIntegrityViolationException e) {
         if(e.getMostSpecificCause().getMessage().contains("user_unique_name_idx")) {
           bindingResult.rejectValue("name", "error.name",

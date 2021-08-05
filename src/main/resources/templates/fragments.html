@@ -20,6 +20,7 @@
 <div th:fragment="login">
   <h3 class="tab-title">Login page</h3><br>
   <p class="alert" th:text="${loginError}"></p>
+  <br>
   <form th:action="@{/login}" method="post">
     <label for="username">Username</label>:
     <input type="text" id="username" name="username" autofocus="autofocus"/> <br>
