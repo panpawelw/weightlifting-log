@@ -77,6 +77,11 @@ input:focus, button:focus, .my-btn:focus, .my-input:focus, select:focus {
   color: red;
 }
 
+p.alert {
+  margin :0;
+  padding:0;
+}
+
 /* sliders */
 input[type=range] {
   height: 34px;

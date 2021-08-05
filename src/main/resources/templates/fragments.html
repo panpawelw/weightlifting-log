@@ -42,31 +42,17 @@
     <p th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></p>
     <br>
     <input type="hidden" th:field="*{id}"/>
-    <p>
-      <label>Username: <input type="text" th:field="*{name}" autofocus="autofocus"/></label>
-    </p>
-    <p>
-      <label>Password: <input type="password" th:field="*{password}"/></label>
-    </p>
-    <p>
-      <label>Confirm password: <input type="password" th:field="*{confirmPassword}"/></label>
-    </p>
-    <p>
-      <label>Email: <input type="text" th:field="*{email}"/></label>
-    </p>
+    <p><label>Username: <input type="text" th:field="*{name}" autofocus="autofocus"/></label></p>
+    <p><label>Password: <input type="password" th:field="*{password}"/></label></p>
+    <p><label>Confirm password: <input type="password" th:field="*{confirmPassword}"/></label></p>
+    <p><label>Email: <input type="text" th:field="*{email}"/></label></p>
     <p>
       <label><input type="checkbox" th:field="*{activated}" th:value="true"/></label>
       <span>Email address for testing purposes, don't send the activation message</span>
     </p>
-    <p>
-      <label>First name: <input type="text" th:field="*{firstName}"/></label>
-    </p>
-    <p>
-      <label>Surname: <input type="text" th:field="*{lastName}"/></label>
-    </p>
-    <p>
-      <label>Age: <input class="centered" type="number" th:field="*{age}"/></label>
-    </p>
+    <p><label>First name: <input type="text" th:field="*{firstName}"/></label></p>
+    <p><label>Surname: <input type="text" th:field="*{lastName}"/></label></p>
+    <p><label>Age: <input class="centered" type="number" th:field="*{age}"/></label></p>
     <p>
       <label>Female: <input type="radio" th:field="*{gender}" th:value="false" th:checked="0"/>
         Male: <input type="radio" th:field="*{gender}" th:value="true" th:checked="0"/></label>

@@ -35,10 +35,14 @@ public class ChangePasswordValidator implements Validator {
   @Override
   public void validate(Object o, Errors errors) {
     ChangePassword changePassword = (ChangePassword) o;
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "oldPassword", "NotBlank");
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmOldPassword", "NotBlank");
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "newPassword", "NotBlank");
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmNewPassword", "NotBlank");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors,
+        "oldPassword", "NotBlank.oldPassword");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors,
+        "confirmOldPassword", "NotBlank.oldConfirmPassword");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "newPassword",
+        "NotBlank.password");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmNewPassword",
+        "NotBlank.confirmPassword");
 
     if (changePassword.getOldPassword().length() < 4
         || changePassword.getOldPassword().length() > 32) {

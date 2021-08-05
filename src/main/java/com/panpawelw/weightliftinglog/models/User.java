@@ -38,7 +38,7 @@ public class User implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotBlank(message = "This field is mandatory!")
+  @NotBlank(message = "Username field is mandatory!")
   private String name;
 
   private String password;
@@ -46,7 +46,7 @@ public class User implements Serializable {
   @Transient
   transient private String confirmPassword;
 
-  @NotBlank(message = "This field is mandatory!")
+  @NotBlank(message = "Email field is mandatory!")
   @Email(message = "Please enter a valid email!")
   private String email;
 

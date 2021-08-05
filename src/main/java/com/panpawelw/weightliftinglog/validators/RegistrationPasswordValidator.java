@@ -26,9 +26,9 @@ public class RegistrationPasswordValidator implements Validator {
   @Override
   public void validate(Object o, Errors errors) {
     User user = (User) o;
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotBlank");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotBlank.password");
     ValidationUtils.rejectIfEmptyOrWhitespace
-        (errors, "confirmPassword", "NotBlank");
+        (errors, "confirmPassword", "NotBlank.confirmPassword");
     if (user.getPassword().length() < 4 || user.getPassword().length() > 32) {
       errors.rejectValue("password", "Size.userForm.password");
     }
