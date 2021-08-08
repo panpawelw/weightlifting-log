@@ -7,6 +7,8 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import com.panpawelw.weightliftinglog.models.User;
 
+import static com.panpawelw.weightliftinglog.misc.Password.passwordIsOK;
+
 /**
  * Used when user updates his any of his existing details (except password).
  */
@@ -34,11 +36,11 @@ public class UpdatePasswordValidator implements Validator {
   public void validate(Object o, Errors errors) {
     User user = (User) o;
     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotBlank.password");
-    if (user.getPassword().length() < 4 || user.getPassword().length() > 32) {
-      errors.rejectValue("password", "Size.userForm.password");
+    if (passwordIsOK(user.getPassword())) {
+      errors.rejectValue("password", "Size.password");
     }
     if (userService.passwordsDontMatch(user.getPassword())) {
-      errors.rejectValue("password", "Diff.userForm.wrongPassword");
+      errors.rejectValue("password", "Diff.wrongPassword");
     }
   }
 }

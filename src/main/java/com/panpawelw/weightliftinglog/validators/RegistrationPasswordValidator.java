@@ -6,6 +6,8 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import com.panpawelw.weightliftinglog.models.User;
 
+import static com.panpawelw.weightliftinglog.misc.Password.passwordIsOK;
+
 /**
  * Used during registration process.
  */
@@ -27,14 +29,14 @@ public class RegistrationPasswordValidator implements Validator {
   public void validate(Object o, Errors errors) {
     User user = (User) o;
     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotBlank.password");
-    ValidationUtils.rejectIfEmptyOrWhitespace
-        (errors, "confirmPassword", "NotBlank.confirmPassword");
-    if (user.getPassword().length() < 4 || user.getPassword().length() > 32) {
-      errors.rejectValue("password", "Size.userForm.password");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors,
+        "confirmPassword", "NotBlank.confirmPassword");
+    if (!passwordIsOK(user.getPassword())) {
+      errors.rejectValue("password", "Size.password");
     }
 
     if (!user.getConfirmPassword().equals(user.getPassword())) {
-      errors.rejectValue("confirmPassword", "Diff.userForm.confirmPassword");
+      errors.rejectValue("confirmPassword", "Diff.confirmPassword");
     }
   }
 }

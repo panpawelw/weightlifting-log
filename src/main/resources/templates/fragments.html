@@ -1,7 +1,5 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" lang="EN">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="EN">
 <head>
   <meta charset="UTF-8">
   <title>Thymeleaf fragments</title>
@@ -98,37 +96,34 @@
 <!--Change user's password form-->
 <div th:fragment="change-password">
   <form th:action="@{/user/changepassword}" th:object="${changePassword}" method="post">
+    <p th:if="${#fields.hasErrors('oldPassword')}" class="alert" th:errors="*{oldPassword}"></p>
+    <p th:if="${#fields.hasErrors('confirmOldPassword')}" class="alert"
+       th:errors="*{confirmOldPassword}"></p>
+    <p th:if="${#fields.hasErrors('newPassword')}" class="alert" th:errors="*{newPassword}"></p>
+    <p th:if="${#fields.hasErrors('confirmNewPassword')}" class="alert"
+       th:errors="*{confirmNewPassword}"></p>
     <p>
       <label>Current password:
         <input type="password" th:field="*{oldPassword}" autofocus="autofocus"/>
       </label>
-      <span th:if="${#fields.hasErrors('oldPassword')}" class="alert"
-            th:errors="*{oldPassword}"></span>
     </p>
     <p>
       <label>Confirm current password:
         <input type="password" th:field="*{confirmOldPassword}"/>
       </label>
-      <span th:if="${#fields.hasErrors('confirmOldPassword')}" class="alert"
-            th:errors="*{confirmOldPassword}"></span>
     </p>
     <p>
       <label>New password:
         <input type="password" th:field="*{newPassword}"/>
       </label>
-      <span th:if="${#fields.hasErrors('newPassword')}" class="alert"
-            th:errors="*{newPassword}"></span>
     </p>
     <p>
       <label>Confirm new password:
         <input type="password" th:field="*{confirmNewPassword}"/>
       </label>
-      <span th:if="${#fields.hasErrors('confirmNewPassword')}" class="alert"
-            th:errors="*{confirmNewPassword}"></span>
     </p>
     <input type="submit" onclick="storeLogoState();" value="Change password">
-    <a class="my-btn" th:href="@{/user/update}"
-       onclick="storeLogoState();" type="button">Cancel</a>
+    <a class="my-btn" th:href="@{/user/update}" onclick="storeLogoState();" type="button">Cancel</a>
   </form>
 </div>
 
@@ -181,8 +176,6 @@
       </tr>
     </table>
   </div>
-
-
 </div>
 
 <!-- user panel fragments - default -->

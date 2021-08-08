@@ -7,6 +7,8 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import com.panpawelw.weightliftinglog.models.ChangePassword;
 
+import static com.panpawelw.weightliftinglog.misc.Password.passwordIsOK;
+
 /**
  * Used when user is changing his existing password.
  */
@@ -44,34 +46,30 @@ public class ChangePasswordValidator implements Validator {
     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmNewPassword",
         "NotBlank.confirmPassword");
 
-    if (changePassword.getOldPassword().length() < 4
-        || changePassword.getOldPassword().length() > 32) {
-      errors.rejectValue("oldPassword", "Size.userForm.password");
+    if (!passwordIsOK(changePassword.getOldPassword())) {
+      errors.rejectValue("oldPassword", "Size.password");
     }
-    if (changePassword.getConfirmOldPassword().length() < 4
-        || changePassword.getConfirmNewPassword().length() > 32) {
-      errors.rejectValue("confirmOldPassword", "Size.userForm.password");
+    if (!passwordIsOK(changePassword.getConfirmOldPassword())) {
+      errors.rejectValue("confirmOldPassword", "Size.password");
     }
-    if (changePassword.getNewPassword().length() < 4
-        || changePassword.getNewPassword().length() > 32) {
-      errors.rejectValue("newPassword", "Size.userForm.password");
+    if (!passwordIsOK(changePassword.getNewPassword())) {
+      errors.rejectValue("newPassword", "Size.password");
     }
-    if (changePassword.getConfirmNewPassword().length() < 4
-        || changePassword.getConfirmNewPassword().length() > 32) {
-      errors.rejectValue("confirmNewPassword", "Size.userForm.password");
+    if (!passwordIsOK(changePassword.getConfirmNewPassword())) {
+      errors.rejectValue("confirmNewPassword", "Size.password");
     }
 
     if (!changePassword.getOldPassword().equals(changePassword.getConfirmOldPassword())) {
-      errors.rejectValue("oldPassword", "Diff.userForm.confirmPassword");
-      errors.rejectValue("confirmOldPassword", "Diff.userForm.confirmPassword");
+      errors.rejectValue("oldPassword", "Diff.confirmPassword");
+      errors.rejectValue("confirmOldPassword", "Diff.confirmPassword");
     }
     if (!changePassword.getNewPassword().equals(changePassword.getConfirmNewPassword())) {
-      errors.rejectValue("newPassword", "Diff.userForm.confirmPassword");
-      errors.rejectValue("confirmNewPassword", "Diff.userForm.confirmPassword");
+      errors.rejectValue("newPassword", "Diff.confirmPassword");
+      errors.rejectValue("confirmNewPassword", "Diff.confirmPassword");
     }
 
     if (userService.passwordsDontMatch(changePassword.getOldPassword())) {
-      errors.rejectValue("oldPassword", "Diff.userForm.wrongPassword");
+      errors.rejectValue("oldPassword", "Diff.wrongPassword");
     }
   }
 }
