@@ -68,21 +68,14 @@
 <div th:fragment="update-user">
   <h2>Please edit your details...</h2><br>
   <form th:action="@{/user/update}" th:object="${user}" method="post">
+    <p th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></p>
+    <p th:if="${#fields.hasErrors('password')}" class="alert" th:errors="*{password}"></p>
+    <p th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></p>
+    <br>
     <input type="hidden" th:field="*{id}"/>
-    <p>
-      <label>Username: <input type="text" th:field="*{name}"/></label>
-      <span th:if="${#fields.hasErrors('name')}" class="alert" th:errors="*{name}"></span>
-    </p>
-    <p>
-      <label>Password:
-        <input type="password" th:field="*{password}" autofocus="autofocus"/>
-      </label>
-      <span th:if="${#fields.hasErrors('password')}" class="alert" th:errors="*{password}"></span>
-    </p>
-    <p>
-      <label>Email: <input type="text" th:field="*{email}"/></label>
-      <span th:if="${#fields.hasErrors('email')}" class="alert" th:errors="*{email}"></span>
-    </p>
+    <p><label>Username: <input type="text" th:field="*{name}"/></label></p>
+    <p><label>Password: <input type="password" th:field="*{password}" autofocus="autofocus"/></label></p>
+    <p><label>Email: <input type="text" th:field="*{email}"/></label></p>
     <p><label>First name: <input type="text" th:field="*{firstName}"/></label></p>
     <p><label>Surname: <input type="text" th:field="*{lastName}"/></label></p>
     <p><label>Age: <input class="centered" type="number" th:field="*{age}"/></label></p>
