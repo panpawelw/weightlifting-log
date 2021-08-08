@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import static com.panpawelw.weightliftinglog.misc.Message.prepMessage;
+import static com.panpawelw.weightliftinglog.controllers.misc.Message.prepMessage;
 
 @Controller
 public class HomeController {

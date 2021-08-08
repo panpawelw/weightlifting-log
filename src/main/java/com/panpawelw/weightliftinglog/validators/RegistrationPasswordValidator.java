@@ -6,7 +6,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import com.panpawelw.weightliftinglog.models.User;
 
-import static com.panpawelw.weightliftinglog.misc.Password.passwordIsOK;
+import static com.panpawelw.weightliftinglog.validators.misc.Password.passwordIsOK;
 
 /**
  * Used during registration process.

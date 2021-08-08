@@ -7,7 +7,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import com.panpawelw.weightliftinglog.models.User;
 
-import static com.panpawelw.weightliftinglog.misc.Password.passwordIsOK;
+import static com.panpawelw.weightliftinglog.validators.misc.Password.passwordIsOK;
 
 /**
  * Used when user updates his any of his existing details (except password).

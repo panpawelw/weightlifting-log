@@ -1,6 +1,6 @@
 package com.panpawelw.weightliftinglog.controllers;
 
-import static com.panpawelw.weightliftinglog.misc.Message.prepMessage;
+import static com.panpawelw.weightliftinglog.controllers.misc.Message.prepMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
