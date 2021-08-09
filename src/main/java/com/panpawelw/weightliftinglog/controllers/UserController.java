@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import com.panpawelw.weightliftinglog.models.User;
 import com.panpawelw.weightliftinglog.services.VerificationTokenService;
 import com.panpawelw.weightliftinglog.services.WorkoutService;
-import com.panpawelw.weightliftinglog.validators.UpdatePasswordValidator;
+import com.panpawelw.weightliftinglog.validators.UpdateDetailsPasswordValidator;
 import com.panpawelw.weightliftinglog.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,22 +25,22 @@ public class UserController {
 
   private final UserService userService;
   private final WorkoutService workoutService;
-  private final UpdatePasswordValidator updatePasswordValidator;
+  private final UpdateDetailsPasswordValidator updateDetailsPasswordValidator;
   private final VerificationTokenService verificationTokenService;
 
   @Autowired
   public UserController(UserService userService, WorkoutService workoutService,
-                        UpdatePasswordValidator updatePasswordValidator,
+                        UpdateDetailsPasswordValidator updateDetailsPasswordValidator,
                         VerificationTokenService verificationTokenService) {
     this.userService = userService;
     this.workoutService = workoutService;
-    this.updatePasswordValidator = updatePasswordValidator;
+    this.updateDetailsPasswordValidator = updateDetailsPasswordValidator;
     this.verificationTokenService = verificationTokenService;
   }
 
   @InitBinder("user")
   protected void initBinder(final WebDataBinder binder) {
-    binder.addValidators(updatePasswordValidator);
+    binder.addValidators(updateDetailsPasswordValidator);
   }
 
   @PreAuthorize("hasAnyRole('USER','ADMIN')")

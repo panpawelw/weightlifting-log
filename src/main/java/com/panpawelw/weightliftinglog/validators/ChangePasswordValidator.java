@@ -46,19 +46,6 @@ public class ChangePasswordValidator implements Validator {
     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmNewPassword",
         "NotBlank.confirmPassword");
 
-    if (!passwordIsOK(changePassword.getOldPassword())) {
-      errors.rejectValue("oldPassword", "Size.password");
-    }
-    if (!passwordIsOK(changePassword.getConfirmOldPassword())) {
-      errors.rejectValue("confirmOldPassword", "Size.password");
-    }
-    if (!passwordIsOK(changePassword.getNewPassword())) {
-      errors.rejectValue("newPassword", "Size.password");
-    }
-    if (!passwordIsOK(changePassword.getConfirmNewPassword())) {
-      errors.rejectValue("confirmNewPassword", "Size.password");
-    }
-
     if (!changePassword.getOldPassword().equals(changePassword.getConfirmOldPassword())) {
       errors.rejectValue("oldPassword", "Diff.confirmPassword");
       errors.rejectValue("confirmOldPassword", "Diff.confirmPassword");
@@ -68,8 +55,16 @@ public class ChangePasswordValidator implements Validator {
       errors.rejectValue("confirmNewPassword", "Diff.confirmPassword");
     }
 
-    if (userService.passwordsDontMatch(changePassword.getOldPassword())) {
+    if (passwordIsOK(changePassword.getOldPassword()) &&
+        userService.passwordsDontMatch(changePassword.getOldPassword())) {
       errors.rejectValue("oldPassword", "Diff.wrongPassword");
+    }
+
+    if (!passwordIsOK(changePassword.getOldPassword()) ||
+        !passwordIsOK(changePassword.getConfirmOldPassword()) ||
+        !passwordIsOK(changePassword.getNewPassword()) ||
+        !passwordIsOK(changePassword.getConfirmNewPassword())) {
+      errors.rejectValue("oldPassword", "Size.password");
     }
   }
 }

@@ -13,11 +13,11 @@ import static com.panpawelw.weightliftinglog.validators.misc.Password.passwordIs
  * Used when user updates his any of his existing details (except password).
  */
 @Component
-public class UpdatePasswordValidator implements Validator {
+public class UpdateDetailsPasswordValidator implements Validator {
 
   private final UserService userService;
 
-  public UpdatePasswordValidator(UserService userService) {
+  public UpdateDetailsPasswordValidator(UserService userService) {
     this.userService = userService;
   }
 
@@ -36,10 +36,10 @@ public class UpdatePasswordValidator implements Validator {
   public void validate(Object o, Errors errors) {
     User user = (User) o;
     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotBlank.password");
-    if (passwordIsOK(user.getPassword())) {
+    if (!passwordIsOK(user.getPassword())) {
       errors.rejectValue("password", "Size.password");
     }
-    if (userService.passwordsDontMatch(user.getPassword())) {
+    if (passwordIsOK(user.getPassword()) && userService.passwordsDontMatch(user.getPassword())) {
       errors.rejectValue("password", "Diff.wrongPassword");
     }
   }

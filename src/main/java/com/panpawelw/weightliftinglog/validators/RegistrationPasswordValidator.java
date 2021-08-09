@@ -35,7 +35,7 @@ public class RegistrationPasswordValidator implements Validator {
       errors.rejectValue("password", "Size.password");
     }
 
-    if (!user.getConfirmPassword().equals(user.getPassword())) {
+    if (passwordIsOK(user.getPassword()) && !user.getConfirmPassword().equals(user.getPassword())) {
       errors.rejectValue("confirmPassword", "Diff.confirmPassword");
     }
   }
