@@ -16,8 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -102,5 +101,13 @@ public class UserServiceTests {
 
     spyService.changeCurrentUserPassword("Another test password");
     assertEquals(TEST_USER.getPassword(), "Another test password");
+  }
+
+  @Test
+  public void testPasswordsDontMatch() {
+    UserService spyService = spy(service);
+    doReturn(TEST_USER.getPassword()).when(spyService).getLoggedInUserPassword();
+    when(encoder.matches(any(), any())).thenReturn(true);
+    assertFalse(spyService.passwordsDontMatch(TEST_USER.getPassword()));
   }
 }

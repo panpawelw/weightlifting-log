@@ -1,8 +1,6 @@
 package com.panpawelw.weightliftinglog.services;
 
 import com.panpawelw.weightliftinglog.repositories.UserRepository;
-import org.hibernate.HibernateException;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -198,7 +196,7 @@ public class UserService {
    *
    * @return string value with password of the currently logged in user or null
    */
-  private static String getLoggedInUserPassword() {
+  public String getLoggedInUserPassword() {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     String userPassword;
     if (principal instanceof UserDetails) {
