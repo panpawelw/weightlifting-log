@@ -136,7 +136,7 @@ public class UserService {
    * @return true for match, false for mismatch
    */
   public boolean passwordsDontMatch(String password) {
-    return !BCrypt.checkpw(password, getLoggedInUserPassword());
+    return !passwordEncoder.matches(password, getLoggedInUserPassword());
   }
 
   /**
