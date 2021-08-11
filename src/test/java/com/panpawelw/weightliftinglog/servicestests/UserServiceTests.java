@@ -8,9 +8,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -89,6 +92,14 @@ public class UserServiceTests {
     List<User> testList = Arrays.asList(new User(), new User(), new User());
     when(repository.findAllByActivated(true)).thenReturn(testList);
     assertEquals(service.findAllByActivated(true), testList);
+  }
+
+  @Test
+  public void testAutoLogin() {
+    HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+    when(mockRequest.getSession()).thenReturn(new MockHttpSession());
+    service.autoLogin(mockRequest, TEST_USER.getName(), TEST_USER.getPassword());
+    verify(manager).authenticate(any(UsernamePasswordAuthenticationToken.class));
   }
 
   @Test
