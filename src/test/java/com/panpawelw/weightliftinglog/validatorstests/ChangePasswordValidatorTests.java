@@ -11,8 +11,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ValidationUtils;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -46,4 +45,13 @@ public class ChangePasswordValidatorTests {
     assertFalse(errors.hasErrors());
   }
 
+  @Test
+  public void allFieldsAreEmpty() {
+    ChangePassword changePassword =
+        new ChangePassword("","","","");
+    BindException errors = new BindException(changePassword, "changePassword");
+    when(service.passwordsDontMatch(changePassword.getOldPassword())).thenReturn(false);
+    ValidationUtils.invokeValidator(validator, changePassword, errors);
+    assertEquals(errors.getAllErrors().size(), 5);
+  }
 }
