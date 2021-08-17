@@ -4,26 +4,26 @@ package com.panpawelw.weightliftinglog.models;
  * This class is used when changing user's password
  * <p>
  * oldPassword - user's current password
- * confirmOldPassword - confirmation of current password
+ * oldConfirmPassword - confirmation of current password
  * newPassword - user's new password
- * confirmNewPassword - confirmation of new password
+ * newConfirmPassword - confirmation of new password
  */
 public class ChangePassword {
 
   private String oldPassword;
-  private String confirmOldPassword;
+  private String oldConfirmPassword;
   private String newPassword;
-  private String confirmNewPassword;
+  private String newConfirmPassword;
 
   public ChangePassword() {
   }
 
-  public ChangePassword(String oldPassword, String confirmOldPassword, String newPassword,
-      String confirmNewPassword) {
+  public ChangePassword(String oldPassword, String oldConfirmPassword, String newPassword,
+                        String newConfirmPassword) {
     this.oldPassword = oldPassword;
-    this.confirmOldPassword = confirmOldPassword;
+    this.oldConfirmPassword = oldConfirmPassword;
     this.newPassword = newPassword;
-    this.confirmNewPassword = confirmNewPassword;
+    this.newConfirmPassword = newConfirmPassword;
   }
 
   public String getOldPassword() {
@@ -34,12 +34,12 @@ public class ChangePassword {
     this.oldPassword = oldPassword;
   }
 
-  public String getConfirmOldPassword() {
-    return confirmOldPassword;
+  public String getOldConfirmPassword() {
+    return oldConfirmPassword;
   }
 
-  public void setConfirmOldPassword(String confirmOldPassword) {
-    this.confirmOldPassword = confirmOldPassword;
+  public void setOldConfirmPassword(String oldConfirmPassword) {
+    this.oldConfirmPassword = oldConfirmPassword;
   }
 
   public String getNewPassword() {
@@ -50,11 +50,11 @@ public class ChangePassword {
     this.newPassword = newPassword;
   }
 
-  public String getConfirmNewPassword() {
-    return confirmNewPassword;
+  public String getNewConfirmPassword() {
+    return newConfirmPassword;
   }
 
-  public void setConfirmNewPassword(String confirmNewPassword) {
-    this.confirmNewPassword = confirmNewPassword;
+  public void setNewConfirmPassword(String newConfirmPassword) {
+    this.newConfirmPassword = newConfirmPassword;
   }
 }

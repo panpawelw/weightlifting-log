@@ -40,19 +40,19 @@ public class ChangePasswordValidator implements Validator {
     ValidationUtils.rejectIfEmptyOrWhitespace(errors,
         "oldPassword", "NotBlank.oldPassword");
     ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-        "confirmOldPassword", "NotBlank.oldConfirmPassword");
+        "oldConfirmPassword", "NotBlank.oldConfirmPassword");
     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "newPassword",
         "NotBlank.password");
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmNewPassword",
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "newConfirmPassword",
         "NotBlank.confirmPassword");
 
-    if (!changePassword.getOldPassword().equals(changePassword.getConfirmOldPassword())) {
+    if (!changePassword.getOldPassword().equals(changePassword.getOldConfirmPassword())) {
       errors.rejectValue("oldPassword", "Diff.confirmPassword");
-      errors.rejectValue("confirmOldPassword", "Diff.confirmPassword");
+      errors.rejectValue("oldConfirmPassword", "Diff.confirmPassword");
     }
-    if (!changePassword.getNewPassword().equals(changePassword.getConfirmNewPassword())) {
+    if (!changePassword.getNewPassword().equals(changePassword.getNewConfirmPassword())) {
       errors.rejectValue("newPassword", "Diff.confirmPassword");
-      errors.rejectValue("confirmNewPassword", "Diff.confirmPassword");
+      errors.rejectValue("newConfirmPassword", "Diff.confirmPassword");
     }
 
     if (passwordIsOK(changePassword.getOldPassword()) &&
@@ -61,9 +61,9 @@ public class ChangePasswordValidator implements Validator {
     }
 
     if (!passwordIsOK(changePassword.getOldPassword()) ||
-        !passwordIsOK(changePassword.getConfirmOldPassword()) ||
+        !passwordIsOK(changePassword.getOldConfirmPassword()) ||
         !passwordIsOK(changePassword.getNewPassword()) ||
-        !passwordIsOK(changePassword.getConfirmNewPassword())) {
+        !passwordIsOK(changePassword.getNewConfirmPassword())) {
       errors.rejectValue("oldPassword", "Size.password");
     }
   }

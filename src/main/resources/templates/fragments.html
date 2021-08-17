@@ -98,11 +98,11 @@
   <h2>Please enter and confirm both old and new passwords...</h2><br>
   <form th:action="@{/user/changepassword}" th:object="${changePassword}" method="post">
     <p th:if="${#fields.hasErrors('oldPassword')}" class="alert" th:errors="*{oldPassword}"></p>
-    <p th:if="${#fields.hasErrors('confirmOldPassword')}" class="alert"
-       th:errors="*{confirmOldPassword}"></p>
+    <p th:if="${#fields.hasErrors('oldConfirmPassword')}" class="alert"
+       th:errors="*{oldConfirmPassword}"></p>
     <p th:if="${#fields.hasErrors('newPassword')}" class="alert" th:errors="*{newPassword}"></p>
-    <p th:if="${#fields.hasErrors('confirmNewPassword')}" class="alert"
-       th:errors="*{confirmNewPassword}"></p>
+    <p th:if="${#fields.hasErrors('newConfirmPassword')}" class="alert"
+       th:errors="*{newConfirmPassword}"></p>
     <br>
     <p>
       <label>Current password:
@@ -111,7 +111,7 @@
     </p>
     <p>
       <label>Confirm current password:
-        <input type="password" th:field="*{confirmOldPassword}"/>
+        <input type="password" th:field="*{oldConfirmPassword}"/>
       </label>
     </p>
     <p>
@@ -121,7 +121,7 @@
     </p>
     <p>
       <label>Confirm new password:
-        <input type="password" th:field="*{confirmNewPassword}"/>
+        <input type="password" th:field="*{newConfirmPassword}"/>
       </label>
     </p>
     <input type="submit" onclick="storeLogoState();" value="Change password">
