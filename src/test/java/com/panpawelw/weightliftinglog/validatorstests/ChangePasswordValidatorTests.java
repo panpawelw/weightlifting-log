@@ -11,6 +11,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ValidationUtils;
 
+import java.util.Objects;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
@@ -52,6 +54,16 @@ public class ChangePasswordValidatorTests {
     BindException errors = new BindException(changePassword, "changePassword");
     when(service.passwordsDontMatch(changePassword.getOldPassword())).thenReturn(false);
     ValidationUtils.invokeValidator(validator, changePassword, errors);
-    assertEquals(errors.getAllErrors().size(), 5);
+    assertEquals(errors.getErrorCount(), 5);
+    assertEquals("NotBlank.oldPassword",
+        Objects.requireNonNull(errors.getFieldErrors("oldPassword")).get(0).getCode());
+    assertEquals("Size.password",
+        Objects.requireNonNull(errors.getFieldErrors("oldPassword")).get(1).getCode());
+    assertEquals("NotBlank.oldConfirmPassword",
+        Objects.requireNonNull(errors.getFieldError("oldConfirmPassword")).getCode());
+    assertEquals("NotBlank.password",
+        Objects.requireNonNull(errors.getFieldError("newPassword")).getCode());
+    assertEquals("NotBlank.confirmPassword",
+        Objects.requireNonNull(errors.getFieldError("newConfirmPassword")).getCode());
   }
 }
