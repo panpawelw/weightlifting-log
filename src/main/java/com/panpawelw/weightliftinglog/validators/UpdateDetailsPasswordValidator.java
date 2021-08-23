@@ -36,7 +36,7 @@ public class UpdateDetailsPasswordValidator implements Validator {
   public void validate(Object o, Errors errors) {
     User user = (User) o;
     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotBlank.password");
-    if (!passwordIsOK(user.getPassword())) {
+    if (!passwordIsOK(user.getPassword()) && !user.getPassword().equals("")) {
       errors.rejectValue("password", "Size.password");
     }
     if (passwordIsOK(user.getPassword()) && userService.passwordsDontMatch(user.getPassword())) {

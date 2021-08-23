@@ -86,7 +86,7 @@ public class UserController {
     if (!bindingResult.hasErrors()) {
       try {
         String password = user.getPassword();
-        userService.saveUser(user);
+        userService.saveUserWithoutModifyingPassword(user);
         userService.logoutUser(request, response);
         userService.autoLogin(request, user.getName(), password);
         prepMessage(model, "/weightliftinglog/user", "Success!", "User details have been updated!");
