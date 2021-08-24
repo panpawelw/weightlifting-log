@@ -25,6 +25,8 @@ public class UpdateDetailsPasswordValidatorTests {
 
   private UpdateDetailsPasswordValidator validator;
 
+  private final BindException errors = new BindException(TEST_USER, "user");
+
   @Before
   public void setup() {
     validator = new UpdateDetailsPasswordValidator(service);
@@ -37,9 +39,8 @@ public class UpdateDetailsPasswordValidatorTests {
   }
 
   @Test
-  public void userIsValid() {
+  public void passwordIsValid() {
     TEST_USER.setPassword("Test password");
-    BindException errors = new BindException(TEST_USER, "user");
     when(service.passwordsDontMatch(TEST_USER.getPassword())).thenReturn(false);
     ValidationUtils.invokeValidator(validator, TEST_USER, errors);
     assertFalse(errors.hasErrors());
@@ -48,7 +49,6 @@ public class UpdateDetailsPasswordValidatorTests {
   @Test
   public void passwordIsBlank() {
     TEST_USER.setPassword("");
-    BindException errors = new BindException(TEST_USER, "user");
     ValidationUtils.invokeValidator(validator, TEST_USER, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals("NotBlank.password", errors.getFieldErrors("password").get(0).getCode());
@@ -57,7 +57,6 @@ public class UpdateDetailsPasswordValidatorTests {
   @Test
   public void passwordHasWrongLength() {
     TEST_USER.setPassword("xx");
-    BindException errors = new BindException(TEST_USER, "user");
     ValidationUtils.invokeValidator(validator, TEST_USER, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals("Size.password", errors.getFieldErrors("password").get(0).getCode());
@@ -66,7 +65,6 @@ public class UpdateDetailsPasswordValidatorTests {
   @Test
   public void wrongPassword() {
     TEST_USER.setPassword("Wrong password");
-    BindException errors = new BindException(TEST_USER, "user");
     when(service.passwordsDontMatch("Wrong password")).thenReturn(true);
     ValidationUtils.invokeValidator(validator, TEST_USER, errors);
     assertEquals(1, errors.getErrorCount());
