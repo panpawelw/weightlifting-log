@@ -31,7 +31,7 @@ public class RegistrationPasswordValidator implements Validator {
     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotBlank.password");
     ValidationUtils.rejectIfEmptyOrWhitespace(errors,
         "confirmPassword", "NotBlank.confirmPassword");
-    if (!passwordIsOK(user.getPassword())) {
+    if (!passwordIsOK(user.getPassword()) && !user.getPassword().equals("")) {
       errors.rejectValue("password", "Size.password");
     }
 
