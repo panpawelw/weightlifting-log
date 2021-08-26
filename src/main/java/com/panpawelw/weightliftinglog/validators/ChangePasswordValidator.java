@@ -41,30 +41,30 @@ public class ChangePasswordValidator implements Validator {
         "oldPassword", "NotBlank.oldPassword");
     ValidationUtils.rejectIfEmptyOrWhitespace(errors,
         "oldConfirmPassword", "NotBlank.oldConfirmPassword");
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "newPassword",
-        "NotBlank.password");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors,
+        "newPassword", "NotBlank.newPassword");
     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "newConfirmPassword",
-        "NotBlank.confirmPassword");
+        "NotBlank.newConfirmPassword");
 
     if (!changePassword.getOldPassword().equals(changePassword.getOldConfirmPassword())) {
-      errors.rejectValue("oldPassword", "Diff.confirmPassword");
-      errors.rejectValue("oldConfirmPassword", "Diff.confirmPassword");
+      errors.rejectValue("oldPassword", "Diff.confirmOldPassword");
     }
     if (!changePassword.getNewPassword().equals(changePassword.getNewConfirmPassword())) {
-      errors.rejectValue("newPassword", "Diff.confirmPassword");
-      errors.rejectValue("newConfirmPassword", "Diff.confirmPassword");
+      errors.rejectValue("newPassword", "Diff.confirmNewPassword");
+    }
+
+    if (!passwordIsOK(changePassword.getOldPassword())
+        && !changePassword.getOldPassword().equals("")) {
+      errors.rejectValue("oldPassword", "Size.oldPassword");
+    }
+    if (!passwordIsOK(changePassword.getNewPassword())
+        && !changePassword.getNewPassword().equals("")) {
+      errors.rejectValue("newPassword", "Size.newPassword");
     }
 
     if (passwordIsOK(changePassword.getOldPassword()) &&
         userService.passwordsDontMatch(changePassword.getOldPassword())) {
       errors.rejectValue("oldPassword", "Diff.wrongPassword");
-    }
-
-    if (!passwordIsOK(changePassword.getOldPassword()) ||
-        !passwordIsOK(changePassword.getOldConfirmPassword()) ||
-        !passwordIsOK(changePassword.getNewPassword()) ||
-        !passwordIsOK(changePassword.getNewConfirmPassword())) {
-      errors.rejectValue("oldPassword", "Size.password");
     }
   }
 }
