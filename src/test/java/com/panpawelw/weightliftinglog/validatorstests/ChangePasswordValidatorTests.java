@@ -20,8 +20,8 @@ import static org.mockito.Mockito.when;
 public class ChangePasswordValidatorTests {
 
   private static final ChangePassword TEST_CHANGEPASSWORD = new ChangePassword(
-      "password", "password",
-      "password1", "password1");
+      "oldpassword", "oldpassword",
+      "newpassword", "newpassword");
 
   @Mock
   private UserService service;
@@ -48,22 +48,53 @@ public class ChangePasswordValidatorTests {
   }
 
   @Test
-  public void allFieldsAreEmpty() {
-    ChangePassword changePassword =
+  public void allFieldsAreBlank() {
+    ChangePassword blankChangePassword =
         new ChangePassword("","","","");
-    BindException errors = new BindException(changePassword, "changePassword");
-    when(service.passwordsDontMatch(changePassword.getOldPassword())).thenReturn(false);
-    ValidationUtils.invokeValidator(validator, changePassword, errors);
-    assertEquals(errors.getErrorCount(), 5);
-    assertEquals("NotBlank.oldPassword",
-        Objects.requireNonNull(errors.getFieldErrors("oldPassword")).get(0).getCode());
-    assertEquals("Size.password",
-        Objects.requireNonNull(errors.getFieldErrors("oldPassword")).get(1).getCode());
+    BindException errors = new BindException(blankChangePassword, "changePassword");
+    ValidationUtils.invokeValidator(validator, blankChangePassword, errors);
+    assertEquals(4, errors.getErrorCount());
+    assertEquals("NotBlank.oldPassword", errors.getFieldErrors("oldPassword").get(0).getCode());
     assertEquals("NotBlank.oldConfirmPassword",
         Objects.requireNonNull(errors.getFieldError("oldConfirmPassword")).getCode());
-    assertEquals("NotBlank.password",
+    assertEquals("NotBlank.newPassword",
         Objects.requireNonNull(errors.getFieldError("newPassword")).getCode());
-    assertEquals("NotBlank.confirmPassword",
+    assertEquals("NotBlank.newConfirmPassword",
         Objects.requireNonNull(errors.getFieldError("newConfirmPassword")).getCode());
+  }
+
+  @Test
+  public void allFieldsAreTooShort() {
+    ChangePassword tooShortChangePassword =
+        new ChangePassword("x", "x", "x", "x");
+    BindException errors = new BindException(tooShortChangePassword, "changePassword");
+    ValidationUtils.invokeValidator(validator, tooShortChangePassword, errors);
+    assertEquals(2, errors.getErrorCount());
+    assertEquals("Size.oldPassword", errors.getFieldErrors("oldPassword").get(0).getCode());
+    assertEquals("Size.newPassword", errors.getFieldErrors("newPassword").get(0).getCode());
+  }
+
+  @Test
+  public void bothOldAndNewPasswordsDontMatchWithConfirmations() {
+    ChangePassword notMatchingChangePassword = new ChangePassword("oldpassword",
+        "whatever", "newpassword", "whatever");
+    BindException errors = new BindException(notMatchingChangePassword, "changePassword");
+    ValidationUtils.invokeValidator(validator, notMatchingChangePassword, errors);
+    assertEquals(2, errors.getErrorCount());
+    assertEquals("Diff.confirmOldPassword",
+        errors.getFieldErrors("oldPassword").get(0).getCode());
+    assertEquals("Diff.confirmNewPassword",
+        errors.getFieldErrors("newPassword").get(0).getCode());
+  }
+
+  @Test
+  public void oldPasswordIsWrong() {
+    ChangePassword oldPasswordWrongChangePassword = new ChangePassword("wrongpassword",
+        "wrongpassword", "newpassword", "newpassword");
+    BindException errors = new BindException(oldPasswordWrongChangePassword, "changePassword");
+    when(service.passwordsDontMatch(oldPasswordWrongChangePassword.getOldPassword())).thenReturn(true);
+    ValidationUtils.invokeValidator(validator, oldPasswordWrongChangePassword, errors);
+    assertEquals(1, errors.getErrorCount());
+    assertEquals("Diff.wrongPassword", errors.getFieldErrors("oldPassword").get(0).getCode());
   }
 }
