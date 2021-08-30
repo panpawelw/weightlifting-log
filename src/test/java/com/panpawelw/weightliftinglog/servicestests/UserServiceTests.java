@@ -1,5 +1,6 @@
 package com.panpawelw.weightliftinglog.servicestests;
 
+import com.panpawelw.weightliftinglog.models.SecureUserDetails;
 import com.panpawelw.weightliftinglog.models.User;
 import com.panpawelw.weightliftinglog.repositories.UserRepository;
 import com.panpawelw.weightliftinglog.services.UserService;
@@ -27,7 +28,9 @@ public class UserServiceTests {
   private static final User TEST_USER = new User(1L, "Test name",
       "Test password", "Test password",
       "Test@email.com", true, "Test first name",
-      "Test last name", 20, true, "USER", new ArrayList<>());
+      "Test last name", 20, true, "ADMIN", new ArrayList<>());
+
+  private static final SecureUserDetails TEST_SECUREUSERDETAILS = new SecureUserDetails(TEST_USER);
 
   @Mock
   private UserRepository repository;
@@ -43,7 +46,7 @@ public class UserServiceTests {
   @Before
   public void setup() {
     SecurityContextHolder.getContext().setAuthentication(
-        new UsernamePasswordAuthenticationToken(TEST_USER.getName(), TEST_USER.getPassword()));
+        new UsernamePasswordAuthenticationToken(TEST_SECUREUSERDETAILS, TEST_USER.getPassword()));
     this.service = new UserService(repository, encoder, manager);
   }
 
@@ -93,5 +96,25 @@ public class UserServiceTests {
     List<User> testList = Arrays.asList(new User(), new User(), new User());
     when(repository.findAllByActivated(true)).thenReturn(testList);
     assertEquals(service.findAllByActivated(true), testList);
+  }
+
+  @Test
+  public void testGetLoggedInUsersName() {
+    assertEquals(TEST_USER.getName(), service.getLoggedInUserName());
+  }
+
+  @Test
+  public void testGetLoggedInUsersEmail() {
+    assertEquals(TEST_USER.getEmail(), service.getLoggedInUsersEmail());
+  }
+
+  @Test
+  public void testcheckLoggedInUserForAdminRights() {
+    assertEquals(TEST_USER.getRole().equals("ADMIN"), service.checkLoggedInUserForAdminRights());
+  }
+
+  @Test
+  public void testGetLoggedInUsersPassword() {
+    assertEquals(TEST_USER.getPassword(), service.getLoggedInUserPassword());
   }
 }
