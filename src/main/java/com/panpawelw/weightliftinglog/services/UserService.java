@@ -145,13 +145,11 @@ public class UserService {
    */
   public String getLoggedInUserName() {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    String userName;
     if (principal instanceof UserDetails) {
-      userName = ((UserDetails) principal).getUsername();
+      return ((UserDetails) principal).getUsername();
     } else {
-      userName = principal.toString();
+      return principal.toString();
     }
-    return userName;
   }
 
   /**
@@ -162,13 +160,11 @@ public class UserService {
    */
   public String getLoggedInUsersEmail() {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    String email;
     if (principal instanceof UserDetails) {
-      email = ((SecureUserDetails) principal).getEmail();
+      return ((SecureUserDetails) principal).getEmail();
     } else {
-      email = principal.toString();
+      return principal.toString();
     }
-    return email;
   }
 
   /**
@@ -198,12 +194,10 @@ public class UserService {
    */
   public String getLoggedInUserPassword() {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    String userPassword;
     if (principal instanceof UserDetails) {
-      userPassword = ((UserDetails) principal).getPassword();
+      return ((UserDetails) principal).getPassword();
     } else {
-      userPassword = null;
+      return null;
     }
-    return userPassword;
   }
 }
