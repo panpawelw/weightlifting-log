@@ -56,6 +56,7 @@ public class UserServiceTests {
         .thenReturn(java.util.Optional.of(TEST_USER));
 
     assertEquals(TEST_USER, service.findUserByEmail(TEST_USER.getEmail()));
+    verify(repository).findUserByEmail(TEST_USER.getEmail());
   }
 
   @Test
@@ -64,6 +65,7 @@ public class UserServiceTests {
         .thenReturn(Optional.empty());
 
     assertNull(service.findUserByEmail(TEST_USER.getEmail()));
+    verify(repository).findUserByEmail(TEST_USER.getEmail());
   }
 
   @Test
@@ -96,6 +98,7 @@ public class UserServiceTests {
     List<User> testList = Arrays.asList(new User(), new User(), new User());
     when(repository.findAllByActivated(true)).thenReturn(testList);
     assertEquals(service.findAllByActivated(true), testList);
+    verify(repository).findAllByActivated(true);
   }
 
   @Test
