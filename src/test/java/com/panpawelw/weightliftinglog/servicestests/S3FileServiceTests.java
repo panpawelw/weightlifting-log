@@ -85,6 +85,7 @@ public class S3FileServiceTests {
     when(objectMetadata.getContentType()).thenReturn("audio/mpeg");
 
     assertEquals(testFile, service.getFileByWorkoutIdAndFilename(3L, "testfile.mp3"));
+    verify(client).getObject("correctbucketname", "3\\testfile.mp3");
   }
 
   @Test
