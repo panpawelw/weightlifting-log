@@ -101,7 +101,7 @@ public class VerificationTokenServiceTests {
   public void testRemoveAccountIfTokenExpiredWhenTokenDoesNotExist() {
     when(repository.findByUser(any())).thenReturn(Optional.empty());
 
-    assertEquals(service.removeAccountIfTokenExpired(TEST_USER),
-        "");
+    assertEquals(service.removeAccountIfTokenExpired(TEST_USER), "");
+    verify(repository).findByUser(any());
   }
 }
