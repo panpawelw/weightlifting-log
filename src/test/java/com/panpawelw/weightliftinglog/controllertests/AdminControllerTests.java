@@ -7,28 +7,35 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.ui.Model;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@WebMvcTest(controllers = AdminController.class)
 @RunWith(MockitoJUnitRunner.class)
 public class AdminControllerTests {
+
+  @Autowired
+  private MockMvc mockMvc;
 
   @Mock
   private UserService service;
 
-  @Mock
-  private Model model;
-
-  private AdminController controller;
-
   @Before
   public void setup() {
-    controller = new AdminController(service);
+    AdminController controller = new AdminController(service);
+    this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
   }
 
   @Test
-  public void testAdmin() {
-    assertEquals(controller.admin(model), "home");
+  public void testAdmin() throws Exception {
+    mockMvc.perform(get("/admin"))
+        .andExpect(status().isOk())
+        .andExpect(forwardedUrl("home"))
+        .andExpect(model().attribute("page", "fragments.html :: admin-panel"));
   }
 }
