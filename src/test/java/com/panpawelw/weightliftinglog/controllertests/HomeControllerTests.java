@@ -49,4 +49,12 @@ public class HomeControllerTests {
     mockMvc.perform(get("/")).andExpect(status().isOk());
   }
 
+  @Test
+  public void loginFails() throws Exception {
+    mockMvc.perform(get("/loginfailure"))
+        .andExpect(status().isOk())
+        .andExpect(forwardedUrl("home"))
+        .andExpect(model().attribute("page", "fragments.html :: login"));
+  }
+
 }
