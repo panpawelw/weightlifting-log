@@ -1,6 +1,7 @@
 package com.panpawelw.weightliftinglog.controllertests;
 
 import com.panpawelw.weightliftinglog.controllers.HomeController;
+import com.panpawelw.weightliftinglog.models.User;
 import com.panpawelw.weightliftinglog.services.UserService;
 import com.panpawelw.weightliftinglog.services.VerificationTokenService;
 import com.panpawelw.weightliftinglog.validators.RegistrationPasswordValidator;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.hamcrest.Matchers.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -46,15 +48,37 @@ public class HomeControllerTests {
 
   @Test
   public void homeControllerGet() throws Exception {
-    mockMvc.perform(get("/")).andExpect(status().isOk());
+    mockMvc.perform(get("/"))
+        .andExpect(status().isOk())
+        .andExpect(model().attribute("showCalc", true))
+        .andExpect(model().attribute("page", "fragments.html :: login"));
+  }
+
+//  @Test
+//  public void validLogin() throws
+
+  @Test
+  public void loginPost() throws Exception {
+    mockMvc.perform(post("/login"))
+        .andExpect(status().is(302))
+        .andExpect(redirectedUrl("/user"));
   }
 
   @Test
-  public void loginFails() throws Exception {
+  public void loginFailure() throws Exception {
     mockMvc.perform(get("/loginfailure"))
         .andExpect(status().isOk())
         .andExpect(forwardedUrl("home"))
         .andExpect(model().attribute("page", "fragments.html :: login"));
+  }
+
+  @Test
+  public void registerGet() throws Exception {
+    mockMvc.perform(get("/register"))
+        .andExpect(status().isOk())
+        .andExpect(forwardedUrl("home"))
+        .andExpect(model().attribute("page", "fragments.html :: register-user"))
+        .andExpect(model().attribute("user", any(User.class)));
   }
 
 }
