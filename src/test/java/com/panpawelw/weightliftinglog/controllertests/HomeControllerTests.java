@@ -1,6 +1,7 @@
 package com.panpawelw.weightliftinglog.controllertests;
 
 import com.panpawelw.weightliftinglog.controllers.HomeController;
+import com.panpawelw.weightliftinglog.models.SecureUserDetails;
 import com.panpawelw.weightliftinglog.models.User;
 import com.panpawelw.weightliftinglog.services.UserService;
 import com.panpawelw.weightliftinglog.services.VerificationTokenService;
@@ -14,8 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -25,6 +30,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WebMvcTest(controllers = HomeController.class)
 @Import(RegistrationPasswordValidator.class)
 public class HomeControllerTests {
+
+  private static final User TEST_USER = new User(1L, "Test name",
+      "Test password", "Test password",
+      "Test@email.com", true, "Test first name",
+      "Test last name", 20, true, "ADMIN", new ArrayList<>());
+
+  private static final SecureUserDetails TEST_SECUREUSERDETAILS = new SecureUserDetails(TEST_USER);
 
   @Autowired
   private MockMvc mockMvc;
@@ -40,6 +52,8 @@ public class HomeControllerTests {
 
   @Before
   public void setup() {
+    SecurityContextHolder.getContext().setAuthentication(
+        new UsernamePasswordAuthenticationToken(TEST_SECUREUSERDETAILS, TEST_USER.getPassword()));
     RegistrationPasswordValidator validator = new RegistrationPasswordValidator();
     HomeController controller = new HomeController(userService, validator, publisher,
         verificationTokenService);
@@ -54,8 +68,12 @@ public class HomeControllerTests {
         .andExpect(model().attribute("page", "fragments.html :: login"));
   }
 
-//  @Test
-//  public void validLogin() throws
+  @Test
+  public void validLogin() throws Exception {
+    mockMvc.perform(get("/login"))
+        .andExpect(status().is(302))
+        .andExpect(redirectedUrl("/user"));
+  }
 
   @Test
   public void loginPost() throws Exception {
