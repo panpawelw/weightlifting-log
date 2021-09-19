@@ -15,12 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.hamcrest.Matchers.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -52,8 +54,6 @@ public class HomeControllerTests {
 
   @Before
   public void setup() {
-    SecurityContextHolder.getContext().setAuthentication(
-        new UsernamePasswordAuthenticationToken(TEST_SECUREUSERDETAILS, TEST_USER.getPassword()));
     RegistrationPasswordValidator validator = new RegistrationPasswordValidator();
     HomeController controller = new HomeController(userService, validator, publisher,
         verificationTokenService);
@@ -65,14 +65,26 @@ public class HomeControllerTests {
     mockMvc.perform(get("/"))
         .andExpect(status().isOk())
         .andExpect(model().attribute("showCalc", true))
+        .andExpect(forwardedUrl("home"))
         .andExpect(model().attribute("page", "fragments.html :: login"));
   }
 
   @Test
   public void validLogin() throws Exception {
+    SecurityContextHolder.getContext().setAuthentication(
+        new UsernamePasswordAuthenticationToken(TEST_SECUREUSERDETAILS, TEST_USER.getPassword()));
     mockMvc.perform(get("/login"))
         .andExpect(status().is(302))
         .andExpect(redirectedUrl("/user"));
+  }
+
+  @Test
+  public void invalidLogin() throws Exception {
+    SecurityContextHolder.getContext().setAuthentication(new TestingAuthenticationToken(new Object(), new Object(), Collections.emptyList()));
+    mockMvc.perform(get("/login"))
+        .andExpect(status().isOk())
+        .andExpect(forwardedUrl("home"))
+        .andExpect(model().attribute("page", "fragments.html :: login"));
   }
 
   @Test
