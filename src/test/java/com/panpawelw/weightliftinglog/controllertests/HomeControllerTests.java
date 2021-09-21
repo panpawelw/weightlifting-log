@@ -17,6 +17,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -24,7 +25,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static org.hamcrest.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -47,7 +50,7 @@ public class HomeControllerTests {
   private UserService userService;
 
   @Mock
-  ApplicationEventPublisher publisher;
+  private ApplicationEventPublisher publisher;
 
   @Mock
   private VerificationTokenService verificationTokenService;
@@ -80,7 +83,8 @@ public class HomeControllerTests {
 
   @Test
   public void invalidLogin() throws Exception {
-    SecurityContextHolder.getContext().setAuthentication(new TestingAuthenticationToken(new Object(), new Object(), Collections.emptyList()));
+    SecurityContextHolder.getContext().setAuthentication(
+        new TestingAuthenticationToken(new Object(), new Object(), Collections.emptyList()));
     mockMvc.perform(get("/login"))
         .andExpect(status().isOk())
         .andExpect(forwardedUrl("home"))
@@ -103,12 +107,33 @@ public class HomeControllerTests {
   }
 
   @Test
+  public void validLogout() throws Exception {
+    mockMvc.perform(get("/logout"))
+        .andExpect(status().isOk())
+        .andExpect(model().attribute("header", "Logout successful!"))
+        .andExpect(forwardedUrl("home"))
+        .andExpect(model().attribute("page", "fragments.html :: show-message"));
+    verify(userService).logoutUser(any(), any());
+  }
+
+  @Test
+  public void invalidLogout() throws Exception {
+    Authentication authentication = new TestingAuthenticationToken(new Object(), new Object(), Collections.emptyList());
+    when(userService.logoutUser(any(), any())).thenReturn(authentication);
+    mockMvc.perform(get("/logout"))
+        .andExpect(status().isOk())
+        .andExpect(model().attribute("header", "Logout failure!"))
+        .andExpect(forwardedUrl("home"))
+        .andExpect(model().attribute("page", "fragments.html :: show-message"));
+    verify(userService).logoutUser(any(), any());
+  }
+
+  @Test
   public void registerGet() throws Exception {
     mockMvc.perform(get("/register"))
         .andExpect(status().isOk())
         .andExpect(forwardedUrl("home"))
         .andExpect(model().attribute("page", "fragments.html :: register-user"))
-        .andExpect(model().attribute("user", any(User.class)));
+        .andExpect(model().attribute("user", org.hamcrest.Matchers.any(User.class)));
   }
-
 }
