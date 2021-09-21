@@ -136,4 +136,27 @@ public class HomeControllerTests {
         .andExpect(model().attribute("page", "fragments.html :: register-user"))
         .andExpect(model().attribute("user", org.hamcrest.Matchers.any(User.class)));
   }
+
+  @Test
+  public void validRegistrationUserActivationNotNeeded() throws Exception {
+    mockMvc.perform(post("/register").flashAttr("user", TEST_USER))
+        .andExpect(status().isOk())
+        .andExpect(forwardedUrl("home"))
+        .andExpect(model().attribute("text",
+            "Your user account has been registered and activated. Enjoy!"));
+  }
+
+  @Test
+  public void validRegistrationUserActivationNeeded() throws Exception {
+    User testUser = new User(TEST_USER);
+    testUser.setActivated(false);
+    testUser.setConfirmPassword("Test password");
+    mockMvc.perform(post("/register").flashAttr("user", testUser))
+        .andExpect(status().isOk())
+        .andExpect(forwardedUrl("home"))
+        .andExpect(model().attribute("text",
+            "Confirmation email has been sent to:<br><br>Test@email.com<br><br>Please activate" +
+                " your account within 24 hours!<br><br>Don't forget to check your spam folder!"));
+    verify(publisher).publishEvent(any());
+  }
 }
