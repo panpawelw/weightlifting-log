@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Import;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,8 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -38,7 +38,7 @@ public class HomeControllerTests {
 
   private static final User TEST_USER = new User(1L, "Test name",
       "Test password", "Test password",
-      "Test@email.com", true, "Test first name",
+      "test@email.com", true, "Test first name",
       "Test last name", 20, true, "ADMIN", new ArrayList<>());
 
   private static final SecureUserDetails TEST_SECUREUSERDETAILS = new SecureUserDetails(TEST_USER);
@@ -155,8 +155,31 @@ public class HomeControllerTests {
         .andExpect(status().isOk())
         .andExpect(forwardedUrl("home"))
         .andExpect(model().attribute("text",
-            "Confirmation email has been sent to:<br><br>Test@email.com<br><br>Please activate" +
+            "Confirmation email has been sent to:<br><br>test@email.com<br><br>Please activate" +
                 " your account within 24 hours!<br><br>Don't forget to check your spam folder!"));
     verify(publisher).publishEvent(any());
+  }
+
+  @Test
+  public void usersNameExists() throws Exception {
+    when(userService.saveUser(TEST_USER))
+        .thenThrow(new DataIntegrityViolationException("user_unique_name_idx"));
+    mockMvc.perform(post("/register").flashAttr("user", TEST_USER))
+        .andExpect(status().isOk())
+        .andExpect(forwardedUrl("home"))
+        .andExpect(model().attributeHasFieldErrors("user", "name"));
+
+    verify(userService).saveUser(TEST_USER);
+  }
+
+  @Test
+  public void usersEmailExists() throws Exception {
+    when(userService.saveUser(TEST_USER))
+        .thenThrow(new DataIntegrityViolationException("user_unique_email_idx"));
+    mockMvc.perform(post("/register").flashAttr("user", TEST_USER))
+        .andExpect(status().isOk())
+        .andExpect(forwardedUrl("home"))
+        .andExpect(model().attributeHasFieldErrors("user","email"));
+    verify(userService).saveUser(TEST_USER);
   }
 }
