@@ -6,6 +6,7 @@ import com.panpawelw.weightliftinglog.models.User;
 import com.panpawelw.weightliftinglog.services.UserService;
 import com.panpawelw.weightliftinglog.services.VerificationTokenService;
 import com.panpawelw.weightliftinglog.validators.RegistrationPasswordValidator;
+import org.hibernate.HibernateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -161,7 +162,7 @@ public class HomeControllerTests {
   }
 
   @Test
-  public void usersNameExists() throws Exception {
+  public void invalidRegistrationUsersNameExists() throws Exception {
     when(userService.saveUser(TEST_USER))
         .thenThrow(new DataIntegrityViolationException("user_unique_name_idx"));
     mockMvc.perform(post("/register").flashAttr("user", TEST_USER))
@@ -173,13 +174,33 @@ public class HomeControllerTests {
   }
 
   @Test
-  public void usersEmailExists() throws Exception {
+  public void invalidRegistrationUsersEmailExists() throws Exception {
     when(userService.saveUser(TEST_USER))
         .thenThrow(new DataIntegrityViolationException("user_unique_email_idx"));
     mockMvc.perform(post("/register").flashAttr("user", TEST_USER))
         .andExpect(status().isOk())
         .andExpect(forwardedUrl("home"))
         .andExpect(model().attributeHasFieldErrors("user","email"));
+    verify(userService).saveUser(TEST_USER);
+  }
+
+  @Test
+  public void invalidRegistrationDatabaseError() throws Exception {
+    when(userService.saveUser(TEST_USER)).thenThrow(HibernateException.class);
+    mockMvc.perform(post("/register").flashAttr("user", TEST_USER))
+        .andExpect(status().isOk())
+        .andExpect(forwardedUrl("home"))
+        .andExpect(model().attribute("header", "Database error!"));
+    verify(userService).saveUser(TEST_USER);
+  }
+
+  @Test
+  public void invalidRegistrationOtherError() throws Exception {
+    when(userService.saveUser(TEST_USER)).thenThrow(RuntimeException.class);
+    mockMvc.perform(post("/register").flashAttr("user", TEST_USER))
+        .andExpect(status().isOk())
+        .andExpect(forwardedUrl("home"))
+        .andExpect(model().attribute("header", "Registration error!"));
     verify(userService).saveUser(TEST_USER);
   }
 }

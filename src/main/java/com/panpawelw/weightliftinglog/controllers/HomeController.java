@@ -126,7 +126,8 @@ public class HomeController {
               "This email already exists in our database!");
         }
       } catch (HibernateException e) {
-        prepMessage(model, "login", "Error!", "There's been a database error!");
+        prepMessage(model, "login", "Database error!",
+            "There's been a database error!");
       } catch (Exception e) {
         prepMessage(model, "login", "Registration error!",
             "There's been a problem sending activation message to your email address. Please " +
