@@ -39,14 +39,14 @@ public class WorkoutController {
   @ResponseBody
   @GetMapping("/{workoutId}")
   public WorkoutDeserialized getWorkoutById(@PathVariable long workoutId) {
-    WorkoutDeserialized result;
+    WorkoutDeserialized result = null;
     try {
       result = workoutService.findWorkoutById(workoutId);
       if (result == null) {
-        throw new Exception();
+        handleError("No such workout in the database!");
       }
     } catch (Exception e) {
-      throw new ApiRequestException("There's been a problem retrieving workout from the database!");
+      handleError("There's a problem with database connection!");
     }
     return result;
   }
@@ -55,7 +55,7 @@ public class WorkoutController {
   public String addWorkoutGet(Model model) {
     User user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
     if (user == null) {
-      throw new ApiRequestException("There's been a problem retrieving user data from the database!");
+      handleError("No such user in the database!");
     }
     model.addAttribute("user", user.getEmail());
     model.addAttribute("userName", user.getName());
@@ -85,10 +85,10 @@ public class WorkoutController {
         fileService.storeAllFilesByWorkout(workoutDeserialized, filesToUpload);
       }
       if (workoutService.saveWorkout(workoutDeserialized) == null) {
-        throw new Exception();
+        handleError("There's been a problem saving workout to the database!");
       }
     } catch (Exception e) {
-      throw new ApiRequestException("There's been a problem saving workout to the database!");
+      handleError("There's a problem with database connection!");
     }
   }
 
@@ -102,10 +102,10 @@ public class WorkoutController {
     try {
       result = workoutService.deleteWorkout(workoutId);
       if (result != 1) {
-        throw new Exception();
+        handleError("Could not delete workout from the database!");
       }
     } catch (Exception e) {
-      throw new ApiRequestException("There's been a problem deleting workout from the database!");
+      handleError("There's a problem with database! connection!");
     }
   }
 
@@ -114,7 +114,7 @@ public class WorkoutController {
       MediaType.APPLICATION_OCTET_STREAM_VALUE)
   public ResponseEntity<byte[]> getFileByWorkoutId(@PathVariable Long workoutId,
                                                    @PathVariable String filename) {
-    MediaFile mediaFileToSend;
+    MediaFile mediaFileToSend = null;
     try {
       mediaFileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId,
           filename);
@@ -122,7 +122,7 @@ public class WorkoutController {
         throw new Exception();
       }
     } catch (Exception e) {
-      throw new ApiRequestException("There's been a problem streaming this file!");
+      handleError("There's been a problem streaming this file!");
     }
     byte[] fileContent = mediaFileToSend.getContent();
     return ResponseEntity.ok()
@@ -130,5 +130,9 @@ public class WorkoutController {
             "attachment;filename=" + mediaFileToSend.getFilename())
         .header("type", mediaFileToSend.getType())
         .body(Base64.getEncoder().encode(fileContent));
+  }
+
+  private void handleError(String message) {
+    throw new ApiRequestException(message);
   }
 }
