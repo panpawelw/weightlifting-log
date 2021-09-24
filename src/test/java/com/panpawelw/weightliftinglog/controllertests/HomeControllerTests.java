@@ -3,6 +3,7 @@ package com.panpawelw.weightliftinglog.controllertests;
 import com.panpawelw.weightliftinglog.controllers.HomeController;
 import com.panpawelw.weightliftinglog.models.SecureUserDetails;
 import com.panpawelw.weightliftinglog.models.User;
+import com.panpawelw.weightliftinglog.models.VerificationToken;
 import com.panpawelw.weightliftinglog.services.UserService;
 import com.panpawelw.weightliftinglog.services.VerificationTokenService;
 import com.panpawelw.weightliftinglog.validators.RegistrationPasswordValidator;
@@ -192,6 +193,34 @@ public class HomeControllerTests {
         .andExpect(forwardedUrl("home"))
         .andExpect(model().attribute("header", "Database error!"));
     verify(userService).saveUser(TEST_USER);
+  }
+
+  @Test
+  public void validAccountConfirmation() throws Exception {
+    String token = "valid token";
+    VerificationToken testVerificationToken = new VerificationToken(TEST_USER);
+    when(verificationTokenService.findByToken(token)).thenReturn(testVerificationToken);
+    when(userService.saveUserWithoutModifyingPassword(TEST_USER)).thenReturn(TEST_USER.getId());
+    doNothing().when(verificationTokenService).deleteVerificationToken(testVerificationToken);
+    mockMvc.perform(get("/confirm-account").param("token", token))
+        .andExpect(status().isOk())
+        .andExpect(forwardedUrl("home"))
+        .andExpect(model().attribute("header", "Account activation successful!"));
+    verify(verificationTokenService).findByToken(token);
+    verify(userService).saveUserWithoutModifyingPassword(TEST_USER);
+    verify(verificationTokenService).deleteVerificationToken(testVerificationToken);
+  }
+
+  @Test
+  public void invalidAccountConfirmationTokenIsNull() throws Exception {
+    String token = "not existing token";
+    when(verificationTokenService.findByToken(token)).thenReturn(null);
+    mockMvc.perform(get("/confirm-account").param("token", token))
+        .andExpect(status().isOk())
+        .andExpect(forwardedUrl("home"))
+        .andExpect(model().attribute("header",
+            "There's been a problem activating your account!"));
+    verify(verificationTokenService).findByToken(token);
   }
 
   @Test
