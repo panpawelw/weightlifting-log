@@ -2,6 +2,7 @@ package com.panpawelw.weightliftinglog.controllertests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.panpawelw.weightliftinglog.controllers.WorkoutController;
+import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import com.panpawelw.weightliftinglog.models.*;
 import com.panpawelw.weightliftinglog.services.FileService;
 import com.panpawelw.weightliftinglog.services.UserService;
@@ -16,13 +17,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.util.NestedServletException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -96,11 +97,17 @@ public class WorkoutControllerTests {
     verify(service).findWorkoutById(TEST_WORKOUT.getId());
   }
 
-  @Test
-  public void workoutIsNull() throws Exception {
+  @Test(expected = ApiRequestException.class)
+  public void getNullWorkout() throws Throwable {
     when(service.findWorkoutById(1)).thenReturn(null);
-    mockMvc.perform(get("/workout/1"))
-        .andExpect(status().isOk());
+    try {
+      mockMvc.perform(get("/workout/1"))
+          .andExpect(status().isOk());
+    } catch (NestedServletException e) {
+      assertEquals("There's been a problem retrieving workout from the database!",
+          e.getCause().getMessage());
+      throw e.getCause();
+    }
 
     verify(service).findWorkoutById(1);
   }
