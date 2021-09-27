@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -93,5 +94,14 @@ public class WorkoutControllerTests {
 
     assertEquals(expected, actual);
     verify(service).findWorkoutById(TEST_WORKOUT.getId());
+  }
+
+  @Test
+  public void workoutIsNull() throws Exception {
+    when(service.findWorkoutById(1)).thenReturn(null);
+    mockMvc.perform(get("/workout/1"))
+        .andExpect(status().isOk());
+
+    verify(service).findWorkoutById(1);
   }
 }
