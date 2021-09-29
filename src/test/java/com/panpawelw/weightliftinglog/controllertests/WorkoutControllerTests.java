@@ -7,6 +7,7 @@ import com.panpawelw.weightliftinglog.models.*;
 import com.panpawelw.weightliftinglog.services.FileService;
 import com.panpawelw.weightliftinglog.services.UserService;
 import com.panpawelw.weightliftinglog.services.WorkoutService;
+import org.hibernate.HibernateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -100,15 +101,30 @@ public class WorkoutControllerTests {
   @Test(expected = ApiRequestException.class)
   public void getNullWorkout() throws Throwable {
     when(service.findWorkoutById(1)).thenReturn(null);
+
     try {
       mockMvc.perform(get("/workout/1"))
           .andExpect(status().isOk());
     } catch (NestedServletException e) {
-      assertEquals("There's been a problem retrieving workout from the database!",
+      assertEquals("No such workout in the database!",
           e.getCause().getMessage());
       throw e.getCause();
     }
+    verify(service).findWorkoutById(1);
+  }
 
+  @Test(expected = ApiRequestException.class)
+  public void getWorkoutDatabaseError() throws Throwable {
+    when(service.findWorkoutById(1)).thenThrow(HibernateException.class);
+
+    try {
+      mockMvc.perform(get("/workout/1"))
+          .andExpect(status().isOk());
+    } catch (NestedServletException e) {
+      assertEquals("There's a problem with database connection!",
+          e.getCause().getMessage());
+      throw e.getCause();
+    }
     verify(service).findWorkoutById(1);
   }
 }
