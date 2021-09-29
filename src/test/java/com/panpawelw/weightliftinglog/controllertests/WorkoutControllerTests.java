@@ -27,12 +27,17 @@ import java.util.Collections;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
 @WebMvcTest(controllers = WorkoutController.class)
 public class WorkoutControllerTests {
+
+  private static final User TEST_USER = new User(1L, "Test name",
+      "Test password", "Test password",
+      "test@email.com", true, "Test first name",
+      "Test last name", 20, true, "ADMIN", new ArrayList<>());
 
   private static final WorkoutDeserialized TEST_WORKOUT = new WorkoutDeserialized(
       1L, "Workout title", null, null,
@@ -126,5 +131,28 @@ public class WorkoutControllerTests {
       throw e.getCause();
     }
     verify(service).findWorkoutById(1);
+  }
+
+  @Test
+  public void addWorkoutGetValidUser() throws Exception {
+    when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
+    when(userService.findUserByEmail(TEST_USER.getEmail())).thenReturn(TEST_USER);
+    when(userService.checkLoggedInUserForAdminRights()).thenReturn(true);
+    when(service.findWorkoutsByUser(TEST_USER)).thenReturn(TEST_USER.getWorkouts());
+
+    mockMvc.perform(get("/workout/"))
+        .andExpect(status().isOk())
+        .andExpect(forwardedUrl("home"))
+        .andExpect(model().attribute("user", TEST_USER.getEmail()))
+        .andExpect(model().attribute("userName", TEST_USER.getName()))
+        .andExpect(model().attribute("page", "fragments.html :: user-panel"))
+        .andExpect(model().attribute("userPanelPage",
+            "fragments.html :: user-panel-workout-details"))
+        .andExpect(model().attribute("workouts", TEST_USER.getWorkouts()));
+
+    verify(userService).getLoggedInUsersEmail();
+    verify(userService).findUserByEmail(TEST_USER.getEmail());
+    verify(userService).checkLoggedInUserForAdminRights();
+    verify(service).findWorkoutsByUser(TEST_USER);
   }
 }
