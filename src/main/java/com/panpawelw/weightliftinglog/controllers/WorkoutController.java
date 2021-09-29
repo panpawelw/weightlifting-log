@@ -2,6 +2,7 @@ package com.panpawelw.weightliftinglog.controllers;
 
 import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import com.panpawelw.weightliftinglog.services.FileService;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,7 @@ import com.panpawelw.weightliftinglog.models.WorkoutDeserialized;
 import com.panpawelw.weightliftinglog.services.UserService;
 import com.panpawelw.weightliftinglog.services.WorkoutService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 
@@ -39,23 +41,28 @@ public class WorkoutController {
   @ResponseBody
   @GetMapping("/{workoutId}")
   public WorkoutDeserialized getWorkoutById(@PathVariable long workoutId) {
-    WorkoutDeserialized result;
+    WorkoutDeserialized result = null;
     try {
       result = workoutService.findWorkoutById(workoutId);
       if (result == null) {
-        throw new Exception();
+        handleError("No such workout in the database!");
       }
-    } catch (Exception e) {
-      throw new ApiRequestException("There's been a problem retrieving workout from the database!");
+    } catch (HibernateException e) {
+      handleError("There's a problem with database connection!");
     }
     return result;
   }
 
   @GetMapping("/")
   public String addWorkoutGet(Model model) {
-    User user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
-    if (user == null) {
-      throw new ApiRequestException("There's been a problem retrieving user data from the database!");
+    User user = null;
+    try {
+      user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
+      if (user == null) {
+        handleError("No such user in the database!");
+      }
+    } catch (HibernateException e) {
+      handleError("There's a problem with database connection!");
     }
     model.addAttribute("user", user.getEmail());
     model.addAttribute("userName", user.getName());
@@ -85,10 +92,10 @@ public class WorkoutController {
         fileService.storeAllFilesByWorkout(workoutDeserialized, filesToUpload);
       }
       if (workoutService.saveWorkout(workoutDeserialized) == null) {
-        throw new Exception();
+        handleError("There's been a problem saving workout to the database!");
       }
-    } catch (Exception e) {
-      throw new ApiRequestException("There's been a problem saving workout to the database!");
+    } catch (HibernateException | IOException e) {
+      handleError("There's a problem with database connection!");
     }
   }
 
@@ -102,10 +109,10 @@ public class WorkoutController {
     try {
       result = workoutService.deleteWorkout(workoutId);
       if (result != 1) {
-        throw new Exception();
+        handleError("Could not delete workout from the database!");
       }
-    } catch (Exception e) {
-      throw new ApiRequestException("There's been a problem deleting workout from the database!");
+    } catch (HibernateException e) {
+      handleError("There's a problem with database! connection!");
     }
   }
 
@@ -114,15 +121,15 @@ public class WorkoutController {
       MediaType.APPLICATION_OCTET_STREAM_VALUE)
   public ResponseEntity<byte[]> getFileByWorkoutId(@PathVariable Long workoutId,
                                                    @PathVariable String filename) {
-    MediaFile mediaFileToSend;
+    MediaFile mediaFileToSend = null;
     try {
       mediaFileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId,
           filename);
       if (mediaFileToSend == null) {
-        throw new Exception();
+        handleError("No such file in the database!");
       }
     } catch (Exception e) {
-      throw new ApiRequestException("There's been a problem streaming this file!");
+      handleError("There's been a problem streaming this file!");
     }
     byte[] fileContent = mediaFileToSend.getContent();
     return ResponseEntity.ok()
@@ -130,5 +137,9 @@ public class WorkoutController {
             "attachment;filename=" + mediaFileToSend.getFilename())
         .header("type", mediaFileToSend.getType())
         .body(Base64.getEncoder().encode(fileContent));
+  }
+
+  private void handleError(String message) {
+    throw new ApiRequestException(message);
   }
 }
