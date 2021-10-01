@@ -145,7 +145,7 @@ public class WorkoutControllerTests {
   }
 
   @Test(expected = ApiRequestException.class)
-  public void addWorkoutUserIsNull() throws Throwable {
+  public void addWorkoutGetUserIsNull() throws Throwable {
     when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
     when(userService.findUserByEmail(TEST_USER.getEmail())).thenReturn(null);
 
@@ -154,7 +154,18 @@ public class WorkoutControllerTests {
     verify(userService).findUserByEmail(TEST_USER.getEmail());
   }
 
-  private void performGetAndCheckErrorMessage(String url, String message) throws Throwable {
+  @Test(expected = ApiRequestException.class)
+  public void addWorkoutGetDatabaseError() throws Throwable {
+    when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
+    when(userService.findUserByEmail(TEST_USER.getEmail())).thenThrow(HibernateException.class);
+
+    performGetAndCheckErrorMessage("/workout/",
+        "There's a problem with database connection!");
+    verify(userService).getLoggedInUsersEmail();
+    verify(userService).findUserByEmail(TEST_USER.getEmail());
+  }
+
+    private void performGetAndCheckErrorMessage(String url, String message) throws Throwable {
     try {
       mockMvc.perform(get(url))
           .andExpect(status().isOk());
