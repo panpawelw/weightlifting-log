@@ -155,4 +155,22 @@ public class WorkoutControllerTests {
     verify(userService).checkLoggedInUserForAdminRights();
     verify(service).findWorkoutsByUser(TEST_USER);
   }
+
+  @Test(expected = ApiRequestException.class)
+  public void addWorkoutUserIsNull() throws Throwable {
+    when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
+    when(userService.findUserByEmail(TEST_USER.getEmail())).thenReturn(null);
+
+    try {
+      mockMvc.perform(get("/workout/"))
+          .andExpect(status().isOk());
+    } catch (NestedServletException e) {
+      assertEquals("No such user in the database!",
+          e.getCause().getMessage());
+      throw e.getCause();
+    }
+
+    verify(userService).getLoggedInUsersEmail();
+    verify(userService).findUserByEmail(TEST_USER.getEmail());
+  }
 }
