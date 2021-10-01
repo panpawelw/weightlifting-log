@@ -107,14 +107,8 @@ public class WorkoutControllerTests {
   public void getNullWorkout() throws Throwable {
     when(service.findWorkoutById(1)).thenReturn(null);
 
-    try {
-      mockMvc.perform(get("/workout/1"))
-          .andExpect(status().isOk());
-    } catch (NestedServletException e) {
-      assertEquals("No such workout in the database!",
-          e.getCause().getMessage());
-      throw e.getCause();
-    }
+    performGetAndCheckErrorMessage("/workout/1",
+        "No such workout in the database!");
     verify(service).findWorkoutById(1);
   }
 
@@ -122,14 +116,8 @@ public class WorkoutControllerTests {
   public void getWorkoutDatabaseError() throws Throwable {
     when(service.findWorkoutById(1)).thenThrow(HibernateException.class);
 
-    try {
-      mockMvc.perform(get("/workout/1"))
-          .andExpect(status().isOk());
-    } catch (NestedServletException e) {
-      assertEquals("There's a problem with database connection!",
-          e.getCause().getMessage());
-      throw e.getCause();
-    }
+    performGetAndCheckErrorMessage("/workout/1",
+        "There's a problem with database connection!");
     verify(service).findWorkoutById(1);
   }
 
@@ -161,16 +149,18 @@ public class WorkoutControllerTests {
     when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
     when(userService.findUserByEmail(TEST_USER.getEmail())).thenReturn(null);
 
-    try {
-      mockMvc.perform(get("/workout/"))
-          .andExpect(status().isOk());
-    } catch (NestedServletException e) {
-      assertEquals("No such user in the database!",
-          e.getCause().getMessage());
-      throw e.getCause();
-    }
-
+    performGetAndCheckErrorMessage("/workout/", "No such user in the database!");
     verify(userService).getLoggedInUsersEmail();
     verify(userService).findUserByEmail(TEST_USER.getEmail());
+  }
+
+  private void performGetAndCheckErrorMessage(String url, String message) throws Throwable {
+    try {
+      mockMvc.perform(get(url))
+          .andExpect(status().isOk());
+    } catch (NestedServletException e) {
+      assertEquals(message, e.getCause().getMessage());
+      throw e.getCause();
+    }
   }
 }
