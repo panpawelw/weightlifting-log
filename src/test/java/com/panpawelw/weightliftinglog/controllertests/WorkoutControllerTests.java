@@ -107,7 +107,7 @@ public class WorkoutControllerTests {
   public void getNullWorkout() throws Throwable {
     when(service.findWorkoutById(1)).thenReturn(null);
 
-    performGetAndCheckErrorMessage("/workout/1",
+    performMockMvcMethodAndCheckErrorMessage("get", "/workout/1",
         "No such workout in the database!");
     verify(service).findWorkoutById(1);
   }
@@ -116,7 +116,7 @@ public class WorkoutControllerTests {
   public void getWorkoutDatabaseError() throws Throwable {
     when(service.findWorkoutById(1)).thenThrow(HibernateException.class);
 
-    performGetAndCheckErrorMessage("/workout/1",
+    performMockMvcMethodAndCheckErrorMessage("get", "/workout/1",
         "There's a problem with database connection!");
     verify(service).findWorkoutById(1);
   }
@@ -149,7 +149,8 @@ public class WorkoutControllerTests {
     when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
     when(userService.findUserByEmail(TEST_USER.getEmail())).thenReturn(null);
 
-    performGetAndCheckErrorMessage("/workout/", "No such user in the database!");
+    performMockMvcMethodAndCheckErrorMessage("get", "/workout/",
+        "No such user in the database!");
     verify(userService).getLoggedInUsersEmail();
     verify(userService).findUserByEmail(TEST_USER.getEmail());
   }
@@ -159,16 +160,18 @@ public class WorkoutControllerTests {
     when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
     when(userService.findUserByEmail(TEST_USER.getEmail())).thenThrow(HibernateException.class);
 
-    performGetAndCheckErrorMessage("/workout/",
+    performMockMvcMethodAndCheckErrorMessage("get", "/workout/",
         "There's a problem with database connection!");
     verify(userService).getLoggedInUsersEmail();
     verify(userService).findUserByEmail(TEST_USER.getEmail());
   }
 
-    private void performGetAndCheckErrorMessage(String url, String message) throws Throwable {
+  private void performMockMvcMethodAndCheckErrorMessage(
+      String method, String url, String message) throws Throwable {
     try {
-      mockMvc.perform(get(url))
-          .andExpect(status().isOk());
+      if (method.equals("get")) mockMvc.perform(get(url)).andExpect(status().isOk());
+      if (method.equals("post")) mockMvc.perform(post(url)).andExpect(status().isOk());
+      if (method.equals("delete")) mockMvc.perform(delete(url)).andExpect(status().isOk());
     } catch (NestedServletException e) {
       assertEquals(message, e.getCause().getMessage());
       throw e.getCause();
