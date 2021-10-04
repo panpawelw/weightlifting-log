@@ -69,7 +69,7 @@ public class WorkoutControllerTests {
                   new Note(0, "Exercise 3 set 2 note 1"),
                   new Note(0, "Exercise 3 set 2 note 2")))),
               Collections.singletonList(new Note(0, "Exercise 3 note")))),
-      Collections.singletonList(new Note(0, "Workout note")), null);
+      Collections.singletonList(new Note(0, "Workout note")), Collections.emptyList());
 
   @Autowired
   private MockMvc mockMvc;
@@ -166,6 +166,57 @@ public class WorkoutControllerTests {
     verify(userService).findUserByEmail(TEST_USER.getEmail());
   }
 
+  @Test
+  public void addWorkoutPostValidWorkout() {
+
+  }
+
+  @Test
+  public void addWorkoutPostWorkoutIsNull() {
+
+  }
+
+  @Test
+  public void addWorkoutPostDatabaseError() {
+
+  }
+
+  @Test
+  public void deleteValidWorkout() throws Exception {
+    when(service.findWorkoutById(TEST_WORKOUT.getId())).thenReturn(TEST_WORKOUT);
+    when(service.deleteWorkout(TEST_WORKOUT.getId())).thenReturn(1L);
+
+    mockMvc.perform(delete("/workout/1")).andExpect(status().isOk());
+    verify(service).findWorkoutById(TEST_WORKOUT.getId());
+    verify(service).deleteWorkout(TEST_WORKOUT.getId());
+  }
+
+  @Test(expected = ApiRequestException.class)
+  public void deleteWorkoutNotDeleted() throws Throwable {
+    when(service.findWorkoutById(TEST_WORKOUT.getId())).thenReturn(TEST_WORKOUT);
+
+    performMockMvcMethodAndCheckErrorMessage("delete", "/workout/1",
+        "Could not delete workout from the database!");
+    verify(service).findWorkoutById(TEST_WORKOUT.getId());
+  }
+
+  @Test(expected = ApiRequestException.class)
+  public void deleteWorkoutDatabaseError() throws Throwable {
+    when(service.findWorkoutById(TEST_WORKOUT.getId())).thenThrow(HibernateException.class);
+
+    performMockMvcMethodAndCheckErrorMessage("delete", "/workout/1",
+        "Could not delete workout from the database!");
+    verify(service).findWorkoutById(TEST_WORKOUT.getId());
+  }
+
+  /**
+   * Helper method that unwraps original exception from NestedServletException and checks
+   * exception message.
+   * @param method      get, post or delete
+   * @param url         url address
+   * @param message     message to check against
+   * @throws Throwable  original exception (ApiRequestException in this case)
+   */
   private void performMockMvcMethodAndCheckErrorMessage(
       String method, String url, String message) throws Throwable {
     try {
