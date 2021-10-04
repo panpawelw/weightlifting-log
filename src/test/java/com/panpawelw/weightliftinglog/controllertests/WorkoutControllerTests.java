@@ -202,11 +202,13 @@ public class WorkoutControllerTests {
 
   @Test(expected = ApiRequestException.class)
   public void deleteWorkoutDatabaseError() throws Throwable {
-    when(service.findWorkoutById(TEST_WORKOUT.getId())).thenThrow(HibernateException.class);
+    when(service.findWorkoutById(TEST_WORKOUT.getId())).thenReturn(TEST_WORKOUT);
+    when(service.deleteWorkout(TEST_WORKOUT.getId())).thenThrow(HibernateException.class);
 
     performMockMvcMethodAndCheckErrorMessage("delete", "/workout/1",
-        "Could not delete workout from the database!");
+        "There's a problem with database! connection!");
     verify(service).findWorkoutById(TEST_WORKOUT.getId());
+    verify(service).deleteWorkout(TEST_WORKOUT.getId());
   }
 
   /**
