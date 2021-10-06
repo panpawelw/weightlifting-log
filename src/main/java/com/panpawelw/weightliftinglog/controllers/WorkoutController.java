@@ -84,6 +84,9 @@ public class WorkoutController {
       workoutDeserialized.setUser
           (userService.findUserByEmail(userService.getLoggedInUsersEmail()));
       workoutDeserialized.setId(workoutService.saveWorkout(workoutDeserialized));
+      if (workoutDeserialized.getId() == null) {
+        handleError("There's been a problem saving workout to the database!");
+      }
       if (!filesToRemove.isEmpty()) {
         filesToRemove.forEach((filename) ->
             fileService.deleteFileByWorkoutAndFilename(workoutDeserialized, filename));
