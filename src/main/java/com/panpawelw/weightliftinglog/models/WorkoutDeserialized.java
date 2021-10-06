@@ -45,6 +45,17 @@ public class WorkoutDeserialized implements Serializable {
     this.filenames = filenames;
   }
 
+  public WorkoutDeserialized(WorkoutDeserialized workout) {
+    this.id = workout.getId();
+    this.title = workout.getTitle();
+    this.created = workout.getCreated();
+    this.updated = workout.getUpdated();
+    this.user = workout.getUser();
+    this.exercises = workout.getExercises();
+    this.notes = workout.getNotes();
+    this.filenames = workout.getFilenames();
+  }
+
   public Long getId() {
     return id;
   }

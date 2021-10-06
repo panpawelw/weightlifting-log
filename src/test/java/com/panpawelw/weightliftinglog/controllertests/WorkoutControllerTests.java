@@ -182,13 +182,26 @@ public class WorkoutControllerTests {
   }
 
   @Test
-  public void deleteValidWorkout() throws Exception {
+  public void deleteValidWorkoutWithoutFiles() throws Exception {
     when(service.findWorkoutById(TEST_WORKOUT.getId())).thenReturn(TEST_WORKOUT);
     when(service.deleteWorkout(TEST_WORKOUT.getId())).thenReturn(1L);
 
     mockMvc.perform(delete("/workout/1")).andExpect(status().isOk());
     verify(service).findWorkoutById(TEST_WORKOUT.getId());
     verify(service).deleteWorkout(TEST_WORKOUT.getId());
+  }
+
+  @Test
+  public void deleteValidWorkoutWithFiles() throws Exception {
+    WorkoutDeserialized testWorkout = new WorkoutDeserialized(TEST_WORKOUT);
+    testWorkout.setFilenames(Arrays.asList("file1.mp4","file2.jpg","file3.mp3"));
+    when(service.findWorkoutById(testWorkout.getId())).thenReturn(testWorkout);
+    when(service.deleteWorkout(testWorkout.getId())).thenReturn(1L);
+
+    mockMvc.perform(delete("/workout/1")).andExpect(status().isOk());
+    verify(fileService).deleteAllFilesByWorkoutId(testWorkout.getId());
+    verify(service).findWorkoutById(testWorkout.getId());
+    verify(service).deleteWorkout(testWorkout.getId());
   }
 
   @Test(expected = ApiRequestException.class)
