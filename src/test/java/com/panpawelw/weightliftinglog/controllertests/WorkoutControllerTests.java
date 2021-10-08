@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -28,6 +29,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -96,8 +98,7 @@ public class WorkoutControllerTests {
         .andExpect(status().isOk())
         .andReturn();
     String actual = result.getResponse().getContentAsString();
-    ObjectMapper mapper = new ObjectMapper();
-    String expected = mapper.writeValueAsString(TEST_WORKOUT);
+    String expected = new ObjectMapper().writeValueAsString(TEST_WORKOUT);
 
     assertEquals(expected, actual);
     verify(service).findWorkoutById(TEST_WORKOUT.getId());
@@ -167,8 +168,23 @@ public class WorkoutControllerTests {
   }
 
   @Test
-  public void addWorkoutPostValidWorkout() {
-
+  public void addWorkoutPostValidWorkout() throws Exception {
+    when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
+    when(userService.findUserByEmail(TEST_USER.getEmail())).thenReturn(TEST_USER);
+    when(service.saveWorkout(TEST_WORKOUT)).thenReturn(TEST_WORKOUT.getId());
+    String testWorkout = new ObjectMapper().writeValueAsString(TEST_WORKOUT);
+    MockMultipartFile workout = new MockMultipartFile("workout", "",
+        "application/json", testWorkout.getBytes());
+    MockMultipartFile filesToRemove = new MockMultipartFile("filesToRemove", "",
+        "application/json", "[]".getBytes());
+    MockMultipartFile filesToUpload = new MockMultipartFile("filesToUpload", "",
+        "application.json", "[]".getBytes());
+    mockMvc.perform(multipart("/workout/")
+            .file(workout)
+            .file(filesToRemove)
+            .file(filesToUpload))
+        .andDo(print())
+        .andExpect(status().isOk());
   }
 
   @Test
@@ -194,7 +210,7 @@ public class WorkoutControllerTests {
   @Test
   public void deleteValidWorkoutWithFiles() throws Exception {
     WorkoutDeserialized testWorkout = new WorkoutDeserialized(TEST_WORKOUT);
-    testWorkout.setFilenames(Arrays.asList("file1.mp4","file2.jpg","file3.mp3"));
+    testWorkout.setFilenames(Arrays.asList("file1.mp4", "file2.jpg", "file3.mp3"));
     when(service.findWorkoutById(testWorkout.getId())).thenReturn(testWorkout);
     when(service.deleteWorkout(testWorkout.getId())).thenReturn(1L);
 
@@ -227,10 +243,11 @@ public class WorkoutControllerTests {
   /**
    * Helper method that unwraps original exception from NestedServletException and checks
    * exception message.
-   * @param method      get, post or delete
-   * @param url         url address
-   * @param message     message to check against
-   * @throws Throwable  original exception (ApiRequestException in this case)
+   *
+   * @param method  get, post or delete
+   * @param url     url address
+   * @param message message to check against
+   * @throws Throwable original exception (ApiRequestException in this case)
    */
   private void performMockMvcMethodAndCheckErrorMessage(
       String method, String url, String message) throws Throwable {
