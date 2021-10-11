@@ -29,7 +29,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -105,8 +104,7 @@ public class WorkoutControllerTests {
   public void getWorkoutByIdNoSuchWorkout() throws Throwable {
     when(service.findWorkoutById(1)).thenReturn(null);
 
-    performMockMvcMethodAndCheckErrorMessage("get", "/workout/1",
-        "No such workout in the database!");
+    mockMvcPerform("get", "/workout/1", "No such workout in the database!");
     verify(service).findWorkoutById(1);
   }
 
@@ -114,7 +112,7 @@ public class WorkoutControllerTests {
   public void getWorkoutByIdDatabaseError() throws Throwable {
     when(service.findWorkoutById(1)).thenThrow(HibernateException.class);
 
-    performMockMvcMethodAndCheckErrorMessage("get", "/workout/1",
+    mockMvcPerform("get", "/workout/1",
         "There's a problem with database connection!");
     verify(service).findWorkoutById(1);
   }
@@ -147,8 +145,7 @@ public class WorkoutControllerTests {
     when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
     when(userService.findUserByEmail(TEST_USER.getEmail())).thenReturn(null);
 
-    performMockMvcMethodAndCheckErrorMessage("get", "/workout/",
-        "No such user in the database!");
+    mockMvcPerform("get", "/workout/", "No such user in the database!");
     verify(userService).getLoggedInUsersEmail();
     verify(userService).findUserByEmail(TEST_USER.getEmail());
   }
@@ -158,30 +155,19 @@ public class WorkoutControllerTests {
     when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
     when(userService.findUserByEmail(TEST_USER.getEmail())).thenThrow(HibernateException.class);
 
-    performMockMvcMethodAndCheckErrorMessage("get", "/workout/",
+    mockMvcPerform("get", "/workout/",
         "There's a problem with database connection!");
     verify(userService).getLoggedInUsersEmail();
     verify(userService).findUserByEmail(TEST_USER.getEmail());
   }
 
   @Test
-  public void addWorkoutPost() throws Exception {
+  public void addWorkoutPost() throws Throwable {
     when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
     when(userService.findUserByEmail(TEST_USER.getEmail())).thenReturn(TEST_USER);
     when(service.saveWorkout(any())).thenReturn(TEST_WORKOUT.getId());
-    String testWorkout = new ObjectMapper().writeValueAsString(TEST_WORKOUT);
-    MockMultipartFile workout = new MockMultipartFile("workout", "",
-        "application/json", testWorkout.getBytes());
-    MockMultipartFile filesToRemove = new MockMultipartFile("filesToRemove", "",
-        "application/json", "[]".getBytes());
-    MockMultipartFile filesToUpload = new MockMultipartFile("filesToUpload", "",
-        "application.json", "[]".getBytes());
 
-    mockMvc.perform(multipart("/workout/")
-            .file(workout)
-            .file(filesToRemove)
-            .file(filesToUpload))
-        .andExpect(status().isOk());
+    mockMvcPerform();
     verify(userService).getLoggedInUsersEmail();
     verify(userService).findUserByEmail(TEST_USER.getEmail());
     verify(service, times(2)).saveWorkout(TEST_WORKOUT);
@@ -192,26 +178,8 @@ public class WorkoutControllerTests {
     when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
     when(userService.findUserByEmail(TEST_USER.getEmail())).thenReturn(TEST_USER);
     when(service.saveWorkout(TEST_WORKOUT)).thenReturn(null);
-    String testWorkout = new ObjectMapper().writeValueAsString(TEST_WORKOUT);
-    MockMultipartFile workout = new MockMultipartFile("workout", "",
-        "application/json", testWorkout.getBytes());
-    MockMultipartFile filesToRemove = new MockMultipartFile("filesToRemove", "",
-        "application/json", "[]".getBytes());
-    MockMultipartFile filesToUpload = new MockMultipartFile("filesToUpload", "",
-        "application.json", "[]".getBytes());
 
-    try {
-      mockMvc.perform(multipart("/workout/")
-              .file(workout)
-              .file(filesToRemove)
-              .file(filesToUpload))
-          .andDo(print())
-          .andExpect(status().isOk());
-    } catch (NestedServletException e) {
-      assertEquals("There's been a problem saving workout to the database!",
-          e.getCause().getMessage());
-      throw e.getCause();
-    }
+    mockMvcPerform("There's a problem saving workout to the database!");
     verify(userService).getLoggedInUsersEmail();
     verify(userService).findUserByEmail(TEST_USER.getEmail());
     verify(service).saveWorkout(TEST_WORKOUT);
@@ -249,7 +217,7 @@ public class WorkoutControllerTests {
   public void deleteWorkoutCouldNotDelete() throws Throwable {
     when(service.findWorkoutById(TEST_WORKOUT.getId())).thenReturn(TEST_WORKOUT);
 
-    performMockMvcMethodAndCheckErrorMessage("delete", "/workout/1",
+    mockMvcPerform("delete", "/workout/1",
         "Could not delete workout from the database!");
     verify(service).findWorkoutById(TEST_WORKOUT.getId());
   }
@@ -259,29 +227,60 @@ public class WorkoutControllerTests {
     when(service.findWorkoutById(TEST_WORKOUT.getId())).thenReturn(TEST_WORKOUT);
     when(service.deleteWorkout(TEST_WORKOUT.getId())).thenThrow(HibernateException.class);
 
-    performMockMvcMethodAndCheckErrorMessage("delete", "/workout/1",
-        "There's a problem with database! connection!");
+    mockMvcPerform("delete", "/workout/1",
+        "There's a problem with database connection!");
     verify(service).findWorkoutById(TEST_WORKOUT.getId());
     verify(service).deleteWorkout(TEST_WORKOUT.getId());
   }
 
   /**
-   * Helper method that unwraps original exception from NestedServletException and checks
-   * exception message.
+   * Helper method that performs mockMvc method and unwraps original exception from
+   * NestedServletException and checks exception message.
    *
-   * @param method  get, post or delete
+   * @param method  get or delete
    * @param url     url address
    * @param message message to check against
    * @throws Throwable original exception (ApiRequestException in this case)
    */
-  private void performMockMvcMethodAndCheckErrorMessage(
+  private void mockMvcPerform(
       String method, String url, String message) throws Throwable {
     try {
-      if (method.equals("get")) mockMvc.perform(get(url)).andExpect(status().isOk());
-      if (method.equals("post")) mockMvc.perform(post(url)).andExpect(status().isOk());
-      if (method.equals("delete")) mockMvc.perform(delete(url)).andExpect(status().isOk());
+      if (method.equals("get")) {
+        mockMvc.perform(get(url)).andExpect(status().isOk());
+      }
+      if (method.equals("delete")) {
+        mockMvc.perform(delete(url)).andExpect(status().isOk());
+      }
     } catch (NestedServletException e) {
       assertEquals(message, e.getCause().getMessage());
+      throw e.getCause();
+    }
+  }
+
+  /**
+   * Helper method that performs mockMvc post and optionally unwraps original exception from
+   * NestedServletException and checks exception message.
+   *
+   * @param message optional exception message to check against
+   * @throws Throwable original exception (ApiRequestException in this case)
+   */
+  private void mockMvcPerform(String...message) throws Throwable {
+    String testWorkout = new ObjectMapper().writeValueAsString(TEST_WORKOUT);
+    MockMultipartFile workoutJson = new MockMultipartFile("workout", "",
+        "application/json", testWorkout.getBytes());
+    MockMultipartFile filesToRemove = new MockMultipartFile("filesToRemove", "",
+        "application/json", "[]".getBytes());
+    MockMultipartFile filesToUpload = new MockMultipartFile("filesToUpload", "",
+        "application.json", "[]".getBytes());
+
+    try {
+      mockMvc.perform(multipart("/workout/")
+              .file(workoutJson)
+              .file(filesToRemove)
+              .file(filesToUpload))
+          .andExpect(status().isOk());
+    } catch (NestedServletException e) {
+        assertEquals(message[0], e.getCause().getMessage());
       throw e.getCause();
     }
   }

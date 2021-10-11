@@ -85,7 +85,7 @@ public class WorkoutController {
           (userService.findUserByEmail(userService.getLoggedInUsersEmail()));
       workoutDeserialized.setId(workoutService.saveWorkout(workoutDeserialized));
       if (workoutDeserialized.getId() == null) {
-        handleError("There's been a problem saving workout to the database!");
+        handleError("There's a problem saving workout to the database!");
       }
       if (!filesToRemove.isEmpty()) {
         filesToRemove.forEach((filename) ->
@@ -95,7 +95,7 @@ public class WorkoutController {
         fileService.storeAllFilesByWorkout(workoutDeserialized, filesToUpload);
       }
       if (workoutService.saveWorkout(workoutDeserialized) == null) {
-        handleError("There's been a problem saving workout to the database!");
+        handleError("There's a problem saving workout to the database!");
       }
     } catch (HibernateException | IOException e) {
       handleError("There's a problem with database connection!");
@@ -115,7 +115,7 @@ public class WorkoutController {
         handleError("Could not delete workout from the database!");
       }
     } catch (HibernateException e) {
-      handleError("There's a problem with database! connection!");
+      handleError("There's a problem with database connection!");
     }
   }
 
@@ -132,7 +132,7 @@ public class WorkoutController {
         handleError("No such file in the database!");
       }
     } catch (Exception e) {
-      handleError("There's been a problem streaming this file!");
+      handleError("There's a problem streaming this file!");
     }
     byte[] fileContent = mediaFileToSend.getContent();
     return ResponseEntity.ok()
