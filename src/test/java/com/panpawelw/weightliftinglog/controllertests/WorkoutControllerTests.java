@@ -185,9 +185,16 @@ public class WorkoutControllerTests {
     verify(service).saveWorkout(TEST_WORKOUT);
   }
 
-  @Test
-  public void addWorkoutPostDatabaseError() {
+  @Test(expected = ApiRequestException.class)
+  public void addWorkoutPostDatabaseError() throws Throwable {
+    when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
+    when(userService.findUserByEmail(TEST_USER.getEmail())).thenReturn(TEST_USER);
+    when(service.saveWorkout(TEST_WORKOUT)).thenThrow(HibernateException.class);
 
+    mockMvcPerform("There's a problem with database connection!");
+    verify(userService).getLoggedInUsersEmail();
+    verify(userService).findUserByEmail(TEST_USER.getEmail());
+    verify(service).saveWorkout(TEST_WORKOUT);
   }
 
   @Test
