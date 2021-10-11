@@ -26,8 +26,8 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -42,10 +42,7 @@ public class WorkoutControllerTests {
       "Test last name", 20, true, "ADMIN", new ArrayList<>());
 
   private static final WorkoutDeserialized TEST_WORKOUT = new WorkoutDeserialized(
-      1L, "Workout title", null, null,
-      new User(1L, "Test name", "Test password", null,
-          "Test@email.com", true, null, null, null,
-          null, null, new ArrayList<>()),
+      1L, "Workout title", null, null, TEST_USER,
       Arrays.asList(
           new Exercise("Exercise 1", Arrays.asList(
               new Set("Exercise 1 set 1", Arrays.asList(
@@ -92,7 +89,7 @@ public class WorkoutControllerTests {
   }
 
   @Test
-  public void getValidWorkoutById() throws Exception {
+  public void getWorkoutById() throws Exception {
     when(service.findWorkoutById(TEST_WORKOUT.getId())).thenReturn(TEST_WORKOUT);
     MvcResult result = mockMvc.perform(get("/workout/1"))
         .andExpect(status().isOk())
@@ -105,7 +102,7 @@ public class WorkoutControllerTests {
   }
 
   @Test(expected = ApiRequestException.class)
-  public void getNullWorkout() throws Throwable {
+  public void getWorkoutByIdNoSuchWorkout() throws Throwable {
     when(service.findWorkoutById(1)).thenReturn(null);
 
     performMockMvcMethodAndCheckErrorMessage("get", "/workout/1",
@@ -114,7 +111,7 @@ public class WorkoutControllerTests {
   }
 
   @Test(expected = ApiRequestException.class)
-  public void getWorkoutDatabaseError() throws Throwable {
+  public void getWorkoutByIdDatabaseError() throws Throwable {
     when(service.findWorkoutById(1)).thenThrow(HibernateException.class);
 
     performMockMvcMethodAndCheckErrorMessage("get", "/workout/1",
@@ -123,7 +120,7 @@ public class WorkoutControllerTests {
   }
 
   @Test
-  public void addWorkoutGetValidUser() throws Exception {
+  public void addWorkoutGet() throws Exception {
     when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
     when(userService.findUserByEmail(TEST_USER.getEmail())).thenReturn(TEST_USER);
     when(userService.checkLoggedInUserForAdminRights()).thenReturn(true);
@@ -146,7 +143,7 @@ public class WorkoutControllerTests {
   }
 
   @Test(expected = ApiRequestException.class)
-  public void addWorkoutGetUserIsNull() throws Throwable {
+  public void addWorkoutGetNoSuchUser() throws Throwable {
     when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
     when(userService.findUserByEmail(TEST_USER.getEmail())).thenReturn(null);
 
@@ -168,10 +165,10 @@ public class WorkoutControllerTests {
   }
 
   @Test
-  public void addWorkoutPostValidWorkout() throws Exception {
+  public void addWorkoutPost() throws Exception {
     when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
     when(userService.findUserByEmail(TEST_USER.getEmail())).thenReturn(TEST_USER);
-    when(service.saveWorkout(TEST_WORKOUT)).thenReturn(TEST_WORKOUT.getId());
+    when(service.saveWorkout(any())).thenReturn(TEST_WORKOUT.getId());
     String testWorkout = new ObjectMapper().writeValueAsString(TEST_WORKOUT);
     MockMultipartFile workout = new MockMultipartFile("workout", "",
         "application/json", testWorkout.getBytes());
@@ -179,17 +176,45 @@ public class WorkoutControllerTests {
         "application/json", "[]".getBytes());
     MockMultipartFile filesToUpload = new MockMultipartFile("filesToUpload", "",
         "application.json", "[]".getBytes());
+
     mockMvc.perform(multipart("/workout/")
             .file(workout)
             .file(filesToRemove)
             .file(filesToUpload))
-        .andDo(print())
         .andExpect(status().isOk());
+    verify(userService).getLoggedInUsersEmail();
+    verify(userService).findUserByEmail(TEST_USER.getEmail());
+    verify(service, times(2)).saveWorkout(TEST_WORKOUT);
   }
 
-  @Test
-  public void addWorkoutPostWorkoutIsNull() {
+  @Test(expected = ApiRequestException.class)
+  public void addWorkoutPostProblemSavingWorkout() throws Throwable {
+    when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
+    when(userService.findUserByEmail(TEST_USER.getEmail())).thenReturn(TEST_USER);
+    when(service.saveWorkout(TEST_WORKOUT)).thenReturn(null);
+    String testWorkout = new ObjectMapper().writeValueAsString(TEST_WORKOUT);
+    MockMultipartFile workout = new MockMultipartFile("workout", "",
+        "application/json", testWorkout.getBytes());
+    MockMultipartFile filesToRemove = new MockMultipartFile("filesToRemove", "",
+        "application/json", "[]".getBytes());
+    MockMultipartFile filesToUpload = new MockMultipartFile("filesToUpload", "",
+        "application.json", "[]".getBytes());
 
+    try {
+      mockMvc.perform(multipart("/workout/")
+              .file(workout)
+              .file(filesToRemove)
+              .file(filesToUpload))
+          .andDo(print())
+          .andExpect(status().isOk());
+    } catch (NestedServletException e) {
+      assertEquals("There's been a problem saving workout to the database!",
+          e.getCause().getMessage());
+      throw e.getCause();
+    }
+    verify(userService).getLoggedInUsersEmail();
+    verify(userService).findUserByEmail(TEST_USER.getEmail());
+    verify(service).saveWorkout(TEST_WORKOUT);
   }
 
   @Test
@@ -198,7 +223,7 @@ public class WorkoutControllerTests {
   }
 
   @Test
-  public void deleteValidWorkoutWithoutFiles() throws Exception {
+  public void deleteWorkoutWithoutFiles() throws Exception {
     when(service.findWorkoutById(TEST_WORKOUT.getId())).thenReturn(TEST_WORKOUT);
     when(service.deleteWorkout(TEST_WORKOUT.getId())).thenReturn(1L);
 
@@ -208,7 +233,7 @@ public class WorkoutControllerTests {
   }
 
   @Test
-  public void deleteValidWorkoutWithFiles() throws Exception {
+  public void deleteWorkoutWithFiles() throws Exception {
     WorkoutDeserialized testWorkout = new WorkoutDeserialized(TEST_WORKOUT);
     testWorkout.setFilenames(Arrays.asList("file1.mp4", "file2.jpg", "file3.mp3"));
     when(service.findWorkoutById(testWorkout.getId())).thenReturn(testWorkout);
@@ -221,7 +246,7 @@ public class WorkoutControllerTests {
   }
 
   @Test(expected = ApiRequestException.class)
-  public void deleteWorkoutNotDeleted() throws Throwable {
+  public void deleteWorkoutCouldNotDelete() throws Throwable {
     when(service.findWorkoutById(TEST_WORKOUT.getId())).thenReturn(TEST_WORKOUT);
 
     performMockMvcMethodAndCheckErrorMessage("delete", "/workout/1",
