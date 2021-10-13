@@ -773,7 +773,7 @@ function loadMediaFile(noteId) {
   const csrfToken = $("meta[name='_csrf']").attr("content");
   const filename = document.getElementById(noteId).innerHTML;
   $.ajax({
-    url: BASE_URL + 'workout/file/' + workout.id + '/' + filename,
+    url: BASE_URL + 'workout/file/' + workout.id + '/' + filename + '/',
     headers: {"X-CSRF-TOKEN": csrfToken},
     type: 'GET',
     async: true,

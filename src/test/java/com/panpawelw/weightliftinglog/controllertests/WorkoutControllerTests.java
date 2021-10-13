@@ -247,10 +247,10 @@ public class WorkoutControllerTests {
 
   @Test(expected = ApiRequestException.class)
   public void getMediaFileByWorkoutIdAndFilenameNoSuchFile() throws Throwable {
-    when(fileService.getFileByWorkoutIdAndFilename(1L, "testfile.mp3"))
+    when(fileService.getFileByWorkoutIdAndFilename(TEST_WORKOUT.getId(), "testfile.mp3"))
         .thenReturn(null);
     try {
-      mockMvc.perform(get("/workout/file/1/testfile.mp3")).andExpect(status().is(404));
+      mockMvc.perform(get("/workout/file/1/testfile.mp3/")).andExpect(status().is(404));
     } catch (NestedServletException e) {
       assertEquals("No such file in the database!", e.getCause().getMessage());
       throw e.getCause();
@@ -258,8 +258,15 @@ public class WorkoutControllerTests {
   }
 
   @Test(expected = ApiRequestException.class)
-  public void getMediaFileByWorkoutIdAndFilenameDatabaseError() {
-
+  public void getMediaFileByWorkoutIdAndFilenameDatabaseError() throws Throwable {
+    when(fileService.getFileByWorkoutIdAndFilename(TEST_WORKOUT.getId(), "testfile.mp3"))
+        .thenThrow(HibernateException.class);
+    try {
+      mockMvc.perform(get("/workout/file/1/testfile.mp3/")).andExpect(status().is(404));
+    } catch (NestedServletException e) {
+      assertEquals("There's a problem with database connection!", e.getCause().getMessage());
+      throw e.getCause();
+    }
   }
 
   /**

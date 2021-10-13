@@ -120,7 +120,7 @@ public class WorkoutController {
   }
 
   @ResponseBody
-  @GetMapping(value = "/file/{workoutId}/{filename}", produces =
+  @GetMapping(value = "/file/{workoutId}/{filename}/", produces =
       MediaType.APPLICATION_OCTET_STREAM_VALUE)
   public ResponseEntity<byte[]> getFileByWorkoutId(@PathVariable Long workoutId,
                                                    @PathVariable String filename) {
@@ -129,7 +129,7 @@ public class WorkoutController {
       mediaFileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId,
           filename);
     } catch (Exception e) {
-      handleError("There's a problem streaming this file!");
+      handleError("There's a problem with database connection!");
     }
     if (mediaFileToSend == null) {
       handleError("No such file in the database!");
