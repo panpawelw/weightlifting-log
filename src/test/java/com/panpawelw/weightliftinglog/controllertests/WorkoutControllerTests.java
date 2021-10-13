@@ -240,6 +240,28 @@ public class WorkoutControllerTests {
     verify(service).deleteWorkout(TEST_WORKOUT.getId());
   }
 
+  @Test
+  public void getMediaFileByWorkoutIdAndFilename() {
+
+  }
+
+  @Test(expected = ApiRequestException.class)
+  public void getMediaFileByWorkoutIdAndFilenameNoSuchFile() throws Throwable {
+    when(fileService.getFileByWorkoutIdAndFilename(1L, "testfile.mp3"))
+        .thenReturn(null);
+    try {
+      mockMvc.perform(get("/workout/file/1/testfile.mp3")).andExpect(status().is(404));
+    } catch (NestedServletException e) {
+      assertEquals("No such file in the database!", e.getCause().getMessage());
+      throw e.getCause();
+    }
+  }
+
+  @Test(expected = ApiRequestException.class)
+  public void getMediaFileByWorkoutIdAndFilenameDatabaseError() {
+
+  }
+
   /**
    * Helper method that performs mockMvc method and unwraps original exception from
    * NestedServletException and checks exception message.

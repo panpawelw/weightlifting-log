@@ -128,11 +128,11 @@ public class WorkoutController {
     try {
       mediaFileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId,
           filename);
-      if (mediaFileToSend == null) {
-        handleError("No such file in the database!");
-      }
     } catch (Exception e) {
       handleError("There's a problem streaming this file!");
+    }
+    if (mediaFileToSend == null) {
+      handleError("No such file in the database!");
     }
     byte[] fileContent = mediaFileToSend.getContent();
     return ResponseEntity.ok()
