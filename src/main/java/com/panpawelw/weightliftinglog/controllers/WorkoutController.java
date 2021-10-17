@@ -126,8 +126,7 @@ public class WorkoutController {
                                                    @PathVariable String filename) {
     MediaFile mediaFileToSend = null;
     try {
-      mediaFileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId,
-          filename);
+      mediaFileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId, filename);
     } catch (Exception e) {
       handleError("There's a problem with database connection!");
     }

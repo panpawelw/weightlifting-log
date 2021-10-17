@@ -24,6 +24,7 @@ import org.springframework.web.util.NestedServletException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -241,8 +242,14 @@ public class WorkoutControllerTests {
   }
 
   @Test
-  public void getMediaFileByWorkoutIdAndFilename() {
-
+  public void getMediaFileByWorkoutIdAndFilename() throws Exception {
+    byte[] fileContent = new byte[1024];
+    new Random().nextBytes(fileContent);
+    MediaFile testFile = new MediaFile(1L, TEST_WORKOUT.getId(),
+        "testfile.mp3", "audio/mpeg", fileContent);
+    when(fileService.getFileByWorkoutIdAndFilename(TEST_WORKOUT.getId(), "testfile.mp3"))
+        .thenReturn(testFile);
+    mockMvc.perform(get("/workout/file/1/testfile.mp3/")).andExpect(status().isOk());
   }
 
   @Test(expected = ApiRequestException.class)
