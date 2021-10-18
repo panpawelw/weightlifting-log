@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.panpawelw.weightliftinglog.controllers.WorkoutController;
 import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import com.panpawelw.weightliftinglog.models.*;
+import com.panpawelw.weightliftinglog.models.Set;
 import com.panpawelw.weightliftinglog.services.FileService;
 import com.panpawelw.weightliftinglog.services.UserService;
 import com.panpawelw.weightliftinglog.services.WorkoutService;
@@ -21,10 +22,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.NestedServletException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -249,7 +247,16 @@ public class WorkoutControllerTests {
         "testfile.mp3", "audio/mpeg", fileContent);
     when(fileService.getFileByWorkoutIdAndFilename(TEST_WORKOUT.getId(), "testfile.mp3"))
         .thenReturn(testFile);
-    mockMvc.perform(get("/workout/file/1/testfile.mp3/")).andExpect(status().isOk());
+    MvcResult result = mockMvc.perform(get("/workout/file/1/testfile.mp3/"))
+        .andExpect(status().isOk())
+        .andReturn();
+    assertEquals("application/octet-stream", result.getResponse().getContentType());
+    assertEquals("attachment;filename=testfile.mp3",
+        result.getResponse().getHeader("Content-Disposition"));
+    assertEquals("audio/mpeg", result.getResponse().getHeader("type"));
+    assertEquals(Arrays.toString(fileContent),
+        Arrays.toString(Base64.getDecoder().decode(result.getResponse().getContentAsByteArray())));
+    verify(fileService).getFileByWorkoutIdAndFilename(TEST_WORKOUT.getId(), "testfile.mp3");
   }
 
   @Test(expected = ApiRequestException.class)
