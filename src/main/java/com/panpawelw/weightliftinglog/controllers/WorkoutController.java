@@ -2,6 +2,7 @@ package com.panpawelw.weightliftinglog.controllers;
 
 import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import com.panpawelw.weightliftinglog.services.FileService;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,7 @@ import com.panpawelw.weightliftinglog.models.WorkoutDeserialized;
 import com.panpawelw.weightliftinglog.services.UserService;
 import com.panpawelw.weightliftinglog.services.WorkoutService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 
@@ -45,7 +47,7 @@ public class WorkoutController {
       if (result == null) {
         handleError("No such workout in the database!");
       }
-    } catch (Exception e) {
+    } catch (HibernateException e) {
       handleError("There's a problem with database connection!");
     }
     return result;
@@ -53,9 +55,14 @@ public class WorkoutController {
 
   @GetMapping("/")
   public String addWorkoutGet(Model model) {
-    User user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
-    if (user == null) {
-      handleError("No such user in the database!");
+    User user = null;
+    try {
+      user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
+      if (user == null) {
+        handleError("No such user in the database!");
+      }
+    } catch (HibernateException e) {
+      handleError("There's a problem with database connection!");
     }
     model.addAttribute("user", user.getEmail());
     model.addAttribute("userName", user.getName());
@@ -77,6 +84,9 @@ public class WorkoutController {
       workoutDeserialized.setUser
           (userService.findUserByEmail(userService.getLoggedInUsersEmail()));
       workoutDeserialized.setId(workoutService.saveWorkout(workoutDeserialized));
+      if (workoutDeserialized.getId() == null) {
+        handleError("There's a problem saving workout to the database!");
+      }
       if (!filesToRemove.isEmpty()) {
         filesToRemove.forEach((filename) ->
             fileService.deleteFileByWorkoutAndFilename(workoutDeserialized, filename));
@@ -85,9 +95,9 @@ public class WorkoutController {
         fileService.storeAllFilesByWorkout(workoutDeserialized, filesToUpload);
       }
       if (workoutService.saveWorkout(workoutDeserialized) == null) {
-        handleError("There's been a problem saving workout to the database!");
+        handleError("There's a problem saving workout to the database!");
       }
-    } catch (Exception e) {
+    } catch (HibernateException | IOException e) {
       handleError("There's a problem with database connection!");
     }
   }
@@ -104,25 +114,24 @@ public class WorkoutController {
       if (result != 1) {
         handleError("Could not delete workout from the database!");
       }
-    } catch (Exception e) {
-      handleError("There's a problem with database! connection!");
+    } catch (HibernateException e) {
+      handleError("There's a problem with database connection!");
     }
   }
 
   @ResponseBody
-  @GetMapping(value = "/file/{workoutId}/{filename}", produces =
+  @GetMapping(value = "/file/{workoutId}/{filename}/", produces =
       MediaType.APPLICATION_OCTET_STREAM_VALUE)
   public ResponseEntity<byte[]> getFileByWorkoutId(@PathVariable Long workoutId,
                                                    @PathVariable String filename) {
     MediaFile mediaFileToSend = null;
     try {
-      mediaFileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId,
-          filename);
-      if (mediaFileToSend == null) {
-        throw new Exception();
-      }
+      mediaFileToSend = fileService.getFileByWorkoutIdAndFilename(workoutId, filename);
     } catch (Exception e) {
-      handleError("There's been a problem streaming this file!");
+      handleError("There's a problem with database connection!");
+    }
+    if (mediaFileToSend == null) {
+      handleError("No such file in the database!");
     }
     byte[] fileContent = mediaFileToSend.getContent();
     return ResponseEntity.ok()
