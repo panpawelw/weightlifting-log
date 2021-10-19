@@ -185,6 +185,18 @@ public class WorkoutControllerTests {
   }
 
   @Test(expected = ApiRequestException.class)
+  public void addWorkoutPostProblemSavingWorkoutOn2ndCall() throws Throwable {
+    when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
+    when(userService.findUserByEmail(TEST_USER.getEmail())).thenReturn(TEST_USER);
+    when(service.saveWorkout(TEST_WORKOUT)).thenReturn(TEST_WORKOUT.getId()).thenReturn(null);
+
+    mockMvcPerform("There's a problem saving workout to the database!");
+    verify(userService).getLoggedInUsersEmail();
+    verify(userService).findUserByEmail(TEST_USER.getEmail());
+    verify(service, times(2)).saveWorkout(TEST_WORKOUT);
+  }
+
+  @Test(expected = ApiRequestException.class)
   public void addWorkoutPostDatabaseError() throws Throwable {
     when(userService.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
     when(userService.findUserByEmail(TEST_USER.getEmail())).thenReturn(TEST_USER);
@@ -247,6 +259,7 @@ public class WorkoutControllerTests {
         "testfile.mp3", "audio/mpeg", fileContent);
     when(fileService.getFileByWorkoutIdAndFilename(TEST_WORKOUT.getId(), "testfile.mp3"))
         .thenReturn(testFile);
+
     MvcResult result = mockMvc.perform(get("/workout/file/1/testfile.mp3/"))
         .andExpect(status().isOk())
         .andReturn();
@@ -263,6 +276,7 @@ public class WorkoutControllerTests {
   public void getMediaFileByWorkoutIdAndFilenameNoSuchFile() throws Throwable {
     when(fileService.getFileByWorkoutIdAndFilename(TEST_WORKOUT.getId(), "testfile.mp3"))
         .thenReturn(null);
+
     try {
       mockMvc.perform(get("/workout/file/1/testfile.mp3/")).andExpect(status().is(404));
     } catch (NestedServletException e) {
@@ -275,6 +289,7 @@ public class WorkoutControllerTests {
   public void getMediaFileByWorkoutIdAndFilenameDatabaseError() throws Throwable {
     when(fileService.getFileByWorkoutIdAndFilename(TEST_WORKOUT.getId(), "testfile.mp3"))
         .thenThrow(HibernateException.class);
+
     try {
       mockMvc.perform(get("/workout/file/1/testfile.mp3/")).andExpect(status().is(404));
     } catch (NestedServletException e) {
