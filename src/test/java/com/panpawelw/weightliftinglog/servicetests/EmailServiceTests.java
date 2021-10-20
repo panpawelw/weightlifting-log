@@ -1,4 +1,4 @@
-package com.panpawelw.weightliftinglog.servicestests;
+package com.panpawelw.weightliftinglog.servicetests;
 
 import com.panpawelw.weightliftinglog.services.EmailService;
 import org.junit.Before;

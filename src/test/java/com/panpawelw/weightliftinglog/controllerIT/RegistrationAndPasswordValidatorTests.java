@@ -1,4 +1,4 @@
-package com.panpawelw.weightliftinglog;
+package com.panpawelw.weightliftinglog.controllerIT;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

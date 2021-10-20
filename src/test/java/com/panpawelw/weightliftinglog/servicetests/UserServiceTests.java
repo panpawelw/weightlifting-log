@@ -1,4 +1,4 @@
-package com.panpawelw.weightliftinglog.servicestests;
+package com.panpawelw.weightliftinglog.servicetests;
 
 import com.panpawelw.weightliftinglog.models.SecureUserDetails;
 import com.panpawelw.weightliftinglog.models.User;

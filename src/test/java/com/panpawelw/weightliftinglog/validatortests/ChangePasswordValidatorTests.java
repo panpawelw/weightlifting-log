@@ -1,4 +1,4 @@
-package com.panpawelw.weightliftinglog.validatorstests;
+package com.panpawelw.weightliftinglog.validatortests;
 
 import com.panpawelw.weightliftinglog.models.ChangePassword;
 import com.panpawelw.weightliftinglog.services.UserService;
