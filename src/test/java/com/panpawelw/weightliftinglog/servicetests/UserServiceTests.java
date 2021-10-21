@@ -14,21 +14,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static com.panpawelw.weightliftinglog.constants.TEST_USER;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTests {
-
-  private static final User TEST_USER = new User(1L, "Test name",
-      "Test password", "Test password",
-      "Test@email.com", true, "Test first name",
-      "Test last name", 20, true, "ADMIN", new ArrayList<>());
 
   private static final SecureUserDetails TEST_SECUREUSERDETAILS = new SecureUserDetails(TEST_USER);
 
@@ -97,6 +92,7 @@ public class UserServiceTests {
   public void testFindAllByActivated() {
     List<User> testList = Arrays.asList(new User(), new User(), new User());
     when(repository.findAllByActivated(true)).thenReturn(testList);
+
     assertEquals(service.findAllByActivated(true), testList);
     verify(repository).findAllByActivated(true);
   }

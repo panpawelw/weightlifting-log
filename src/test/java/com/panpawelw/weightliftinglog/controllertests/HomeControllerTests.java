@@ -25,9 +25,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
 import java.util.Collections;
 
+import static com.panpawelw.weightliftinglog.constants.TEST_USER;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -38,12 +38,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @Import(RegistrationPasswordValidator.class)
 public class HomeControllerTests {
 
-  private static final User TEST_USER = new User(1L, "Test name",
-      "Test password", "Test password",
-      "test@email.com", true, "Test first name",
-      "Test last name", 20, true, "ADMIN", new ArrayList<>());
-
-  private static final SecureUserDetails TEST_SECUREUSERDETAILS = new SecureUserDetails(TEST_USER);
+  private static final SecureUserDetails TEST_SECUREUSERDETAILS =
+      new SecureUserDetails(TEST_USER);
 
   @Autowired
   private MockMvc mockMvc;
@@ -78,6 +74,7 @@ public class HomeControllerTests {
   public void validLogin() throws Exception {
     SecurityContextHolder.getContext().setAuthentication(
         new UsernamePasswordAuthenticationToken(TEST_SECUREUSERDETAILS, TEST_USER.getPassword()));
+
     mockMvc.perform(get("/login"))
         .andExpect(status().is(302))
         .andExpect(redirectedUrl("/user"));
@@ -87,6 +84,7 @@ public class HomeControllerTests {
   public void invalidLogin() throws Exception {
     SecurityContextHolder.getContext().setAuthentication(
         new TestingAuthenticationToken(new Object(), new Object(), Collections.emptyList()));
+
     mockMvc.perform(get("/login"))
         .andExpect(status().isOk())
         .andExpect(forwardedUrl("home"))
@@ -122,6 +120,7 @@ public class HomeControllerTests {
   public void invalidLogout() throws Exception {
     Authentication authentication = new TestingAuthenticationToken(new Object(), new Object(), Collections.emptyList());
     when(userService.logoutUser(any(), any())).thenReturn(authentication);
+
     mockMvc.perform(get("/logout"))
         .andExpect(status().isOk())
         .andExpect(model().attribute("header", "Logout failure!"))
@@ -153,6 +152,7 @@ public class HomeControllerTests {
     User testUser = new User(TEST_USER);
     testUser.setActivated(false);
     testUser.setConfirmPassword("Test password");
+
     mockMvc.perform(post("/register").flashAttr("user", testUser))
         .andExpect(status().isOk())
         .andExpect(forwardedUrl("home"))
@@ -166,11 +166,11 @@ public class HomeControllerTests {
   public void invalidRegistrationUsersNameExists() throws Exception {
     when(userService.saveUser(TEST_USER))
         .thenThrow(new DataIntegrityViolationException("user_unique_name_idx"));
+
     mockMvc.perform(post("/register").flashAttr("user", TEST_USER))
         .andExpect(status().isOk())
         .andExpect(forwardedUrl("home"))
         .andExpect(model().attributeHasFieldErrors("user", "name"));
-
     verify(userService).saveUser(TEST_USER);
   }
 
@@ -178,6 +178,7 @@ public class HomeControllerTests {
   public void invalidRegistrationUsersEmailExists() throws Exception {
     when(userService.saveUser(TEST_USER))
         .thenThrow(new DataIntegrityViolationException("user_unique_email_idx"));
+
     mockMvc.perform(post("/register").flashAttr("user", TEST_USER))
         .andExpect(status().isOk())
         .andExpect(forwardedUrl("home"))
@@ -188,6 +189,7 @@ public class HomeControllerTests {
   @Test
   public void invalidRegistrationDatabaseError() throws Exception {
     when(userService.saveUser(TEST_USER)).thenThrow(HibernateException.class);
+
     mockMvc.perform(post("/register").flashAttr("user", TEST_USER))
         .andExpect(status().isOk())
         .andExpect(forwardedUrl("home"))
@@ -202,6 +204,7 @@ public class HomeControllerTests {
     when(verificationTokenService.findByToken(token)).thenReturn(testVerificationToken);
     when(userService.saveUserWithoutModifyingPassword(TEST_USER)).thenReturn(TEST_USER.getId());
     doNothing().when(verificationTokenService).deleteVerificationToken(testVerificationToken);
+
     mockMvc.perform(get("/confirm-account").param("token", token))
         .andExpect(status().isOk())
         .andExpect(forwardedUrl("home"))
@@ -215,6 +218,7 @@ public class HomeControllerTests {
   public void invalidAccountConfirmationTokenIsNull() throws Exception {
     String token = "not existing token";
     when(verificationTokenService.findByToken(token)).thenReturn(null);
+
     mockMvc.perform(get("/confirm-account").param("token", token))
         .andExpect(status().isOk())
         .andExpect(forwardedUrl("home"))
@@ -226,6 +230,7 @@ public class HomeControllerTests {
   @Test
   public void invalidRegistrationOtherError() throws Exception {
     when(userService.saveUser(TEST_USER)).thenThrow(RuntimeException.class);
+
     mockMvc.perform(post("/register").flashAttr("user", TEST_USER))
         .andExpect(status().isOk())
         .andExpect(forwardedUrl("home"))

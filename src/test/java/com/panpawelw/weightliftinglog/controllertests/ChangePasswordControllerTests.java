@@ -27,8 +27,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(ChangePasswordValidator.class)
 public class ChangePasswordControllerTests {
 
-  ChangePassword TEST_CHANGEPASSWORD = new ChangePassword("oldpassword",
-      "oldpassword", "newpassword", "newpassword");
+  private static final ChangePassword TEST_CHANGEPASSWORD = new ChangePassword("oldpwd",
+      "oldpwd", "newpwd", "newpwd");
+
+  private static final ChangePassword INVALID_TEST_CHANGEPASSWORD = new ChangePassword(
+      "oldpwd", "oldpwd", "wrongpwd", "newpwd");
 
   @Autowired
   private MockMvc mockMvc;
@@ -56,6 +59,7 @@ public class ChangePasswordControllerTests {
     when(service.getLoggedInUsersEmail()).thenReturn("fake@email.com");
     when(service.findUserByEmail("fake@email.com")).thenReturn(new User());
     doNothing().when(service).changeCurrentUserPassword(TEST_CHANGEPASSWORD.getNewPassword());
+
     mockMvc.perform(post("/user/changepassword")
             .flashAttr("changePassword", TEST_CHANGEPASSWORD))
         .andExpect(status().isOk())
@@ -78,10 +82,9 @@ public class ChangePasswordControllerTests {
 
   @Test
   public void changePasswordIsInvalid() throws Exception {
-    ChangePassword invalidChangePassword = new ChangePassword("oldpassword",
-        "oldpassword", "wrongpassword", "newpassword");
+
     mockMvc.perform(post("/user/changepassword")
-            .flashAttr("changePassword", invalidChangePassword))
+            .flashAttr("changePassword", INVALID_TEST_CHANGEPASSWORD))
         .andExpect(status().isOk())
         .andExpect(model().hasErrors())
         .andExpect(forwardedUrl("home"));

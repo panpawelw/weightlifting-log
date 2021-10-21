@@ -5,8 +5,6 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.panpawelw.weightliftinglog.models.MediaFile;
-import com.panpawelw.weightliftinglog.models.User;
-import com.panpawelw.weightliftinglog.models.WorkoutDeserialized;
 import com.panpawelw.weightliftinglog.services.S3FileService;
 import com.panpawelw.weightliftinglog.services.WorkoutService;
 import org.junit.Before;
@@ -14,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,25 +21,14 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.panpawelw.weightliftinglog.constants.TEST_WORKOUT;
+import static com.panpawelw.weightliftinglog.constants.TEST_WORKOUT_FILES;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class S3FileServiceTests {
-
-  private static final WorkoutDeserialized TEST_WORKOUT = new WorkoutDeserialized(1L,
-      "Test title", null, null, new User(), new ArrayList<>(), new ArrayList<>(),
-      new ArrayList<>(Arrays.asList("audio_file.mp3", "photo.jpg", "video_clip.mp4")));
-
-  private static final MultipartFile[] TEST_WORKOUT_FILES = new MultipartFile[]{
-      new MockMultipartFile("testaudio.mp3", "testaudio.mp3",
-          "audio/mpeg", new byte[]{110, (byte) 160, 7, 47, 49, 24, 41, 113, 103, 123}),
-      new MockMultipartFile("testimage.bmp", "testimage.bmp",
-          "image/bmp", new byte[]{41, 91, 115, 16, 22, 118, 122, 49,  28, 97}),
-      new MockMultipartFile("testvideo.mp4", "testvideo.mp4",
-          "video/mp4", new byte[]{113, 17, 78, 6, 89, 24, 23, (byte) 199, 83, 22}),
-  };
 
   @Mock
   private AmazonS3 client;
@@ -62,6 +48,7 @@ public class S3FileServiceTests {
   @Test
   public void testStoreAllFilesByWorkout() throws IOException {
     service.storeAllFilesByWorkout(TEST_WORKOUT, TEST_WORKOUT_FILES);
+
     for(MultipartFile file : TEST_WORKOUT_FILES) {
       verify(client).putObject(eq("correctbucketname"), eq(TEST_WORKOUT.getId() + "\\"
           + file.getOriginalFilename()), any(InputStream.class), any(ObjectMetadata.class));

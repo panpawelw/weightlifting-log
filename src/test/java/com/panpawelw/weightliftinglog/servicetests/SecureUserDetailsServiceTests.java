@@ -1,7 +1,6 @@
 package com.panpawelw.weightliftinglog.servicetests;
 
 import com.panpawelw.weightliftinglog.models.SecureUserDetails;
-import com.panpawelw.weightliftinglog.models.User;
 import com.panpawelw.weightliftinglog.repositories.UserRepository;
 import com.panpawelw.weightliftinglog.services.SecureUserDetailsService;
 import org.junit.Before;
@@ -13,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
+import static com.panpawelw.weightliftinglog.constants.TEST_USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -20,9 +20,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class SecureUserDetailsServiceTests {
 
-  private static final SecureUserDetails TEST_USER = new SecureUserDetails(
-      new User(1L, "Existing user", "Test password",
-          "null", "test@email.com", true));
+  private static final SecureUserDetails SECURE_TESTUSER = new SecureUserDetails(TEST_USER);
 
   @Mock
   private UserRepository repository;
@@ -36,10 +34,10 @@ public class SecureUserDetailsServiceTests {
 
   @Test
   public void testLoadUserByUsernameWhenUserExists() {
-    when(repository.findUserByName("Existing user")).thenReturn(Optional.of(TEST_USER));
+    when(repository.findUserByName("Existing user")).thenReturn(Optional.of(SECURE_TESTUSER));
 
     assertEquals(service.loadUserByUsername("Existing user"),
-        TEST_USER, "Username should exist!");
+        SECURE_TESTUSER, "Username should exist!");
     verify(repository).findUserByName("Existing user");
   }
 

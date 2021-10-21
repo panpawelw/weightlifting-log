@@ -11,14 +11,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ValidationUtils;
 
+import static com.panpawelw.weightliftinglog.constants.TEST_USER;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UpdateDetailsPasswordValidatorTests {
-
-  private static final User TEST_USER = new User(1L, "Test username",
-      "Test password", "Test password", "test@email.com", true);
 
   @Mock
   private UserService service;

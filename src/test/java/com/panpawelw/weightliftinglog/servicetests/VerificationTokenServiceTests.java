@@ -14,6 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Date;
 import java.util.Optional;
 
+import static com.panpawelw.weightliftinglog.constants.TEST_USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -21,9 +22,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VerificationTokenServiceTests {
-
-  private static final User TEST_USER = new User(12L, "Test user", "Test password",
-      "Test password", "test@email.com", true);
 
   private static final VerificationToken TEST_VERIFICATION_TOKEN =
       new VerificationToken(TEST_USER);

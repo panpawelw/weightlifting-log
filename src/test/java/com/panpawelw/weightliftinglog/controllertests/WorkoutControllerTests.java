@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.panpawelw.weightliftinglog.controllers.WorkoutController;
 import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import com.panpawelw.weightliftinglog.models.*;
-import com.panpawelw.weightliftinglog.models.Set;
 import com.panpawelw.weightliftinglog.services.FileService;
 import com.panpawelw.weightliftinglog.services.UserService;
 import com.panpawelw.weightliftinglog.services.WorkoutService;
@@ -24,6 +23,8 @@ import org.springframework.web.util.NestedServletException;
 
 import java.util.*;
 
+import static com.panpawelw.weightliftinglog.constants.TEST_USER;
+import static com.panpawelw.weightliftinglog.constants.TEST_WORKOUT;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -33,40 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(MockitoJUnitRunner.class)
 @WebMvcTest(controllers = WorkoutController.class)
 public class WorkoutControllerTests {
-
-  private static final User TEST_USER = new User(1L, "Test name",
-      "Test password", "Test password",
-      "test@email.com", true, "Test first name",
-      "Test last name", 20, true, "ADMIN", new ArrayList<>());
-
-  private static final WorkoutDeserialized TEST_WORKOUT = new WorkoutDeserialized(
-      1L, "Workout title", null, null, TEST_USER,
-      Arrays.asList(
-          new Exercise("Exercise 1", Arrays.asList(
-              new Set("Exercise 1 set 1", Arrays.asList(
-                  new Note(0, "Exercise 1 set 1 note 1"),
-                  new Note(0, "Exercise 1 set 1 note 2"))),
-              new Set("Exercise 1 set 2", Arrays.asList(
-                  new Note(0, "Exercise 1 set 2 note 1"),
-                  new Note(0, "Exercise 1 set 2 note 2")))),
-              Collections.singletonList(new Note(0, "Exercise 1 note"))),
-          new Exercise("Exercise 2", Arrays.asList(
-              new Set("Exercise 2 set 1", Arrays.asList(
-                  new Note(0, "Exercise 2 set 1 note 1"),
-                  new Note(0, "Exercise 2 set 1 note 2"))),
-              new Set("Exercise 2 set 2", Arrays.asList(
-                  new Note(0, "Exercise 2 set 2 note 1"),
-                  new Note(0, "Exercise 2 set 2 note 2")))),
-              Collections.singletonList(new Note(0, "Exercise 2 note"))),
-          new Exercise("Exercise 3", Arrays.asList(
-              new Set("Exercise 3 set 1", Arrays.asList(
-                  new Note(0, "Exercise 3 set 1 note 1"),
-                  new Note(0, "Exercise 3 set 1 note 2"))),
-              new Set("Exercise 3 set 2", Arrays.asList(
-                  new Note(0, "Exercise 3 set 2 note 1"),
-                  new Note(0, "Exercise 3 set 2 note 2")))),
-              Collections.singletonList(new Note(0, "Exercise 3 note")))),
-      Collections.singletonList(new Note(0, "Workout note")), Collections.emptyList());
 
   @Autowired
   private MockMvc mockMvc;
@@ -210,25 +177,25 @@ public class WorkoutControllerTests {
 
   @Test
   public void deleteWorkoutWithoutFiles() throws Exception {
-    when(service.findWorkoutById(TEST_WORKOUT.getId())).thenReturn(TEST_WORKOUT);
-    when(service.deleteWorkout(TEST_WORKOUT.getId())).thenReturn(1L);
-
-    mockMvc.perform(delete("/workout/1")).andExpect(status().isOk());
-    verify(service).findWorkoutById(TEST_WORKOUT.getId());
-    verify(service).deleteWorkout(TEST_WORKOUT.getId());
-  }
-
-  @Test
-  public void deleteWorkoutWithFiles() throws Exception {
     WorkoutDeserialized testWorkout = new WorkoutDeserialized(TEST_WORKOUT);
-    testWorkout.setFilenames(Arrays.asList("file1.mp4", "file2.jpg", "file3.mp3"));
+    testWorkout.setFilenames(Collections.emptyList());
     when(service.findWorkoutById(testWorkout.getId())).thenReturn(testWorkout);
     when(service.deleteWorkout(testWorkout.getId())).thenReturn(1L);
 
     mockMvc.perform(delete("/workout/1")).andExpect(status().isOk());
-    verify(fileService).deleteAllFilesByWorkoutId(testWorkout.getId());
     verify(service).findWorkoutById(testWorkout.getId());
     verify(service).deleteWorkout(testWorkout.getId());
+  }
+
+  @Test
+  public void deleteWorkoutWithFiles() throws Exception {
+    when(service.findWorkoutById(TEST_WORKOUT.getId())).thenReturn(TEST_WORKOUT);
+    when(service.deleteWorkout(TEST_WORKOUT.getId())).thenReturn(1L);
+
+    mockMvc.perform(delete("/workout/1")).andExpect(status().isOk());
+    verify(fileService).deleteAllFilesByWorkoutId(TEST_WORKOUT.getId());
+    verify(service).findWorkoutById(TEST_WORKOUT.getId());
+    verify(service).deleteWorkout(TEST_WORKOUT.getId());
   }
 
   @Test(expected = ApiRequestException.class)
