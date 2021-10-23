@@ -95,11 +95,8 @@ function restoreLogoState() {
   // Prevent logo toggling and move screen content to the top
   okToToggleLogo = false;
   document.getElementsByTagName('html')[0].scrollTop = 1;
-  setTimeout(
-    // Allow logo toggling again after a short delay
-    function () {
-      okToToggleLogo = true;
-    }, 333);
+  // Allow logo toggling again after a short delay
+  setTimeout(() => {okToToggleLogo = true;}, 333);
   // Hide logo if it was previously hidden
   let logoVisibility = sessionStorage.getItem('logoVisibility');
   sessionStorage.removeItem('logoVisibility');
@@ -167,10 +164,9 @@ function updatePercentageDescription(description, percentage) {
     "when done to failure.",
     "Best range for muscle mass building, also good for explosiveness (~70%) and strength (~80%) " +
     "in Olympic lifting.",
-    "Best for building muscle strength, use ~80% for easy recovery, ~90% for quick strength " +
-    "peaking.",
-    "Increases maximal strength via neural factors. Good for displaying " +
-    "strength. Difficult to recover from."];
+    "Best for building muscle strength, use ~80% for easy recovery, ~90% for quick strength peaking.",
+    "Increases maximal strength via neural factors. Good for displaying strength. " +
+    "Difficult to recover from."];
 
   for (let i = 0; i < 5; i++) {
     if (percentage < thresholds[i]) {
@@ -229,9 +225,6 @@ function displayWorkout() {
    innerHTML properties. Workout entries are stored in custom data attributes of said elements */
   document.getElementsByClassName('workout-content')[0]
     .addEventListener('input', function (event) {
-      // equalize column height in case it changed
-      // document.getElementById('workout-selection-container').style.height =
-      //     document.getElementsByClassName('workout-content')[0].offsetHeight + "px";
       // store value in workout object entry
       this.target = event.target;
       if (this.target.className === 'my-input') {
@@ -252,26 +245,26 @@ function displayWorkout() {
   heightObserver.observe(document.getElementsByClassName('workout-content')[0]);
 
   // Display existing workout notes
-  for (let i = 0; i < workout.notes.length; i++) {
-    addNote(i, workout.notes[i].type, workout.notes[i].content);
-  }
+  workout.notes.map((note, workoutNoteIndex) =>
+    addNote(workoutNoteIndex, note.type, note.content));
+
   // Display existing exercises
-  for (let j = 0; j < workout.exercises.length; j++) {
-    addExercise(j, workout.exercises[j].title);
+  workout.exercises.map((exercise, exerciseIndex) => {
+    addExercise(exerciseIndex, exercise.title);
+
     // Display existing exercise notes
-    for (let k = 0; k < workout.exercises[j].notes.length; k++) {
-      addNote(k, workout.exercises[j].notes[k].type, workout.exercises[j].notes[k].content, j);
-    }
+    workout.exercises[exerciseIndex].notes.map((exerciseNote, exerciseNoteIndex) =>
+      addNote(exerciseNoteIndex, exerciseNote.type, exerciseNote.content, exerciseIndex));
+
     // Display existing exercise sets
-    for (let l = 0; l < workout.exercises[j].sets.length; l++) {
-      addSet(j, l, workout.exercises[j].sets[l].data);
+    workout.exercises[exerciseIndex].sets.map((set, setIndex) => {
+      addSet(exerciseIndex, setIndex, workout.exercises[exerciseIndex].sets[setIndex].data);
+
       // Display existing set notes
-      for (let m = 0; m < workout.exercises[j].sets[l].notes.length; m++) {
-        addNote(m, workout.exercises[j].sets[l].notes[m].type,
-          workout.exercises[j].sets[l].notes[m].content, j, l);
-      }
-    }
-  }
+      workout.exercises[exerciseIndex].sets[setIndex].notes.map((setNote, setNoteIndex) =>
+      addNote(setNoteIndex, setNote.type, setNote.content, exerciseIndex, setIndex));
+    });
+  });
 }
 
 /** Stores given value in workout object entry.
@@ -318,14 +311,12 @@ function addExercise(exerciseNo = undefined, title = undefined) {
   newExercise.getElementsByTagName('span')[0].id = id;
   newExercise.getElementsByTagName('label')[0].htmlFor = id;
   newExercise.getElementsByTagName('label')[0].innerHTML = 'Exercise #' + (exerciseNo + 1);
-  newExercise.getElementsByClassName('my-btn add bn')[0].onclick =
-    function () {
-      addNote(undefined, 0, '', exerciseNo);
-    };
-  newExercise.getElementsByClassName('my-btn del bn')[0].onclick =
-    function () {
+  newExercise.getElementsByClassName('my-btn add bn')[0].onclick = () => {
+    addNote(undefined, 0, '', exerciseNo);
+  };
+  newExercise.getElementsByClassName('my-btn del bn')[0].onclick = () => {
       remove(document.getElementById(id));
-    };
+  };
   newExercise.getElementsByClassName('exercise-notes')[0].id = id + '-notes';
   newExercise.getElementsByClassName('exercise-sets')[0].id = id + '-sets';
   newExercise.getElementsByClassName('my-btn add-set')[0]
@@ -362,12 +353,10 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
   newSet.getElementsByTagName('span')[0].id = id;
   newSet.getElementsByTagName('label')[0].htmlFor = id;
   newSet.getElementsByTagName('label')[0].innerHTML = 'Set #' + (setNo + 1);
-  newSet.getElementsByClassName('my-btn add bn')[0].onclick =
-    function () {
+  newSet.getElementsByClassName('my-btn add bn')[0].onclick = () => {
       addNote(undefined, 0, '', exerciseNo, setNo);
     };
-  newSet.getElementsByClassName('my-btn del bn')[0].onclick =
-    function () {
+  newSet.getElementsByClassName('my-btn del bn')[0].onclick = () => {
       remove(document.getElementById(id));
     };
   newSet.getElementsByClassName('set-notes')[0].id = id + '-notes';
@@ -391,8 +380,8 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
  * @param {number} [exerciseNo] - optional number of exercise note is assigned to
  * @param {number} [setNo] - optional number of set note is assigned to
  */
-function addNote(noteNo, type, content, exerciseNo = undefined,
-                 setNo = undefined) {
+function addNote(noteNo, type, content,
+                 exerciseNo = undefined, setNo = undefined) {
   // is it a new note?
   const itsANewNote = (noteNo === undefined);
   // assume it's a workout note (to avoid code repetition)
@@ -413,17 +402,15 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
   // it's a set note - modify values
   if (exerciseNo !== undefined && setNo !== undefined) {
     noteListAlias = workout.exercises[exerciseNo].sets[setNo].notes;
-    appendHere = document.getElementById(
-      "exercise" + exerciseNo + "set" + setNo + "-notes");
+    appendHere = document.getElementById("exercise" + exerciseNo + "set" + setNo + "-notes");
     noteNo = itsANewNote ? workout.exercises[exerciseNo].sets[setNo].notes.length : noteNo;
     id = "exercise" + exerciseNo + "set" + setNo + "note" + noteNo;
-    dataSetContent = "exercises," + exerciseNo + ",sets," + setNo + ",notes," +
-      noteNo + ",content";
+    dataSetContent = "exercises," + exerciseNo + ",sets," + setNo + ",notes," + noteNo + ",content";
   }
   // create an element, innerHTML and set attributes
   let newNoteHTML = document.createElement('div');
-  newNoteHTML.setAttribute('id', id + '-container');
-  newNoteHTML.setAttribute('class', 'note');
+  newNoteHTML.id = id + '-container';
+  newNoteHTML.classList.add('note');
   const template = document.getElementById('note-template');
   newNoteHTML.appendChild(template.content.cloneNode(true));
   newNoteHTML.getElementsByTagName('span')[0].id = id;
@@ -431,13 +418,9 @@ function addNote(noteNo, type, content, exerciseNo = undefined,
   newNoteHTML.getElementsByTagName('label')[0].innerHTML = 'Note #' + (noteNo + 1);
   newNoteHTML.getElementsByTagName('select').name = id + '-type';
   newNoteHTML.getElementsByTagName('select')[0].onchange =
-    function () {
-      changeNoteType(this.value, id);
-    };
+    e => changeNoteType(e.currentTarget.value, id);
   newNoteHTML.getElementsByClassName('my-btn del bn')[0].onclick =
-    function () {
-      remove(document.getElementById(id));
-    };
+    () => remove(document.getElementById(id));
 
   appendHere.appendChild(newNoteHTML);
   document.getElementById(id).setAttribute('data-set', dataSetContent);
@@ -479,16 +462,14 @@ function changeNoteType(selectFieldValue, fieldToReplaceId) {
       replacement.removeAttribute('onchange');
       break;
     case '1':
-      replacement.setAttribute
-      ('accept', 'audio/mpeg, audio/ogg, audio/wav');
+      replacement.setAttribute('accept', 'audio/mpeg, audio/ogg, audio/wav');
       break;
     case '2':
-      replacement.setAttribute
-      ('accept', 'image/gif, image/jpeg, image/png');
+      replacement.setAttribute('accept', 'image/gif, image/jpeg, image/png');
       break;
     case '3':
-      replacement.setAttribute
-      ('accept', 'video/mp4, video/ogg, video/webm');
+      replacement.setAttribute('accept', 'video/mp4, video/ogg, video/webm');
+      break;
   }
   // switch IDs of old and new elements, copy data and replace
   document.getElementById(fieldToReplaceId).setAttribute('id', 'tempID');
