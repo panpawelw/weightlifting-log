@@ -1,6 +1,7 @@
 package com.panpawelw.weightliftinglog.controllertests;
 
 import com.panpawelw.weightliftinglog.controllers.UserController;
+import com.panpawelw.weightliftinglog.models.User;
 import com.panpawelw.weightliftinglog.services.UserService;
 import com.panpawelw.weightliftinglog.services.VerificationTokenService;
 import com.panpawelw.weightliftinglog.services.WorkoutService;
@@ -62,5 +63,23 @@ public class UserControllerTests {
         .andExpect(model().attribute("workouts", TEST_USER.getWorkouts()));
     verify(service).findUserByEmail(TEST_USER.getEmail());
     verify(service).checkLoggedInUserForAdminRights();
+  }
+
+  @Test
+  public void shouldReturnUserNotActivated() throws Exception {
+    User testUser = new User(TEST_USER);
+    testUser.setActivated(false);
+    when(service.getLoggedInUsersEmail()).thenReturn(testUser.getEmail());
+    when(service.findUserByEmail(testUser.getEmail())).thenReturn(testUser);
+    when(verificationTokenService.removeAccountIfTokenExpired(testUser))
+        .thenReturn("This account requires activation!");
+
+    mockMvc.perform(get("/user"))
+        .andExpect(status().isOk())
+        .andExpect(model().attribute("loginError", "This account requires activation!"))
+        .andExpect(model().attribute("page", "fragments.html :: login"));
+    verify(service).getLoggedInUsersEmail();
+    verify(service).findUserByEmail(testUser.getEmail());
+    verify(verificationTokenService).removeAccountIfTokenExpired(testUser);
   }
 }
