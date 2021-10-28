@@ -70,6 +70,21 @@ public class UserControllerTests {
   }
 
   @Test
+  public void getUserShouldReturnCantRetrieveUser() throws Exception {
+    when(service.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
+    when(service.findUserByEmail(TEST_USER.getEmail())).thenReturn(null);
+
+    mockMvc.perform(get("/user"))
+        .andExpect(status().isOk())
+        .andExpect(model().attribute("page", "fragments.html :: show-message"))
+        .andExpect(model().attribute("header", "Error!"))
+        .andExpect(model().attribute("text", "Can't retrieve user!"))
+        .andExpect(model().attribute("address", "/weightliftinglog"));
+    verify(service).getLoggedInUsersEmail();
+    verify(service).findUserByEmail(TEST_USER.getEmail());
+  }
+
+  @Test
   public void getUserShouldReturnUserNotActivated() throws Exception {
     User testUser = new User(TEST_USER);
     testUser.setActivated(false);
