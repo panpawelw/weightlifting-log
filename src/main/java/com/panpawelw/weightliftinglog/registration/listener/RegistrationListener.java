@@ -3,7 +3,6 @@ package com.panpawelw.weightliftinglog.registration.listener;
 import com.panpawelw.weightliftinglog.registration.event.OnRegistrationCompleteEvent;
 import com.panpawelw.weightliftinglog.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import com.panpawelw.weightliftinglog.models.User;
@@ -34,9 +33,9 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         "<h3>Welcome to Weightlifiting Log!</h3>" +
             "<p>You have registered an account on Weightlifting Log website. To verify your " +
             "account please click the link below within the next 24 hours:</p>" +
-            "<a href=\"http://18.194.88.131:8080/weightliftinglog/confirm-account?token=\"" +
+            "<a href=\"http://3.67.75.46:8080/weightliftinglog/confirm-account?token=\"" +
             verificationToken.getToken() +
-            ">http://18.194.88.131:8080/weightliftinglog/confirm-account?token=" +
+            ">http://3.67.75.46:8080/weightliftinglog/confirm-account?token=" +
             verificationToken.getToken() + "</a>" + "<p>Have a nice day!!!</p>");
   }
 }

@@ -2,6 +2,8 @@ package com.panpawelw.weightliftinglog.controllers;
 
 import static com.panpawelw.weightliftinglog.controllers.misc.Message.prepMessage;
 
+import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,16 +48,21 @@ public class UserController {
   @PreAuthorize("hasAnyRole('USER','ADMIN')")
   @RequestMapping("/user")
   public String user(Model model, HttpServletRequest request, HttpServletResponse response) {
-    User user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
-    if (user == null) {
-      prepMessage(model, "/weightliftinglog", "Error!", "Can't retrieve user!");
-      return "home";
-    }
-    if (!user.isActivated()) {
-      userService.logoutUser(request, response);
-      model.addAttribute("loginError", verificationTokenService.removeAccountIfTokenExpired(user));
-      model.addAttribute("page", "fragments.html :: login");
-      return "home";
+    User user;
+    try {
+      user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
+      if (user == null) {
+        prepMessage(model, "/weightliftinglog", "Error!", "Can't retrieve user!");
+        return "home";
+      }
+      if (!user.isActivated()) {
+        userService.logoutUser(request, response);
+        model.addAttribute("loginError", verificationTokenService.removeAccountIfTokenExpired(user));
+        model.addAttribute("page", "fragments.html :: login");
+        return "home";
+      }
+    } catch (HibernateException e) {
+      throw new ApiRequestException("There's a problem with database connection!");
     }
     model.addAttribute("userName", user.getName());
     model.addAttribute("adminRights", userService.checkLoggedInUserForAdminRights());
