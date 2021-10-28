@@ -1,11 +1,13 @@
 package com.panpawelw.weightliftinglog.controllertests;
 
 import com.panpawelw.weightliftinglog.controllers.UserController;
+import com.panpawelw.weightliftinglog.exceptions.ApiRequestException;
 import com.panpawelw.weightliftinglog.models.User;
 import com.panpawelw.weightliftinglog.services.UserService;
 import com.panpawelw.weightliftinglog.services.VerificationTokenService;
 import com.panpawelw.weightliftinglog.services.WorkoutService;
 import com.panpawelw.weightliftinglog.validators.UpdateDetailsPasswordValidator;
+import org.hibernate.HibernateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.util.NestedServletException;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -49,7 +53,7 @@ public class UserControllerTests {
   }
 
   @Test
-  public void shouldReturnUserPanel() throws Exception {
+  public void getUserShouldReturnUserPanel() throws Exception {
     when(service.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
     when(service.findUserByEmail(TEST_USER.getEmail())).thenReturn(TEST_USER);
     when(service.checkLoggedInUserForAdminRights()).thenReturn(true);
@@ -66,7 +70,7 @@ public class UserControllerTests {
   }
 
   @Test
-  public void shouldReturnUserNotActivated() throws Exception {
+  public void getUserShouldReturnUserNotActivated() throws Exception {
     User testUser = new User(TEST_USER);
     testUser.setActivated(false);
     when(service.getLoggedInUsersEmail()).thenReturn(testUser.getEmail());
@@ -81,5 +85,20 @@ public class UserControllerTests {
     verify(service).getLoggedInUsersEmail();
     verify(service).findUserByEmail(testUser.getEmail());
     verify(verificationTokenService).removeAccountIfTokenExpired(testUser);
+  }
+
+  @Test(expected = ApiRequestException.class)
+  public void getUserShouldThrowApiRequestException() throws Throwable {
+    when(service.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
+    when(service.getLoggedInUsersEmail()).thenThrow(HibernateException.class);
+    try {
+      mockMvc.perform(get("/user"))
+          .andExpect(status().isOk());
+      verify(service).getLoggedInUserName();
+      verify(service).findUserByEmail(TEST_USER.getEmail());
+    } catch (NestedServletException e) {
+      assertEquals("There's a problem with database connection!", e.getCause().getMessage());
+      throw e.getCause();
+    }
   }
 }
