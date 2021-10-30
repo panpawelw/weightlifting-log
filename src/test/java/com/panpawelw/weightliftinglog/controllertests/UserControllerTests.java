@@ -116,4 +116,20 @@ public class UserControllerTests {
       throw e.getCause();
     }
   }
+
+  @Test
+  public void updateUserDetailsGetShouldReturnUserDetails() throws Exception {
+    User testUser = new User(TEST_USER);
+    when(validator.supports(User.class)).thenReturn(true);
+    when(service.getLoggedInUsersEmail()).thenReturn(testUser.getEmail());
+    when(service.findUserByEmail(testUser.getEmail())).thenReturn(testUser);
+
+    mockMvc.perform(get("/user/update"))
+        .andExpect(status().isOk())
+        .andExpect(model().attribute("user", testUser))
+        .andExpect(model().attribute("page", "fragments.html :: update-user"));
+    verify(validator).supports(User.class);
+    verify(service).getLoggedInUsersEmail();
+    verify(service).findUserByEmail(testUser.getEmail());
+  }
 }
