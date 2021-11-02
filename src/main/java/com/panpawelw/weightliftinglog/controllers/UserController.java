@@ -74,10 +74,15 @@ public class UserController {
 
   @GetMapping("/user/update")
   public String editUserDetailsGet(Model model) {
-    User user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
-    if (user == null) {
-      prepMessage(model, "/weightliftinglog/user", "Error!", "Can't retrieve user!");
-      return "home";
+    User user;
+    try {
+      user = userService.findUserByEmail(userService.getLoggedInUsersEmail());
+      if (user == null) {
+        prepMessage(model, "/weightliftinglog/user", "Error!", "User doesn't exist!");
+        return "home";
+      }
+    } catch (HibernateException e) {
+      throw new ApiRequestException("There's a problem with database connection!");
     }
     user.setPassword("");
     model.addAttribute("user", user);
@@ -96,7 +101,8 @@ public class UserController {
         userService.saveUserWithoutModifyingPassword(user);
         userService.logoutUser(request, response);
         userService.autoLogin(request, user.getName(), password);
-        prepMessage(model, "/weightliftinglog/user", "Success!", "User details have been updated!");
+        prepMessage(model, "/weightliftinglog/user", "Success!",
+            "User details have been updated!");
       } catch (DataIntegrityViolationException e) {
         if(e.getMostSpecificCause().getMessage().contains("user_unique_name_idx")) {
           bindingResult.rejectValue("name", "error.name",
