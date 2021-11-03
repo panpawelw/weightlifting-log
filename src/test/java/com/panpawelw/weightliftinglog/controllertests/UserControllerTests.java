@@ -15,16 +15,20 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.NestedServletException;
 
+import java.util.Collections;
+
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static com.panpawelw.weightliftinglog.constants.TEST_USER;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 @WebMvcTest(controllers = UserController.class)
@@ -131,5 +135,24 @@ public class UserControllerTests {
     verify(validator).supports(User.class);
     verify(service).getLoggedInUsersEmail();
     verify(service).findUserByEmail(testUser.getEmail());
+  }
+
+  @Test
+  public void updateUserDetailsPostShouldReturnSuccess() throws Exception {
+    Authentication authentication =
+        new TestingAuthenticationToken(new Object(), new Object(), Collections.emptyList());
+    when(validator.supports(User.class)).thenReturn(true);
+    when(service.saveUserWithoutModifyingPassword(TEST_USER)).thenReturn(TEST_USER.getId());
+    when(service.logoutUser(any(), any())).thenReturn(authentication);
+    doNothing().when(service).autoLogin(any(), any(), any());
+    mockMvc.perform(post("/user/update").flashAttr("user", TEST_USER))
+        .andExpect(model().attribute("page", "fragments.html :: show-message"))
+        .andExpect(model().attribute("header", "Success!"))
+        .andExpect(model().attribute("text", "User details have been updated!"))
+        .andExpect(status().isOk());
+    verify(validator).supports(User.class);
+    verify(service).saveUserWithoutModifyingPassword(TEST_USER);
+    verify(service).logoutUser(any(), any());
+    verify(service).autoLogin(any(), any(), any());
   }
 }
