@@ -155,4 +155,15 @@ public class UserControllerTests {
     verify(service).logoutUser(any(), any());
     verify(service).autoLogin(any(), any(), any());
   }
+
+  @Test
+  public void updateUserDetailsPostShouldReturnValidationError() throws Exception {
+    User wrongUser = new User();
+    when(validator.supports(User.class)).thenReturn(true);
+    mockMvc.perform(post("/user/update").flashAttr("user", wrongUser))
+        .andExpect(model().attribute("page", "fragments.html :: update-user"))
+        .andExpect(forwardedUrl("home"))
+        .andExpect(status().isOk());
+    verify(validator).supports(User.class);
+  }
 }
