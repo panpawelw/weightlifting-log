@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.test.web.servlet.MockMvc;
@@ -165,5 +166,17 @@ public class UserControllerTests {
         .andExpect(forwardedUrl("home"))
         .andExpect(status().isOk());
     verify(validator).supports(User.class);
+  }
+
+  @Test
+  public void updateUserDetailsPostShouldReturnUserNamExists() throws Exception {
+    when(validator.supports(User.class)).thenReturn(true);
+    when(service.saveUserWithoutModifyingPassword(TEST_USER))
+        .thenThrow(new DataIntegrityViolationException("user_unique_name_idx"));
+    mockMvc.perform(post("/user/update").flashAttr("user", TEST_USER))
+        .andExpect(model().attributeHasFieldErrors("user"))
+        .andExpect(status().isOk());
+    verify(validator).supports(User.class);
+    verify(service).saveUserWithoutModifyingPassword(TEST_USER);
   }
 }
