@@ -169,12 +169,24 @@ public class UserControllerTests {
   }
 
   @Test
-  public void updateUserDetailsPostShouldReturnUserNamExists() throws Exception {
+  public void updateUserDetailsPostShouldReturnUserNameExists() throws Exception {
     when(validator.supports(User.class)).thenReturn(true);
     when(service.saveUserWithoutModifyingPassword(TEST_USER))
         .thenThrow(new DataIntegrityViolationException("user_unique_name_idx"));
     mockMvc.perform(post("/user/update").flashAttr("user", TEST_USER))
-        .andExpect(model().attributeHasFieldErrors("user"))
+        .andExpect(model().attributeHasFieldErrors("user", "name"))
+        .andExpect(status().isOk());
+    verify(validator).supports(User.class);
+    verify(service).saveUserWithoutModifyingPassword(TEST_USER);
+  }
+
+  @Test
+  public void updateUserDetailsPostShouldReturnEmailExists() throws Exception {
+    when(validator.supports(User.class)).thenReturn(true);
+    when(service.saveUserWithoutModifyingPassword(TEST_USER))
+        .thenThrow(new DataIntegrityViolationException("user_unique_email_idx"));
+    mockMvc.perform(post("/user/update").flashAttr("user", TEST_USER))
+        .andExpect(model().attributeHasFieldErrors("user", "email"))
         .andExpect(status().isOk());
     verify(validator).supports(User.class);
     verify(service).saveUserWithoutModifyingPassword(TEST_USER);
