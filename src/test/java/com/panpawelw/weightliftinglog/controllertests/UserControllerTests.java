@@ -111,6 +111,7 @@ public class UserControllerTests {
   public void getUserShouldThrowApiRequestException() throws Throwable {
     when(service.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
     when(service.getLoggedInUsersEmail()).thenThrow(HibernateException.class);
+
     try {
       mockMvc.perform(get("/user"))
           .andExpect(status().isOk());
@@ -146,6 +147,7 @@ public class UserControllerTests {
     when(service.saveUserWithoutModifyingPassword(TEST_USER)).thenReturn(TEST_USER.getId());
     when(service.logoutUser(any(), any())).thenReturn(authentication);
     doNothing().when(service).autoLogin(any(), any(), any());
+
     mockMvc.perform(post("/user/update").flashAttr("user", TEST_USER))
         .andExpect(model().attribute("page", "fragments.html :: show-message"))
         .andExpect(model().attribute("header", "Success!"))
@@ -161,6 +163,7 @@ public class UserControllerTests {
   public void updateUserDetailsPostShouldReturnValidationError() throws Exception {
     User wrongUser = new User();
     when(validator.supports(User.class)).thenReturn(true);
+
     mockMvc.perform(post("/user/update").flashAttr("user", wrongUser))
         .andExpect(model().attribute("page", "fragments.html :: update-user"))
         .andExpect(forwardedUrl("home"))
@@ -173,6 +176,7 @@ public class UserControllerTests {
     when(validator.supports(User.class)).thenReturn(true);
     when(service.saveUserWithoutModifyingPassword(TEST_USER))
         .thenThrow(new DataIntegrityViolationException("user_unique_name_idx"));
+
     mockMvc.perform(post("/user/update").flashAttr("user", TEST_USER))
         .andExpect(model().attributeHasFieldErrors("user", "name"))
         .andExpect(status().isOk());
@@ -185,8 +189,23 @@ public class UserControllerTests {
     when(validator.supports(User.class)).thenReturn(true);
     when(service.saveUserWithoutModifyingPassword(TEST_USER))
         .thenThrow(new DataIntegrityViolationException("user_unique_email_idx"));
+
     mockMvc.perform(post("/user/update").flashAttr("user", TEST_USER))
         .andExpect(model().attributeHasFieldErrors("user", "email"))
+        .andExpect(status().isOk());
+    verify(validator).supports(User.class);
+    verify(service).saveUserWithoutModifyingPassword(TEST_USER);
+  }
+
+  @Test
+  public void updateUserDetailsPostShouldReturnDatabaseError() throws Exception {
+    when(validator.supports(User.class)).thenReturn(true);
+    when(service.saveUserWithoutModifyingPassword(TEST_USER)).thenThrow(HibernateException.class);
+    mockMvc.perform(post("/user/update").flashAttr("user", TEST_USER))
+        .andExpect(model().attribute("page", "fragments.html :: show-message"))
+        .andExpect(model().attribute("header", "Error!"))
+        .andExpect(model().attribute("text", "There's a problem with database connection!"))
+        .andExpect(forwardedUrl("home"))
         .andExpect(status().isOk());
     verify(validator).supports(User.class);
     verify(service).saveUserWithoutModifyingPassword(TEST_USER);

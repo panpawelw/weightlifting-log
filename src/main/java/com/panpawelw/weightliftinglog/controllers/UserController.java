@@ -113,7 +113,8 @@ public class UserController {
               "This email already exists in our database!");
         }
       } catch (Exception e) {
-        prepMessage(model, "", "Error!", "Can't save user!");
+        prepMessage(model, "", "Error!",
+            "There's a problem with database connection!");
       }
     }
     return "home";
