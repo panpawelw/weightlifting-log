@@ -80,11 +80,11 @@ public class UserControllerTests {
     when(service.findUserByEmail(TEST_USER.getEmail())).thenReturn(null);
 
     mockMvc.perform(get("/user"))
-        .andExpect(status().isOk())
         .andExpect(model().attribute("page", "fragments.html :: show-message"))
         .andExpect(model().attribute("header", "Error!"))
         .andExpect(model().attribute("text", "Can't retrieve user!"))
-        .andExpect(model().attribute("address", "/weightliftinglog"));
+        .andExpect(model().attribute("address", "/weightliftinglog"))
+        .andExpect(status().isOk());
     verify(service).getLoggedInUsersEmail();
     verify(service).findUserByEmail(TEST_USER.getEmail());
   }
@@ -99,9 +99,9 @@ public class UserControllerTests {
         .thenReturn("This account requires activation!");
 
     mockMvc.perform(get("/user"))
-        .andExpect(status().isOk())
         .andExpect(model().attribute("loginError", "This account requires activation!"))
-        .andExpect(model().attribute("page", "fragments.html :: login"));
+        .andExpect(model().attribute("page", "fragments.html :: login"))
+        .andExpect(status().isOk());
     verify(service).getLoggedInUsersEmail();
     verify(service).findUserByEmail(testUser.getEmail());
     verify(verificationTokenService).removeAccountIfTokenExpired(testUser);
@@ -115,10 +115,10 @@ public class UserControllerTests {
     try {
       mockMvc.perform(get("/user"))
           .andExpect(status().isOk());
-      verify(service).getLoggedInUserName();
-      verify(service).findUserByEmail(TEST_USER.getEmail());
     } catch (NestedServletException e) {
       assertEquals("There's a problem with database connection!", e.getCause().getMessage());
+      verify(service).getLoggedInUserName();
+      verify(service).findUserByEmail(TEST_USER.getEmail());
       throw e.getCause();
     }
   }
@@ -201,6 +201,7 @@ public class UserControllerTests {
   public void updateUserDetailsPostShouldReturnDatabaseError() throws Exception {
     when(validator.supports(User.class)).thenReturn(true);
     when(service.saveUserWithoutModifyingPassword(TEST_USER)).thenThrow(HibernateException.class);
+
     mockMvc.perform(post("/user/update").flashAttr("user", TEST_USER))
         .andExpect(model().attribute("page", "fragments.html :: show-message"))
         .andExpect(model().attribute("header", "Error!"))
