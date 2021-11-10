@@ -382,61 +382,70 @@ function addSet(exerciseNo, setNo = undefined, data = undefined) {
  */
 function addNote(noteNo, type, content,
                  exerciseNo = undefined, setNo = undefined) {
-  // is it a new note?
-  const itsANewNote = (noteNo === undefined);
-  // assume it's a workout note (to avoid code repetition)
   let newNote = {type: type, content: content};
-  let noteListAlias = workout.notes;
-  let appendHere = document.getElementById('notes');
-  noteNo = itsANewNote ? workout.notes.length : noteNo;
-  let id = "note" + noteNo;
-  let dataSetContent = "notes," + noteNo + ",content";
-  // if it's an exercise note - modify values
-  if (exerciseNo !== undefined && setNo === undefined) {
-    noteListAlias = workout.exercises[exerciseNo].notes;
-    appendHere = document.getElementById("exercise" + exerciseNo + "-notes");
-    noteNo = itsANewNote ? workout.exercises[exerciseNo].notes.length : noteNo;
-    id = "exercise" + exerciseNo + "note" + noteNo;
-    dataSetContent = "exercises," + exerciseNo + ",notes," + noteNo + ",content";
-  }
-  // it's a set note - modify values
-  if (exerciseNo !== undefined && setNo !== undefined) {
-    noteListAlias = workout.exercises[exerciseNo].sets[setNo].notes;
-    appendHere = document.getElementById("exercise" + exerciseNo + "set" + setNo + "-notes");
-    noteNo = itsANewNote ? workout.exercises[exerciseNo].sets[setNo].notes.length : noteNo;
-    id = "exercise" + exerciseNo + "set" + setNo + "note" + noteNo;
-    dataSetContent = "exercises," + exerciseNo + ",sets," + setNo + ",notes," + noteNo + ",content";
-  }
+  let n = setNoteParameters(noteNo, exerciseNo, setNo);
   // create an element, innerHTML and set attributes
   let newNoteHTML = document.createElement('div');
-  newNoteHTML.id = id + '-container';
+  newNoteHTML.id = n.id + '-container';
   newNoteHTML.classList.add('note');
   const template = document.getElementById('note-template');
   newNoteHTML.appendChild(template.content.cloneNode(true));
-  newNoteHTML.getElementsByTagName('span')[0].id = id;
-  newNoteHTML.getElementsByTagName('label')[0].htmlFor = id;
-  newNoteHTML.getElementsByTagName('label')[0].innerHTML = 'Note #' + (noteNo + 1);
-  newNoteHTML.getElementsByTagName('select').name = id + '-type';
+  newNoteHTML.getElementsByTagName('span')[0].id = n.id;
+  newNoteHTML.getElementsByTagName('label')[0].htmlFor = n.id;
+  newNoteHTML.getElementsByTagName('label')[0].innerHTML = 'Note #' + (n.noteNo + 1);
+  newNoteHTML.getElementsByTagName('select').name = n.id + '-type';
   newNoteHTML.getElementsByTagName('select')[0].onchange =
-    e => changeNoteType(e.currentTarget.value, id);
+    e => changeNoteType(e.currentTarget.value, n.id);
   newNoteHTML.getElementsByClassName('my-btn del bn')[0].onclick =
-    () => remove(document.getElementById(id));
+    () => remove(document.getElementById(n.id));
 
-  appendHere.appendChild(newNoteHTML);
-  document.getElementById(id).setAttribute('data-set', dataSetContent);
+  n.appendHere.appendChild(newNoteHTML);
+  document.getElementById(n.id).setAttribute('data-set', n.dataSetContent);
   // if new note - push it to note array and focus on element
-  if (itsANewNote) {
-    noteListAlias.push(newNote);
-    document.getElementById(id).focus();
+  if (n.itsANewNote) {
+    n.noteListAlias.push(newNote);
+    document.getElementById(n.id).focus();
     // if not - display the note content (and change type if other than text note)
   } else {
     if (newNote.type === 0) {
-      document.getElementById(id).innerHTML = newNote.content;
+      document.getElementById(n.id).innerHTML = newNote.content;
     } else {
-      displayExistingMediaNote(id, newNote.content, newNote.type);
-      assignFileToExistingMediaNote(id, newNote.content);
+      displayExistingMediaNote(n.id, newNote.content, newNote.type);
+      assignFileToExistingMediaNote(n.id, newNote.content);
     }
   }
+}
+
+/** Helper function that sets note parameters
+ *
+ * @param {number} noteNo - note number
+ * @param {number} exerciseNo - exercise number
+ * @param {number} setNo - set number
+ * @returns {{}} note parameters object
+ */
+function setNoteParameters(noteNo, exerciseNo, setNo) {
+  let n = {};
+  n.itsANewNote = (noteNo === undefined);
+  if (exerciseNo === undefined && setNo === undefined) {  // workout note
+    n.noteListAlias = workout.notes;
+    n.appendHere = document.getElementById('notes');
+    n.noteNo = n.itsANewNote ? workout.notes.length : n.noteNo;
+    n.id = "note" + n.noteNo;
+    n.dataSetContent = "notes," + n.noteNo + ",content";
+  } else if (exerciseNo !== undefined && setNo === undefined) { // exercise note
+    n.noteListAlias = workout.exercises[exerciseNo].notes;
+    n.appendHere = document.getElementById("exercise" + exerciseNo + "-notes");
+    n.noteNo = n.itsANewNote ? workout.exercises[exerciseNo].notes.length : n.noteNo;
+    n.id = "exercise" + exerciseNo + "note" + n.noteNo;
+    n.dataSetContent = "exercises," + exerciseNo + ",notes," + n.noteNo + ",content";
+  } else if (exerciseNo !== undefined && setNo !== undefined) { //set note
+    n.noteListAlias = workout.exercises[exerciseNo].sets[setNo].notes;
+    n.appendHere = document.getElementById("exercise" + exerciseNo + "set" + setNo + "-notes");
+    n.noteNo = n.itsANewNote ? workout.exercises[exerciseNo].sets[setNo].notes.length : n.noteNo;
+    n.id = "exercise" + exerciseNo + "set" + setNo + "note" + n.noteNo;
+    n.dataSetContent = "exercises," + exerciseNo + ",sets," + setNo + ",notes," + n.noteNo + ",content";
+  }
+  return n;
 }
 
 /** Changes a note type when user chooses a different one using the select element.
