@@ -54,8 +54,9 @@ public class UpdateDetailsPasswordValidatorTests {
 
   @Test
   public void passwordHasWrongLength() {
-    TEST_USER.setPassword("xx");
-    ValidationUtils.invokeValidator(validator, TEST_USER, errors);
+    User testUser = new User(TEST_USER);
+    testUser.setPassword("xx");
+    ValidationUtils.invokeValidator(validator, testUser, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals("Size.password", errors.getFieldErrors("password").get(0).getCode());
   }

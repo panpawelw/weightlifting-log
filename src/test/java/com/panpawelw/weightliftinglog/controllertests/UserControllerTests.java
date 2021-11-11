@@ -110,14 +110,14 @@ public class UserControllerTests {
   @Test(expected = ApiRequestException.class)
   public void getUserShouldThrowApiRequestException() throws Throwable {
     when(service.getLoggedInUsersEmail()).thenReturn(TEST_USER.getEmail());
-    when(service.getLoggedInUsersEmail()).thenThrow(HibernateException.class);
+    when(service.findUserByEmail(TEST_USER.getEmail())).thenThrow(HibernateException.class);
 
     try {
       mockMvc.perform(get("/user"))
           .andExpect(status().isOk());
     } catch (NestedServletException e) {
       assertEquals("There's a problem with database connection!", e.getCause().getMessage());
-      verify(service).getLoggedInUserName();
+      verify(service).getLoggedInUsersEmail();
       verify(service).findUserByEmail(TEST_USER.getEmail());
       throw e.getCause();
     }
