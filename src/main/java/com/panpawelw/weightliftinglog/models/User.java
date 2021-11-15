@@ -231,18 +231,16 @@ public class User implements Serializable {
     return activated == user.activated && Objects.equals(id, user.id) &&
         Objects.equals(name, user.name) &&
         Objects.equals(password, user.password) &&
-        Objects.equals(confirmPassword, user.confirmPassword) &&
         Objects.equals(email, user.email) &&
         Objects.equals(firstName, user.firstName) &&
         Objects.equals(lastName, user.lastName) &&
         Objects.equals(age, user.age) && Objects.equals(gender, user.gender) &&
-        Objects.equals(role, user.role) &&
-        Objects.equals(workouts, user.workouts);
+        Objects.equals(role, user.role);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, password, confirmPassword, email, activated, firstName,
-        lastName, age, gender, role, workouts);
+    return Objects.hash(id, name, password, email, activated, firstName,
+        lastName, age, gender, role);
   }
 }
