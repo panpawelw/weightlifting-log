@@ -71,8 +71,8 @@ public class UserService {
    *
    * @param id - id of user to be deleted
    */
-  public Long deleteUserById(long id) {
-    return userRepository.deleteById(id);
+  public void deleteUserById(long id) {
+    userRepository.deleteById(id);
   }
 
   /**
@@ -82,6 +82,14 @@ public class UserService {
    */
   public List<User> findAllByActivated(boolean activated) {
     return userRepository.findAllByActivated(activated);
+  }
+
+  /**
+   * Counts all records in user table
+   * @return count
+   */
+  public Long count() {
+    return userRepository.count();
   }
 
   /**

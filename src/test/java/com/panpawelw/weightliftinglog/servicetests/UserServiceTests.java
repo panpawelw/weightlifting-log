@@ -82,7 +82,7 @@ public class UserServiceTests {
 
   @Test
   public void testDeleteUserById() {
-    when(repository.deleteById(1)).thenReturn(1L);
+    doNothing().when(repository).deleteById(1);
     service.deleteUserById(1);
 
     verify(repository).deleteById(1L);

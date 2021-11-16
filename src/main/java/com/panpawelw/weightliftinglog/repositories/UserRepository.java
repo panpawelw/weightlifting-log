@@ -16,5 +16,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   List<User> findAllByActivated(boolean activated);
 
-  long deleteById(long id);
+  void deleteById(long id);
 }
