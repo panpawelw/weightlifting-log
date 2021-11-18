@@ -108,7 +108,7 @@ public class UserServiceTests {
   }
 
   @Test
-  public void testcheckLoggedInUserForAdminRights() {
+  public void testCheckLoggedInUserForAdminRights() {
     assertEquals(TEST_USER.getRole().equals("ADMIN"), service.checkLoggedInUserForAdminRights());
   }
 
