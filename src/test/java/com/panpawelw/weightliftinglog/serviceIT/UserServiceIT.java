@@ -52,48 +52,52 @@ public class UserServiceIT {
 
   @Test
   public void saveUserShouldThrowExceptionDuplicateName() {
+    Long databaseCount = service.count();
     User user = service.findUserByEmail("test@email1.com");
     user.setId(null);
     user.setEmail("test@email99.com");
     try {
       service.saveUser(user);
-    } catch(DataIntegrityViolationException e){
+    } catch (DataIntegrityViolationException e) {
+      assertEquals(databaseCount, service.count());
       assertTrue(e.getMostSpecificCause().getMessage().contains("PUBLIC.USER_UNIQUE_NAME"));
-      }
     }
+  }
 
   @Test
   public void saveUserShouldThrowExceptionDuplicateEmail() {
+    Long databaseCount = service.count();
     User user = service.findUserByEmail("test@email2.com");
     user.setId(null);
     user.setName("Test name99");
     try {
       service.saveUser(user);
-    } catch(DataIntegrityViolationException e){
+    } catch (DataIntegrityViolationException e) {
+      assertEquals(databaseCount, service.count());
       assertTrue(e.getMostSpecificCause().getMessage().contains("PUBLIC.USER_UNIQUE_EMAIL"));
     }
   }
 
-    @Test
-    public void deleteUserByIdShouldSucceed () {
-      Long count = service.count();
-      service.deleteUserById(5);
-      assertEquals(count - service.count(), 1);
-    }
+  @Test
+  public void deleteUserByIdShouldSucceed() {
+    Long count = service.count();
+    service.deleteUserById(5);
+    assertEquals(1, count - service.count());
+  }
 
-    @Test(expected = EmptyResultDataAccessException.class)
-    public void deleteUserByIdShouldFail () {
-      service.deleteUserById(100);
-    }
+  @Test(expected = EmptyResultDataAccessException.class)
+  public void deleteUserByIdShouldFail() {
+    service.deleteUserById(100);
+  }
 
-    void populateDatabase () {
-      for (Long i = 1L; i < 6; i++) {
-        String suffix = String.valueOf(i);
-        User user = new User(i, "Test name" + suffix, "Test password" + suffix,
-            "Test password" + suffix, "test@email" + suffix + ".com", true,
-            "Test First Name" + suffix, "Test Last Name" + suffix, i.intValue(),
-            true, "USER", new ArrayList<>());
-        service.saveUser(user);
-      }
+  void populateDatabase() {
+    for (Long i = 1L; i < 6; i++) {
+      String suffix = String.valueOf(i);
+      User user = new User(i, "Test name" + suffix, "Test password" + suffix,
+          "Test password" + suffix, "test@email" + suffix + ".com", true,
+          "Test First Name" + suffix, "Test Last Name" + suffix, i.intValue(),
+          true, "USER", new ArrayList<>());
+      service.saveUser(user);
     }
   }
+}
