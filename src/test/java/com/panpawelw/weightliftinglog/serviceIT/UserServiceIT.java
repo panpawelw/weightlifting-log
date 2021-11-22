@@ -73,6 +73,19 @@ public class UserServiceIT {
   }
 
   @Test
+  public void saveUserWithoutModifyingPasswordShouldSucceed() {
+    final String CHANGED_NAME = "Changed name";
+    Long databaseCount = service.count();
+    User user = service.findUserByEmail("test@email3.com");
+    final String initialPassword = user.getPassword();
+    user.setName(CHANGED_NAME);
+    service.saveUserWithoutModifyingPassword(user);
+    assertEquals(initialPassword, service.findUserByEmail("test@email3.com").getPassword());
+    assertEquals(CHANGED_NAME, service.findUserByEmail("test@email3.com").getName());
+    assertEquals(databaseCount, service.count());
+  }
+
+  @Test
   public void deleteUserByIdShouldSucceed() {
     Long count = service.count();
     service.deleteUserById(5);
