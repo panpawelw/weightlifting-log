@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static com.panpawelw.weightliftinglog.constants.TEST_USER;
@@ -95,5 +96,11 @@ public class UserServiceIT {
   @Test(expected = EmptyResultDataAccessException.class)
   public void deleteUserByIdShouldFail() {
     service.deleteUserById(100);
+  }
+
+  @Test
+  @WithMockUser(username = "user")
+  public void getLoggedInUserNameShouldReturnName() {
+    assertEquals("user", service.getLoggedInUserName());
   }
 }
