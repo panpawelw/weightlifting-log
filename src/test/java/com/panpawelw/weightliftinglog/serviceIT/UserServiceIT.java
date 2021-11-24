@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static com.panpawelw.weightliftinglog.constants.TEST_USER;
@@ -89,7 +90,7 @@ public class UserServiceIT {
   @Test
   public void deleteUserByIdShouldSucceed() {
     Long count = service.count();
-    service.deleteUserById(5);
+    service.deleteUserById(4);
     assertEquals(1, count - service.count());
   }
 
@@ -100,7 +101,24 @@ public class UserServiceIT {
 
   @Test
   @WithMockUser(username = "user")
-  public void getLoggedInUserNameShouldReturnName() {
+  public void getLoggedInUserNameShouldSucceed() {
     assertEquals("user", service.getLoggedInUserName());
   }
+
+  @Test(expected = NullPointerException.class)
+  public void getLoggedInUserNameShouldThrowException() {
+    service.getLoggedInUserName();
+  }
+
+  @Test
+  @WithUserDetails("Test name5")
+  public void getLoggedInUsersEmailShouldSucceed() {
+    assertEquals("test@email5.com", service.getLoggedInUsersEmail());
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void getLoggedInUsersEmailShouldThrowException() {
+    service.getLoggedInUsersEmail();
+  }
+
 }
