@@ -13,6 +13,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 import static com.panpawelw.weightliftinglog.constants.TEST_USER;
 import static org.junit.Assert.*;
 
@@ -97,6 +99,18 @@ public class UserServiceIT {
   @Test(expected = EmptyResultDataAccessException.class)
   public void deleteUserByIdShouldFail() {
     service.deleteUserById(100);
+  }
+
+  @Test
+  public void findAllUsersByActivatedShouldSucceed() {
+    long count = service.count();
+    List<User> activatedUsers = service.findAllByActivated(true);
+    List<User> notActivatedUsers = service.findAllByActivated(false);
+    long countActivatedUsers = activatedUsers.stream().filter(User::isActivated).count();
+    long countNotActivatedUsers = notActivatedUsers.stream().filter(c -> !c.isActivated()).count();
+    assertEquals(activatedUsers.size(), countActivatedUsers);
+    assertEquals(notActivatedUsers.size(), countNotActivatedUsers);
+    assertEquals(count, activatedUsers.size() + notActivatedUsers.size());
   }
 
   @Test
