@@ -114,6 +114,14 @@ public class UserServiceIT {
   }
 
   @Test
+  @WithUserDetails("Test name5")
+  public void changeCurrentUserPasswordShouldSucceed() {
+    service.changeCurrentUserPassword("New test password");
+    assertTrue(BCrypt.checkpw("New test password",
+        service.findUserByEmail("test@email5.com").getPassword()));
+  }
+
+  @Test
   @WithMockUser(username = "user")
   public void getLoggedInUserNameShouldSucceed() {
     assertEquals("user", service.getLoggedInUserName());
