@@ -103,14 +103,14 @@ public class UserServiceIT {
 
   @Test
   public void findAllUsersByActivatedShouldSucceed() {
-    long count = service.count();
+    long databaseCount = service.count();
     List<User> activatedUsers = service.findAllByActivated(true);
     List<User> notActivatedUsers = service.findAllByActivated(false);
     long countActivatedUsers = activatedUsers.stream().filter(User::isActivated).count();
     long countNotActivatedUsers = notActivatedUsers.stream().filter(c -> !c.isActivated()).count();
     assertEquals(activatedUsers.size(), countActivatedUsers);
     assertEquals(notActivatedUsers.size(), countNotActivatedUsers);
-    assertEquals(count, activatedUsers.size() + notActivatedUsers.size());
+    assertEquals(databaseCount, activatedUsers.size() + notActivatedUsers.size());
   }
 
   @Test
@@ -133,9 +133,9 @@ public class UserServiceIT {
   }
 
   @Test
-  @WithUserDetails("Test name5")
+  @WithUserDetails("Test name6")
   public void getLoggedInUsersEmailShouldSucceed() {
-    assertEquals("test@email5.com", service.getLoggedInUsersEmail());
+    assertEquals("test@email6.com", service.getLoggedInUsersEmail());
   }
 
   @Test(expected = NullPointerException.class)
@@ -143,4 +143,20 @@ public class UserServiceIT {
     service.getLoggedInUsersEmail();
   }
 
+  @Test
+  @WithMockUser(username="admin",roles={"ADMIN"})
+  public void checkLoggedInUserForAdminRightsShouldReturnTrue() {
+    service.checkLoggedInUserForAdminRights();
+  }
+
+  @Test
+  @WithMockUser(username="user")
+  public void checkLoggedInUserForAdminRightsShouldReturnFalse() {
+    service.checkLoggedInUserForAdminRights();
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void checkLoggedInUserForAdminRightsShouldThrowException() {
+    service.checkLoggedInUserForAdminRights();
+  }
 }
