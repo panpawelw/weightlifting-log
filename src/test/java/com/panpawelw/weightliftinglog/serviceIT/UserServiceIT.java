@@ -122,6 +122,23 @@ public class UserServiceIT {
   }
 
   @Test
+  @WithUserDetails("Test name6")
+  public void passwordsDontMatchShouldReturnFalse() {
+    assertFalse(service.passwordsDontMatch("Test password6"));
+  }
+
+  @Test
+  @WithUserDetails("Test name6")
+  public void passwordsDontMatchShouldReturnTrue() {
+    assertTrue(service.passwordsDontMatch("Wrong password"));
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void passwordsDontMatchShouldThrowException() {
+    service.passwordsDontMatch("password");
+  }
+
+  @Test
   @WithMockUser(username = "user")
   public void getLoggedInUserNameShouldSucceed() {
     assertEquals("user", service.getLoggedInUserName());
