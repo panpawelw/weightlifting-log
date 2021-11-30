@@ -150,9 +150,9 @@ public class UserServiceIT {
   }
 
   @Test
-  @WithUserDetails("Test name6")
+  @WithUserDetails("Test name7")
   public void getLoggedInUsersEmailShouldSucceed() {
-    assertEquals("test@email6.com", service.getLoggedInUsersEmail());
+    assertEquals("test@email7.com", service.getLoggedInUsersEmail());
   }
 
   @Test(expected = NullPointerException.class)
@@ -175,5 +175,16 @@ public class UserServiceIT {
   @Test(expected = NullPointerException.class)
   public void checkLoggedInUserForAdminRightsShouldThrowException() {
     service.checkLoggedInUserForAdminRights();
+  }
+
+  @Test
+  @WithUserDetails("Test name8")
+  public void getLoggedInUserPasswordShouldSucceed() {
+    assertTrue(BCrypt.checkpw("Test password8", service.getLoggedInUserPassword()));
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void getLoggedInUserPasswordThrowException() {
+    service.getLoggedInUserPassword();
   }
 }
