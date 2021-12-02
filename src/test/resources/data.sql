@@ -7,3 +7,8 @@ INSERT INTO USERS (id, name, password, email, activated, first_name, last_name, 
 (6, 'Test name6', '$2a$12$6rhwsR.GbzLT/y669aI3aeHZldbylBhmrSudgnzoRh1GL/aKkoPuq', 'test@email6.com', 0, 'Test first name6', 'Test last name6', 6, 1, 'USER'),
 (7, 'Test name7', '$2a$12$qgUEHaukTqcoVNNksPlzveTx2jRoQysF2u4/eKpTaYgMFL5WJN3S6', 'test@email7.com', 0, 'Test first name7', 'Test last name7', 7, 1, 'USER'),
 (8, 'Test name8', '$2a$12$mIcDvX13BuHqyR1i205BKuKY.6mO8PJ1muMJJXZASHJYQhyYNHEGy', 'test@email8.com', 0, 'Test first name8', 'Test last name8', 8, 1, 'USER');
+
+INSERT INTO VERIFICATION_TOKEN (id, expiry_date, token, user_id) VALUES
+(1, NOW() + INTERVAL 1 DAY, 'Test token 1', 1),
+(2, NOW() + INTERVAL 1 DAY, 'Test token 2', 2),
+(3, NOW() + INTERVAL 1 DAY, 'Test token 3', 3);
