@@ -33,4 +33,14 @@ public class VerificationTokenServiceIT {
     User testUser = userService.findUserByEmail("test@email8.com");
     assertNull(service.findByUser(testUser));
   }
+
+  @Test
+  public void findByTokedShouldSucceed() {
+    assertEquals("Test token 1", service.findByToken("Test token 1").getToken());
+  }
+
+  @Test
+  public void findByTokenShouldReturnNull() {
+    assertNull(service.findByToken("Not existing token"));
+  }
 }
