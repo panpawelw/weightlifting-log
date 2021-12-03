@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class VerificationTokenServiceIT {
@@ -22,6 +25,12 @@ public class VerificationTokenServiceIT {
   @Test
   public void findByUserShouldSucceed() {
     User testUser = userService.findUserByEmail("test@email1.com");
-    service.findByUser(testUser);
+    assertEquals("Test token 1", service.findByUser(testUser).getToken());
+  }
+
+  @Test
+  public void findByUserShouldReturnNull() {
+    User testUser = userService.findUserByEmail("test@email8.com");
+    assertNull(service.findByUser(testUser));
   }
 }
