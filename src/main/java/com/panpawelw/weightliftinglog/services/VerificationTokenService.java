@@ -42,6 +42,14 @@ public class VerificationTokenService {
     verificationTokenRepository.delete(verificationToken);
   }
 
+  /**
+   * Counts all records in token table
+   * @return count
+   */
+  public Long count() {
+    return verificationTokenRepository.count();
+  }
+
   public String removeAccountIfTokenExpired(User user) {
     VerificationToken verificationToken = findByUser(user);
     if (verificationToken != null) {
