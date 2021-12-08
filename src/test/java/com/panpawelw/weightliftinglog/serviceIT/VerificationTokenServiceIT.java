@@ -50,10 +50,30 @@ public class VerificationTokenServiceIT {
   @Test
   public void saveTokenShouldSucceed() {
     long initialDatabaseCount = service.count();
-    User user = userService.findUserByEmail("test@email2.com");
+    User user = userService.findUserByEmail("test@email4.com");
     VerificationToken token = new VerificationToken(user);
     service.saveToken(token);
 
     assertEquals(1, service.count() - initialDatabaseCount);
+  }
+
+  @Test
+  public void deleteTokenShouldSucceed() {
+    long initialDatabaseCount = service.count();
+    User user = userService.findUserByEmail("test@email2.com");
+    VerificationToken token = service.findByUser(user);
+
+    service.deleteVerificationToken(token);
+    assertEquals(1, initialDatabaseCount - service.count());
+  }
+
+  @Test
+  public void deleteTokenShouldFail() {
+    long initialDatabaseCount = service.count();
+    User user = userService.findUserByEmail("test@email8.com");
+    VerificationToken token = new VerificationToken(user);
+
+    service.deleteVerificationToken(token);
+    assertEquals(0, initialDatabaseCount - service.count());
   }
 }
