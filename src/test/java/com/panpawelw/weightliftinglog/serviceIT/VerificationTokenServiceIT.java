@@ -50,7 +50,7 @@ public class VerificationTokenServiceIT {
   @Test
   public void saveTokenShouldSucceed() {
     long initialDatabaseCount = service.count();
-    User user = userService.findUserByEmail("test@email4.com");
+    User user = userService.findUserByEmail("test@email5.com");
     VerificationToken token = new VerificationToken(user);
     service.saveToken(token);
 
