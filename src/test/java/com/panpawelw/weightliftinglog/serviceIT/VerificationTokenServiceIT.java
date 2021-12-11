@@ -76,4 +76,13 @@ public class VerificationTokenServiceIT {
     service.deleteVerificationToken(token);
     assertEquals(0, initialDatabaseCount - service.count());
   }
+
+  @Test
+  public void removeAccountIfTokenExpiredShouldDoNothing() {
+    long initialDatabaseCount = service.count();
+    User user = userService.findUserByEmail("test@email7.com");
+
+    assertEquals("", service.removeAccountIfTokenExpired(user));
+    assertEquals(0, service.count() - initialDatabaseCount);
+  }
 }
