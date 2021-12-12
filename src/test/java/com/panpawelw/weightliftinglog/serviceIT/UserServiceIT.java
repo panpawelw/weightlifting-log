@@ -27,7 +27,7 @@ public class UserServiceIT {
 
   @Test
   public void findUserByEmailShouldReturnUser() {
-    assertEquals("test@email1.com", service.findUserByEmail("test@email1.com").getEmail());
+    assertEquals("user@test1.com", service.findUserByEmail("user@test1.com").getEmail());
   }
 
   @Test
@@ -49,9 +49,9 @@ public class UserServiceIT {
   @Test
   public void saveUserShouldThrowExceptionDuplicateName() {
     Long databaseCount = service.count();
-    User user = service.findUserByEmail("test@email1.com");
+    User user = service.findUserByEmail("user@test1.com");
     user.setId(null);
-    user.setEmail("test@email99.com");
+    user.setEmail("different@email.com");
     try {
       service.saveUser(user);
     } catch (DataIntegrityViolationException e) {
@@ -64,9 +64,9 @@ public class UserServiceIT {
   @Test
   public void saveUserShouldThrowExceptionDuplicateEmail() {
     Long databaseCount = service.count();
-    User user = service.findUserByEmail("test@email2.com");
+    User user = service.findUserByEmail("user@test2.com");
     user.setId(null);
-    user.setName("Test name99");
+    user.setName("Different name");
     try {
       service.saveUser(user);
     } catch (DataIntegrityViolationException e) {
@@ -80,12 +80,12 @@ public class UserServiceIT {
   public void saveUserWithoutModifyingPasswordShouldSucceed() {
     final String CHANGED_NAME = "Changed name";
     Long databaseCount = service.count();
-    User user = service.findUserByEmail("test@email3.com");
+    User user = service.findUserByEmail("user@test3.com");
     final String initialPassword = user.getPassword();
     user.setName(CHANGED_NAME);
     service.saveUserWithoutModifyingPassword(user);
-    assertEquals(initialPassword, service.findUserByEmail("test@email3.com").getPassword());
-    assertEquals(CHANGED_NAME, service.findUserByEmail("test@email3.com").getName());
+    assertEquals(initialPassword, service.findUserByEmail("user@test3.com").getPassword());
+    assertEquals(CHANGED_NAME, service.findUserByEmail("user@test3.com").getName());
     assertEquals(databaseCount, service.count());
   }
 
@@ -114,21 +114,21 @@ public class UserServiceIT {
   }
 
   @Test
-  @WithUserDetails("Test name5")
+  @WithUserDetails("User test name 5")
   public void changeCurrentUserPasswordShouldSucceed() {
     service.changeCurrentUserPassword("New test password");
     assertTrue(BCrypt.checkpw("New test password",
-        service.findUserByEmail("test@email5.com").getPassword()));
+        service.findUserByEmail("user@test5.com").getPassword()));
   }
 
   @Test
-  @WithUserDetails("Test name6")
+  @WithUserDetails("User test name 6")
   public void passwordsDontMatchShouldReturnFalse() {
     assertFalse(service.passwordsDontMatch("Test password6"));
   }
 
   @Test
-  @WithUserDetails("Test name6")
+  @WithUserDetails("User test name 6")
   public void passwordsDontMatchShouldReturnTrue() {
     assertTrue(service.passwordsDontMatch("Wrong password"));
   }
@@ -150,9 +150,9 @@ public class UserServiceIT {
   }
 
   @Test
-  @WithUserDetails("Test name7")
+  @WithUserDetails("User test name 7")
   public void getLoggedInUsersEmailShouldSucceed() {
-    assertEquals("test@email7.com", service.getLoggedInUsersEmail());
+    assertEquals("user@test7.com", service.getLoggedInUsersEmail());
   }
 
   @Test(expected = NullPointerException.class)
@@ -178,7 +178,7 @@ public class UserServiceIT {
   }
 
   @Test
-  @WithUserDetails("Test name8")
+  @WithUserDetails("User test name 8")
   public void getLoggedInUserPasswordShouldSucceed() {
     assertTrue(BCrypt.checkpw("Test password8", service.getLoggedInUserPassword()));
   }
