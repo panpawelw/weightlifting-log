@@ -95,4 +95,14 @@ public class VerificationTokenServiceIT {
         service.removeAccountIfTokenExpired(user));
     assertEquals(0, service.count() - initialDatabaseCount);
   }
+
+  @Test
+  public void removeAccountIfTokenExpiredShouldRemoveUserAndToken() {
+    User user = userService.findUserByEmail("token@test8.com");
+
+    assertEquals("Activation time expired, user account removed!",
+        service.removeAccountIfTokenExpired(user));
+    assertNull(service.findByToken("Test token 4"));
+    assertNull(userService.findUserByEmail("token@test8.com"));
+  }
 }
