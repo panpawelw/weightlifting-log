@@ -10,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -49,32 +48,29 @@ public class VerificationTokenServiceIT {
 
   @Test
   public void saveTokenShouldSucceed() {
-    long initialDatabaseCount = service.count();
     User user = userService.findUserByEmail("token@test3.com");
     VerificationToken token = new VerificationToken(user);
     service.saveToken(token);
 
-    assertEquals(1, service.count() - initialDatabaseCount);
+    assertNotNull(service.findByUser(user));
   }
 
   @Test
   public void deleteTokenShouldSucceed() {
-    long initialDatabaseCount = service.count();
     User user = userService.findUserByEmail("token@test4.com");
     VerificationToken token = service.findByUser(user);
 
     service.deleteVerificationToken(token);
-    assertEquals(1, initialDatabaseCount - service.count());
+    assertNull(service.findByUser(user));
   }
 
   @Test
   public void deleteTokenShouldFail() {
-    long initialDatabaseCount = service.count();
     User user = userService.findUserByEmail("token@test5");
     VerificationToken token = new VerificationToken(user);
 
     service.deleteVerificationToken(token);
-    assertEquals(0, initialDatabaseCount - service.count());
+    assertNull(service.findByUser(user));
   }
 
   @Test
@@ -88,12 +84,11 @@ public class VerificationTokenServiceIT {
 
   @Test
   public void removeAccountIfTokenExpiredShouldRemindOfActivation() {
-    long initialDatabaseCount = service.count();
     User user = userService.findUserByEmail("token@test7.com");
 
     assertEquals("This account requires activation!",
         service.removeAccountIfTokenExpired(user));
-    assertEquals(0, service.count() - initialDatabaseCount);
+    assertNotNull(service.findByUser(user));
   }
 
   @Test
