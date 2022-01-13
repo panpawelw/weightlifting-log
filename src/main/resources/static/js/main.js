@@ -429,19 +429,19 @@ function setNoteParameters(noteNo, exerciseNo, setNo) {
   if (exerciseNo === undefined && setNo === undefined) {  // workout note
     n.noteListAlias = workout.notes;
     n.appendHere = document.getElementById('notes');
-    n.noteNo = n.itsANewNote ? workout.notes.length : n.noteNo;
+    n.noteNo = n.itsANewNote ? workout.notes.length : noteNo;
     n.id = "note" + n.noteNo;
     n.dataSetContent = "notes," + n.noteNo + ",content";
   } else if (exerciseNo !== undefined && setNo === undefined) { // exercise note
     n.noteListAlias = workout.exercises[exerciseNo].notes;
     n.appendHere = document.getElementById("exercise" + exerciseNo + "-notes");
-    n.noteNo = n.itsANewNote ? workout.exercises[exerciseNo].notes.length : n.noteNo;
+    n.noteNo = n.itsANewNote ? workout.exercises[exerciseNo].notes.length : noteNo;
     n.id = "exercise" + exerciseNo + "note" + n.noteNo;
     n.dataSetContent = "exercises," + exerciseNo + ",notes," + n.noteNo + ",content";
-  } else if (exerciseNo !== undefined && setNo !== undefined) { //set note
+  } else if (exerciseNo !== undefined && setNo !== undefined) { // set note
     n.noteListAlias = workout.exercises[exerciseNo].sets[setNo].notes;
     n.appendHere = document.getElementById("exercise" + exerciseNo + "set" + setNo + "-notes");
-    n.noteNo = n.itsANewNote ? workout.exercises[exerciseNo].sets[setNo].notes.length : n.noteNo;
+    n.noteNo = n.itsANewNote ? workout.exercises[exerciseNo].sets[setNo].notes.length : noteNo;
     n.id = "exercise" + exerciseNo + "set" + setNo + "note" + n.noteNo;
     n.dataSetContent = "exercises," + exerciseNo + ",sets," + setNo + ",notes," + n.noteNo + ",content";
   }
