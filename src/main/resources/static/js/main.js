@@ -225,11 +225,13 @@ function displayWorkout() {
    innerHTML properties. Workout entries are stored in custom data attributes of said elements */
   document.getElementsByClassName('workout-content')[0]
     .addEventListener('input', function (event) {
-      // store value in workout object entry
-      this.target = event.target;
-      if (this.target.className === 'my-input') {
-        storeInWorkout($(this.target).data('set').split(','),
-          $("<textarea/>").html(this.target.innerHTML).text());
+      let element = event.target;
+      if (element.className === 'my-input') {
+        let caretPosition = document.getSelection().anchorOffset;
+        event.target.innerHTML = $(element).text();
+        setCaret(element, caretPosition);
+        storeInWorkout($(element).data('set').split(','),
+          event.target.innerHTML);
       }
     });
 
@@ -267,14 +269,26 @@ function displayWorkout() {
   });
 }
 
+/**
+ * Helper function to set caret in contenteditable span elements at previously preserved position.
+ * @param {Node} element - HTML element
+ * @param {number} position - caret position
+ */
+function setCaret(element, position) {
+  let range = document.createRange();
+  range.setStart(element.childNodes[0], position);
+  let selection = window.getSelection();
+  range.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(range);
+  element.focus();
+}
+
 /** Stores given value in workout object entry.
  * @param {string[]} entry - workout object entry name
  * @param {string} value - text to be stored in workout entry
  */
 function storeInWorkout(entry, value) {
-  // remove last <br> (these often get stuck in content editable elements)
-  value = value.replace(/^\s*<br\s*\/?>|<br\s*\/?>\s*$/g, '');
-  // store the text in workout object entry using bracket notation
   switch (entry.length) {
     case 1:
       workout[entry[0]] = value;
