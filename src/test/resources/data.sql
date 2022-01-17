@@ -15,7 +15,8 @@ INSERT INTO USERS (id, name, password, email, activated, first_name, last_name, 
 (14, 'Token test name 6', '$2a$12$6rhwsR.GbzLT/y669aI3aeHZldbylBhmrSudgnzoRh1GL/aKkoPuq', 'token@test6.com', 0, 'Test first name6', 'Test last name6', 6, 1, 'USER'),
 (15, 'Token test name 7', '$2a$12$qgUEHaukTqcoVNNksPlzveTx2jRoQysF2u4/eKpTaYgMFL5WJN3S6', 'token@test7.com', 0, 'Test first name7', 'Test last name7', 7, 1, 'USER'),
 (16, 'Token test name 8', '$2a$12$mIcDvX13BuHqyR1i205BKuKY.6mO8PJ1muMJJXZASHJYQhyYNHEGy', 'token@test8.com', 1, 'Test first name8', 'Test last name8', 8, 1, 'USER'),
-(17, 'test', '$2a$12$QPV1B4XAm3SDYtdIydlQf.TSRz7NKQ1jtbEFAWQTdXhe2Xp.4mUji', 'test@email9.com', 0, 'Test first name9', 'Test last name9', 8, 1, 'USER');
+(17, 'Workout test name 1', '$2a$10$tCeixUEMo5NS3S6946nUGu/4yV7Zkf9cqHpDbjOBENidMTifhdhoS', 'workout@test1.com', 1, 'Test first name1', 'Test last name1', 1, 1, 'USER'),
+(18, 'test', '$2a$12$QPV1B4XAm3SDYtdIydlQf.TSRz7NKQ1jtbEFAWQTdXhe2Xp.4mUji', 'test@email9.com', 0, 'Test first name9', 'Test last name9', 8, 1, 'USER');
 
 INSERT INTO VERIFICATION_TOKEN (id, expiry_date, token, user_id) VALUES
 (1, NOW() + INTERVAL 1 DAY, 'Test token 1', 9),

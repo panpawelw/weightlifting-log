@@ -35,8 +35,11 @@ public class WorkoutServiceIT {
   @Test
   public void findWorkoutsByUserSucceeds() {
     System.out.println(service.findWorkoutById(1));
+    System.out.println("---");
     System.out.println(service.findWorkoutById(2));
+    System.out.println("---");
     System.out.println(service.findWorkoutById(3));
+    System.out.println("---");
   }
 
   @Test
@@ -100,7 +103,7 @@ public class WorkoutServiceIT {
         Collections.singletonList(new Note(0, "Test workout 1 note")),
         new ArrayList<>());
     WorkoutDeserialized testWorkout2 = new WorkoutDeserialized(
-        1L, "Test workout 2 title", null, null, userService.findUserByEmail("workout@test1.com"),
+        2L, "Test workout 2 title", null, null, userService.findUserByEmail("workout@test1.com"),
         Arrays.asList(
             new Exercise("Test workout 2 exercise 1", Arrays.asList(
                 new Set("Test workout 2 exercise 1 set 1", Arrays.asList(
@@ -129,7 +132,7 @@ public class WorkoutServiceIT {
         Collections.singletonList(new Note(0, "Test workout 2 note")),
         new ArrayList<>());
     WorkoutDeserialized testWorkout3 = new WorkoutDeserialized(
-        1L, "Test workout 3 title", null, null, userService.findUserByEmail("workout@test1.com"),
+        3L, "Test workout 3 title", null, null, userService.findUserByEmail("workout@test1.com"),
         Arrays.asList(
             new Exercise("Test workout 3 exercise 1", Arrays.asList(
                 new Set("Test workout 3 exercise 1 set 1", Arrays.asList(
