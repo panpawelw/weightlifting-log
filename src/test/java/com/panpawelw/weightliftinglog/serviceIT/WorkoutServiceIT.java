@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class WorkoutServiceIT {
@@ -34,22 +37,19 @@ public class WorkoutServiceIT {
 
   @Test
   public void findWorkoutsByUserSucceeds() {
-    System.out.println(service.findWorkoutById(1));
-    System.out.println("---");
-    System.out.println(service.findWorkoutById(2));
-    System.out.println("---");
-    System.out.println(service.findWorkoutById(3));
-    System.out.println("---");
+
   }
 
   @Test
   public void findWorkoutByIdSucceeds() {
-
+    WorkoutDeserialized testWorkout = service.findWorkoutById(1L);
+    assertEquals("Test workout 1 title",testWorkout.getTitle());
   }
 
   @Test
   public void findWorkoutByIdReturnsNull() {
-
+    WorkoutDeserialized testWorkout = service.findWorkoutById(4L);
+    assertNull(testWorkout);
   }
 
   @Test
@@ -74,7 +74,10 @@ public class WorkoutServiceIT {
 
   private void populateDatabase() {
     WorkoutDeserialized testWorkout1 = new WorkoutDeserialized(
-        1L, "Test workout 1 title", null, null, userService.findUserByEmail("workout@test1.com"),
+        1L, "Test workout 1 title",
+        java.sql.Timestamp.valueOf("2022-01-01 08:10:10.0"),
+        java.sql.Timestamp.valueOf("2022-01-01 09:10:10.0"),
+        userService.findUserByEmail("workout@test1.com"),
         Arrays.asList(
             new Exercise("Test workout 1 exercise 1", Arrays.asList(
                 new Set("Test workout 1 exercise 1 set 1", Arrays.asList(
@@ -103,7 +106,10 @@ public class WorkoutServiceIT {
         Collections.singletonList(new Note(0, "Test workout 1 note")),
         new ArrayList<>());
     WorkoutDeserialized testWorkout2 = new WorkoutDeserialized(
-        2L, "Test workout 2 title", null, null, userService.findUserByEmail("workout@test1.com"),
+        2L, "Test workout 2 title",
+        java.sql.Timestamp.valueOf("2022-01-01 10:10:10.0"),
+        java.sql.Timestamp.valueOf("2022-01-01 11:10:10.0"),
+        userService.findUserByEmail("workout@test1.com"),
         Arrays.asList(
             new Exercise("Test workout 2 exercise 1", Arrays.asList(
                 new Set("Test workout 2 exercise 1 set 1", Arrays.asList(
@@ -132,7 +138,10 @@ public class WorkoutServiceIT {
         Collections.singletonList(new Note(0, "Test workout 2 note")),
         new ArrayList<>());
     WorkoutDeserialized testWorkout3 = new WorkoutDeserialized(
-        3L, "Test workout 3 title", null, null, userService.findUserByEmail("workout@test1.com"),
+        3L, "Test workout 3 title",
+        java.sql.Timestamp.valueOf("2022-01-01 12:10:10.0"),
+        java.sql.Timestamp.valueOf("2022-01-01 13:10:10.0"),
+        userService.findUserByEmail("workout@test1.com"),
         Arrays.asList(
             new Exercise("Test workout 3 exercise 1", Arrays.asList(
                 new Set("Test workout 3 exercise 1 set 1", Arrays.asList(
