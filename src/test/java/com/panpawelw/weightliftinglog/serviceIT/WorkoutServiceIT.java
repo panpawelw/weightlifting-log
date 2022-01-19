@@ -1,9 +1,6 @@
 package com.panpawelw.weightliftinglog.serviceIT;
 
-import com.panpawelw.weightliftinglog.models.Exercise;
-import com.panpawelw.weightliftinglog.models.Note;
-import com.panpawelw.weightliftinglog.models.Set;
-import com.panpawelw.weightliftinglog.models.WorkoutDeserialized;
+import com.panpawelw.weightliftinglog.models.*;
 import com.panpawelw.weightliftinglog.services.UserService;
 import com.panpawelw.weightliftinglog.services.WorkoutService;
 import org.junit.Before;
@@ -16,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -37,7 +35,9 @@ public class WorkoutServiceIT {
 
   @Test
   public void findWorkoutsByUserSucceeds() {
-
+    List<WorkoutSerialized> workoutList =
+        service.findWorkoutsByUser(userService.findUserByEmail("workout@test1.com"));
+    assertEquals(3, workoutList.size());
   }
 
   @Test
@@ -173,4 +173,5 @@ public class WorkoutServiceIT {
     service.saveWorkout(testWorkout2);
     service.saveWorkout(testWorkout3);
   }
+
 }
