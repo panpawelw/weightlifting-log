@@ -22,6 +22,8 @@ import static org.junit.Assert.assertNull;
 @SpringBootTest
 public class WorkoutServiceIT {
 
+  private static boolean dbInitialized = false;
+
   @Autowired
   private WorkoutService service;
 
@@ -30,7 +32,10 @@ public class WorkoutServiceIT {
 
   @Before
   public void setup() {
-    populateDatabase();
+    if (!dbInitialized) {
+      populateDatabase();
+      dbInitialized = true;
+    }
   }
 
   @Test
@@ -43,12 +48,12 @@ public class WorkoutServiceIT {
   @Test
   public void findWorkoutByIdSucceeds() {
     WorkoutDeserialized testWorkout = service.findWorkoutById(1L);
-    assertEquals("Test workout 1 title",testWorkout.getTitle());
+    assertEquals("Test workout 1 title", testWorkout.getTitle());
   }
 
   @Test
   public void findWorkoutByIdReturnsNull() {
-    WorkoutDeserialized testWorkout = service.findWorkoutById(4L);
+    WorkoutDeserialized testWorkout = service.findWorkoutById(5L);
     assertNull(testWorkout);
   }
 
@@ -73,105 +78,48 @@ public class WorkoutServiceIT {
   }
 
   private void populateDatabase() {
-    WorkoutDeserialized testWorkout1 = new WorkoutDeserialized(
-        1L, "Test workout 1 title",
-        java.sql.Timestamp.valueOf("2022-01-01 08:10:10.0"),
-        java.sql.Timestamp.valueOf("2022-01-01 09:10:10.0"),
-        userService.findUserByEmail("workout@test1.com"),
-        Arrays.asList(
-            new Exercise("Test workout 1 exercise 1", Arrays.asList(
-                new Set("Test workout 1 exercise 1 set 1", Arrays.asList(
-                    new Note(0, "Test workout 1 exercise 1 set 1 note 1"),
-                    new Note(0, "Test workout 1 exercise 1 set 1 note 2"))),
-                new Set("Test workout 1 exercise 1 set 2", Arrays.asList(
-                    new Note(0, "Test workout 1 exercise 1 set 2 note 1"),
-                    new Note(0, "Test workout 1 exercise 1 set 2 note 2")))),
-                Collections.singletonList(new Note(0, "Test workout 1 exercise 1 note"))),
-            new Exercise("Test workout 1 exercise 2", Arrays.asList(
-                new Set("Test workout 1 exercise 2 set 1", Arrays.asList(
-                    new Note(0, "Test workout 1 exercise 2 set 1 note 1"),
-                    new Note(0, "Test workout 1 exercise 2 set 1 note 2"))),
-                new Set("Test workout 1 exercise 2 set 2", Arrays.asList(
-                    new Note(0, "Test workout 1 exercise 2 set 2 note 1"),
-                    new Note(0, "Test workout 1 exercise 2 set 2 note 2")))),
-                Collections.singletonList(new Note(0, "Test workout 1 exercise 2 note"))),
-            new Exercise("Test workout 1 exercise 3", Arrays.asList(
-                new Set("Test workout 1 exercise 3 set 1", Arrays.asList(
-                    new Note(0, "Test workout 1 exercise 3 set 1 note 1"),
-                    new Note(0, "Test workout 1 exercise 3 set 1 note 2"))),
-                new Set("Test workout 1 exercise 3 set 2", Arrays.asList(
-                    new Note(0, "Test workout 1 exercise 3 set 2 note 1"),
-                    new Note(0, "Test workout 1 exercise 3 set 2 note 2")))),
-                Collections.singletonList(new Note(0, "Test workout 1 exercise 3 note")))),
-        Collections.singletonList(new Note(0, "Test workout 1 note")),
-        new ArrayList<>());
-    WorkoutDeserialized testWorkout2 = new WorkoutDeserialized(
-        2L, "Test workout 2 title",
-        java.sql.Timestamp.valueOf("2022-01-01 10:10:10.0"),
-        java.sql.Timestamp.valueOf("2022-01-01 11:10:10.0"),
-        userService.findUserByEmail("workout@test1.com"),
-        Arrays.asList(
-            new Exercise("Test workout 2 exercise 1", Arrays.asList(
-                new Set("Test workout 2 exercise 1 set 1", Arrays.asList(
-                    new Note(0, "Test workout 2 exercise 1 set 1 note 1"),
-                    new Note(0, "Test workout 2 exercise 1 set 1 note 2"))),
-                new Set("Test workout 2 exercise 1 set 2", Arrays.asList(
-                    new Note(0, "Test workout 2 exercise 1 set 2 note 1"),
-                    new Note(0, "Test workout 2 exercise 1 set 2 note 2")))),
-                Collections.singletonList(new Note(0, "Test workout 2 exercise 1 note"))),
-            new Exercise("Test workout 2 exercise 2", Arrays.asList(
-                new Set("Test workout 2 exercise 2 set 1", Arrays.asList(
-                    new Note(0, "Test workout 2 exercise 2 set 1 note 1"),
-                    new Note(0, "Test workout 2 exercise 2 set 1 note 2"))),
-                new Set("Test workout 2 exercise 2 set 2", Arrays.asList(
-                    new Note(0, "Test workout 2 exercise 2 set 2 note 1"),
-                    new Note(0, "Test workout 2 exercise 2 set 2 note 2")))),
-                Collections.singletonList(new Note(0, "Test workout 2 exercise 2 note"))),
-            new Exercise("Test workout 2 exercise 3", Arrays.asList(
-                new Set("Test workout 2 exercise 3 set 1", Arrays.asList(
-                    new Note(0, "Test workout 2 exercise 3 set 1 note 1"),
-                    new Note(0, "Test workout 2 exercise 3 set 1 note 2"))),
-                new Set("Test workout 2 exercise 3 set 2", Arrays.asList(
-                    new Note(0, "Test workout 2 exercise 3 set 2 note 1"),
-                    new Note(0, "Test workout 2 exercise 3 set 2 note 2")))),
-                Collections.singletonList(new Note(0, "Test workout 2 exercise 3 note")))),
-        Collections.singletonList(new Note(0, "Test workout 2 note")),
-        new ArrayList<>());
-    WorkoutDeserialized testWorkout3 = new WorkoutDeserialized(
-        3L, "Test workout 3 title",
-        java.sql.Timestamp.valueOf("2022-01-01 12:10:10.0"),
-        java.sql.Timestamp.valueOf("2022-01-01 13:10:10.0"),
-        userService.findUserByEmail("workout@test1.com"),
-        Arrays.asList(
-            new Exercise("Test workout 3 exercise 1", Arrays.asList(
-                new Set("Test workout 3 exercise 1 set 1", Arrays.asList(
-                    new Note(0, "Test workout 3 exercise 1 set 1 note 1"),
-                    new Note(0, "Test workout 3 exercise 1 set 1 note 2"))),
-                new Set("Test workout 3 exercise 1 set 2", Arrays.asList(
-                    new Note(0, "Test workout 3 exercise 1 set 2 note 1"),
-                    new Note(0, "Test workout 3 exercise 1 set 2 note 2")))),
-                Collections.singletonList(new Note(0, "Test workout 3 exercise 1 note"))),
-            new Exercise("Test workout 3 exercise 2", Arrays.asList(
-                new Set("Test workout 3 exercise 2 set 1", Arrays.asList(
-                    new Note(0, "Test workout 3 exercise 2 set 1 note 1"),
-                    new Note(0, "Test workout 3 exercise 2 set 1 note 2"))),
-                new Set("Test workout 3 exercise 2 set 2", Arrays.asList(
-                    new Note(0, "Test workout 3 exercise 2 set 2 note 1"),
-                    new Note(0, "Test workout 3 exercise 2 set 2 note 2")))),
-                Collections.singletonList(new Note(0, "Test workout 3 exercise 2 note"))),
-            new Exercise("Test workout 3 exercise 3", Arrays.asList(
-                new Set("Test workout 3 exercise 3 set 1", Arrays.asList(
-                    new Note(0, "Test workout 3 exercise 3 set 1 note 1"),
-                    new Note(0, "Test workout 3 exercise 3 set 1 note 2"))),
-                new Set("Test workout 3 exercise 3 set 2", Arrays.asList(
-                    new Note(0, "Test workout 3 exercise 3 set 2 note 1"),
-                    new Note(0, "Test workout 3 exercise 3 set 2 note 2")))),
-                Collections.singletonList(new Note(0, "Test workout 3 exercise 3 note")))),
-        Collections.singletonList(new Note(0, "Test workout 3 note")),
-        new ArrayList<>());
-    service.saveWorkout(testWorkout1);
-    service.saveWorkout(testWorkout2);
-    service.saveWorkout(testWorkout3);
+    for (long id = 1L; id <= 3; id++) {
+      WorkoutDeserialized workout = createTestWorkout(id, "workout@test1.com");
+      service.saveWorkout(workout);
+    }
+    WorkoutDeserialized workout = createTestWorkout(4L, "workout@test2.com");
+    service.saveWorkout(workout);
   }
 
+  private WorkoutDeserialized createTestWorkout(Long id, String email) {
+    return new WorkoutDeserialized(0L, "Test workout " + id + " title",
+        java.sql.Timestamp.valueOf("2022-01-01 0" + id + ":10:10.0"),
+        java.sql.Timestamp.valueOf("2022-01-01 0" + (id + 1) + ":10:10.0"),
+        userService.findUserByEmail(email),
+        Arrays.asList(
+            new Exercise("Test workout " + id + " exercise 1", Arrays.asList(
+                new Set("Test workout " + id + " exercise 1 set 1", Arrays.asList(
+                    new Note(0, "Test workout " + id + " exercise 1 set 1 note 1"),
+                    new Note(0, "Test workout " + id + " exercise 1 set 1 note 2"))),
+                new Set("Test workout " + id + " exercise 1 set 2", Arrays.asList(
+                    new Note(0, "Test workout " + id + " exercise 1 set 2 note 1"),
+                    new Note(0, "Test workout " + id + " exercise 1 set 2 note 2")))),
+                Collections.singletonList(
+                    new Note(0, "Test workout " + id + " exercise 1 note"))),
+            new Exercise("Test workout " + id + " exercise 2", Arrays.asList(
+                new Set("Test workout " + id + " exercise 2 set 1", Arrays.asList(
+                    new Note(0, "Test workout " + id + " exercise 2 set 1 note 1"),
+                    new Note(0, "Test workout " + id + " exercise 2 set 1 note 2"))),
+                new Set("Test workout " + id + " exercise 2 set 2", Arrays.asList(
+                    new Note(0, "Test workout " + id + " exercise 2 set 2 note 1"),
+                    new Note(0, "Test workout " + id + " exercise 2 set 2 note 2")))),
+                Collections.singletonList(
+                    new Note(0, "Test workout " + id + " exercise 2 note"))),
+            new Exercise("Test workout " + id + " exercise 3", Arrays.asList(
+                new Set("Test workout " + id + " exercise 3 set 1", Arrays.asList(
+                    new Note(0, "Test workout " + id + " exercise 3 set 1 note 1"),
+                    new Note(0, "Test workout " + id + " exercise 3 set 1 note 2"))),
+                new Set("Test workout " + id + " exercise 3 set 2", Arrays.asList(
+                    new Note(0, "Test workout " + id + " exercise 3 set 2 note 1"),
+                    new Note(0, "Test workout " + id + " exercise 3 set 2 note 2")))),
+                Collections.singletonList(
+                    new Note(0, "Test workout " + id + " exercise 3 note")))),
+        Collections.singletonList(new Note(0, "Test workout " + id + " note")),
+        new ArrayList<>());
+  }
 }
