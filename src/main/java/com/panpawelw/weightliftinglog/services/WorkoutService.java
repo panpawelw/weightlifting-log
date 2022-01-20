@@ -61,6 +61,14 @@ public class WorkoutService {
   }
 
   /**
+   * Counts all records in user table
+   * @return count
+   */
+  public Long count() {
+    return workoutRepository.count();
+  }
+
+  /**
    * Serializes a deserialized workout object
    *
    * @param workoutDeserialized - workout object to be serialized
