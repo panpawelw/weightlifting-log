@@ -20,7 +20,7 @@ INSERT INTO USERS (id, name, password, email, activated, first_name, last_name, 
 (19, 'test', '$2a$12$QPV1B4XAm3SDYtdIydlQf.TSRz7NKQ1jtbEFAWQTdXhe2Xp.4mUji', 'test@email.com', 0, 'Test first name', 'Test last name', 8, 1, 'USER');
 
 INSERT INTO VERIFICATION_TOKEN (id, expiry_date, token, user_id) VALUES
-(1, NOW() + INTERVAL 1 DAY, 'Test token 1', 9),
-(2, NOW() + INTERVAL 1 DAY, 'Test token 2', 12),
-(3, NOW() + INTERVAL 1 DAY, 'Test token 3', 15),
+(1, TIMESTAMPADD(DAY, +1, CURRENT_DATE), 'Test token 1', 9),
+(2, TIMESTAMPADD(DAY, +1, CURRENT_DATE), 'Test token 2', 12),
+(3, TIMESTAMPADD(DAY, +1, CURRENT_DATE), 'Test token 3', 15),
 (4, NOW(), 'Test token 4', 16);
