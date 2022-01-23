@@ -59,12 +59,17 @@ public class WorkoutServiceIT {
 
   @Test
   public void saveWorkoutSucceeds() {
-
+    long initialDatabaseCount = service.count();
+    WorkoutDeserialized workout = createTestWorkout(5, "workout@test2.com");
+    service.saveWorkout(workout);
+    assertEquals(1, service.count() - initialDatabaseCount);
   }
 
   @Test
   public void deleteWorkoutSucceeds() {
-
+    long initialDatabaseCount = service.count();
+    service.deleteWorkout(4);
+    assertEquals(1, initialDatabaseCount - service.count());
   }
 
   @Test
@@ -78,15 +83,15 @@ public class WorkoutServiceIT {
   }
 
   private void populateDatabase() {
-    for (long id = 1L; id <= 3; id++) {
+    for (int id = 1; id <= 3; id++) {
       WorkoutDeserialized workout = createTestWorkout(id, "workout@test1.com");
       service.saveWorkout(workout);
     }
-    WorkoutDeserialized workout = createTestWorkout(4L, "workout@test2.com");
+    WorkoutDeserialized workout = createTestWorkout(4, "workout@test2.com");
     service.saveWorkout(workout);
   }
 
-  private WorkoutDeserialized createTestWorkout(Long id, String email) {
+  private WorkoutDeserialized createTestWorkout(int id, String email) {
     return new WorkoutDeserialized(0L, "Test workout " + id + " title",
         java.sql.Timestamp.valueOf("2022-01-01 0" + id + ":10:10.0"),
         java.sql.Timestamp.valueOf("2022-01-01 0" + (id + 1) + ":10:10.0"),
