@@ -81,16 +81,11 @@ public class WorkoutServiceIT {
   }
 
   @Test
-  public void serializeWorkoutSucceeds() {
+  public void serializeAndDeserializeWorkoutSucceed() {
     WorkoutDeserialized testWorkoutD = createTestWorkout(1, "workout@test1.com");
     WorkoutSerialized testWorkoutS = service.serializeWorkout(testWorkoutD);
 
     assertEquals(testWorkoutD, service.deserializeWorkout(testWorkoutS));
-  }
-
-  @Test
-  public void deserializeWorkoutSucceeds() {
-
   }
 
   private void populateDatabase() {
