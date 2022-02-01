@@ -20,7 +20,7 @@ INSERT INTO USERS (id, name, password, email, activated, first_name, last_name, 
 (19, 'DBFile test name 1', '$2a$12$RKoIoFA.ZjFwLtfPw3ZqfeFkoyujKb1J5tBtaiUUApRja/KuloRwO', 'dbfile@test1.com', 1, 'Test first name1', 'Test last name1', 1, 1, 'USER'),
 (20, 'DBFile test name 2', '$2a$12$lIRD1T4NmlDEaWvpAOWMA.YqjesPKv.y78T9Djf3DHJplsmtJZdie', 'dbfile@test2.com', 1, 'Test first name2', 'Test last name2', 2, 1, 'USER'),
 (21, 'DBFile test name 3', '$2a$12$TzywjFBl.uLJbvMgIiXHeONPpxhK48ZCOgDbi9Ww.jpD8E30fqfqu', 'dbfile@test3.com', 1, 'Test first name3', 'Test last name3', 3, 1, 'USER'),
-(22, 'test', '$2a$12$QPV1B4XAm3SDYtdIydlQf.TSRz7NKQ1jtbEFAWQTdXhe2Xp.4mUji', 'test@email.com', 0, 'Test first name', 'Test last name', 8, 1, 'USER');
+(22, 'test', '$2a$12$QPV1B4XAm3SDYtdIydlQf.TSRz7NKQ1jtbEFAWQTdXhe2Xp.4mUji', 'test@test.com', 0, 'Test first name', 'Test last name', 8, 1, 'USER');
 
 INSERT INTO VERIFICATION_TOKEN (id, expiry_date, token, user_id) VALUES
 (1, TIMESTAMPADD(DAY, +1, CURRENT_DATE), 'Test token 1', 9),
