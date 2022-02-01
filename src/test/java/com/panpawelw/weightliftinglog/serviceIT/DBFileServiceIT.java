@@ -1,14 +1,14 @@
 package com.panpawelw.weightliftinglog.serviceIT;
 
 import com.panpawelw.weightliftinglog.models.MediaFile;
+import com.panpawelw.weightliftinglog.models.WorkoutDeserialized;
 import com.panpawelw.weightliftinglog.services.DBFileService;
+import com.panpawelw.weightliftinglog.services.WorkoutService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -18,6 +18,9 @@ public class DBFileServiceIT {
 
   @Autowired
   private DBFileService service;
+
+  @Autowired
+  private WorkoutService workoutService;
 
   @Test
   public void storeAllFilesByWorkoutSucceeds() {
@@ -33,7 +36,11 @@ public class DBFileServiceIT {
 
   @Test
   public void deleteFileByWorkoutAndFilenameSucceeds() {
+    long initialDatabaseCount = service.count();
+    WorkoutDeserialized testWorkout = workoutService.findWorkoutById(6);
 
+    service.deleteFileByWorkoutAndFilename(testWorkout, testWorkout.getFilenames().get(0));
+    assertEquals(1, initialDatabaseCount - service.count());
   }
 
   @Test
