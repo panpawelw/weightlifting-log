@@ -47,4 +47,12 @@ public class DBFileService implements FileService {
   public void deleteAllFilesByWorkoutId(long workoutId) {
     fileRepository.deleteAllByWorkoutId(workoutId);
   }
+
+  /**
+   * Counts all records in files table
+   * @return count
+   */
+  public Long count() {
+    return fileRepository.count();
+  }
 }
