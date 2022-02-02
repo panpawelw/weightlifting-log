@@ -37,14 +37,18 @@ public class DBFileServiceIT {
   @Test
   public void deleteFileByWorkoutAndFilenameSucceeds() {
     long initialDatabaseCount = service.count();
-    WorkoutDeserialized testWorkout = workoutService.findWorkoutById(6);
+    WorkoutDeserialized testWorkout = workoutService.findWorkoutById(5);
 
-    service.deleteFileByWorkoutAndFilename(testWorkout, testWorkout.getFilenames().get(0));
+    service.deleteFileByWorkoutAndFilename(testWorkout, testWorkout.getFilenames().get(1));
     assertEquals(1, initialDatabaseCount - service.count());
   }
 
   @Test
   public void deleteAllFilesByWorkoutIdSucceeds() {
+    long initialDatabaseCount = service.count();
 
+    service.deleteAllFilesByWorkoutId(6);
+
+    assertEquals(3, initialDatabaseCount - service.count());
   }
 }
