@@ -43,6 +43,7 @@ public class DBFileServiceIT {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
     assertEquals(3, service.count() - initialDatabaseCount);
   }
 
@@ -55,16 +56,27 @@ public class DBFileServiceIT {
 
   @Test
   public void deleteFileByWorkoutAndFilenameSucceeds() {
-    long initialDatabaseCount = service.count();
+    Long initialDatabaseCount = service.count();
     WorkoutDeserialized testWorkout = workoutService.findWorkoutById(6);
 
     service.deleteFileByWorkoutAndFilename(testWorkout, testWorkout.getFilenames().get(1));
+
     assertEquals(1, initialDatabaseCount - service.count());
   }
 
   @Test
+  public void deleteFileByWorkoutAndFilenameFails() {
+    Long initialDatabaseCount = service.count();
+    WorkoutDeserialized testWorkout = workoutService.findWorkoutById(6);
+
+    service.deleteFileByWorkoutAndFilename(testWorkout, "madeupfilename.lol");
+
+    assertEquals(initialDatabaseCount, service.count());
+  }
+
+  @Test
   public void deleteAllFilesByWorkoutIdSucceeds() {
-    long initialDatabaseCount = service.count();
+    Long initialDatabaseCount = service.count();
 
     service.deleteAllFilesByWorkoutId(7);
 
