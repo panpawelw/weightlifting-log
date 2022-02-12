@@ -55,6 +55,13 @@ public class DBFileServiceIT {
   }
 
   @Test
+  public void getFileByWorkoutAndFilenameFails() {
+    MediaFile testFile = service.getFileByWorkoutIdAndFilename(6L, "nosuchfile.xxx");
+
+    assertNull(testFile);
+  }
+
+  @Test
   public void deleteFileByWorkoutAndFilenameSucceeds() {
     Long initialDatabaseCount = service.count();
     WorkoutDeserialized testWorkout = workoutService.findWorkoutById(6);
